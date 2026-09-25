@@ -415,3 +415,17 @@ def test_report_warns_about_multiple_testing():
     assert "configurations tried" in text
     assert "held up on data it had never seen" in text
     assert "Do not re-tune on the holdout" in text
+
+
+def test_stop_analysis_reports_heat_taken_by_winners(cfg):
+    """MAE analysis must distinguish a winner that sailed from one that nearly
+    got stopped, otherwise it cannot inform stop placement."""
+    df = fixtures.fast_runner()
+    res = Backtester(cfg).run({"TEST": df}, {"TEST": _daily_stub(df)})
+    sa = res["stats"]["stop_analysis"]
+    assert sa["n_wins"] == 1
+    # the fast runner barely dipped, so heat must be small
+    assert sa["winner_mae_max_R"] < 0.5, sa
+    # and a 0.5R stop would therefore NOT have killed it
+    assert sa["winners_lost_at_0.5R_stop"] == 0, sa
+    assert sa["median_stop_distance_pct"] > 0
