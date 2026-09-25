@@ -1,0 +1,1366 @@
+{
+  "tried": 114,
+  "scored": 114,
+  "survivors": 2,
+  "results": [
+    {
+      "n": 27,
+      "expectancy_R": 0.3181,
+      "total_R": 8.6,
+      "periods_positive": 3,
+      "periods_scored": 3,
+      "worst_period_R": 0.15,
+      "max_dd_pct": -1.76,
+      "name": "break_retest/vol1.8_disp0.3_to11:00/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "breakout": {
+            "volume_multiple": 1.8,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.3
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 27,
+      "expectancy_R": 0.277,
+      "total_R": 7.5,
+      "periods_positive": 3,
+      "periods_scored": 3,
+      "worst_period_R": 0.17,
+      "max_dd_pct": -2.03,
+      "name": "break_retest/vol1.8_disp0.3_to11:00/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "breakout": {
+            "volume_multiple": 1.8,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.3
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 33,
+      "expectancy_R": 0.2718,
+      "total_R": 9.0,
+      "periods_positive": 3,
+      "periods_scored": 3,
+      "worst_period_R": 0.132,
+      "max_dd_pct": -2.06,
+      "name": "break_retest/vol1.8_disp0.3_to14:30/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "14:30"
+          },
+          "breakout": {
+            "volume_multiple": 1.8,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.3
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 33,
+      "expectancy_R": 0.2373,
+      "total_R": 7.8,
+      "periods_positive": 3,
+      "periods_scored": 3,
+      "worst_period_R": 0.15,
+      "max_dd_pct": -1.76,
+      "name": "break_retest/vol1.8_disp0.3_to14:30/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "14:30"
+          },
+          "breakout": {
+            "volume_multiple": 1.8,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.3
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 141,
+      "expectancy_R": 0.0456,
+      "total_R": 6.4,
+      "periods_positive": 2,
+      "periods_scored": 4,
+      "worst_period_R": -0.05,
+      "max_dd_pct": -5.75,
+      "name": "break_retest/vol1.8_disp0.15_to11:00/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "breakout": {
+            "volume_multiple": 1.8,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.15
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 45,
+      "expectancy_R": 0.0216,
+      "total_R": 1.0,
+      "periods_positive": 1,
+      "periods_scored": 4,
+      "worst_period_R": -0.81,
+      "max_dd_pct": -3.78,
+      "name": "break_retest/vol1.0_disp0.3_to14:30/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "14:30"
+          },
+          "breakout": {
+            "volume_multiple": 1.0,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.3
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 177,
+      "expectancy_R": 0.0197,
+      "total_R": 3.5,
+      "periods_positive": 3,
+      "periods_scored": 4,
+      "worst_period_R": -0.057,
+      "max_dd_pct": -7.08,
+      "name": "break_retest/vol1.8_disp0.0_to11:00/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "breakout": {
+            "volume_multiple": 1.8,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.0
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 302,
+      "expectancy_R": 0.0169,
+      "total_R": 5.1,
+      "periods_positive": 2,
+      "periods_scored": 4,
+      "worst_period_R": -0.201,
+      "max_dd_pct": -10.39,
+      "name": "break_retest/vol1.0_disp0.0_to11:00/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "breakout": {
+            "volume_multiple": 1.0,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.0
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 231,
+      "expectancy_R": 0.0118,
+      "total_R": 2.7,
+      "periods_positive": 2,
+      "periods_scored": 4,
+      "worst_period_R": -0.188,
+      "max_dd_pct": -8.74,
+      "name": "break_retest/vol1.0_disp0.15_to11:00/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "breakout": {
+            "volume_multiple": 1.0,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.15
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 362,
+      "expectancy_R": 0.0117,
+      "total_R": 4.2,
+      "periods_positive": 3,
+      "periods_scored": 4,
+      "worst_period_R": -0.07,
+      "max_dd_pct": -8.05,
+      "name": "vwap_reversion/stretch0.5_stop0.2/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "vwap_reversion": {
+            "stretch_atr": 0.5,
+            "stop_atr": 0.2
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "require_vwap_alignment": false,
+            "stop_after_first_win": false
+          },
+          "name": "vwap_reversion"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 42,
+      "expectancy_R": 0.0029,
+      "total_R": 0.1,
+      "periods_positive": 1,
+      "periods_scored": 4,
+      "worst_period_R": -0.593,
+      "max_dd_pct": -2.58,
+      "name": "break_retest/vol1.3_disp0.3_to14:30/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "14:30"
+          },
+          "breakout": {
+            "volume_multiple": 1.3,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.3
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 1129,
+      "expectancy_R": 0.0009,
+      "total_R": 1.1,
+      "periods_positive": 2,
+      "periods_scored": 4,
+      "worst_period_R": -0.032,
+      "max_dd_pct": -11.19,
+      "name": "orb_simple/or30_stop0.3/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "orb_simple": {
+            "or_minutes": 30,
+            "stop_atr": 0.3
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "require_vwap_alignment": false,
+            "stop_after_first_win": false
+          },
+          "name": "orb_simple"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "ema_pullback/ema9x100_slope0.05/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "ema_pullback": {
+            "fast_ema": 9,
+            "slow_ema": 100,
+            "min_slope_atr": 0.05
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "stop_after_first_win": false
+          },
+          "name": "ema_pullback"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "ema_pullback/ema9x100_slope0.05/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "ema_pullback": {
+            "fast_ema": 9,
+            "slow_ema": 100,
+            "min_slope_atr": 0.05
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "stop_after_first_win": false
+          },
+          "name": "ema_pullback"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "ema_pullback/ema9x100_slope0.15/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "ema_pullback": {
+            "fast_ema": 9,
+            "slow_ema": 100,
+            "min_slope_atr": 0.15
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "stop_after_first_win": false
+          },
+          "name": "ema_pullback"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "ema_pullback/ema9x100_slope0.15/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "ema_pullback": {
+            "fast_ema": 9,
+            "slow_ema": 100,
+            "min_slope_atr": 0.15
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "stop_after_first_win": false
+          },
+          "name": "ema_pullback"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "ema_pullback/ema9x100_slope0.25/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "ema_pullback": {
+            "fast_ema": 9,
+            "slow_ema": 100,
+            "min_slope_atr": 0.25
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "stop_after_first_win": false
+          },
+          "name": "ema_pullback"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "ema_pullback/ema9x100_slope0.25/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "ema_pullback": {
+            "fast_ema": 9,
+            "slow_ema": 100,
+            "min_slope_atr": 0.25
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "stop_after_first_win": false
+          },
+          "name": "ema_pullback"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "ema_pullback/ema20x100_slope0.05/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "ema_pullback": {
+            "fast_ema": 20,
+            "slow_ema": 100,
+            "min_slope_atr": 0.05
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "stop_after_first_win": false
+          },
+          "name": "ema_pullback"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "ema_pullback/ema20x100_slope0.05/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "ema_pullback": {
+            "fast_ema": 20,
+            "slow_ema": 100,
+            "min_slope_atr": 0.05
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "stop_after_first_win": false
+          },
+          "name": "ema_pullback"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "ema_pullback/ema20x100_slope0.15/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "ema_pullback": {
+            "fast_ema": 20,
+            "slow_ema": 100,
+            "min_slope_atr": 0.15
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "stop_after_first_win": false
+          },
+          "name": "ema_pullback"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "ema_pullback/ema20x100_slope0.15/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "ema_pullback": {
+            "fast_ema": 20,
+            "slow_ema": 100,
+            "min_slope_atr": 0.15
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "stop_after_first_win": false
+          },
+          "name": "ema_pullback"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "ema_pullback/ema20x100_slope0.25/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "ema_pullback": {
+            "fast_ema": 20,
+            "slow_ema": 100,
+            "min_slope_atr": 0.25
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "stop_after_first_win": false
+          },
+          "name": "ema_pullback"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "ema_pullback/ema20x100_slope0.25/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "ema_pullback": {
+            "fast_ema": 20,
+            "slow_ema": 100,
+            "min_slope_atr": 0.25
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "stop_after_first_win": false
+          },
+          "name": "ema_pullback"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "orb_simple/or5_stop0.15/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "orb_simple": {
+            "or_minutes": 5,
+            "stop_atr": 0.15
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "require_vwap_alignment": false,
+            "stop_after_first_win": false
+          },
+          "name": "orb_simple"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "orb_simple/or5_stop0.15/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "orb_simple": {
+            "or_minutes": 5,
+            "stop_atr": 0.15
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "require_vwap_alignment": false,
+            "stop_after_first_win": false
+          },
+          "name": "orb_simple"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "orb_simple/or5_stop0.3/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "orb_simple": {
+            "or_minutes": 5,
+            "stop_atr": 0.3
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "require_vwap_alignment": false,
+            "stop_after_first_win": false
+          },
+          "name": "orb_simple"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 0,
+      "expectancy_R": 0.0,
+      "total_R": 0.0,
+      "periods_positive": 0,
+      "periods_scored": 0,
+      "worst_period_R": 0.0,
+      "max_dd_pct": 0.0,
+      "name": "orb_simple/or5_stop0.3/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "orb_simple": {
+            "or_minutes": 5,
+            "stop_atr": 0.3
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "require_vwap_alignment": false,
+            "stop_after_first_win": false
+          },
+          "name": "orb_simple"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 39,
+      "expectancy_R": -0.0008,
+      "total_R": -0.0,
+      "periods_positive": 1,
+      "periods_scored": 4,
+      "worst_period_R": -0.647,
+      "max_dd_pct": -2.58,
+      "name": "break_retest/vol1.3_disp0.3_to11:00/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "breakout": {
+            "volume_multiple": 1.3,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.3
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 259,
+      "expectancy_R": -0.0039,
+      "total_R": -1.0,
+      "periods_positive": 2,
+      "periods_scored": 4,
+      "worst_period_R": -0.207,
+      "max_dd_pct": -9.5,
+      "name": "break_retest/vol1.0_disp0.15_to14:30/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "14:30"
+          },
+          "breakout": {
+            "volume_multiple": 1.0,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.15
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 1129,
+      "expectancy_R": -0.0048,
+      "total_R": -5.5,
+      "periods_positive": 2,
+      "periods_scored": 4,
+      "worst_period_R": -0.026,
+      "max_dd_pct": -14.77,
+      "name": "orb_simple/or30_stop0.3/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "orb_simple": {
+            "or_minutes": 30,
+            "stop_atr": 0.3
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "require_vwap_alignment": false,
+            "stop_after_first_win": false
+          },
+          "name": "orb_simple"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 1129,
+      "expectancy_R": -0.0054,
+      "total_R": -6.1,
+      "periods_positive": 2,
+      "periods_scored": 4,
+      "worst_period_R": -0.063,
+      "max_dd_pct": -17.28,
+      "name": "orb_simple/or30_stop0.15/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "orb_simple": {
+            "or_minutes": 30,
+            "stop_atr": 0.15
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "require_vwap_alignment": false,
+            "stop_after_first_win": false
+          },
+          "name": "orb_simple"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 43,
+      "expectancy_R": -0.0093,
+      "total_R": -0.4,
+      "periods_positive": 1,
+      "periods_scored": 4,
+      "worst_period_R": -0.891,
+      "max_dd_pct": -3.78,
+      "name": "break_retest/vol1.0_disp0.3_to11:00/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "breakout": {
+            "volume_multiple": 1.0,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.3
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 196,
+      "expectancy_R": -0.0112,
+      "total_R": -2.2,
+      "periods_positive": 2,
+      "periods_scored": 4,
+      "worst_period_R": -0.154,
+      "max_dd_pct": -6.32,
+      "name": "break_retest/vol1.3_disp0.15_to11:00/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "breakout": {
+            "volume_multiple": 1.3,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.15
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 1129,
+      "expectancy_R": -0.0128,
+      "total_R": -14.4,
+      "periods_positive": 1,
+      "periods_scored": 4,
+      "worst_period_R": -0.043,
+      "max_dd_pct": -20.22,
+      "name": "orb_simple/or30_stop0.15/fixed",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "orb_simple": {
+            "or_minutes": 30,
+            "stop_atr": 0.15
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "require_vwap_alignment": false,
+            "stop_after_first_win": false
+          },
+          "name": "orb_simple"
+        },
+        "risk": {
+          "exit_style": "fixed"
+        }
+      }
+    },
+    {
+      "n": 387,
+      "expectancy_R": -0.016,
+      "total_R": -6.2,
+      "periods_positive": 1,
+      "periods_scored": 4,
+      "worst_period_R": -0.036,
+      "max_dd_pct": -8.7,
+      "name": "vwap_reversion/stretch0.5_stop0.1/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "vwap_reversion": {
+            "stretch_atr": 0.5,
+            "stop_atr": 0.1
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "require_vwap_alignment": false,
+            "stop_after_first_win": false
+          },
+          "name": "vwap_reversion"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 42,
+      "expectancy_R": -0.0202,
+      "total_R": -0.9,
+      "periods_positive": 1,
+      "periods_scored": 4,
+      "worst_period_R": -0.378,
+      "max_dd_pct": -3.27,
+      "name": "break_retest/vol1.3_disp0.3_to14:30/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "opening_range_minutes": 5,
+            "no_entries_before": "09:35",
+            "no_entries_after": "14:30"
+          },
+          "breakout": {
+            "volume_multiple": 1.3,
+            "min_range_atr_multiple": 0.03,
+            "max_range_atr_multiple": 0.45
+          },
+          "retest": {
+            "min_displacement_atr": 0.3
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "stop_after_first_win": true
+          },
+          "name": "break_retest"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 1159,
+      "expectancy_R": -0.0211,
+      "total_R": -24.4,
+      "periods_positive": 0,
+      "periods_scored": 4,
+      "worst_period_R": -0.039,
+      "max_dd_pct": -14.97,
+      "name": "orb_simple/or15_stop0.3/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "orb_simple": {
+            "or_minutes": 15,
+            "stop_atr": 0.3
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "require_vwap_alignment": false,
+            "stop_after_first_win": false
+          },
+          "name": "orb_simple"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 1159,
+      "expectancy_R": -0.0231,
+      "total_R": -26.8,
+      "periods_positive": 1,
+      "periods_scored": 4,
+      "worst_period_R": -0.062,
+      "max_dd_pct": -22.49,
+      "name": "orb_simple/or15_stop0.15/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "09:35",
+            "no_entries_after": "11:00"
+          },
+          "orb_simple": {
+            "or_minutes": 15,
+            "stop_atr": 0.15
+          },
+          "filters": {
+            "max_trades_per_day": 2,
+            "require_vwap_alignment": false,
+            "stop_after_first_win": false
+          },
+          "name": "orb_simple"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    },
+    {
+      "n": 1434,
+      "expectancy_R": -0.0288,
+      "total_R": -41.3,
+      "periods_positive": 1,
+      "periods_scored": 4,
+      "worst_period_R": -0.05,
+      "max_dd_pct": -22.82,
+      "name": "momentum_breakout/lb12_vol2.0/momentum",
+      "overrides": {
+        "strategy": {
+          "session": {
+            "no_entries_before": "10:00",
+            "no_entries_after": "15:00"
+          },
+          "momentum_breakout": {
+            "lookback": 12,
+            "volume_multiple": 2.0
+          },
+          "filters": {
+            "max_trades_per_day": 4,
+            "max_trades_per_symbol_per_day": 2,
+            "require_vwap_alignment": false,
+            "stop_after_first_win": false
+          },
+          "name": "momentum_breakout"
+        },
+        "risk": {
+          "exit_style": "momentum"
+        }
+      }
+    }
+  ],
+  "winner": {
+    "n": 177,
+    "expectancy_R": 0.0197,
+    "total_R": 3.5,
+    "periods_positive": 3,
+    "periods_scored": 4,
+    "worst_period_R": -0.057,
+    "max_dd_pct": -7.08,
+    "name": "break_retest/vol1.8_disp0.0_to11:00/fixed",
+    "overrides": {
+      "strategy": {
+        "session": {
+          "opening_range_minutes": 5,
+          "no_entries_before": "09:35",
+          "no_entries_after": "11:00"
+        },
+        "breakout": {
+          "volume_multiple": 1.8,
+          "min_range_atr_multiple": 0.03,
+          "max_range_atr_multiple": 0.45
+        },
+        "retest": {
+          "min_displacement_atr": 0.0
+        },
+        "filters": {
+          "max_trades_per_day": 2,
+          "stop_after_first_win": true
+        },
+        "name": "break_retest"
+      },
+      "risk": {
+        "exit_style": "fixed"
+      }
+    }
+  },
+  "holdout": {
+    "n": 166,
+    "expectancy_R": 0.0073,
+    "total_R": 1.2,
+    "periods_positive": 2,
+    "periods_scored": 4,
+    "worst_period_R": -0.069,
+    "max_dd_pct": -7.27
+  }
+}
