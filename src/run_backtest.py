@@ -46,11 +46,25 @@ def main(argv: list[str] | None = None) -> int:
 
     log.info("Backtesting %s from %s to %s", ", ".join(symbols), start, end or "now")
 
-    md = MarketData(creds, feed=cfg.backtest.bar_feed)
-    tf = cfg.strategy.timeframe_minutes
+    from .data import AlpacaError
+    try:
+        md = MarketData(creds, feed=cfg.backtest.bar_feed)
+        tf = cfg.strategy.timeframe_minutes
+        intraday = md.intraday_bars(symbols, tf, start=start, end=end)
+        daily = md.daily_bars(symbols, start=start, end=end)
+    except AlpacaError as exc:
+        log.error("Market data unavailable: %s", exc)
+        return 1
 
-    intraday = md.intraday_bars(symbols, tf, start=start, end=end)
-    daily = md.daily_bars(symbols, start=start, end=end)
+    if not any(len(df) for df in intraday.values()):
+        log.error(
+            "Alpaca returned no intraday bars for %s between %s and %s. "
+            "The free 'iex' feed has limited history — try a more recent "
+            "start date, or switch backtest.bar_feed to 'sip' if your "
+            "Alpaca plan includes it.",
+            ", ".join(symbols), start, end or "today",
+        )
+        return 1
 
     for sym in symbols:
         n = len(intraday.get(sym, []))
