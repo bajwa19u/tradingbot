@@ -21,7 +21,8 @@ from .backtest import _parse_time
 from .config import Credentials, REPO_ROOT, load_config
 from .data import MarketData, trading_days_back
 from .notify import Notifier
-from .strategy.break_retest import BreakRetestEngine, compute_daily_atr
+from .strategy import make_engine
+from .strategy.break_retest import compute_daily_atr
 from .universe import build_universe
 
 EASTERN = ZoneInfo("America/New_York")
@@ -102,7 +103,7 @@ def main(argv: list[str] | None = None) -> int:
         prior = hist[hist.index.date < now.date()] if hist is not None and len(hist) else None
         a = compute_daily_atr(prior) if prior is not None else 0.0
 
-        engine = BreakRetestEngine(sym, cfg, a)
+        engine = make_engine(cfg, sym, a)
         for ts, bar in bars.iterrows():
             signal = engine.on_bar(bar)
             if signal is None:
