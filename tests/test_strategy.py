@@ -359,3 +359,59 @@ def test_strategy_registry_rejects_unknown_names():
     c["strategy"]["name"] = "does_not_exist"
     with pytest.raises(ValueError, match="Unknown strategy"):
         make_engine(c, "TEST", 2.5)
+
+
+# ---------------------------------------------------------------------------
+# Wide search
+# ---------------------------------------------------------------------------
+def test_every_candidate_config_is_valid_and_buildable():
+    """A typo in one grid entry would otherwise only surface 40 minutes into
+    a search."""
+    from src.discover import candidates, deep_merge
+    from src.strategy import make_engine
+    from src.config import Section
+    base = load_config()
+    for name, ov in candidates():
+        cfg = Section(deep_merge(dict(base), ov))
+        eng = make_engine(cfg, "TEST", 2.5)
+        assert eng is not None, name
+        assert cfg.strategy.name in name
+
+
+def test_holdout_never_overlaps_the_research_set():
+    from src.discover import HOLDOUT_SYMBOLS
+    research = {"TSLA", "NVDA", "AAPL", "AMD"}
+    assert not research & set(HOLDOUT_SYMBOLS)
+
+
+def test_selection_rule_rejects_a_lucky_config():
+    """Positive overall but negative in most periods must not be selected."""
+    from src.discover import render
+    lucky = {"name": "x/lucky/fixed", "n": 300, "expectancy_R": 0.2,
+             "total_R": 60.0, "periods_positive": 1, "periods_scored": 4,
+             "worst_period_R": -0.5, "max_dd_pct": -30.0}
+    payload = {"tried": 114, "scored": 114, "survivors": 0,
+               "results": [lucky], "winner": None, "holdout": None}
+    class A:
+        start, end = "2024-06-01", None
+    text = render(payload, ["TSLA"], A(), 5)
+    assert "Nothing passed the selection rule" in text
+    assert "holdout was not touched" in text
+
+
+def test_report_warns_about_multiple_testing():
+    from src.discover import render
+    good = {"name": "x/good/fixed", "n": 300, "expectancy_R": 0.15,
+            "total_R": 45.0, "periods_positive": 4, "periods_scored": 4,
+            "worst_period_R": 0.05, "max_dd_pct": -9.0}
+    hold = {"n": 180, "expectancy_R": 0.09, "total_R": 16.2,
+            "periods_positive": 3, "periods_scored": 4,
+            "worst_period_R": 0.01, "max_dd_pct": -11.0}
+    class A:
+        start, end = "2024-06-01", None
+    text = render({"tried": 114, "scored": 114, "survivors": 1,
+                   "results": [good], "winner": good, "holdout": hold},
+                  ["TSLA"], A(), 5)
+    assert "configurations tried" in text
+    assert "held up on data it had never seen" in text
+    assert "Do not re-tune on the holdout" in text
