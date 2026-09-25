@@ -1,0 +1,86 @@
+==============================================================
+ALPACA DIAGNOSTIC
+==============================================================
+ALPACA_API_KEY    : ALPA…EY (len 14)
+ALPACA_API_SECRET : ALPA…ET (len 17)
+
+--- daily bars, iex ---
+    params: {"symbols": "AAPL", "timeframe": "1Day", "start": "2026-09-05", "limit": 5, "feed": "iex"}
+    HTTP 401
+    body: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+
+--- 5-minute bars, iex ---
+    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-05", "limit": 5, "feed": "iex"}
+    HTTP 401
+    body: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+
+--- 5-minute bars, sip ---
+    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-05", "limit": 5, "feed": "sip"}
+    HTTP 401
+    body: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+
+--- 5-minute bars, no feed param ---
+    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-05", "limit": 5}
+    HTTP 401
+    body: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+
+--- most-active screener ---
+    params: {"by": "volume", "top": 3}
+    HTTP 401
+    body: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+
+==============================================================
+RESULT: no bars request returned data. See the HTTP codes above:
+  401/403 -> keys wrong, or the plan does not cover that feed
+  200 with empty bars -> the date range has no history on that feed
+
+============================================================
+BACKTEST
+============================================================
+args: --start 2025-06-01 --symbols AAPL, NVDA
+2026-09-25 18:55:02,768 INFO Backtesting AAPL, NVDA from 2025-06-01 to now
+2026-09-25 18:55:02,917 ERROR Market data unavailable: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+
+exit code: 1
