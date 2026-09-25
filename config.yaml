@@ -30,7 +30,20 @@ universe:
 # The strategy — Scarface Trades style 5-minute opening-range break & retest
 # ---------------------------------------------------------------------------
 strategy:
+  # break_retest = opening-range break & retest (Scarface method)
+  # ema_pullback = trend continuation off the fast EMA
+  name: break_retest
+
   timeframe_minutes: 5
+
+  # --- ema_pullback settings (ignored unless name: ema_pullback) ------------
+  ema_pullback:
+    fast_ema: 20
+    slow_ema: 50
+    slope_lookback: 10          # bars used to measure trend slope
+    min_slope_atr: 0.10         # flatter than this x ATR = chop, stand aside
+    touch_tolerance_atr: 0.05   # how close to the EMA counts as a touch
+    max_bars_since_touch: 3     # confirmation must come within N bars
 
   # Higher-timeframe context: only trade in the direction of the 1-hour trend
   # (close vs its EMA). Turn on with filters.require_htf_alignment below.
