@@ -111,3 +111,45 @@ def retest_too_late() -> pd.DataFrame:
     # only now does it come back
     trailing.append(("10:35", 100.90, 100.98, 100.50, 100.95, 70_000))
     return bars(_OPENING_RANGE + trailing)
+
+
+# --- exit-management fixtures ---------------------------------------------
+# All three share the same entry: opening range 99.50-100.50, break at 09:45,
+# hammer confirmation at 09:50 closing 100.95. With daily ATR 2.5 the stop
+# lands at 100.425, so risk is about 0.55 per share before slippage.
+_ENTRY = _OPENING_RANGE + [
+    ("09:45", 100.3, 101.30, 100.25, 101.20, 120_000),
+    ("09:50", 100.90, 100.98, 100.50, 100.95, 70_000),
+]
+
+
+def fast_runner() -> pd.DataFrame:
+    """Clears 2R inside the 3-candle window, so the stop lifts to 2R and
+    trails. Should exit well above 1.5R and be labelled a trail."""
+    return bars(_ENTRY + [
+        ("09:55", 100.95, 102.40, 101.00, 102.30, 90_000),   # straight through 2R
+        ("10:00", 102.30, 102.80, 102.10, 102.70, 80_000),   # trail lifts
+        ("10:05", 102.70, 102.75, 101.90, 102.00, 70_000),   # trail taken out
+        ("10:10", 102.00, 102.10, 101.80, 101.90, 50_000),
+    ])
+
+
+def slow_grinder() -> pd.DataFrame:
+    """Never gets going inside the window, so the target drops to 1.5R and
+    is filled later."""
+    return bars(_ENTRY + [
+        ("09:55", 100.95, 101.20, 100.90, 101.10, 60_000),
+        ("10:00", 101.10, 101.30, 101.00, 101.20, 55_000),
+        ("10:05", 101.20, 101.40, 101.10, 101.35, 50_000),   # window closes -> 1.5R
+        ("10:10", 101.35, 102.00, 101.30, 101.95, 65_000),   # fills 1.5R
+    ])
+
+
+def retests_entry() -> pd.DataFrame:
+    """Moves away, comes back and touches entry once - the stop goes to
+    entry, and the next push down scratches the trade rather than losing 1R."""
+    return bars(_ENTRY + [
+        ("09:55", 100.95, 101.30, 101.10, 101.20, 60_000),   # moves away
+        ("10:00", 101.20, 101.25, 100.95, 101.00, 55_000),   # retest of entry
+        ("10:05", 101.00, 101.05, 100.70, 100.75, 60_000),   # stopped at entry
+    ])
