@@ -134,6 +134,32 @@ def render_markdown(result: dict, symbols: list[str], start, end, cfg) -> str:
                                 key=lambda kv: -kv[1])[:12]:
         lines.append(f"- `{reason}` — {count}")
 
+    b = s.get("buckets", {})
+    titles = {
+        "by_hour": "By entry hour (ET)",
+        "by_direction": "By direction",
+        "by_pattern": "By confirmation pattern",
+        "by_bars_to_retest": "By bars between break and retest",
+        "by_symbol": "By symbol",
+    }
+    if b:
+        lines += ["", "## Where the money actually goes", "",
+                  "_Buckets with n < 20 are marked unreliable - slicing enough "
+                  "ways always finds a flattering subset by chance._", ""]
+        for key, title in titles.items():
+            rows = b.get(key) or []
+            if not rows:
+                continue
+            lines += [f"### {title}", "",
+                      "| Bucket | n | Expectancy | Win rate | Total R | |",
+                      "|---|---|---|---|---|---|"]
+            for r in rows:
+                flag = "" if r["reliable"] else "low n"
+                lines.append(
+                    f"| {r['bucket']} | {r['n']} | {r['expectancy_R']:+.3f}R | "
+                    f"{r['win_rate_pct']}% | {r['total_R']:+.1f} | {flag} |")
+            lines.append("")
+
     lines += ["", "## Last 15 trades", "",
               "| Symbol | Dir | Entry time | Entry | Exit | R | Exit reason |",
               "|---|---|---|---|---|---|---|"]
