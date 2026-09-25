@@ -16,6 +16,9 @@ on:
       fast:
         description: "Fast EMA (blank = 20; the search picked 10)"
         required: false
+      slope:
+        description: "Chop filter: min ATR the fast EMA must have risen (blank = off)"
+        required: false
       show:
         description: "How many recent bars to print in full"
         required: false
@@ -43,11 +46,13 @@ jobs:
           IN_START: ${{ inputs.start }}
           IN_FAST: ${{ inputs.fast }}
           IN_SHOW: ${{ inputs.show }}
+          IN_SLOPE: ${{ inputs.slope }}
         run: |
           set -uo pipefail
           mkdir -p reports
           ARGS=("${IN_SYM}" --start "${IN_START:-2024-01-01}" --show "${IN_SHOW:-80}")
           [ -n "${IN_FAST:-}" ] && ARGS+=(--fast "${IN_FAST}") || true
+          [ -n "${IN_SLOPE:-}" ] && ARGS+=(--slope "${IN_SLOPE}") || true
           python -m src.inspect_symbol "${ARGS[@]}" 2>&1 | tee reports/inspect_run.log
       - name: Commit
         if: always()
