@@ -27,40 +27,43 @@ def gates(df: pd.DataFrame, p: dict) -> pd.DataFrame:
     ef, em, es = df[f"ema{f}"], df[f"ema{m}"], df[f"ema{s}"]
     a = df["atr"]
 
-    uptrend = (ef > em) & (em > es) & (df["close"] > es)
+    stack = (ef > em) & (em > es) & (df["close"] > es)
+    slope_n = p.get("slope_bars", 0)
+    rising = pd.Series(True, index=df.index)
+    if slope_n and p.get("min_slope_atr", 0.0):
+        rising = (ef - ef.shift(slope_n)) >= a * p["min_slope_atr"]
+    uptrend = stack & rising
     touched = df["low"] <= ef + a * p["touch_atr"]
     out = pd.DataFrame(index=df.index)
     out["close"] = df["close"].round(2)
     out[f"ema{f}"] = ef.round(2)
-    out["stack_ok"] = uptrend
+    out["stack_ok"] = stack
+    out["still_rising"] = rising
     out["held_10d"] = uptrend.rolling(p["trend_bars"],
                                       min_periods=p["trend_bars"]).min().fillna(0).astype(bool)
     out["touched_ema"] = touched.rolling(p["touch_window"],
                                          min_periods=1).max().astype(bool)
     out["above_mid"] = df["close"] > em
     out["green_close_above"] = (df["close"] > ef) & (df["close"] > df["open"])
-    out["SIGNAL"] = (out["stack_ok"] & out["held_10d"] & out["touched_ema"]
-                     & out["above_mid"] & out["green_close_above"] & a.notna())
+    out["SIGNAL"] = (out["stack_ok"] & out["still_rising"] & out["held_10d"]
+                     & out["touched_ema"] & out["above_mid"]
+                     & out["green_close_above"] & a.notna())
     return out
 
 
 def why_not(row) -> str:
     if row["SIGNAL"]:
         return "ENTRY"
-    missing = [name for name, label in (
-        ("stack_ok", "no uptrend (EMA stack out of order)"),
-        ("held_10d", "trend too new"),
-        ("touched_ema", "no pullback to the EMA"),
-        ("above_mid", "closed below the mid EMA - pullback too deep"),
-        ("green_close_above", "no green close back above the EMA"),
-    ) if not row[name]]
-    return "; ".join(
-        {"stack_ok": "no uptrend (EMA stack out of order)",
-         "held_10d": "trend too new",
-         "touched_ema": "no pullback to the EMA",
-         "above_mid": "closed below the mid EMA - pullback too deep",
-         "green_close_above": "no green close back above the EMA"}[k]
-        for k in missing) or "—"
+    reasons = {
+        "stack_ok": "no uptrend (EMA stack out of order)",
+        "still_rising": "trend has gone flat",
+        "held_10d": "trend too new",
+        "touched_ema": "no pullback to the EMA",
+        "above_mid": "closed below the mid EMA - pullback too deep",
+        "green_close_above": "no green close back above the EMA",
+    }
+    missing = [k for k in reasons if k in row.index and not row[k]]
+    return "; ".join(reasons[k] for k in missing) or "—"
 
 
 def main(argv=None) -> int:
@@ -69,6 +72,9 @@ def main(argv=None) -> int:
     ap.add_argument("--start", default="2024-01-01")
     ap.add_argument("--end", default=None)
     ap.add_argument("--fast", type=int, default=None)
+    ap.add_argument("--slope", type=float, default=None,
+                    help="min ATR the fast EMA must have risen over "
+                         "slope_bars; 0 disables the chop filter")
     ap.add_argument("--show", type=int, default=60,
                     help="how many recent bars to print in full")
     args = ap.parse_args(argv)
@@ -76,6 +82,8 @@ def main(argv=None) -> int:
     p = dict(BASE)
     if args.fast:
         p["fast"] = args.fast
+    if args.slope is not None:
+        p["min_slope_atr"] = args.slope
     sym = args.symbol.upper()
     trade_from = pd.Timestamp(args.start, tz="America/New_York")
     fetch_from = (trade_from - pd.Timedelta(days=500)).date().isoformat()
@@ -128,15 +136,17 @@ def main(argv=None) -> int:
     lines += ["", "_A day can meet every rule and still not become a trade if a "
                   "position in this name was already open._", "",
               f"## Last {args.show} bars, rule by rule", "",
-              "| Date | Close | EMA | Uptrend | Held | Pullback | Not too deep "
-              "| Green close | Verdict |", "|---|---|---|---|---|---|---|---|---|"]
+              "| Date | Close | EMA | Stack | Rising | Held | Pullback "
+              "| Not too deep | Green close | Verdict |",
+              "|---|---|---|---|---|---|---|---|---|---|"]
     tick = {True: "✅", False: "·"}
     ema_col = f"ema{p['fast']}"
     for ts, row in table.tail(args.show).iterrows():
         verdict = "**ENTRY**" if row["SIGNAL"] else why_not(row)
         lines.append(
             f"| {ts.date()} | {row['close']:.2f} | {row[ema_col]:.2f} "
-            f"| {tick[bool(row['stack_ok'])]} | {tick[bool(row['held_10d'])]} "
+            f"| {tick[bool(row['stack_ok'])]} | {tick[bool(row['still_rising'])]} "
+            f"| {tick[bool(row['held_10d'])]} "
             f"| {tick[bool(row['touched_ema'])]} | {tick[bool(row['above_mid'])]} "
             f"| {tick[bool(row['green_close_above'])]} | {verdict} |")
 
