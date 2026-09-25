@@ -20,6 +20,10 @@ on:
         description: "Comma-separated minutes to test"
         required: false
         default: "1,2,5"
+      periods:
+        description: "How many consecutive market periods to score separately"
+        required: false
+        default: "5"
 
 permissions:
   contents: write
@@ -47,10 +51,11 @@ jobs:
           IN_END: ${{ inputs.end }}
           IN_SYMBOLS: ${{ inputs.symbols }}
           IN_TF: ${{ inputs.timeframes }}
+          IN_PERIODS: ${{ inputs.periods }}
         run: |
           set -uo pipefail
           mkdir -p reports
-          ARGS=(--start "${IN_START:-2025-01-01}" --symbols "${IN_SYMBOLS:-TSLA,NVDA,AAPL,AMD}" --timeframes "${IN_TF:-1,2,5}")
+          ARGS=(--start "${IN_START:-2024-06-01}" --symbols "${IN_SYMBOLS:-TSLA,NVDA,AAPL,AMD}" --timeframes "${IN_TF:-1,2,5}" --periods "${IN_PERIODS:-5}")
           [ -n "${IN_END:-}" ] && ARGS+=(--end "${IN_END}") || true
           set +e
           python -m src.sweep "${ARGS[@]}" 2>&1 | tee reports/sweep_run.log
