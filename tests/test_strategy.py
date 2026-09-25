@@ -184,6 +184,8 @@ def test_daily_atr_stub_scales_to_intraday_atr(cfg):
 
 
 def test_backtest_books_a_winner(cfg):
+    cfg = load_config()
+    cfg["risk"]["exit_style"] = "fixed"      # this test pins the 2R path
     df = fixtures.clean_long_setup()
     result = Backtester(cfg).run({"TEST": df}, {"TEST": _daily_stub(df)})
     trades = result["trades"]
@@ -197,6 +199,8 @@ def test_backtest_books_a_winner(cfg):
 
 
 def test_backtest_books_a_loser(cfg):
+    cfg = load_config()
+    cfg["risk"]["exit_style"] = "fixed"
     df = fixtures.stopped_out_long()
     result = Backtester(cfg).run({"TEST": df}, {"TEST": _daily_stub(df)})
     trades = result["trades"]
@@ -220,3 +224,93 @@ def test_stats_are_internally_consistent(cfg):
     assert s["n_trades"] == len(result["trades"])
     assert s["total_R"] == pytest.approx(
         sum(t["r_multiple"] for t in result["trades"]), abs=0.02)
+
+
+# ---------------------------------------------------------------------------
+# Momentum exit management
+# ---------------------------------------------------------------------------
+def _run_exits(df, cfg):
+    return Backtester(cfg).run({"TEST": df}, {"TEST": _daily_stub(df)})["trades"]
+
+
+def test_fast_runner_trails_instead_of_capping_at_2R(cfg):
+    assert cfg.risk.exit_style == "momentum"
+    trades = _run_exits(fixtures.fast_runner(), cfg)
+    assert len(trades) == 1
+    t = trades[0]
+    assert t["exit_reason"] == "trail", t
+    # stop was lifted to 2R and trailed, so the result must clear 1.5R
+    assert t["r_multiple"] >= 1.5, t
+    assert t["pnl"] > 0
+
+
+def test_slow_grinder_settles_for_the_smaller_target(cfg):
+    trades = _run_exits(fixtures.slow_grinder(), cfg)
+    assert len(trades) == 1
+    t = trades[0]
+    assert t["exit_reason"] == "target"
+    # target dropped to 1.5R, so it must not book anywhere near 2R
+    assert 1.3 <= t["r_multiple"] <= 1.6, t
+
+
+def test_one_retest_of_entry_moves_stop_to_breakeven(cfg):
+    trades = _run_exits(fixtures.retests_entry(), cfg)
+    assert len(trades) == 1
+    t = trades[0]
+    assert t["exit_reason"] == "breakeven", t
+    # a scratch, not a full 1R loss
+    assert -0.2 <= t["r_multiple"] <= 0.05, t
+
+
+def test_momentum_style_beats_fixed_on_the_fast_runner(cfg):
+    """The whole point: a fast mover should earn more than a capped 2R exit
+    minus slippage would have."""
+    import copy
+    fixed = load_config()
+    fixed["risk"]["exit_style"] = "fixed"
+    fast = _run_exits(fixtures.fast_runner(), cfg)[0]
+    capped = _run_exits(fixtures.fast_runner(), fixed)[0]
+    assert fast["r_multiple"] > capped["r_multiple"], (fast, capped)
+
+
+def test_htf_filter_blocks_trades_against_the_1h_trend(cfg):
+    """With 1H context required and a downtrend supplied, a long setup must
+    be rejected rather than taken."""
+    import pandas as pd
+    from src.strategy.break_retest import BreakRetestEngine, State
+    c = load_config()
+    c["strategy"]["filters"]["require_htf_alignment"] = True
+    df = fixtures.clean_long_setup()
+    # 1H context says DOWN for the whole session
+    bearish = pd.Series([-1.0, -1.0],
+                        index=pd.DatetimeIndex([df.index[0] - pd.Timedelta(hours=2),
+                                                df.index[0] - pd.Timedelta(hours=1)]))
+    eng = BreakRetestEngine("TEST", c, daily_atr=ATR, htf_trend=bearish)
+    signals = [s for _, bar in df.iterrows() if (s := eng.on_bar(bar))]
+    assert signals == [], "a long must not fire against a 1H downtrend"
+    assert any(r.reason == "htf_context_against_long" for r in eng.rejections)
+
+    # and the same setup with bullish context still fires
+    bullish = pd.Series([1.0, 1.0], index=bearish.index)
+    eng2 = BreakRetestEngine("TEST", c, daily_atr=ATR, htf_trend=bullish)
+    signals2 = [s for _, bar in df.iterrows() if (s := eng2.on_bar(bar))]
+    assert len(signals2) == 1, "aligned context must not block the trade"
+
+
+def test_htf_series_is_shifted_to_avoid_lookahead():
+    """The 1H trend must only become visible after its candle has closed."""
+    import pandas as pd
+    from src.backtest import _htf_trend
+    from src.config import load_config as lc
+    idx = pd.date_range("2026-01-02 09:30", periods=400, freq="5min",
+                        tz="America/New_York")
+    import numpy as np
+    px = pd.Series(np.linspace(100, 110, 400), index=idx)
+    df = pd.DataFrame({"open": px, "high": px + 0.1, "low": px - 0.1,
+                       "close": px, "volume": 1000.0}, index=idx)
+    trend = _htf_trend(df, lc())
+    assert trend is not None
+    hourly = df.resample("60min", label="left", closed="left",
+                         origin="start_day").agg({"close": "last"}).dropna()
+    # every trend timestamp must sit at or after the END of its source bar
+    assert trend.index[0] >= hourly.index[0] + pd.Timedelta(minutes=60)
