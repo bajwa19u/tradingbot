@@ -88,6 +88,17 @@ def find_signals(df: pd.DataFrame, p: dict) -> list[int]:
     a = df["atr"]
 
     uptrend = (ef > em) & (em > es) & (df["close"] > es)
+
+    # The EMA stack staying in order is not the same as the trend still
+    # moving. After a rally stalls, the stack holds for weeks while price
+    # chops sideways - and every dip to a flat EMA reads as a setup. Require
+    # the fast EMA to have actually climbed, measured in ATR so it scales
+    # with the stock.
+    slope_n = p.get("slope_bars", 0)
+    min_slope = p.get("min_slope_atr", 0.0)
+    if slope_n and min_slope:
+        uptrend &= (ef - ef.shift(slope_n)) >= a * min_slope
+
     tol = a * p["touch_atr"]
     touched = df["low"] <= ef + tol
     # a close BELOW the mid EMA means the pullback has gone too far
@@ -251,10 +262,21 @@ def summarize(trades: list[SwingTrade], risk_frac: float, equity: float) -> dict
 # ---------------------------------------------------------------------------
 BASE = {"fast": 20, "mid": 50, "slow": 200, "touch_atr": 0.25, "touch_window": 3,
         "trend_bars": 10, "stop_atr": 0.5, "target_r": 3.0, "trail_ema": True,
-        "trail_after_r": 1.0, "max_hold": 60, "risk_pct": 1.0, "max_open": 8}
+        "trail_after_r": 1.0, "max_hold": 60, "risk_pct": 1.0, "max_open": 8,
+        # chop filter: the fast EMA must have risen this many ATR over
+        # `slope_bars` bars. 0 disables it (the original behaviour).
+        "slope_bars": 20, "min_slope_atr": 0.0,
+        # do not re-enter the same name for N bars after a signal
+        "cooldown_bars": 0}
 
 
 def grid() -> list[tuple[str, dict]]:
+    """One knob at a time off a common base, plus a slope sweep.
+
+    The slope entries exist because MET showed the strategy firing again and
+    again into a flat, sideways market - the EMA stack was still in order but
+    the trend had stopped moving.
+    """
     out = []
     for fast, target, trail, stop in itertools.product(
             [10, 20], [0.0, 2.0, 3.0], [True, False], [0.3, 0.5, 1.0]):
@@ -264,6 +286,14 @@ def grid() -> list[tuple[str, dict]]:
         if target == 0.0 and not trail:
             continue  # no way out except the stop or the clock
         out.append((f"ema{fast}_tgt{target}_trail{int(trail)}_stop{stop}", p))
+
+    # slope filter applied to the two shapes that led the last search
+    for fast, target, stop in ((10, 3.0, 0.3), (20, 0.0, 0.5), (20, 2.0, 0.5)):
+        for slope in (0.5, 1.0, 2.0):
+            p = copy.deepcopy(BASE)
+            p.update({"fast": fast, "target_r": target, "trail_ema": True,
+                      "stop_atr": stop, "min_slope_atr": slope})
+            out.append((f"ema{fast}_tgt{target}_stop{stop}_slope{slope}", p))
     return out
 
 
