@@ -9,10 +9,20 @@ from __future__ import annotations
 
 from .break_retest import BreakRetestEngine, Signal, compute_daily_atr  # noqa: F401
 from .ema_pullback import EmaPullbackEngine
+from .families import (
+    MomentumBreakout,
+    OpeningRangeBreak,
+    RsiExtreme,
+    VwapReversion,
+)
 
 ENGINES = {
     "break_retest": BreakRetestEngine,
     "ema_pullback": EmaPullbackEngine,
+    "vwap_reversion": VwapReversion,
+    "orb_simple": OpeningRangeBreak,
+    "rsi_extreme": RsiExtreme,
+    "momentum_breakout": MomentumBreakout,
 }
 
 
