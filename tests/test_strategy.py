@@ -314,3 +314,48 @@ def test_htf_series_is_shifted_to_avoid_lookahead():
                          origin="start_day").agg({"close": "last"}).dropna()
     # every trend timestamp must sit at or after the END of its source bar
     assert trend.index[0] >= hourly.index[0] + pd.Timedelta(minutes=60)
+
+
+# ---------------------------------------------------------------------------
+# EMA pullback strategy
+# ---------------------------------------------------------------------------
+def _ema_cfg():
+    c = load_config()
+    c["strategy"]["name"] = "ema_pullback"
+    c["strategy"]["session"]["no_entries_after"] = "16:00"
+    c["strategy"]["filters"]["require_vwap_alignment"] = False
+    return c
+
+
+def test_ema_pullback_fires_on_a_clean_trend_dip():
+    from src.strategy import make_engine
+    c = _ema_cfg()
+    eng = make_engine(c, "TEST", 2.5)
+    signals = [s for _, bar in fixtures.ema_pullback_long().iterrows()
+               if (s := eng.on_bar(bar))]
+    assert len(signals) == 1, f"expected one pullback entry, got {len(signals)}"
+    sig = signals[0]
+    assert sig.direction == "long"
+    assert sig.pattern == "ema_pullback"
+    assert sig.stop < sig.entry < sig.target
+    risk = sig.entry - sig.stop
+    assert sig.target == pytest.approx(sig.entry + 2.0 * risk, abs=1e-6)
+
+
+def test_ema_pullback_stands_down_in_chop():
+    """The whole risk with this pattern is taking it when there is no trend."""
+    from src.strategy import make_engine
+    c = _ema_cfg()
+    eng = make_engine(c, "TEST", 2.5)
+    signals = [s for _, bar in fixtures.ema_pullback_chop().iterrows()
+               if (s := eng.on_bar(bar))]
+    assert signals == [], "a flat market must not produce pullback trades"
+    assert any(r.reason == "trend_too_flat" for r in eng.rejections)
+
+
+def test_strategy_registry_rejects_unknown_names():
+    from src.strategy import make_engine
+    c = load_config()
+    c["strategy"]["name"] = "does_not_exist"
+    with pytest.raises(ValueError, match="Unknown strategy"):
+        make_engine(c, "TEST", 2.5)
