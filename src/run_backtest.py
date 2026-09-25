@@ -138,6 +138,42 @@ def render_markdown(result: dict, symbols: list[str], start, end, cfg) -> str:
                                 key=lambda kv: -kv[1])[:12]:
         lines.append(f"- `{reason}` — {count}")
 
+    sa = s.get("stop_analysis") or {}
+    if sa:
+        lines += [
+            "", "## Was the stop in the right place?", "",
+            "_MAE = how far a trade went against you before resolving. "
+            "It is the standard way to test stop placement._", "",
+            "| Measure | Value | What it means |", "|---|---|---|",
+            f"| Median stop distance | {sa['median_stop_distance_pct']}% of price | "
+            "how much room each trade got |",
+            f"| Winners' typical heat | {sa['winner_mae_median_R']}R | "
+            "half of winners never went further against you than this |",
+            f"| Winners' worst heat (90th pct) | {sa['winner_mae_p90_R']}R | "
+            "9 in 10 winners stayed inside this |",
+            f"| Deepest winner | {sa['winner_mae_max_R']}R | "
+            "the single winner that came closest to being stopped |",
+            f"| Losers' best moment (median) | {sa['loser_mfe_median_R']}R | "
+            "how far losers got in your favour before failing |",
+            f"| Losers' best moment (75th pct) | {sa['loser_mfe_p75_R']}R | "
+            "a quarter of losers got at least this far |",
+            "",
+            "**Tightening the stop would have cost you:**", "",
+        ]
+        for tight in (0.5, 0.7, 0.8):
+            key = f"winners_lost_at_{tight}R_stop"
+            if key in sa:
+                n = sa[key]
+                share = (100 * n / sa["n_wins"]) if sa["n_wins"] else 0
+                lines.append(f"- a stop at {tight}R would have killed **{n}** of "
+                             f"{sa['n_wins']} winners ({share:.0f}%)")
+        lines += ["",
+                  "_Read it this way: if winners rarely take much heat, the stop "
+                  "is wider than it needs to be and can be tightened for smaller "
+                  "losses and bigger size. If losers routinely reach 1R+ in your "
+                  "favour before failing, the problem is the exit, not the stop._",
+                  ""]
+
     b = s.get("buckets", {})
     titles = {
         "by_hour": "By entry hour (ET)",
