@@ -13,6 +13,12 @@ on:
         description: "Market periods to score separately"
         required: false
         default: "4"
+      only:
+        description: "Run ONE named config with no search (e.g. ema10_tgt3.0_trail1_stop0.3)"
+        required: false
+      end:
+        description: "Last date (YYYY-MM-DD), blank = today"
+        required: false
 
 permissions:
   contents: write
@@ -38,12 +44,16 @@ jobs:
           ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
           IN_START: ${{ inputs.start }}
           IN_PERIODS: ${{ inputs.periods }}
+          IN_ONLY: ${{ inputs.only }}
+          IN_END: ${{ inputs.end }}
         run: |
           set -uo pipefail
           mkdir -p reports
           set +e
-          python -m src.swing --start "${IN_START:-2023-01-01}" \
-            --periods "${IN_PERIODS:-4}" 2>&1 | tee reports/swing_run.log
+          ARGS=(--start "${IN_START:-2023-01-01}" --periods "${IN_PERIODS:-4}")
+          [ -n "${IN_ONLY:-}" ] && ARGS+=(--only "${IN_ONLY}") || true
+          [ -n "${IN_END:-}" ] && ARGS+=(--end "${IN_END}") || true
+          python -m src.swing "${ARGS[@]}" 2>&1 | tee reports/swing_run.log
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
 
       - name: Commit results
