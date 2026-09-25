@@ -635,3 +635,36 @@ def test_inspect_gates_match_find_signals():
     # find_signals also skips the first `slow` bars; compare on the overlap
     tail = df.index[p["slow"] + 1:]
     assert {t for t in from_gates if t in tail} == {t for t in from_engine if t in tail}
+
+
+def test_slope_filter_stands_down_in_a_flat_market():
+    """MET showed the EMA stack staying in order while price chopped sideways,
+    so every dip to a flat EMA looked like a setup. The slope filter must cut
+    those without killing signals in a real trend."""
+    import copy, numpy as np, pandas as pd
+    from src.swing import BASE, find_signals, indicators
+
+    # a genuine uptrend, then a long flat range that keeps the stack intact
+    rising = _daily_uptrend(320, drift=0.0025, seed=11)
+    last = float(rising["close"].iloc[-1])
+    rng = np.random.default_rng(12)
+    n = 120
+    idx = pd.bdate_range(rising.index[-1] + pd.Timedelta(days=1), periods=n,
+                         tz="America/New_York")
+    px = last * (1 + rng.normal(0, 0.008, n)).cumprod()
+    px = last + (px - px.mean())            # hold it flat around `last`
+    flat = pd.DataFrame({"open": np.concatenate([[last], px[:-1]]),
+                         "high": px * 1.004, "low": px * 0.996,
+                         "close": px, "volume": 1e6}, index=idx)
+    df = pd.concat([rising, flat])
+
+    loose = copy.deepcopy(BASE); loose["min_slope_atr"] = 0.0
+    strict = copy.deepcopy(BASE); strict["min_slope_atr"] = 1.0
+
+    def in_flat(p):
+        d = indicators(df, p)
+        return sum(1 for i in find_signals(d, p) if d.index[i] >= idx[0])
+
+    assert in_flat(loose) > 0, "fixture should produce chop signals with no filter"
+    assert in_flat(strict) < in_flat(loose), (
+        f"slope filter cut nothing: {in_flat(strict)} vs {in_flat(loose)}")
