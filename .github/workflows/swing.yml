@@ -6,13 +6,13 @@ on:
   workflow_dispatch:
     inputs:
       start:
-        description: "Start date (YYYY-MM-DD)"
+        description: "First date trades may be taken (indicators warm up on earlier data)"
         required: false
-        default: "2012-01-01"
+        default: "2023-01-01"
       periods:
         description: "Market periods to score separately"
         required: false
-        default: "5"
+        default: "4"
 
 permissions:
   contents: write
@@ -42,8 +42,8 @@ jobs:
           set -uo pipefail
           mkdir -p reports
           set +e
-          python -m src.swing --start "${IN_START:-2012-01-01}" \
-            --periods "${IN_PERIODS:-5}" 2>&1 | tee reports/swing_run.log
+          python -m src.swing --start "${IN_START:-2023-01-01}" \
+            --periods "${IN_PERIODS:-4}" 2>&1 | tee reports/swing_run.log
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
 
       - name: Commit results
