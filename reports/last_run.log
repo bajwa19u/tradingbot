@@ -31,7 +31,7 @@ ALPACA_API_SECRET : ED5A…nm (len 44)
 --- most-active screener ---
     params: {"by": "volume", "top": 3}
     HTTP 200
-    body: {"last_updated":"2026-09-25T19:26:00.188226627Z","most_actives":[{"symbol":"GPUS","trade_count":155654,"volume":205744604},{"symbol":"AIFF","trade_count":397769,"volume":121516510},{"symbol":"GLND","trade_count":607214,"volume":113618158}]}
+    body: {"last_updated":"2026-09-25T20:36:00.154215175Z","most_actives":[{"symbol":"GPUS","trade_count":159788,"volume":225652134},{"symbol":"AIFF","trade_count":455749,"volume":140929336},{"symbol":"GLND","trade_count":625311,"volume":117822983}]}
 
 ==============================================================
 RESULT: at least one bars request returned data.
@@ -39,78 +39,125 @@ RESULT: at least one bars request returned data.
 ============================================================
 BACKTEST
 ============================================================
-args: --start 2024-01-01 --symbols AAPL,MSFT,NVDA,AMD,TSLA,META,AMZN,GOOGL
-2026-09-25 19:26:03,829 INFO Backtesting AAPL, MSFT, NVDA, AMD, TSLA, META, AMZN, GOOGL from 2024-01-01 to now
-2026-09-25 19:28:41,458 INFO   AAPL: 53144 intraday bars
-2026-09-25 19:28:41,458 INFO   MSFT: 53098 intraday bars
-2026-09-25 19:28:41,458 INFO   NVDA: 53150 intraday bars
-2026-09-25 19:28:41,458 INFO   AMD: 53133 intraday bars
-2026-09-25 19:28:41,458 INFO   TSLA: 53148 intraday bars
-2026-09-25 19:28:41,458 INFO   META: 52933 intraday bars
-2026-09-25 19:28:41,458 INFO   AMZN: 53144 intraday bars
-2026-09-25 19:28:41,458 INFO   GOOGL: 53129 intraday bars
+args: --start 2024-01-01 --symbols TSLA,NVDA,AAPL,AMD
+2026-09-25 20:36:16,235 INFO Backtesting TSLA, NVDA, AAPL, AMD from 2024-01-01 to now
+2026-09-25 20:36:40,598 INFO   TSLA: 53154 intraday bars
+2026-09-25 20:36:40,598 INFO   NVDA: 53156 intraday bars
+2026-09-25 20:36:40,598 INFO   AAPL: 53150 intraday bars
+2026-09-25 20:36:40,598 INFO   AMD: 53139 intraday bars
 
 # Break-and-retest backtest
 
 **Period:** 2024-01-01 → today  
-**Symbols:** AAPL, MSFT, NVDA, AMD, TSLA, META, AMZN, GOOGL  
+**Symbols:** TSLA, NVDA, AAPL, AMD  
 **Timeframe:** 5-minute  
 **Target:** 2.0R, risking 1.0% of $10,000  
-**Generated:** 2026-09-25 19:29
+**Generated:** 2026-09-25 20:36
 
 ## Headline
 
 | Metric | Value |
 |---|---|
-| Trades | 942 over 685 days (1.38/day) |
-| Win rate | 27.1% |
-| Expectancy | -0.234R per trade |
-| Total | -220.61R · $-8,736.65 (-87.37%) |
-| Profit factor | 0.63 |
-| Max drawdown | -87.74% |
-| Avg win / avg loss | 1.473R / -0.868R |
+| Trades | 236 over 685 days (0.34/day) |
+| Win rate | 19.5% |
+| Expectancy | -0.06R per trade |
+| Total | -14.17R · $-626.58 (-6.27%) |
+| Profit factor | 0.87 |
+| Max drawdown | -9.2% |
+| Avg win / avg loss | 1.455R / -0.427R |
 | Worst losing streak | 14 |
-| Avg hold | 13.1 bars |
+| Avg hold | 7.5 bars |
 
 ## How trades ended
 
-- **stop** — 528 (56%)
-- **target** — 224 (24%)
-- **breakeven** — 143 (15%)
-- **time_stop** — 47 (5%)
+- **breakeven** — 119 (50%)
+- **stop** — 71 (30%)
+- **target** — 37 (16%)
+- **trail** — 6 (3%)
+- **time_stop** — 3 (1%)
 
 ## Why setups were rejected
 
 _This is the filter doing its job — high counts here are healthy._
 
-- `break_volume_too_low` — 17622
-- `no_confirmation_candle` — 7529
-- `retest_never_came` — 2048
-- `failed_break` — 915
-- `opening_range_too_wide` — 835
-- `entry_window_closed` — 474
-- `below_vwap_for_long` — 15
-- `above_vwap_for_short` — 14
+- `break_volume_too_low` — 6149
+- `no_confirmation_candle` — 1889
+- `no_displacement_before_retest` — 948
+- `entry_window_closed` — 838
+- `failed_break` — 642
+- `retest_never_came` — 620
+- `opening_range_too_wide` — 344
+- `above_vwap_for_short` — 11
+- `below_vwap_for_long` — 9
+
+## Where the money actually goes
+
+_Buckets with n < 20 are marked unreliable - slicing enough ways always finds a flattering subset by chance._
+
+### By entry hour (ET)
+
+| Bucket | n | Expectancy | Win rate | Total R | |
+|---|---|---|---|---|---|
+| 10:00-10:59 | 121 | -0.034R | 19.8% | -4.0 |  |
+| 11:00-11:59 | 8 | -0.323R | 25.0% | -2.6 | low n |
+| 09:00-09:59 | 107 | -0.070R | 18.7% | -7.5 |  |
+
+### By direction
+
+| Bucket | n | Expectancy | Win rate | Total R | |
+|---|---|---|---|---|---|
+| long | 128 | -0.075R | 19.5% | -9.5 |  |
+| short | 108 | -0.043R | 19.4% | -4.6 |  |
+
+### By confirmation pattern
+
+| Bucket | n | Expectancy | Win rate | Total R | |
+|---|---|---|---|---|---|
+| bearish_engulfing | 61 | -0.123R | 16.4% | -7.5 |  |
+| bullish_engulfing | 62 | +0.009R | 25.8% | +0.5 |  |
+| hammer | 66 | -0.153R | 13.6% | -10.1 |  |
+| shooting_star | 47 | +0.061R | 23.4% | +2.9 |  |
+
+### By bars between break and retest
+
+| Bucket | n | Expectancy | Win rate | Total R | |
+|---|---|---|---|---|---|
+| 1 | 22 | -0.142R | 22.7% | -3.1 |  |
+| 2 | 70 | -0.135R | 15.7% | -9.5 |  |
+| 3 | 37 | +0.039R | 24.3% | +1.4 |  |
+| 4 | 27 | -0.166R | 14.8% | -4.5 |  |
+| 5 | 28 | +0.161R | 25.0% | +4.5 |  |
+| 6+ | 52 | -0.058R | 19.2% | -3.0 |  |
+
+### By symbol
+
+| Bucket | n | Expectancy | Win rate | Total R | |
+|---|---|---|---|---|---|
+| AAPL | 55 | -0.137R | 18.2% | -7.5 |  |
+| AMD | 62 | +0.055R | 22.6% | +3.4 |  |
+| NVDA | 58 | -0.155R | 17.2% | -9.0 |  |
+| TSLA | 61 | -0.018R | 19.7% | -1.1 |  |
+
 
 ## Last 15 trades
 
 | Symbol | Dir | Entry time | Entry | Exit | R | Exit reason |
 |---|---|---|---|---|---|---|
-| TSLA | long | 2026-09-10T11:20 | 365.91 | 365.80 | -0.09 | breakeven |
-| AMZN | long | 2026-09-10T10:50 | 252.65 | 251.49 | -1.07 | stop |
-| AMZN | long | 2026-09-11T14:00 | 257.01 | 256.45 | -1.16 | stop |
-| AAPL | long | 2026-09-14T12:25 | 334.69 | 333.99 | -1.17 | stop |
-| NVDA | long | 2026-09-14T11:40 | 212.12 | 211.21 | -1.07 | stop |
-| AMD | long | 2026-09-14T12:40 | 493.62 | 493.47 | -0.06 | breakeven |
+| AMD | long | 2026-08-04T10:10 | 515.42 | 515.27 | -0.03 | breakeven |
+| NVDA | long | 2026-08-05T09:55 | 221.21 | 221.14 | -0.03 | breakeven |
+| TSLA | long | 2026-08-06T10:00 | 320.17 | 320.07 | -0.04 | breakeven |
+| NVDA | short | 2026-08-11T10:15 | 219.28 | 219.35 | -0.04 | breakeven |
+| TSLA | long | 2026-08-13T09:45 | 330.74 | 334.24 | +1.46 | target |
+| TSLA | long | 2026-08-14T09:40 | 347.71 | 347.61 | -0.04 | breakeven |
+| AAPL | long | 2026-08-19T09:45 | 313.04 | 316.21 | +1.46 | target |
+| AMD | short | 2026-08-21T09:45 | 472.58 | 468.56 | +1.45 | target |
+| NVDA | short | 2026-08-26T10:50 | 211.02 | 211.08 | -0.08 | breakeven |
+| AAPL | short | 2026-09-02T09:45 | 324.46 | 324.56 | -0.07 | breakeven |
+| NVDA | long | 2026-09-04T09:45 | 234.18 | 234.11 | -0.04 | breakeven |
+| AMD | long | 2026-09-04T10:35 | 470.28 | 470.14 | -0.04 | breakeven |
+| TSLA | long | 2026-09-11T09:45 | 367.64 | 363.26 | -1.03 | stop |
 | AMD | long | 2026-09-15T10:20 | 508.91 | 506.10 | -1.06 | stop |
-| TSLA | long | 2026-09-16T10:10 | 363.57 | 358.93 | -1.02 | stop |
-| TSLA | long | 2026-09-17T10:30 | 371.40 | 369.85 | -1.08 | stop |
-| NVDA | long | 2026-09-17T11:55 | 219.03 | 219.33 | +0.57 | time_stop |
-| NVDA | long | 2026-09-21T11:25 | 224.94 | 226.20 | +1.65 | target |
-| MSFT | long | 2026-09-24T13:25 | 496.10 | 494.77 | -1.13 | stop |
-| AAPL | long | 2026-09-24T12:30 | 338.03 | 336.78 | -1.09 | stop |
-| NVDA | short | 2026-09-25T11:05 | 224.25 | 224.32 | -0.11 | breakeven |
-| AMZN | long | 2026-09-25T12:25 | 250.79 | 249.66 | -1.07 | stop |
-2026-09-25 19:29:49,250 INFO Wrote backtest_20260925_192949.json and reports/latest.md
+| AMD | long | 2026-09-22T10:20 | 617.37 | 617.18 | -0.05 | breakeven |
+2026-09-25 20:36:53,293 INFO Wrote backtest_20260925_203653.json and reports/latest.md
 
 exit code: 0
