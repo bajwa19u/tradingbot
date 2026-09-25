@@ -26,15 +26,35 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      - name: Check required secrets are present
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+        run: |
+          missing=0
+          if [ -z "${ALPACA_API_KEY}" ]; then
+            echo "::error::ALPACA_API_KEY secret is not set"
+            missing=1
+          fi
+          if [ -z "${ALPACA_API_SECRET}" ]; then
+            echo "::error::ALPACA_API_SECRET secret is not set"
+            missing=1
+          fi
+          if [ "$missing" -eq 1 ]; then
+            echo "Add them at Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+          echo "Alpaca credentials present."
 
       - name: Run the unit tests first
         run: python -m pytest tests/ -q
@@ -43,17 +63,27 @@ jobs:
         env:
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          # Inputs go through the environment rather than being pasted into
+          # the script, so a blank field cannot break the shell and a stray
+          # character cannot be executed.
+          IN_START: ${{ inputs.start }}
+          IN_END: ${{ inputs.end }}
+          IN_SYMBOLS: ${{ inputs.symbols }}
         run: |
-          ARGS=""
-          [ -n "${{ inputs.start }}" ]   && ARGS="$ARGS --start ${{ inputs.start }}"
-          [ -n "${{ inputs.end }}" ]     && ARGS="$ARGS --end ${{ inputs.end }}"
-          [ -n "${{ inputs.symbols }}" ] && ARGS="$ARGS --symbols ${{ inputs.symbols }}"
-          python -m src.run_backtest $ARGS
+          set -euo pipefail
+          ARGS=()
+          [ -n "${IN_START:-}" ]   && ARGS+=(--start   "${IN_START}")   || true
+          [ -n "${IN_END:-}" ]     && ARGS+=(--end     "${IN_END}")     || true
+          [ -n "${IN_SYMBOLS:-}" ] && ARGS+=(--symbols "${IN_SYMBOLS}") || true
+          echo "Running: python -m src.run_backtest ${ARGS[*]:-(config defaults)}"
+          python -m src.run_backtest ${ARGS[@]+"${ARGS[@]}"}
 
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: backtest-report
           path: reports/
+          if-no-files-found: ignore
 
       - name: Commit the report
         run: |
@@ -67,4 +97,11 @@ jobs:
           fi
 
       - name: Summary
-        run: cat reports/latest.md >> $GITHUB_STEP_SUMMARY
+        if: always()
+        run: |
+          if [ -f reports/latest.md ]; then
+            cat reports/latest.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No report produced - see the Backtest step log above." \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
