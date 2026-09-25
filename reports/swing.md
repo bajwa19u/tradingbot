@@ -2,7 +2,7 @@
 
 **Research:** 40 large caps · trading from 2023-01-01 · daily bars (indicators warmed on earlier history)  
 **Locked holdout:** 30 different companies (insurers, financials, industrials, materials) — opened once, at the end  
-**Generated:** 2026-09-25 22:59
+**Generated:** 2026-09-25 23:06
 
 **30 configurations tried.** 13 passed.
 

@@ -3,6 +3,24 @@
   "survivors": 13,
   "results": [
     {
+      "per_period": [
+        {
+          "n": 98,
+          "expectancy_R": 0.1619
+        },
+        {
+          "n": 102,
+          "expectancy_R": 0.4226
+        },
+        {
+          "n": 102,
+          "expectancy_R": -0.1706
+        },
+        {
+          "n": 101,
+          "expectancy_R": 0.0282
+        }
+      ],
       "n": 403,
       "expectancy_R": 0.1102,
       "total_R": 44.4,
@@ -28,6 +46,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 81,
+          "expectancy_R": 0.1045
+        },
+        {
+          "n": 80,
+          "expectancy_R": 0.5022
+        },
+        {
+          "n": 88,
+          "expectancy_R": -0.2818
+        },
+        {
+          "n": 71,
+          "expectancy_R": 0.1075
+        }
+      ],
       "n": 320,
       "expectancy_R": 0.0984,
       "total_R": 31.5,
@@ -53,6 +89,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 130,
+          "expectancy_R": 0.1487
+        },
+        {
+          "n": 151,
+          "expectancy_R": 0.1537
+        },
+        {
+          "n": 133,
+          "expectancy_R": -0.0818
+        },
+        {
+          "n": 145,
+          "expectancy_R": 0.0333
+        }
+      ],
       "n": 559,
       "expectancy_R": 0.0651,
       "total_R": 36.4,
@@ -78,6 +132,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 100,
+          "expectancy_R": -0.0092
+        },
+        {
+          "n": 108,
+          "expectancy_R": 0.1585
+        },
+        {
+          "n": 107,
+          "expectancy_R": -0.0071
+        },
+        {
+          "n": 85,
+          "expectancy_R": 0.1175
+        }
+      ],
       "n": 400,
       "expectancy_R": 0.0635,
       "total_R": 25.4,
@@ -103,6 +175,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 128,
+          "expectancy_R": 0.1119
+        },
+        {
+          "n": 135,
+          "expectancy_R": 0.1752
+        },
+        {
+          "n": 116,
+          "expectancy_R": -0.0821
+        },
+        {
+          "n": 119,
+          "expectancy_R": 0.0018
+        }
+      ],
       "n": 498,
       "expectancy_R": 0.0576,
       "total_R": 28.7,
@@ -128,6 +218,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 64,
+          "expectancy_R": -0.1566
+        },
+        {
+          "n": 61,
+          "expectancy_R": 0.5802
+        },
+        {
+          "n": 73,
+          "expectancy_R": -0.2247
+        },
+        {
+          "n": 67,
+          "expectancy_R": 0.0812
+        }
+      ],
       "n": 265,
       "expectancy_R": 0.0543,
       "total_R": 14.4,
@@ -153,6 +261,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 107,
+          "expectancy_R": 0.1125
+        },
+        {
+          "n": 118,
+          "expectancy_R": 0.1903
+        },
+        {
+          "n": 114,
+          "expectancy_R": -0.1402
+        },
+        {
+          "n": 115,
+          "expectancy_R": 0.0337
+        }
+      ],
       "n": 454,
       "expectancy_R": 0.0493,
       "total_R": 22.4,
@@ -178,6 +304,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 93,
+          "expectancy_R": 0.0598
+        },
+        {
+          "n": 100,
+          "expectancy_R": 0.2765
+        },
+        {
+          "n": 91,
+          "expectancy_R": -0.3056
+        },
+        {
+          "n": 77,
+          "expectancy_R": 0.1446
+        }
+      ],
       "n": 361,
       "expectancy_R": 0.046,
       "total_R": 16.6,
@@ -203,6 +347,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 83,
+          "expectancy_R": 0.1186
+        },
+        {
+          "n": 83,
+          "expectancy_R": 0.4172
+        },
+        {
+          "n": 91,
+          "expectancy_R": -0.3774
+        },
+        {
+          "n": 85,
+          "expectancy_R": 0.045
+        }
+      ],
       "n": 342,
       "expectancy_R": 0.0406,
       "total_R": 13.9,
@@ -228,6 +390,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 89,
+          "expectancy_R": 0.0238
+        },
+        {
+          "n": 103,
+          "expectancy_R": 0.2435
+        },
+        {
+          "n": 100,
+          "expectancy_R": -0.2054
+        },
+        {
+          "n": 79,
+          "expectancy_R": 0.0913
+        }
+      ],
       "n": 371,
       "expectancy_R": 0.0375,
       "total_R": 13.9,
@@ -253,6 +433,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 90,
+          "expectancy_R": 0.0988
+        },
+        {
+          "n": 108,
+          "expectancy_R": 0.1583
+        },
+        {
+          "n": 101,
+          "expectancy_R": -0.2012
+        },
+        {
+          "n": 82,
+          "expectancy_R": 0.069
+        }
+      ],
       "n": 381,
       "expectancy_R": 0.0299,
       "total_R": 11.4,
@@ -278,6 +476,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 104,
+          "expectancy_R": 0.3044
+        },
+        {
+          "n": 112,
+          "expectancy_R": 0.136
+        },
+        {
+          "n": 114,
+          "expectancy_R": -0.2728
+        },
+        {
+          "n": 113,
+          "expectancy_R": -0.0258
+        }
+      ],
       "n": 443,
       "expectancy_R": 0.0291,
       "total_R": 12.9,
@@ -303,6 +519,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 141,
+          "expectancy_R": 0.0394
+        },
+        {
+          "n": 158,
+          "expectancy_R": 0.0971
+        },
+        {
+          "n": 145,
+          "expectancy_R": -0.0935
+        },
+        {
+          "n": 148,
+          "expectancy_R": 0.0559
+        }
+      ],
       "n": 592,
       "expectancy_R": 0.0262,
       "total_R": 15.5,
@@ -328,6 +562,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 120,
+          "expectancy_R": 0.1404
+        },
+        {
+          "n": 144,
+          "expectancy_R": 0.0846
+        },
+        {
+          "n": 123,
+          "expectancy_R": -0.1554
+        },
+        {
+          "n": 138,
+          "expectancy_R": 0.0146
+        }
+      ],
       "n": 525,
       "expectancy_R": 0.0229,
       "total_R": 12.0,
@@ -353,6 +605,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 131,
+          "expectancy_R": 0.1802
+        },
+        {
+          "n": 139,
+          "expectancy_R": 0.0224
+        },
+        {
+          "n": 128,
+          "expectancy_R": -0.18
+        },
+        {
+          "n": 134,
+          "expectancy_R": 0.0584
+        }
+      ],
       "n": 532,
       "expectancy_R": 0.0216,
       "total_R": 11.5,
@@ -378,6 +648,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 135,
+          "expectancy_R": 0.1166
+        },
+        {
+          "n": 129,
+          "expectancy_R": 0.1137
+        },
+        {
+          "n": 120,
+          "expectancy_R": -0.2139
+        },
+        {
+          "n": 130,
+          "expectancy_R": 0.0172
+        }
+      ],
       "n": 514,
       "expectancy_R": 0.0134,
       "total_R": 6.9,
@@ -403,6 +691,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 58,
+          "expectancy_R": -0.1327
+        },
+        {
+          "n": 69,
+          "expectancy_R": 0.485
+        },
+        {
+          "n": 75,
+          "expectancy_R": -0.3156
+        },
+        {
+          "n": 59,
+          "expectancy_R": 0.0051
+        }
+      ],
       "n": 261,
       "expectancy_R": 0.0092,
       "total_R": 2.4,
@@ -428,6 +734,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 104,
+          "expectancy_R": -0.071
+        },
+        {
+          "n": 97,
+          "expectancy_R": 0.2383
+        },
+        {
+          "n": 100,
+          "expectancy_R": -0.1837
+        },
+        {
+          "n": 102,
+          "expectancy_R": 0.0614
+        }
+      ],
       "n": 403,
       "expectancy_R": 0.0089,
       "total_R": 3.6,
@@ -453,6 +777,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 110,
+          "expectancy_R": -0.0436
+        },
+        {
+          "n": 102,
+          "expectancy_R": 0.1511
+        },
+        {
+          "n": 108,
+          "expectancy_R": -0.1761
+        },
+        {
+          "n": 99,
+          "expectancy_R": 0.1208
+        }
+      ],
       "n": 419,
       "expectancy_R": 0.0086,
       "total_R": 3.6,
@@ -478,6 +820,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 86,
+          "expectancy_R": -0.0123
+        },
+        {
+          "n": 95,
+          "expectancy_R": 0.2235
+        },
+        {
+          "n": 95,
+          "expectancy_R": -0.1815
+        },
+        {
+          "n": 79,
+          "expectancy_R": -0.0304
+        }
+      ],
       "n": 355,
       "expectancy_R": 0.0014,
       "total_R": 0.5,
@@ -503,6 +863,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 114,
+          "expectancy_R": -0.099
+        },
+        {
+          "n": 126,
+          "expectancy_R": 0.1398
+        },
+        {
+          "n": 120,
+          "expectancy_R": -0.2542
+        },
+        {
+          "n": 101,
+          "expectancy_R": 0.2316
+        }
+      ],
       "n": 461,
       "expectancy_R": -0.0017,
       "total_R": -0.8,
@@ -528,6 +906,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 71,
+          "expectancy_R": -0.001
+        },
+        {
+          "n": 94,
+          "expectancy_R": 0.1812
+        },
+        {
+          "n": 88,
+          "expectancy_R": -0.1637
+        },
+        {
+          "n": 74,
+          "expectancy_R": -0.0683
+        }
+      ],
       "n": 327,
       "expectancy_R": -0.008,
       "total_R": -2.6,
@@ -553,6 +949,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 143,
+          "expectancy_R": -0.0188
+        },
+        {
+          "n": 150,
+          "expectancy_R": 0.0596
+        },
+        {
+          "n": 128,
+          "expectancy_R": -0.1894
+        },
+        {
+          "n": 133,
+          "expectancy_R": 0.0959
+        }
+      ],
       "n": 554,
       "expectancy_R": -0.0094,
       "total_R": -5.2,
@@ -578,6 +992,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 103,
+          "expectancy_R": -0.0684
+        },
+        {
+          "n": 93,
+          "expectancy_R": 0.1042
+        },
+        {
+          "n": 97,
+          "expectancy_R": -0.242
+        },
+        {
+          "n": 93,
+          "expectancy_R": 0.1685
+        }
+      ],
       "n": 386,
       "expectancy_R": -0.0132,
       "total_R": -5.1,
@@ -603,6 +1035,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 150,
+          "expectancy_R": 0.0351
+        },
+        {
+          "n": 158,
+          "expectancy_R": 0.0342
+        },
+        {
+          "n": 133,
+          "expectancy_R": -0.1553
+        },
+        {
+          "n": 139,
+          "expectancy_R": -0.0052
+        }
+      ],
       "n": 580,
       "expectancy_R": -0.0184,
       "total_R": -10.7,
@@ -628,6 +1078,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 80,
+          "expectancy_R": 0.1065
+        },
+        {
+          "n": 86,
+          "expectancy_R": 0.1385
+        },
+        {
+          "n": 90,
+          "expectancy_R": -0.2726
+        },
+        {
+          "n": 78,
+          "expectancy_R": -0.0408
+        }
+      ],
       "n": 334,
       "expectancy_R": -0.0219,
       "total_R": -7.3,
@@ -653,6 +1121,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 80,
+          "expectancy_R": -0.123
+        },
+        {
+          "n": 88,
+          "expectancy_R": 0.3394
+        },
+        {
+          "n": 93,
+          "expectancy_R": -0.1974
+        },
+        {
+          "n": 80,
+          "expectancy_R": -0.1277
+        }
+      ],
       "n": 341,
       "expectancy_R": -0.0249,
       "total_R": -8.5,
@@ -678,6 +1164,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 116,
+          "expectancy_R": -0.0004
+        },
+        {
+          "n": 126,
+          "expectancy_R": 0.0647
+        },
+        {
+          "n": 127,
+          "expectancy_R": -0.1655
+        },
+        {
+          "n": 109,
+          "expectancy_R": 0.0069
+        }
+      ],
       "n": 478,
       "expectancy_R": -0.0255,
       "total_R": -12.2,
@@ -703,6 +1207,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 120,
+          "expectancy_R": 0.0209
+        },
+        {
+          "n": 114,
+          "expectancy_R": 0.1063
+        },
+        {
+          "n": 117,
+          "expectancy_R": -0.2957
+        },
+        {
+          "n": 124,
+          "expectancy_R": 0.0367
+        }
+      ],
       "n": 475,
       "expectancy_R": -0.0324,
       "total_R": -15.4,
@@ -728,6 +1250,24 @@
       }
     },
     {
+      "per_period": [
+        {
+          "n": 108,
+          "expectancy_R": -0.0816
+        },
+        {
+          "n": 111,
+          "expectancy_R": 0.1303
+        },
+        {
+          "n": 104,
+          "expectancy_R": -0.2619
+        },
+        {
+          "n": 103,
+          "expectancy_R": 0.0656
+        }
+      ],
       "n": 426,
       "expectancy_R": -0.0345,
       "total_R": -14.7,
@@ -754,6 +1294,24 @@
     }
   ],
   "winner": {
+    "per_period": [
+      {
+        "n": 130,
+        "expectancy_R": 0.1487
+      },
+      {
+        "n": 151,
+        "expectancy_R": 0.1537
+      },
+      {
+        "n": 133,
+        "expectancy_R": -0.0818
+      },
+      {
+        "n": 145,
+        "expectancy_R": 0.0333
+      }
+    ],
     "n": 559,
     "expectancy_R": 0.0651,
     "total_R": 36.4,
@@ -779,6 +1337,24 @@
     }
   },
   "holdout": {
+    "per_period": [
+      {
+        "n": 112,
+        "expectancy_R": -0.0308
+      },
+      {
+        "n": 162,
+        "expectancy_R": 0.4127
+      },
+      {
+        "n": 126,
+        "expectancy_R": -0.0916
+      },
+      {
+        "n": 148,
+        "expectancy_R": 0.0667
+      }
+    ],
     "n": 548,
     "expectancy_R": 0.1128,
     "total_R": 61.8,
