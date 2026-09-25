@@ -1,0 +1,25 @@
+name: Tests
+
+# Every push and pull request. This is the safety net that makes editing
+# config.yaml low-risk: if a change breaks a strategy rule, this goes red
+# before any money is involved.
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["reports/**", "state/**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest tests/ -q
+      - name: Validate config.yaml
+        run: python -c "from src.config import load_config; load_config(); print('config OK')"
