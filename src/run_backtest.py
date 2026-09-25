@@ -17,6 +17,7 @@ from pathlib import Path
 
 from .backtest import Backtester
 from .config import REPO_ROOT, Credentials, load_config
+from .history import record
 from .data import MarketData
 
 REPORTS = REPO_ROOT / "reports"
@@ -79,6 +80,9 @@ def main(argv: list[str] | None = None) -> int:
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     json_path = REPORTS / f"backtest_{stamp}.json"
     json_path.write_text(json.dumps(result, indent=2, default=str))
+
+    record("backtest", dict(cfg), result["stats"],
+           symbols=symbols, period=f"{start}->{end or 'today'}")
 
     md_text = render_markdown(result, symbols, start, end, cfg)
     (REPORTS / "latest.md").write_text(md_text)
