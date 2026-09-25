@@ -39,6 +39,7 @@ TRACKED = [
     ("observe", ["risk", "observe_bars"]),
     ("fastR", ["risk", "fast_target_R"]),
     ("slowR", ["risk", "slow_target_R"]),
+    ("arm_R", ["risk", "retest_arm_R"]),
     ("rewardR", ["risk", "reward_multiple"]),
     ("be@1R", ["risk", "breakeven_after_1R"]),
 ]
