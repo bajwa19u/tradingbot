@@ -21,6 +21,7 @@ HISTORY_MD = REPORTS / "history.md"
 # The knobs worth tracking. Anything here that differs between runs shows up
 # as its own column.
 TRACKED = [
+    ("strategy", ["strategy", "name"]),
     ("timeframe", ["strategy", "timeframe_minutes"]),
     ("or_min", ["strategy", "session", "opening_range_minutes"]),
     ("from", ["strategy", "session", "no_entries_before"]),
