@@ -114,6 +114,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--end", default=None)
     parser.add_argument("--symbols", default="TSLA,NVDA,AAPL,AMD")
     parser.add_argument("--timeframes", default="1,2,5")
+    parser.add_argument("--periods", type=int, default=5)
     args = parser.parse_args(argv)
 
     cfg = load_config()
@@ -146,22 +147,27 @@ def main(argv: list[str] | None = None) -> int:
         log.info("timeframe %dm: %d bars",
                  tf, sum(len(d) for d in by_tf[tf].values()))
 
-    # Split the period: variants are judged on the TRAIN window, then the
-    # winner is checked on dates it has never seen. A variant that only looks
-    # good on train is a curve-fit, and this is the only way to see that.
+    # A single train/test split cannot separate "these rules work" from
+    # "the holdout happened to be an easy market". Splitting the period into
+    # N consecutive chunks and scoring each one does: a rule set that is
+    # positive in 4 of 5 different market regimes is credible, one that is
+    # positive only in the last chunk is a passenger on a good period.
+    n_periods = args.periods
     all_days = sorted({d for df in minute.values() if len(df)
                        for d in df.index.normalize().unique()})
-    if len(all_days) < 40:
-        log.error("Only %d trading days - too few to split. Use a longer period.",
-                  len(all_days))
+    if len(all_days) < 20 * n_periods:
+        log.error("Only %d trading days for %d periods - use a longer range.",
+                  len(all_days), n_periods)
         return 1
-    cut = all_days[int(len(all_days) * 0.7)]
-    log.info("Train: %s to %s | Test: %s to %s",
-             all_days[0].date(), cut.date(), cut.date(), all_days[-1].date())
+    edges = [all_days[int(len(all_days) * i / n_periods)] for i in range(n_periods)]
+    edges.append(all_days[-1] + pd.Timedelta(days=1))
+    log.info("Testing %d periods: %s", n_periods,
+             ", ".join(f"{edges[i].date()}→{edges[i+1].date()}"
+                       for i in range(n_periods)))
 
-    def split(frames: dict, is_train: bool) -> dict:
-        return {sym: df[df.index.normalize() < cut] if is_train
-                else df[df.index.normalize() >= cut]
+    def period_slice(frames: dict, i: int) -> dict:
+        lo, hi = edges[i], edges[i + 1]
+        return {sym: df[(df.index.normalize() >= lo) & (df.index.normalize() < hi)]
                 for sym, df in frames.items()}
 
     rows = []
@@ -175,31 +181,41 @@ def main(argv: list[str] | None = None) -> int:
             orm = variant_cfg["strategy"]["session"]["opening_range_minutes"]
             variant_cfg["strategy"]["session"]["opening_range_minutes"] = \
                 int(math.ceil(orm / tf) * tf)
-            try:
-                tr = Backtester(variant_cfg).run(split(by_tf[tf], True), daily)
-                te = Backtester(variant_cfg).run(split(by_tf[tf], False), daily)
-            except Exception as exc:  # noqa: BLE001
-                log.warning("  %s @ %dm failed: %s", name, tf, exc)
+            per_period, total_n, total_R, worst_dd = [], 0, 0.0, 0.0
+            failed = False
+            for i in range(n_periods):
+                try:
+                    res = Backtester(variant_cfg).run(period_slice(by_tf[tf], i), daily)
+                except Exception as exc:  # noqa: BLE001
+                    log.warning("  %s @ %dm period %d failed: %s", name, tf, i, exc)
+                    failed = True
+                    break
+                st = res["stats"]
+                per_period.append({"n": st.get("n_trades", 0),
+                                   "expectancy_R": st.get("expectancy_R", 0.0)})
+                total_n += st.get("n_trades", 0)
+                total_R += st.get("total_R", 0.0)
+                worst_dd = min(worst_dd, st.get("max_drawdown_pct", 0.0))
+            if failed:
                 continue
-            a, b = tr["stats"], te["stats"]
-            rejects = a.get("rejection_reasons") or {}
-            top_reject = max(rejects.items(), key=lambda kv: kv[1])[0] if rejects else ""
+            scored = [p for p in per_period if p["n"] >= 5]
+            positive = sum(1 for p in scored if p["expectancy_R"] > 0)
+            overall = (total_R / total_n) if total_n else 0.0
             rows.append({
-                "top_rejection": top_reject,
                 "timeframe": f"{tf}m",
                 "variant": name,
-                "n": a.get("n_trades", 0),
-                "expectancy_R": a.get("expectancy_R", 0),
-                "total_R": a.get("total_R", 0),
-                "max_dd_pct": a.get("max_drawdown_pct", 0),
-                "test_n": b.get("n_trades", 0),
-                "test_expectancy_R": b.get("expectancy_R", 0),
-                "test_total_R": b.get("total_R", 0),
-                "test_max_dd_pct": b.get("max_drawdown_pct", 0),
+                "n": total_n,
+                "expectancy_R": round(overall, 3),
+                "total_R": round(total_R, 1),
+                "periods_positive": positive,
+                "periods_scored": len(scored),
+                "worst_period_R": round(min((p["expectancy_R"] for p in scored),
+                                            default=0.0), 3),
+                "max_dd_pct": round(worst_dd, 2),
+                "per_period": per_period,
             })
-            log.info("  %-28s @ %2dm  train n=%-4d exp=%+.3fR | TEST n=%-4d exp=%+.3fR",
-                     name, tf, rows[-1]["n"], rows[-1]["expectancy_R"],
-                     rows[-1]["test_n"], rows[-1]["test_expectancy_R"])
+            log.info("  %-28s @ %2dm  n=%-4d exp=%+.3fR  positive in %d/%d periods",
+                     name, tf, total_n, overall, positive, len(scored))
 
     REPORTS.mkdir(exist_ok=True)
     (REPORTS / "sweep.json").write_text(json.dumps(rows, indent=2, default=str))
@@ -210,65 +226,77 @@ def main(argv: list[str] | None = None) -> int:
 
 def render(rows: list[dict], symbols, start, end) -> str:
     out = [
-        "# Rule sweep (train / test split)",
+        "# Rule sweep — consistency across market periods",
         "",
         f"**Symbols:** {', '.join(symbols)}  ",
         f"**Period:** {start} → {end or 'today'}  ",
         f"**Generated:** {datetime.now():%Y-%m-%d %H:%M}",
         "",
-        "Variants are ranked by the **TRAIN** window. The **TEST** columns are "
-        "dates the variant was never selected on. Only the test column tells "
-        "you anything about the future.",
+        "The period is cut into consecutive chunks and every rule set is "
+        "scored in each one separately. **Consistency is the column that "
+        "matters.** A rule set that only works in one chunk was carried by "
+        "that market, not by its rules.",
         "",
-        "| TF | Variant | Train n | Train exp | Train R | **Test n** | "
-        "**Test exp** | **Test R** | Test DD |",
-        "|---|---|---|---|---|---|---|---|---|",
+        "| TF | Variant | Trades | Expectancy | Total R | **Positive in** | "
+        "Worst period | Max DD |",
+        "|---|---|---|---|---|---|---|---|",
     ]
-    ranked = sorted(rows, key=lambda r: -r["expectancy_R"])
+    ranked = sorted(rows, key=lambda r: (-r.get("periods_positive", 0),
+                                         -r["expectancy_R"]))
     for r in ranked:
-        warn = "" if r["n"] >= 30 else " ⚠"
-        twarn = "" if r["test_n"] >= 30 else " ⚠"
+        warn = "" if r["n"] >= 100 else " ⚠"
         out.append(
             f"| {r['timeframe']} | {r['variant']} | {r['n']}{warn} | "
             f"{r['expectancy_R']:+.3f}R | {r['total_R']:+.1f} | "
-            f"**{r['test_n']}{twarn}** | **{r['test_expectancy_R']:+.3f}R** | "
-            f"**{r['test_total_R']:+.1f}** | {r['test_max_dd_pct']}% |")
+            f"**{r.get('periods_positive',0)}/{r.get('periods_scored',0)}** | "
+            f"{r.get('worst_period_R',0):+.3f}R | {r['max_dd_pct']}% |")
 
     survivors = [r for r in ranked
-                 if r["expectancy_R"] > 0 and r["test_expectancy_R"] > 0
-                 and r["n"] >= 30 and r["test_n"] >= 30]
+                 if r["expectancy_R"] > 0
+                 and r.get("periods_scored", 0) >= 4
+                 and r.get("periods_positive", 0) >= r.get("periods_scored", 0) - 1
+                 and r["n"] >= 100]
     out += ["", "## Verdict", ""]
     if survivors:
-        out += [f"**{len(survivors)} variant(s) were positive on BOTH windows "
-                f"with adequate sample size.**", ""]
+        out += [f"**{len(survivors)} rule set(s) were profitable overall AND "
+                f"positive in all but at most one period, on 100+ trades.**", ""]
         for r in survivors:
-            out.append(f"- `{r['variant']}` @ {r['timeframe']} — train "
-                       f"{r['expectancy_R']:+.3f}R (n={r['n']}), test "
-                       f"{r['test_expectancy_R']:+.3f}R (n={r['test_n']})")
+            out.append(f"- `{r['variant']}` @ {r['timeframe']} — "
+                       f"{r['expectancy_R']:+.3f}R over {r['n']} trades, "
+                       f"positive in {r['periods_positive']}/"
+                       f"{r['periods_scored']} periods, worst "
+                       f"{r['worst_period_R']:+.3f}R, max DD {r['max_dd_pct']}%")
         out += ["",
-                "This is a necessary condition, not proof. Before risking money: "
-                "re-run on different symbols, check the test drawdown is one you "
-                "could actually sit through, and paper-trade the live signals for "
-                "a few months. Free IEX data also understates volume, so the "
-                "volume filter behaves differently live."]
+                "That is the strongest evidence a backtest can give, and it is "
+                "still not proof. Before money: re-run on symbols not in this "
+                "list, confirm the drawdown is one you could sit through, and "
+                "paper-trade the live signals for several months. Free IEX data "
+                "understates volume, so the volume filter behaves differently "
+                "live than it does here."]
     else:
-        out += ["**No variant was positive on both the train and the test "
-                "window with an adequate sample.**", "",
-                "That is a real result, not a bug. It means this setup, as "
-                "specified, did not have an edge on these symbols over this "
-                "period after costs. Options, in order of honesty:", "",
-                "1. Test different symbols or a different period - the edge may "
-                "be regime- or universe-specific.",
-                "2. Revisit the exit logic; entries are rarely the binding "
-                "constraint, exits usually are.",
-                "3. Accept that this particular published setup does not survive "
-                "mechanical testing, and stop putting money behind it.", "",
-                "What NOT to do: keep adding variants until one goes green. With "
-                "enough attempts one always will, and it will be noise."]
+        best = ranked[0] if ranked else None
+        out += ["**No rule set was profitable overall while staying positive "
+                "across periods on an adequate sample.**", ""]
+        if best:
+            out.append(f"Closest was `{best['variant']}` @ {best['timeframe']}: "
+                       f"{best['expectancy_R']:+.3f}R over {best['n']} trades, "
+                       f"positive in {best.get('periods_positive',0)}/"
+                       f"{best.get('periods_scored',0)} periods.")
+        out += ["",
+                "This is a result, not a failure of the test. Honest options:",
+                "",
+                "1. Different symbols or a longer history — the edge may be "
+                "universe- or regime-specific.",
+                "2. Rework the exits. Entries are rarely the binding constraint.",
+                "3. Conclude this setup does not survive mechanical testing on "
+                "these names, and stop funding it.",
+                "",
+                "What not to do: add variants until one goes green. With enough "
+                "attempts one always will, and that one is noise."]
     out += ["", "## Notes", "",
-            "- Slippage 0.03% each side; a bar touching both stop and target is "
-            "scored as a loss.",
-            "- Train window is the first 70% of dates, test is the last 30%.",
+            "- Slippage 0.03% each side; a bar touching both stop and target "
+            "is scored as a loss.",
+            "- A period needs 5+ trades to be scored at all.",
             "- `faithful` = published method: 5-minute opening range, entries "
             "09:30-11:00, displacement before retest, 2 attempts, done after a win.",
             "- Each `faithful +/-x` changes exactly ONE rule, so the gap to "
