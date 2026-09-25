@@ -1,0 +1,68 @@
+name: Inspect
+
+# Run the daily strategy over ONE symbol and show its reasoning bar by bar:
+# which rule passed, which failed, and what it would have traded.
+on:
+  workflow_dispatch:
+    inputs:
+      symbol:
+        description: "Ticker (e.g. MET)"
+        required: true
+        default: "MET"
+      start:
+        description: "First date to show (YYYY-MM-DD)"
+        required: false
+        default: "2024-01-01"
+      fast:
+        description: "Fast EMA (blank = 20; the search picked 10)"
+        required: false
+      show:
+        description: "How many recent bars to print in full"
+        required: false
+        default: "80"
+
+permissions:
+  contents: write
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Inspect
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          IN_SYM: ${{ inputs.symbol }}
+          IN_START: ${{ inputs.start }}
+          IN_FAST: ${{ inputs.fast }}
+          IN_SHOW: ${{ inputs.show }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports
+          ARGS=("${IN_SYM}" --start "${IN_START:-2024-01-01}" --show "${IN_SHOW:-80}")
+          [ -n "${IN_FAST:-}" ] && ARGS+=(--fast "${IN_FAST}") || true
+          python -m src.inspect_symbol "${ARGS[@]}" 2>&1 | tee reports/inspect_run.log
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name  "tradingbot"
+          git config user.email "tradingbot@users.noreply.github.com"
+          git add -A reports/ || true
+          if ! git diff --cached --quiet; then
+            git commit -m "inspect: ${{ inputs.symbol }} [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed"
+          fi
+      - name: Summary
+        if: always()
+        run: |
+          F="reports/inspect_$(echo "${{ inputs.symbol }}" | tr '[:lower:]' '[:upper:]').md"
+          if [ -f "$F" ]; then cat "$F" >> "$GITHUB_STEP_SUMMARY"; else
+            { echo '```'; tail -n 40 reports/inspect_run.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"; fi
