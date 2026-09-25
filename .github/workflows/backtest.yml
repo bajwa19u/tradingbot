@@ -107,6 +107,10 @@ jobs:
       - name: Summary
         if: always()
         run: |
+          if [ -f reports/history.md ]; then
+            { echo "## Run history"; echo; cat reports/history.md; echo; } \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
           {
             if [ -f reports/latest.md ]; then
               cat reports/latest.md
