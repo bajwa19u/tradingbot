@@ -41,18 +41,28 @@ strategy:
     flatten_at: "15:55"           # time stop — close anything still open
 
   # --- Step 1: the break -----------------------------------------------------
+  # NOTE: all *_atr_multiple values below are fractions of the DAILY ATR.
+  # The opening range is typically 0.2-0.4 of a day's ATR.
   breakout:
     require_close_beyond: true    # candle must CLOSE beyond the level, not just wick
     min_break_pct: 0.05           # must clear the level by at least this %
-    volume_multiple: 1.3          # break bar volume vs opening-range avg volume
-    max_range_atr_multiple: 1.5   # opening range wider than this x ATR = skip (too extended)
-    min_range_atr_multiple: 0.15  # opening range tighter than this = no real level
+
+    # Volume confirmation. The baseline is the average of the most recent
+    # `volume_lookback_bars` bars, NOT the opening range — intraday volume
+    # decays steeply after the open, so an opening-range baseline rejects
+    # almost every genuine mid-morning break.
+    volume_baseline: recent       # recent | opening_range
+    volume_lookback_bars: 6
+    volume_multiple: 1.3          # break bar volume vs that baseline
+
+    max_range_atr_multiple: 0.60  # opening range wider than 60% of daily ATR = already extended
+    min_range_atr_multiple: 0.10  # tighter than 10% of daily ATR = no real level
 
   # --- Step 2: the retest ----------------------------------------------------
   retest:
     max_bars_after_break: 8       # retest must happen within N bars or setup expires
     min_bars_after_break: 1
-    tolerance_atr_multiple: 0.25  # how close price must come back to the level
+    tolerance_atr_multiple: 0.08  # how close price must come back to the level
     allow_wick_only: true         # wick into the level counts as a touch
     invalidate_close_beyond_pct: 0.10  # close back THROUGH the level = setup dead
 
@@ -77,11 +87,11 @@ strategy:
 # Risk management — 2R, exactly as the methodology specifies
 # ---------------------------------------------------------------------------
 risk:
-  account_equity: 2000.0       # used only for position sizing in the report
+  account_equity: 10000.0       # used only for position sizing in the report
   risk_per_trade_pct: 1.0       # % of equity risked per trade
   max_daily_loss_R: 2.0         # stop trading for the day after -2R
   reward_multiple: 2.0          # take profit at 2R
-  stop_buffer_atr_multiple: 0.10  # stop placed beyond the confirmation low by this
+  stop_buffer_atr_multiple: 0.03  # stop placed beyond the confirmation low by this (x daily ATR)
   partial_at_1R: false          # true = sell half at 1R
   breakeven_after_1R: true      # move stop to entry once 1R is reached
   # Cap on a single position's notional value, as a % of equity.
