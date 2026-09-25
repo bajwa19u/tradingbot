@@ -1,548 +1,2081 @@
 [
   {
-    "top_rejection": "no_confirmation_candle",
     "timeframe": "1m",
     "variant": "current-rules",
-    "n": 330,
-    "expectancy_R": -0.253,
-    "total_R": -83.56,
-    "max_dd_pct": -30.83,
-    "test_n": 138,
-    "test_expectancy_R": -0.197,
-    "test_total_R": -27.25,
-    "test_max_dd_pct": -12.03
+    "n": 141,
+    "expectancy_R": -0.066,
+    "total_R": -9.4,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.157,
+    "max_dd_pct": -4.5,
+    "per_period": [
+      {
+        "n": 45,
+        "expectancy_R": -0.157
+      },
+      {
+        "n": 30,
+        "expectancy_R": 0.122
+      },
+      {
+        "n": 25,
+        "expectancy_R": -0.119
+      },
+      {
+        "n": 17,
+        "expectancy_R": -0.156
+      },
+      {
+        "n": 24,
+        "expectancy_R": -0.014
+      }
+    ]
   },
   {
-    "top_rejection": "break_volume_too_low",
     "timeframe": "1m",
     "variant": "faithful",
-    "n": 68,
-    "expectancy_R": 0.097,
-    "total_R": 6.59,
-    "max_dd_pct": -3.57,
-    "test_n": 25,
-    "test_expectancy_R": 0.297,
-    "test_total_R": 7.42,
-    "test_max_dd_pct": -1.16
+    "n": 142,
+    "expectancy_R": -0.041,
+    "total_R": -5.9,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.251,
+    "max_dd_pct": -6.99,
+    "per_period": [
+      {
+        "n": 45,
+        "expectancy_R": -0.251
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.117
+      },
+      {
+        "n": 25,
+        "expectancy_R": 0.062
+      },
+      {
+        "n": 18,
+        "expectancy_R": -0.06
+      },
+      {
+        "n": 24,
+        "expectancy_R": 0.353
+      }
+    ]
   },
   {
-    "top_rejection": "break_volume_too_low",
     "timeframe": "1m",
     "variant": "faithful +late-entries",
-    "n": 71,
-    "expectancy_R": 0.085,
-    "total_R": 6.06,
-    "max_dd_pct": -3.58,
-    "test_n": 26,
-    "test_expectancy_R": 0.282,
-    "test_total_R": 7.33,
-    "test_max_dd_pct": -1.16
+    "n": 148,
+    "expectancy_R": -0.041,
+    "total_R": -6.0,
+    "periods_positive": 3,
+    "periods_scored": 5,
+    "worst_period_R": -0.248,
+    "max_dd_pct": -7.43,
+    "per_period": [
+      {
+        "n": 48,
+        "expectancy_R": -0.248
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.117
+      },
+      {
+        "n": 26,
+        "expectancy_R": 0.017
+      },
+      {
+        "n": 19,
+        "expectancy_R": 0.032
+      },
+      {
+        "n": 25,
+        "expectancy_R": 0.335
+      }
+    ]
   },
   {
-    "top_rejection": "no_displacement_before_retest",
     "timeframe": "1m",
     "variant": "faithful +15min-range",
-    "n": 26,
-    "expectancy_R": -0.097,
-    "total_R": -2.51,
-    "max_dd_pct": -2.27,
-    "test_n": 11,
-    "test_expectancy_R": 0.113,
-    "test_total_R": 1.25,
-    "test_max_dd_pct": -0.93
+    "n": 53,
+    "expectancy_R": 0.168,
+    "total_R": 8.9,
+    "periods_positive": 3,
+    "periods_scored": 4,
+    "worst_period_R": -0.527,
+    "max_dd_pct": -2.56,
+    "per_period": [
+      {
+        "n": 23,
+        "expectancy_R": 0.21
+      },
+      {
+        "n": 11,
+        "expectancy_R": 0.601
+      },
+      {
+        "n": 5,
+        "expectancy_R": -0.527
+      },
+      {
+        "n": 4,
+        "expectancy_R": -0.545
+      },
+      {
+        "n": 10,
+        "expectancy_R": 0.23
+      }
+    ]
   },
   {
-    "top_rejection": "break_volume_too_low",
     "timeframe": "1m",
     "variant": "faithful -displacement",
-    "n": 266,
+    "n": 496,
+    "expectancy_R": -0.1,
+    "total_R": -49.7,
+    "periods_positive": 0,
+    "periods_scored": 5,
+    "worst_period_R": -0.211,
+    "max_dd_pct": -9.14,
+    "per_period": [
+      {
+        "n": 97,
+        "expectancy_R": -0.034
+      },
+      {
+        "n": 110,
+        "expectancy_R": -0.047
+      },
+      {
+        "n": 105,
+        "expectancy_R": -0.211
+      },
+      {
+        "n": 96,
+        "expectancy_R": -0.099
+      },
+      {
+        "n": 88,
+        "expectancy_R": -0.11
+      }
+    ]
+  },
+  {
+    "timeframe": "1m",
+    "variant": "faithful -stop-after-win",
+    "n": 144,
+    "expectancy_R": -0.049,
+    "total_R": -7.1,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.251,
+    "max_dd_pct": -6.99,
+    "per_period": [
+      {
+        "n": 45,
+        "expectancy_R": -0.251
+      },
+      {
+        "n": 31,
+        "expectancy_R": -0.117
+      },
+      {
+        "n": 25,
+        "expectancy_R": 0.062
+      },
+      {
+        "n": 18,
+        "expectancy_R": -0.06
+      },
+      {
+        "n": 25,
+        "expectancy_R": 0.296
+      }
+    ]
+  },
+  {
+    "timeframe": "1m",
+    "variant": "faithful +shorts-off",
+    "n": 68,
+    "expectancy_R": -0.016,
+    "total_R": -1.1,
+    "periods_positive": 3,
+    "periods_scored": 5,
+    "worst_period_R": -0.61,
+    "max_dd_pct": -3.42,
+    "per_period": [
+      {
+        "n": 21,
+        "expectancy_R": -0.123
+      },
+      {
+        "n": 13,
+        "expectancy_R": -0.61
+      },
+      {
+        "n": 12,
+        "expectancy_R": 0.048
+      },
+      {
+        "n": 7,
+        "expectancy_R": 0.052
+      },
+      {
+        "n": 15,
+        "expectancy_R": 0.566
+      }
+    ]
+  },
+  {
+    "timeframe": "1m",
+    "variant": "faithful +3R-target",
+    "n": 144,
+    "expectancy_R": -0.084,
+    "total_R": -12.1,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.246,
+    "max_dd_pct": -9.18,
+    "per_period": [
+      {
+        "n": 45,
+        "expectancy_R": -0.246
+      },
+      {
+        "n": 31,
+        "expectancy_R": -0.139
+      },
+      {
+        "n": 25,
+        "expectancy_R": -0.118
+      },
+      {
+        "n": 18,
+        "expectancy_R": -0.111
+      },
+      {
+        "n": 25,
+        "expectancy_R": 0.329
+      }
+    ]
+  },
+  {
+    "timeframe": "1m",
+    "variant": "faithful +no-breakeven",
+    "n": 142,
+    "expectancy_R": -0.098,
+    "total_R": -14.0,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.279,
+    "max_dd_pct": -8.09,
+    "per_period": [
+      {
+        "n": 45,
+        "expectancy_R": -0.279
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.037
+      },
+      {
+        "n": 25,
+        "expectancy_R": -0.185
+      },
+      {
+        "n": 18,
+        "expectancy_R": -0.051
+      },
+      {
+        "n": 24,
+        "expectancy_R": 0.219
+      }
+    ]
+  },
+  {
+    "timeframe": "1m",
+    "variant": "faithful +loose-volume",
+    "n": 139,
+    "expectancy_R": -0.088,
+    "total_R": -12.2,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.336,
+    "max_dd_pct": -5.81,
+    "per_period": [
+      {
+        "n": 36,
+        "expectancy_R": -0.211
+      },
+      {
+        "n": 35,
+        "expectancy_R": -0.071
+      },
+      {
+        "n": 27,
+        "expectancy_R": 0.014
+      },
+      {
+        "n": 15,
+        "expectancy_R": -0.336
+      },
+      {
+        "n": 26,
+        "expectancy_R": 0.099
+      }
+    ]
+  },
+  {
+    "timeframe": "1m",
+    "variant": "faithful +partial-at-1R",
+    "n": 141,
+    "expectancy_R": -0.028,
+    "total_R": -4.0,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.255,
+    "max_dd_pct": -7.14,
+    "per_period": [
+      {
+        "n": 44,
+        "expectancy_R": -0.255
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.133
+      },
+      {
+        "n": 25,
+        "expectancy_R": 0.171
+      },
+      {
+        "n": 18,
+        "expectancy_R": -0.049
+      },
+      {
+        "n": 24,
+        "expectancy_R": 0.326
+      }
+    ]
+  },
+  {
+    "timeframe": "1m",
+    "variant": "faithful +tight-window",
+    "n": 141,
+    "expectancy_R": -0.054,
+    "total_R": -7.6,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.251,
+    "max_dd_pct": -6.99,
+    "per_period": [
+      {
+        "n": 45,
+        "expectancy_R": -0.251
+      },
+      {
+        "n": 29,
+        "expectancy_R": -0.181
+      },
+      {
+        "n": 25,
+        "expectancy_R": 0.062
+      },
+      {
+        "n": 18,
+        "expectancy_R": -0.06
+      },
+      {
+        "n": 24,
+        "expectancy_R": 0.353
+      }
+    ]
+  },
+  {
+    "timeframe": "1m",
+    "variant": "faithful +fast-retest-only",
+    "n": 68,
+    "expectancy_R": 0.151,
+    "total_R": 10.3,
+    "periods_positive": 4,
+    "periods_scored": 5,
+    "worst_period_R": -0.207,
+    "max_dd_pct": -2.71,
+    "per_period": [
+      {
+        "n": 20,
+        "expectancy_R": 0.324
+      },
+      {
+        "n": 13,
+        "expectancy_R": -0.207
+      },
+      {
+        "n": 13,
+        "expectancy_R": 0.252
+      },
+      {
+        "n": 10,
+        "expectancy_R": 0.179
+      },
+      {
+        "n": 12,
+        "expectancy_R": 0.119
+      }
+    ]
+  },
+  {
+    "timeframe": "1m",
+    "variant": "faithful +strong-volume",
+    "n": 133,
+    "expectancy_R": -0.074,
+    "total_R": -9.8,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.346,
+    "max_dd_pct": -4.63,
+    "per_period": [
+      {
+        "n": 40,
+        "expectancy_R": -0.14
+      },
+      {
+        "n": 29,
+        "expectancy_R": -0.026
+      },
+      {
+        "n": 22,
+        "expectancy_R": -0.346
+      },
+      {
+        "n": 20,
+        "expectancy_R": 0.131
+      },
+      {
+        "n": 22,
+        "expectancy_R": 0.067
+      }
+    ]
+  },
+  {
+    "timeframe": "1m",
+    "variant": "faithful +momentum-exits",
+    "n": 141,
+    "expectancy_R": -0.066,
+    "total_R": -9.4,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.157,
+    "max_dd_pct": -4.5,
+    "per_period": [
+      {
+        "n": 45,
+        "expectancy_R": -0.157
+      },
+      {
+        "n": 30,
+        "expectancy_R": 0.122
+      },
+      {
+        "n": 25,
+        "expectancy_R": -0.119
+      },
+      {
+        "n": 17,
+        "expectancy_R": -0.156
+      },
+      {
+        "n": 24,
+        "expectancy_R": -0.014
+      }
+    ]
+  },
+  {
+    "timeframe": "1m",
+    "variant": "faithful +momentum +1H",
+    "n": 81,
     "expectancy_R": -0.09,
-    "total_R": -23.9,
-    "max_dd_pct": -15.67,
-    "test_n": 103,
-    "test_expectancy_R": -0.153,
-    "test_total_R": -15.75,
-    "test_max_dd_pct": -11.8
+    "total_R": -7.3,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.185,
+    "max_dd_pct": -3.17,
+    "per_period": [
+      {
+        "n": 29,
+        "expectancy_R": -0.06
+      },
+      {
+        "n": 12,
+        "expectancy_R": -0.185
+      },
+      {
+        "n": 16,
+        "expectancy_R": -0.165
+      },
+      {
+        "n": 10,
+        "expectancy_R": -0.168
+      },
+      {
+        "n": 14,
+        "expectancy_R": 0.07
+      }
+    ]
   },
   {
-    "top_rejection": "break_volume_too_low",
     "timeframe": "1m",
-    "variant": "faithful -stop-after-win",
-    "n": 70,
-    "expectancy_R": 0.077,
-    "total_R": 5.37,
-    "max_dd_pct": -3.61,
-    "test_n": 26,
-    "test_expectancy_R": 0.244,
-    "test_total_R": 6.33,
-    "test_max_dd_pct": -1.16
+    "variant": "faithful +1H-context",
+    "n": 82,
+    "expectancy_R": 0.009,
+    "total_R": 0.8,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.272,
+    "max_dd_pct": -3.81,
+    "per_period": [
+      {
+        "n": 29,
+        "expectancy_R": -0.181
+      },
+      {
+        "n": 12,
+        "expectancy_R": -0.272
+      },
+      {
+        "n": 16,
+        "expectancy_R": 0.119
+      },
+      {
+        "n": 11,
+        "expectancy_R": -0.025
+      },
+      {
+        "n": 14,
+        "expectancy_R": 0.546
+      }
+    ]
   },
   {
-    "top_rejection": "break_volume_too_low",
     "timeframe": "1m",
-    "variant": "faithful +shorts-off",
-    "n": 27,
-    "expectancy_R": 0.048,
-    "total_R": 1.28,
-    "max_dd_pct": -3.29,
-    "test_n": 16,
-    "test_expectancy_R": 0.464,
-    "test_total_R": 7.43,
-    "test_max_dd_pct": -0.68
+    "variant": "faithful +momentum 5-candle",
+    "n": 141,
+    "expectancy_R": -0.063,
+    "total_R": -8.9,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.156,
+    "max_dd_pct": -4.28,
+    "per_period": [
+      {
+        "n": 45,
+        "expectancy_R": -0.146
+      },
+      {
+        "n": 30,
+        "expectancy_R": 0.122
+      },
+      {
+        "n": 25,
+        "expectancy_R": -0.119
+      },
+      {
+        "n": 17,
+        "expectancy_R": -0.156
+      },
+      {
+        "n": 24,
+        "expectancy_R": -0.014
+      }
+    ]
   },
   {
-    "top_rejection": "break_volume_too_low",
     "timeframe": "1m",
-    "variant": "faithful +3R-target",
-    "n": 69,
-    "expectancy_R": 0.033,
-    "total_R": 2.26,
-    "max_dd_pct": -3.23,
-    "test_n": 26,
-    "test_expectancy_R": 0.276,
-    "test_total_R": 7.18,
-    "test_max_dd_pct": -1.05
+    "variant": "faithful +momentum arm0.8",
+    "n": 141,
+    "expectancy_R": -0.1,
+    "total_R": -14.1,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.28,
+    "max_dd_pct": -7.53,
+    "per_period": [
+      {
+        "n": 45,
+        "expectancy_R": -0.28
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.103
+      },
+      {
+        "n": 25,
+        "expectancy_R": 0.041
+      },
+      {
+        "n": 17,
+        "expectancy_R": -0.038
+      },
+      {
+        "n": 24,
+        "expectancy_R": 0.049
+      }
+    ]
   },
   {
-    "top_rejection": "break_volume_too_low",
     "timeframe": "1m",
-    "variant": "faithful +no-breakeven",
-    "n": 68,
-    "expectancy_R": 0.085,
-    "total_R": 5.8,
-    "max_dd_pct": -3.48,
-    "test_n": 25,
-    "test_expectancy_R": 0.168,
-    "test_total_R": 4.2,
-    "test_max_dd_pct": -1.71
+    "variant": "faithful +momentum arm1.2",
+    "n": 141,
+    "expectancy_R": -0.09,
+    "total_R": -12.6,
+    "periods_positive": 3,
+    "periods_scored": 5,
+    "worst_period_R": -0.28,
+    "max_dd_pct": -7.53,
+    "per_period": [
+      {
+        "n": 45,
+        "expectancy_R": -0.28
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.12
+      },
+      {
+        "n": 25,
+        "expectancy_R": 0.001
+      },
+      {
+        "n": 17,
+        "expectancy_R": 0.02
+      },
+      {
+        "n": 24,
+        "expectancy_R": 0.132
+      }
+    ]
   },
   {
-    "top_rejection": "no_displacement_before_retest",
     "timeframe": "1m",
-    "variant": "faithful +loose-volume",
-    "n": 68,
-    "expectancy_R": 0.02,
-    "total_R": 1.37,
-    "max_dd_pct": -3.14,
-    "test_n": 27,
-    "test_expectancy_R": 0.056,
-    "test_total_R": 1.53,
-    "test_max_dd_pct": -2.44
+    "variant": "faithful +momentum no-BE",
+    "n": 141,
+    "expectancy_R": -0.125,
+    "total_R": -17.6,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.291,
+    "max_dd_pct": -8.09,
+    "per_period": [
+      {
+        "n": 45,
+        "expectancy_R": -0.291
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.12
+      },
+      {
+        "n": 25,
+        "expectancy_R": -0.079
+      },
+      {
+        "n": 17,
+        "expectancy_R": -0.038
+      },
+      {
+        "n": 24,
+        "expectancy_R": 0.07
+      }
+    ]
   },
   {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "1m",
-    "variant": "faithful +partial-at-1R",
-    "n": 68,
-    "expectancy_R": 0.132,
-    "total_R": 8.96,
-    "max_dd_pct": -3.24,
-    "test_n": 25,
-    "test_expectancy_R": 0.271,
-    "test_total_R": 6.76,
-    "test_max_dd_pct": -1.24
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "1m",
-    "variant": "faithful +tight-window",
-    "n": 67,
-    "expectancy_R": 0.078,
-    "total_R": 5.22,
-    "max_dd_pct": -3.58,
-    "test_n": 25,
-    "test_expectancy_R": 0.297,
-    "test_total_R": 7.42,
-    "test_max_dd_pct": -1.16
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "1m",
-    "variant": "faithful +fast-retest-only",
-    "n": 38,
-    "expectancy_R": 0.19,
-    "total_R": 7.23,
-    "max_dd_pct": -3.8,
-    "test_n": 13,
-    "test_expectancy_R": 0.028,
-    "test_total_R": 0.37,
-    "test_max_dd_pct": -1.06
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "1m",
-    "variant": "faithful +strong-volume",
-    "n": 67,
-    "expectancy_R": -0.064,
-    "total_R": -4.3,
-    "max_dd_pct": -4.61,
-    "test_n": 25,
-    "test_expectancy_R": -0.027,
-    "test_total_R": -0.68,
-    "test_max_dd_pct": -2.22
-  },
-  {
-    "top_rejection": "break_volume_too_low",
     "timeframe": "2m",
     "variant": "current-rules",
-    "n": 283,
-    "expectancy_R": -0.204,
-    "total_R": -57.62,
-    "max_dd_pct": -34.4,
-    "test_n": 117,
-    "test_expectancy_R": -0.177,
-    "test_total_R": -20.71,
-    "test_max_dd_pct": -10.79
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "2m",
-    "variant": "faithful",
-    "n": 83,
-    "expectancy_R": -0.261,
-    "total_R": -21.7,
-    "max_dd_pct": -13.32,
-    "test_n": 35,
-    "test_expectancy_R": -0.096,
-    "test_total_R": -3.36,
-    "test_max_dd_pct": -6.12
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "2m",
-    "variant": "faithful +late-entries",
-    "n": 88,
-    "expectancy_R": -0.269,
-    "total_R": -23.69,
-    "max_dd_pct": -14.47,
-    "test_n": 36,
-    "test_expectancy_R": -0.052,
-    "test_total_R": -1.86,
-    "test_max_dd_pct": -6.12
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "2m",
-    "variant": "faithful +15min-range",
-    "n": 54,
-    "expectancy_R": -0.286,
-    "total_R": -15.45,
-    "max_dd_pct": -10.19,
-    "test_n": 25,
-    "test_expectancy_R": 0.186,
-    "test_total_R": 4.64,
-    "test_max_dd_pct": -2.44
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "2m",
-    "variant": "faithful -displacement",
-    "n": 204,
-    "expectancy_R": -0.201,
-    "total_R": -40.93,
-    "max_dd_pct": -22.15,
-    "test_n": 80,
-    "test_expectancy_R": -0.189,
-    "test_total_R": -15.12,
-    "test_max_dd_pct": -10.89
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "2m",
-    "variant": "faithful -stop-after-win",
-    "n": 86,
-    "expectancy_R": -0.257,
-    "total_R": -22.11,
-    "max_dd_pct": -13.67,
-    "test_n": 36,
-    "test_expectancy_R": -0.122,
-    "test_total_R": -4.4,
-    "test_max_dd_pct": -6.86
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "2m",
-    "variant": "faithful +shorts-off",
-    "n": 45,
-    "expectancy_R": -0.113,
-    "total_R": -5.1,
-    "max_dd_pct": -6.26,
-    "test_n": 23,
-    "test_expectancy_R": 0.033,
-    "test_total_R": 0.76,
-    "test_max_dd_pct": -4.63
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "2m",
-    "variant": "faithful +3R-target",
-    "n": 85,
-    "expectancy_R": -0.278,
-    "total_R": -23.61,
-    "max_dd_pct": -14.88,
-    "test_n": 35,
-    "test_expectancy_R": -0.214,
-    "test_total_R": -7.48,
-    "test_max_dd_pct": -6.65
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "2m",
-    "variant": "faithful +no-breakeven",
-    "n": 83,
-    "expectancy_R": -0.158,
-    "total_R": -13.12,
-    "max_dd_pct": -12.23,
-    "test_n": 35,
-    "test_expectancy_R": -0.125,
-    "test_total_R": -4.37,
-    "test_max_dd_pct": -7.22
-  },
-  {
-    "top_rejection": "no_displacement_before_retest",
-    "timeframe": "2m",
-    "variant": "faithful +loose-volume",
-    "n": 101,
-    "expectancy_R": -0.262,
-    "total_R": -26.43,
-    "max_dd_pct": -17.36,
-    "test_n": 40,
-    "test_expectancy_R": -0.022,
-    "test_total_R": -0.89,
-    "test_max_dd_pct": -7.4
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "2m",
-    "variant": "faithful +partial-at-1R",
-    "n": 83,
-    "expectancy_R": -0.257,
-    "total_R": -21.3,
-    "max_dd_pct": -13.44,
-    "test_n": 35,
-    "test_expectancy_R": -0.099,
-    "test_total_R": -3.45,
-    "test_max_dd_pct": -5.53
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "2m",
-    "variant": "faithful +tight-window",
-    "n": 73,
-    "expectancy_R": -0.283,
-    "total_R": -20.67,
-    "max_dd_pct": -12.32,
-    "test_n": 31,
-    "test_expectancy_R": -0.159,
-    "test_total_R": -4.93,
-    "test_max_dd_pct": -6.06
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "2m",
-    "variant": "faithful +fast-retest-only",
-    "n": 44,
-    "expectancy_R": -0.398,
-    "total_R": -17.52,
-    "max_dd_pct": -9.3,
-    "test_n": 21,
-    "test_expectancy_R": -0.22,
-    "test_total_R": -4.62,
-    "test_max_dd_pct": -4.55
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "2m",
-    "variant": "faithful +strong-volume",
-    "n": 50,
-    "expectancy_R": -0.228,
-    "total_R": -11.38,
-    "max_dd_pct": -8.42,
-    "test_n": 26,
-    "test_expectancy_R": 0.113,
-    "test_total_R": 2.94,
-    "test_max_dd_pct": -4.5
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "5m",
-    "variant": "current-rules",
-    "n": 204,
-    "expectancy_R": -0.359,
-    "total_R": -73.16,
-    "max_dd_pct": -34.68,
-    "test_n": 89,
-    "test_expectancy_R": -0.313,
-    "test_total_R": -27.86,
-    "test_max_dd_pct": -14.74
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "5m",
-    "variant": "faithful",
-    "n": 89,
-    "expectancy_R": -0.111,
-    "total_R": -9.91,
-    "max_dd_pct": -9.33,
-    "test_n": 50,
-    "test_expectancy_R": 0.075,
-    "test_total_R": 3.77,
-    "test_max_dd_pct": -5.63
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "5m",
-    "variant": "faithful +late-entries",
-    "n": 118,
-    "expectancy_R": -0.179,
-    "total_R": -21.15,
-    "max_dd_pct": -16.54,
-    "test_n": 61,
-    "test_expectancy_R": -0.07,
-    "test_total_R": -4.28,
-    "test_max_dd_pct": -7.71
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "5m",
-    "variant": "faithful +15min-range",
-    "n": 45,
-    "expectancy_R": -0.517,
-    "total_R": -23.27,
-    "max_dd_pct": -12.16,
-    "test_n": 23,
-    "test_expectancy_R": -0.028,
-    "test_total_R": -0.65,
-    "test_max_dd_pct": -5.31
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "5m",
-    "variant": "faithful -displacement",
-    "n": 119,
-    "expectancy_R": -0.099,
-    "total_R": -11.77,
-    "max_dd_pct": -10.57,
-    "test_n": 56,
-    "test_expectancy_R": 0.104,
-    "test_total_R": 5.83,
-    "test_max_dd_pct": -5.51
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "5m",
-    "variant": "faithful -stop-after-win",
-    "n": 89,
-    "expectancy_R": -0.111,
-    "total_R": -9.91,
-    "max_dd_pct": -9.33,
-    "test_n": 50,
-    "test_expectancy_R": 0.075,
-    "test_total_R": 3.77,
-    "test_max_dd_pct": -5.63
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "5m",
-    "variant": "faithful +shorts-off",
-    "n": 58,
-    "expectancy_R": -0.252,
-    "total_R": -14.62,
-    "max_dd_pct": -8.78,
-    "test_n": 30,
-    "test_expectancy_R": -0.06,
-    "test_total_R": -1.79,
-    "test_max_dd_pct": -4.07
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "5m",
-    "variant": "faithful +3R-target",
-    "n": 89,
-    "expectancy_R": -0.119,
-    "total_R": -10.63,
-    "max_dd_pct": -10.4,
-    "test_n": 50,
-    "test_expectancy_R": 0.029,
-    "test_total_R": 1.47,
-    "test_max_dd_pct": -6.66
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "5m",
-    "variant": "faithful +no-breakeven",
-    "n": 89,
-    "expectancy_R": -0.056,
-    "total_R": -4.97,
-    "max_dd_pct": -7.6,
-    "test_n": 50,
-    "test_expectancy_R": 0.003,
-    "test_total_R": 0.15,
-    "test_max_dd_pct": -6.87
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "5m",
-    "variant": "faithful +loose-volume",
-    "n": 110,
-    "expectancy_R": -0.163,
-    "total_R": -17.91,
-    "max_dd_pct": -13.0,
-    "test_n": 62,
-    "test_expectancy_R": 0.166,
-    "test_total_R": 10.27,
-    "test_max_dd_pct": -4.5
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "5m",
-    "variant": "faithful +partial-at-1R",
-    "n": 88,
-    "expectancy_R": -0.108,
-    "total_R": -9.54,
-    "max_dd_pct": -8.82,
-    "test_n": 50,
-    "test_expectancy_R": 0.053,
-    "test_total_R": 2.64,
-    "test_max_dd_pct": -5.26
-  },
-  {
-    "top_rejection": "break_volume_too_low",
-    "timeframe": "5m",
-    "variant": "faithful +tight-window",
-    "n": 69,
+    "n": 162,
     "expectancy_R": -0.097,
-    "total_R": -6.68,
-    "max_dd_pct": -8.03,
-    "test_n": 39,
-    "test_expectancy_R": 0.146,
-    "test_total_R": 5.7,
-    "test_max_dd_pct": -3.83
+    "total_R": -15.6,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.307,
+    "max_dd_pct": -5.31,
+    "per_period": [
+      {
+        "n": 43,
+        "expectancy_R": -0.115
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.087
+      },
+      {
+        "n": 29,
+        "expectancy_R": -0.307
+      },
+      {
+        "n": 33,
+        "expectancy_R": -0.062
+      },
+      {
+        "n": 30,
+        "expectancy_R": 0.087
+      }
+    ]
   },
   {
-    "top_rejection": "break_volume_too_low",
+    "timeframe": "2m",
+    "variant": "faithful",
+    "n": 162,
+    "expectancy_R": -0.201,
+    "total_R": -32.5,
+    "periods_positive": 0,
+    "periods_scored": 5,
+    "worst_period_R": -0.527,
+    "max_dd_pct": -9.21,
+    "per_period": [
+      {
+        "n": 43,
+        "expectancy_R": -0.251
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.159
+      },
+      {
+        "n": 29,
+        "expectancy_R": -0.527
+      },
+      {
+        "n": 33,
+        "expectancy_R": -0.039
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.028
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +late-entries",
+    "n": 173,
+    "expectancy_R": -0.166,
+    "total_R": -28.7,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.541,
+    "max_dd_pct": -9.69,
+    "per_period": [
+      {
+        "n": 48,
+        "expectancy_R": -0.193
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.067
+      },
+      {
+        "n": 31,
+        "expectancy_R": -0.541
+      },
+      {
+        "n": 33,
+        "expectancy_R": -0.039
+      },
+      {
+        "n": 31,
+        "expectancy_R": 0.021
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +15min-range",
+    "n": 98,
+    "expectancy_R": -0.198,
+    "total_R": -19.4,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.588,
+    "max_dd_pct": -5.54,
+    "per_period": [
+      {
+        "n": 23,
+        "expectancy_R": -0.348
+      },
+      {
+        "n": 15,
+        "expectancy_R": -0.588
+      },
+      {
+        "n": 16,
+        "expectancy_R": -0.203
+      },
+      {
+        "n": 24,
+        "expectancy_R": -0.271
+      },
+      {
+        "n": 20,
+        "expectancy_R": 0.36
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful -displacement",
+    "n": 382,
+    "expectancy_R": -0.153,
+    "total_R": -58.3,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.341,
+    "max_dd_pct": -12.67,
+    "per_period": [
+      {
+        "n": 80,
+        "expectancy_R": 0.025
+      },
+      {
+        "n": 79,
+        "expectancy_R": -0.224
+      },
+      {
+        "n": 78,
+        "expectancy_R": -0.341
+      },
+      {
+        "n": 74,
+        "expectancy_R": -0.032
+      },
+      {
+        "n": 71,
+        "expectancy_R": -0.192
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful -stop-after-win",
+    "n": 166,
+    "expectancy_R": -0.188,
+    "total_R": -31.2,
+    "periods_positive": 0,
+    "periods_scored": 5,
+    "worst_period_R": -0.527,
+    "max_dd_pct": -9.21,
+    "per_period": [
+      {
+        "n": 44,
+        "expectancy_R": -0.207
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.159
+      },
+      {
+        "n": 29,
+        "expectancy_R": -0.527
+      },
+      {
+        "n": 35,
+        "expectancy_R": -0.017
+      },
+      {
+        "n": 31,
+        "expectancy_R": -0.061
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +shorts-off",
+    "n": 87,
+    "expectancy_R": -0.015,
+    "total_R": -1.3,
+    "periods_positive": 3,
+    "periods_scored": 5,
+    "worst_period_R": -0.442,
+    "max_dd_pct": -4.44,
+    "per_period": [
+      {
+        "n": 21,
+        "expectancy_R": -0.112
+      },
+      {
+        "n": 17,
+        "expectancy_R": 0.245
+      },
+      {
+        "n": 12,
+        "expectancy_R": -0.442
+      },
+      {
+        "n": 18,
+        "expectancy_R": 0.001
+      },
+      {
+        "n": 19,
+        "expectancy_R": 0.116
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +3R-target",
+    "n": 164,
+    "expectancy_R": -0.218,
+    "total_R": -35.7,
+    "periods_positive": 0,
+    "periods_scored": 5,
+    "worst_period_R": -0.463,
+    "max_dd_pct": -8.29,
+    "per_period": [
+      {
+        "n": 43,
+        "expectancy_R": -0.23
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.223
+      },
+      {
+        "n": 29,
+        "expectancy_R": -0.463
+      },
+      {
+        "n": 35,
+        "expectancy_R": -0.011
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.197
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +no-breakeven",
+    "n": 162,
+    "expectancy_R": -0.177,
+    "total_R": -28.7,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.52,
+    "max_dd_pct": -9.31,
+    "per_period": [
+      {
+        "n": 43,
+        "expectancy_R": -0.28
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.067
+      },
+      {
+        "n": 29,
+        "expectancy_R": -0.52
+      },
+      {
+        "n": 33,
+        "expectancy_R": 0.062
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.062
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +loose-volume",
+    "n": 185,
+    "expectancy_R": -0.211,
+    "total_R": -39.1,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.415,
+    "max_dd_pct": -10.59,
+    "per_period": [
+      {
+        "n": 44,
+        "expectancy_R": -0.282
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.371
+      },
+      {
+        "n": 44,
+        "expectancy_R": -0.415
+      },
+      {
+        "n": 33,
+        "expectancy_R": 0.086
+      },
+      {
+        "n": 34,
+        "expectancy_R": -0.005
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +partial-at-1R",
+    "n": 161,
+    "expectancy_R": -0.22,
+    "total_R": -35.5,
+    "periods_positive": 0,
+    "periods_scored": 5,
+    "worst_period_R": -0.527,
+    "max_dd_pct": -9.16,
+    "per_period": [
+      {
+        "n": 43,
+        "expectancy_R": -0.302
+      },
+      {
+        "n": 26,
+        "expectancy_R": -0.154
+      },
+      {
+        "n": 29,
+        "expectancy_R": -0.527
+      },
+      {
+        "n": 33,
+        "expectancy_R": -0.08
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.02
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +tight-window",
+    "n": 146,
+    "expectancy_R": -0.214,
+    "total_R": -31.2,
+    "periods_positive": 0,
+    "periods_scored": 5,
+    "worst_period_R": -0.536,
+    "max_dd_pct": -7.83,
+    "per_period": [
+      {
+        "n": 40,
+        "expectancy_R": -0.256
+      },
+      {
+        "n": 25,
+        "expectancy_R": -0.167
+      },
+      {
+        "n": 25,
+        "expectancy_R": -0.536
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.033
+      },
+      {
+        "n": 26,
+        "expectancy_R": -0.093
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +fast-retest-only",
+    "n": 87,
+    "expectancy_R": -0.275,
+    "total_R": -24.0,
+    "periods_positive": 0,
+    "periods_scored": 5,
+    "worst_period_R": -0.665,
+    "max_dd_pct": -6.5,
+    "per_period": [
+      {
+        "n": 24,
+        "expectancy_R": -0.164
+      },
+      {
+        "n": 13,
+        "expectancy_R": -0.303
+      },
+      {
+        "n": 17,
+        "expectancy_R": -0.665
+      },
+      {
+        "n": 16,
+        "expectancy_R": -0.273
+      },
+      {
+        "n": 17,
+        "expectancy_R": -0.024
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +strong-volume",
+    "n": 109,
+    "expectancy_R": -0.045,
+    "total_R": -4.9,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.6,
+    "max_dd_pct": -5.3,
+    "per_period": [
+      {
+        "n": 34,
+        "expectancy_R": -0.094
+      },
+      {
+        "n": 19,
+        "expectancy_R": -0.005
+      },
+      {
+        "n": 15,
+        "expectancy_R": -0.6
+      },
+      {
+        "n": 18,
+        "expectancy_R": 0.072
+      },
+      {
+        "n": 23,
+        "expectancy_R": 0.264
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +momentum-exits",
+    "n": 162,
+    "expectancy_R": -0.097,
+    "total_R": -15.6,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.307,
+    "max_dd_pct": -5.31,
+    "per_period": [
+      {
+        "n": 43,
+        "expectancy_R": -0.115
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.087
+      },
+      {
+        "n": 29,
+        "expectancy_R": -0.307
+      },
+      {
+        "n": 33,
+        "expectancy_R": -0.062
+      },
+      {
+        "n": 30,
+        "expectancy_R": 0.087
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +momentum +1H",
+    "n": 88,
+    "expectancy_R": -0.073,
+    "total_R": -6.4,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.426,
+    "max_dd_pct": -4.81,
+    "per_period": [
+      {
+        "n": 23,
+        "expectancy_R": 0.026
+      },
+      {
+        "n": 11,
+        "expectancy_R": -0.003
+      },
+      {
+        "n": 15,
+        "expectancy_R": -0.426
+      },
+      {
+        "n": 20,
+        "expectancy_R": 0.084
+      },
+      {
+        "n": 19,
+        "expectancy_R": -0.12
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +1H-context",
+    "n": 88,
+    "expectancy_R": -0.159,
+    "total_R": -14.0,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.742,
+    "max_dd_pct": -6.56,
+    "per_period": [
+      {
+        "n": 23,
+        "expectancy_R": 0.004
+      },
+      {
+        "n": 11,
+        "expectancy_R": -0.001
+      },
+      {
+        "n": 15,
+        "expectancy_R": -0.742
+      },
+      {
+        "n": 20,
+        "expectancy_R": 0.031
+      },
+      {
+        "n": 19,
+        "expectancy_R": -0.186
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +momentum 5-candle",
+    "n": 162,
+    "expectancy_R": -0.085,
+    "total_R": -13.8,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.307,
+    "max_dd_pct": -5.31,
+    "per_period": [
+      {
+        "n": 43,
+        "expectancy_R": -0.115
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.02
+      },
+      {
+        "n": 29,
+        "expectancy_R": -0.307
+      },
+      {
+        "n": 33,
+        "expectancy_R": -0.062
+      },
+      {
+        "n": 30,
+        "expectancy_R": 0.087
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +momentum arm0.8",
+    "n": 162,
+    "expectancy_R": -0.178,
+    "total_R": -28.9,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.48,
+    "max_dd_pct": -8.87,
+    "per_period": [
+      {
+        "n": 43,
+        "expectancy_R": -0.197
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.216
+      },
+      {
+        "n": 29,
+        "expectancy_R": -0.48
+      },
+      {
+        "n": 33,
+        "expectancy_R": 0.037
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.063
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +momentum arm1.2",
+    "n": 162,
+    "expectancy_R": -0.228,
+    "total_R": -36.9,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.514,
+    "max_dd_pct": -9.42,
+    "per_period": [
+      {
+        "n": 43,
+        "expectancy_R": -0.336
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.179
+      },
+      {
+        "n": 29,
+        "expectancy_R": -0.514
+      },
+      {
+        "n": 33,
+        "expectancy_R": 0.022
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.113
+      }
+    ]
+  },
+  {
+    "timeframe": "2m",
+    "variant": "faithful +momentum no-BE",
+    "n": 162,
+    "expectancy_R": -0.241,
+    "total_R": -39.1,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.549,
+    "max_dd_pct": -9.89,
+    "per_period": [
+      {
+        "n": 43,
+        "expectancy_R": -0.354
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.185
+      },
+      {
+        "n": 29,
+        "expectancy_R": -0.549
+      },
+      {
+        "n": 33,
+        "expectancy_R": 0.028
+      },
+      {
+        "n": 30,
+        "expectancy_R": -0.129
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "current-rules",
+    "n": 196,
+    "expectancy_R": -0.073,
+    "total_R": -14.3,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.161,
+    "max_dd_pct": -6.29,
+    "per_period": [
+      {
+        "n": 50,
+        "expectancy_R": -0.09
+      },
+      {
+        "n": 37,
+        "expectancy_R": -0.024
+      },
+      {
+        "n": 36,
+        "expectancy_R": -0.161
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.125
+      },
+      {
+        "n": 46,
+        "expectancy_R": 0.006
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful",
+    "n": 196,
+    "expectancy_R": -0.011,
+    "total_R": -2.2,
+    "periods_positive": 3,
+    "periods_scored": 5,
+    "worst_period_R": -0.15,
+    "max_dd_pct": -6.13,
+    "per_period": [
+      {
+        "n": 50,
+        "expectancy_R": 0.046
+      },
+      {
+        "n": 37,
+        "expectancy_R": 0.004
+      },
+      {
+        "n": 36,
+        "expectancy_R": -0.15
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.127
+      },
+      {
+        "n": 46,
+        "expectancy_R": 0.091
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +late-entries",
+    "n": 243,
+    "expectancy_R": -0.085,
+    "total_R": -20.6,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.258,
+    "max_dd_pct": -7.56,
+    "per_period": [
+      {
+        "n": 58,
+        "expectancy_R": 0.123
+      },
+      {
+        "n": 46,
+        "expectancy_R": -0.205
+      },
+      {
+        "n": 49,
+        "expectancy_R": -0.258
+      },
+      {
+        "n": 34,
+        "expectancy_R": -0.084
+      },
+      {
+        "n": 56,
+        "expectancy_R": -0.05
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +15min-range",
+    "n": 93,
+    "expectancy_R": -0.309,
+    "total_R": -28.8,
+    "periods_positive": 0,
+    "periods_scored": 5,
+    "worst_period_R": -0.688,
+    "max_dd_pct": -6.54,
+    "per_period": [
+      {
+        "n": 26,
+        "expectancy_R": -0.306
+      },
+      {
+        "n": 20,
+        "expectancy_R": -0.299
+      },
+      {
+        "n": 17,
+        "expectancy_R": -0.688
+      },
+      {
+        "n": 11,
+        "expectancy_R": -0.269
+      },
+      {
+        "n": 19,
+        "expectancy_R": -0.01
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful -displacement",
+    "n": 246,
+    "expectancy_R": -0.033,
+    "total_R": -8.0,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.147,
+    "max_dd_pct": -7.86,
+    "per_period": [
+      {
+        "n": 57,
+        "expectancy_R": -0.018
+      },
+      {
+        "n": 50,
+        "expectancy_R": -0.085
+      },
+      {
+        "n": 52,
+        "expectancy_R": -0.074
+      },
+      {
+        "n": 35,
+        "expectancy_R": -0.147
+      },
+      {
+        "n": 52,
+        "expectancy_R": 0.12
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful -stop-after-win",
+    "n": 196,
+    "expectancy_R": -0.011,
+    "total_R": -2.2,
+    "periods_positive": 3,
+    "periods_scored": 5,
+    "worst_period_R": -0.15,
+    "max_dd_pct": -6.13,
+    "per_period": [
+      {
+        "n": 50,
+        "expectancy_R": 0.046
+      },
+      {
+        "n": 37,
+        "expectancy_R": 0.004
+      },
+      {
+        "n": 36,
+        "expectancy_R": -0.15
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.127
+      },
+      {
+        "n": 46,
+        "expectancy_R": 0.091
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +shorts-off",
+    "n": 115,
+    "expectancy_R": -0.157,
+    "total_R": -18.1,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.574,
+    "max_dd_pct": -5.36,
+    "per_period": [
+      {
+        "n": 26,
+        "expectancy_R": 0.009
+      },
+      {
+        "n": 22,
+        "expectancy_R": -0.254
+      },
+      {
+        "n": 22,
+        "expectancy_R": -0.128
+      },
+      {
+        "n": 16,
+        "expectancy_R": -0.574
+      },
+      {
+        "n": 29,
+        "expectancy_R": -0.025
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +3R-target",
+    "n": 196,
+    "expectancy_R": -0.064,
+    "total_R": -12.5,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.3,
+    "max_dd_pct": -7.0,
+    "per_period": [
+      {
+        "n": 50,
+        "expectancy_R": -0.134
+      },
+      {
+        "n": 37,
+        "expectancy_R": -0.078
+      },
+      {
+        "n": 36,
+        "expectancy_R": 0.042
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.3
+      },
+      {
+        "n": 46,
+        "expectancy_R": 0.081
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +no-breakeven",
+    "n": 196,
+    "expectancy_R": -0.025,
+    "total_R": -5.0,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.133,
+    "max_dd_pct": -6.82,
+    "per_period": [
+      {
+        "n": 50,
+        "expectancy_R": -0.043
+      },
+      {
+        "n": 37,
+        "expectancy_R": 0.099
+      },
+      {
+        "n": 36,
+        "expectancy_R": -0.124
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.133
+      },
+      {
+        "n": 46,
+        "expectancy_R": 0.034
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +loose-volume",
+    "n": 231,
+    "expectancy_R": 0.012,
+    "total_R": 2.7,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.245,
+    "max_dd_pct": -8.94,
+    "per_period": [
+      {
+        "n": 51,
+        "expectancy_R": 0.176
+      },
+      {
+        "n": 44,
+        "expectancy_R": -0.033
+      },
+      {
+        "n": 46,
+        "expectancy_R": -0.245
+      },
+      {
+        "n": 31,
+        "expectancy_R": -0.134
+      },
+      {
+        "n": 59,
+        "expectancy_R": 0.181
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +partial-at-1R",
+    "n": 195,
+    "expectancy_R": -0.027,
+    "total_R": -5.2,
+    "periods_positive": 3,
+    "periods_scored": 5,
+    "worst_period_R": -0.198,
+    "max_dd_pct": -6.19,
+    "per_period": [
+      {
+        "n": 50,
+        "expectancy_R": 0.018
+      },
+      {
+        "n": 37,
+        "expectancy_R": 0.016
+      },
+      {
+        "n": 35,
+        "expectancy_R": -0.121
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.198
+      },
+      {
+        "n": 46,
+        "expectancy_R": 0.064
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +tight-window",
+    "n": 159,
+    "expectancy_R": 0.056,
+    "total_R": 8.9,
+    "periods_positive": 3,
+    "periods_scored": 5,
+    "worst_period_R": -0.184,
+    "max_dd_pct": -5.42,
+    "per_period": [
+      {
+        "n": 43,
+        "expectancy_R": 0.151
+      },
+      {
+        "n": 32,
+        "expectancy_R": 0.047
+      },
+      {
+        "n": 26,
+        "expectancy_R": -0.01
+      },
+      {
+        "n": 21,
+        "expectancy_R": -0.184
+      },
+      {
+        "n": 37,
+        "expectancy_R": 0.136
+      }
+    ]
+  },
+  {
     "timeframe": "5m",
     "variant": "faithful +fast-retest-only",
-    "n": 62,
-    "expectancy_R": 0.026,
-    "total_R": 1.59,
-    "max_dd_pct": -6.31,
-    "test_n": 31,
-    "test_expectancy_R": 0.041,
-    "test_total_R": 1.27,
-    "test_max_dd_pct": -2.67
+    "n": 130,
+    "expectancy_R": 0.008,
+    "total_R": 1.0,
+    "periods_positive": 4,
+    "periods_scored": 5,
+    "worst_period_R": -0.228,
+    "max_dd_pct": -6.21,
+    "per_period": [
+      {
+        "n": 32,
+        "expectancy_R": 0.007
+      },
+      {
+        "n": 28,
+        "expectancy_R": 0.097
+      },
+      {
+        "n": 19,
+        "expectancy_R": 0.027
+      },
+      {
+        "n": 21,
+        "expectancy_R": -0.228
+      },
+      {
+        "n": 30,
+        "expectancy_R": 0.078
+      }
+    ]
   },
   {
-    "top_rejection": "break_volume_too_low",
     "timeframe": "5m",
     "variant": "faithful +strong-volume",
-    "n": 61,
-    "expectancy_R": -0.039,
-    "total_R": -2.38,
-    "max_dd_pct": -5.83,
-    "test_n": 35,
-    "test_expectancy_R": 0.111,
-    "test_total_R": 3.9,
-    "test_max_dd_pct": -4.02
+    "n": 141,
+    "expectancy_R": 0.046,
+    "total_R": 6.4,
+    "periods_positive": 3,
+    "periods_scored": 5,
+    "worst_period_R": -0.183,
+    "max_dd_pct": -5.74,
+    "per_period": [
+      {
+        "n": 41,
+        "expectancy_R": 0.097
+      },
+      {
+        "n": 26,
+        "expectancy_R": -0.072
+      },
+      {
+        "n": 19,
+        "expectancy_R": 0.174
+      },
+      {
+        "n": 22,
+        "expectancy_R": -0.183
+      },
+      {
+        "n": 33,
+        "expectancy_R": 0.152
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +momentum-exits",
+    "n": 196,
+    "expectancy_R": -0.073,
+    "total_R": -14.3,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.161,
+    "max_dd_pct": -6.29,
+    "per_period": [
+      {
+        "n": 50,
+        "expectancy_R": -0.09
+      },
+      {
+        "n": 37,
+        "expectancy_R": -0.024
+      },
+      {
+        "n": 36,
+        "expectancy_R": -0.161
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.125
+      },
+      {
+        "n": 46,
+        "expectancy_R": 0.006
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +momentum +1H",
+    "n": 115,
+    "expectancy_R": -0.046,
+    "total_R": -5.2,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.2,
+    "max_dd_pct": -3.15,
+    "per_period": [
+      {
+        "n": 28,
+        "expectancy_R": 0.057
+      },
+      {
+        "n": 21,
+        "expectancy_R": -0.2
+      },
+      {
+        "n": 23,
+        "expectancy_R": -0.172
+      },
+      {
+        "n": 13,
+        "expectancy_R": -0.048
+      },
+      {
+        "n": 30,
+        "expectancy_R": 0.065
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +1H-context",
+    "n": 115,
+    "expectancy_R": 0.045,
+    "total_R": 5.2,
+    "periods_positive": 3,
+    "periods_scored": 5,
+    "worst_period_R": -0.153,
+    "max_dd_pct": -3.44,
+    "per_period": [
+      {
+        "n": 28,
+        "expectancy_R": 0.083
+      },
+      {
+        "n": 21,
+        "expectancy_R": -0.153
+      },
+      {
+        "n": 23,
+        "expectancy_R": -0.085
+      },
+      {
+        "n": 13,
+        "expectancy_R": 0.124
+      },
+      {
+        "n": 30,
+        "expectancy_R": 0.215
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +momentum 5-candle",
+    "n": 196,
+    "expectancy_R": -0.073,
+    "total_R": -14.3,
+    "periods_positive": 1,
+    "periods_scored": 5,
+    "worst_period_R": -0.161,
+    "max_dd_pct": -6.29,
+    "per_period": [
+      {
+        "n": 50,
+        "expectancy_R": -0.09
+      },
+      {
+        "n": 37,
+        "expectancy_R": -0.024
+      },
+      {
+        "n": 36,
+        "expectancy_R": -0.161
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.125
+      },
+      {
+        "n": 46,
+        "expectancy_R": 0.006
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +momentum arm0.8",
+    "n": 196,
+    "expectancy_R": -0.006,
+    "total_R": -1.2,
+    "periods_positive": 3,
+    "periods_scored": 5,
+    "worst_period_R": -0.199,
+    "max_dd_pct": -6.3,
+    "per_period": [
+      {
+        "n": 50,
+        "expectancy_R": 0.025
+      },
+      {
+        "n": 37,
+        "expectancy_R": 0.084
+      },
+      {
+        "n": 36,
+        "expectancy_R": -0.114
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.199
+      },
+      {
+        "n": 46,
+        "expectancy_R": 0.084
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +momentum arm1.2",
+    "n": 196,
+    "expectancy_R": -0.01,
+    "total_R": -2.0,
+    "periods_positive": 3,
+    "periods_scored": 5,
+    "worst_period_R": -0.273,
+    "max_dd_pct": -6.3,
+    "per_period": [
+      {
+        "n": 50,
+        "expectancy_R": 0.062
+      },
+      {
+        "n": 37,
+        "expectancy_R": 0.204
+      },
+      {
+        "n": 36,
+        "expectancy_R": -0.148
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.273
+      },
+      {
+        "n": 46,
+        "expectancy_R": 0.001
+      }
+    ]
+  },
+  {
+    "timeframe": "5m",
+    "variant": "faithful +momentum no-BE",
+    "n": 196,
+    "expectancy_R": -0.014,
+    "total_R": -2.8,
+    "periods_positive": 2,
+    "periods_scored": 5,
+    "worst_period_R": -0.242,
+    "max_dd_pct": -6.3,
+    "per_period": [
+      {
+        "n": 50,
+        "expectancy_R": 0.013
+      },
+      {
+        "n": 37,
+        "expectancy_R": 0.245
+      },
+      {
+        "n": 36,
+        "expectancy_R": -0.138
+      },
+      {
+        "n": 27,
+        "expectancy_R": -0.242
+      },
+      {
+        "n": 46,
+        "expectancy_R": -0.023
+      }
+    ]
   }
 ]
