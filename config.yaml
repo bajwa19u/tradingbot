@@ -77,7 +77,7 @@ strategy:
 # Risk management — 2R, exactly as the methodology specifies
 # ---------------------------------------------------------------------------
 risk:
-  account_equity: 10000.0       # used only for position sizing in the report
+  account_equity: 2000.0       # used only for position sizing in the report
   risk_per_trade_pct: 1.0       # % of equity risked per trade
   max_daily_loss_R: 2.0         # stop trading for the day after -2R
   reward_multiple: 2.0          # take profit at 2R
