@@ -134,8 +134,15 @@ class Backtester:
             prior = daily[daily.index.normalize() < day] if daily is not None \
                 and len(daily) else None
             a = compute_daily_atr(prior) if prior is not None else 0.0
+            full = bars_by_symbol.get(sym)
+            warm = []
+            if full is not None and len(full):
+                prior = full[full.index.normalize() < day]
+                if len(prior):
+                    warm = [float(x) for x in prior["close"].tail(400)]
             engines[sym] = make_engine(cfg, sym, a,
-                                       htf_trend=htf_by_symbol.get(sym))
+                                       htf_trend=htf_by_symbol.get(sym),
+                                       context={"warmup_closes": warm})
 
         # One sorted stream of (timestamp, symbol, bar) instead of scanning
         # every symbol at every timestamp.
