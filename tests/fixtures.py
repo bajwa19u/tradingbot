@@ -190,3 +190,15 @@ def ema_pullback_chop() -> pd.DataFrame:
         rows.append((hhmm, px, px + 0.35, px - 0.35, px + wob, 60_000))
         px += wob
     return bars(rows)
+
+
+def fvg_retest_long() -> pd.DataFrame:
+    """The breakout leaves a gap (09:40 high 100.45 < 09:50 low 101.10), and
+    price pulls back into that gap rather than all the way to the 100.50
+    level. Under the level-only rule this setup was invisible."""
+    return bars(_OPENING_RANGE + [
+        ("09:45", 100.40, 101.90, 100.35, 101.80, 140_000),   # impulse leaves a gap
+        ("09:50", 101.80, 102.00, 101.10, 101.90, 90_000),
+        # dips into the gap zone (100.45 - 101.10) but never reaches 100.50
+        ("09:55", 101.25, 101.28, 100.95, 101.27, 80_000),   # hammer in the gap
+    ])
