@@ -20,11 +20,8 @@ import numpy as np
 import pandas as pd
 
 from .indicators import resample_bars
-from .strategy.break_retest import (
-    BreakRetestEngine,
-    Signal,
-    compute_daily_atr,
-)
+from .strategy import make_engine
+from .strategy.break_retest import Signal, compute_daily_atr
 
 
 class _Bar:
@@ -117,7 +114,7 @@ class Backtester:
         stop_after_win = bool(filters.get("stop_after_first_win", False))
 
         htf_by_symbol = htf_by_symbol or {}
-        engines: dict[str, BreakRetestEngine] = {}
+        engines: dict = {}
         open_trades: dict[str, tuple[Trade, dict]] = {}
         per_symbol_count: dict[str, int] = {}
 
@@ -137,8 +134,8 @@ class Backtester:
             prior = daily[daily.index.normalize() < day] if daily is not None \
                 and len(daily) else None
             a = compute_daily_atr(prior) if prior is not None else 0.0
-            engines[sym] = BreakRetestEngine(sym, cfg, a,
-                                             htf_trend=htf_by_symbol.get(sym))
+            engines[sym] = make_engine(cfg, sym, a,
+                                       htf_trend=htf_by_symbol.get(sym))
 
         # One sorted stream of (timestamp, symbol, bar) instead of scanning
         # every symbol at every timestamp.
