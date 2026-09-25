@@ -1,0 +1,73 @@
+name: Swing
+
+# Daily-bar trend pullback: wide search across a 40-name research universe,
+# then ONE run against 30 different companies the search never saw.
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: "Start date (YYYY-MM-DD)"
+        required: false
+        default: "2012-01-01"
+      periods:
+        description: "Market periods to score separately"
+        required: false
+        default: "5"
+
+permissions:
+  contents: write
+
+jobs:
+  swing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest tests/ -q
+
+      - name: Search
+        id: go
+        continue-on-error: true
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          IN_START: ${{ inputs.start }}
+          IN_PERIODS: ${{ inputs.periods }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports
+          set +e
+          python -m src.swing --start "${IN_START:-2012-01-01}" \
+            --periods "${IN_PERIODS:-5}" 2>&1 | tee reports/swing_run.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name  "tradingbot"
+          git config user.email "tradingbot@users.noreply.github.com"
+          git add -A reports/ || true
+          if ! git diff --cached --quiet; then
+            git commit -m "swing: daily pullback results [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/swing.md ]; then
+            cat reports/swing.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            { echo '```'; tail -n 40 reports/swing_run.log; echo '```'; } \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Fail if the search failed
+        if: always()
+        run: '[ "${{ steps.go.outputs.code }}" = "0" ] || exit 1'
