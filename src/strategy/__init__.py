@@ -27,7 +27,7 @@ ENGINES = {
 
 
 def make_engine(cfg, symbol: str, daily_atr: float,
-                avg_daily_volume: float = 0.0, htf_trend=None):
+                avg_daily_volume: float = 0.0, htf_trend=None, context=None):
     name = str(cfg.strategy.get("name", "break_retest"))
     try:
         cls = ENGINES[name]
@@ -35,4 +35,4 @@ def make_engine(cfg, symbol: str, daily_atr: float,
         raise ValueError(
             f"Unknown strategy '{name}'. Choose one of: {', '.join(ENGINES)}"
         ) from None
-    return cls(symbol, cfg, daily_atr, avg_daily_volume, htf_trend)
+    return cls(symbol, cfg, daily_atr, avg_daily_volume, htf_trend, context)
