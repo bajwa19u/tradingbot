@@ -57,6 +57,18 @@ FAITHFUL = {
 }
 
 
+EMA_BASE = {
+    "risk": {"exit_style": "fixed"},
+    "strategy": {
+        "name": "ema_pullback",
+        "session": {"no_entries_before": "10:00", "no_entries_after": "15:00",
+                    "opening_range_minutes": 5},
+        "filters": {"max_trades_per_day": 4, "max_trades_per_symbol_per_day": 2,
+                    "stop_after_first_win": False},
+    },
+}
+
+
 def variants() -> dict[str, dict]:
     """name -> config overrides (deep-merged onto config.yaml)."""
     def with_faithful(extra: dict | None = None) -> dict:
@@ -114,6 +126,18 @@ def variants() -> dict[str, dict]:
             {"risk": {"exit_style": "momentum", "retest_arm_R": 1.2}}),
         "faithful +momentum no-BE": with_faithful(
             {"risk": {"exit_style": "momentum", "retest_arm_R": 99.0}}),
+
+        # --- a different strategy entirely: trend continuation off the EMA.
+        # Not an opening-range play, so it gets the whole session.
+        "ema-pullback": EMA_BASE,
+        "ema-pullback +momentum": deep_merge(
+            EMA_BASE, {"risk": {"exit_style": "momentum"}}),
+        "ema-pullback +1H": deep_merge(
+            EMA_BASE, {"strategy": {"filters": {"require_htf_alignment": True}}}),
+        "ema-pullback steep-only": deep_merge(
+            EMA_BASE, {"strategy": {"ema_pullback": {"min_slope_atr": 0.25}}}),
+        "ema-pullback longs-only": deep_merge(
+            EMA_BASE, {"strategy": {"filters": {"trade_shorts": False}}}),
     }
 
 
