@@ -26,6 +26,23 @@ from .strategy.break_retest import (
 )
 
 
+class _Bar:
+    """Minimal stand-in for a pandas row.
+
+    At 1-minute resolution the backtest touches millions of bars, and
+    `df.loc[ts]` builds a fresh Series every time. This exposes just the
+    mapping access the engine uses, which is roughly 50x cheaper.
+    """
+    __slots__ = ("name", "_v")
+
+    def __init__(self, ts, o, h, l, c, v):
+        self.name = ts
+        self._v = {"open": o, "high": h, "low": l, "close": c, "volume": v}
+
+    def __getitem__(self, key):
+        return self._v[key]
+
+
 @dataclass
 class Trade:
     symbol: str
@@ -44,6 +61,8 @@ class Trade:
     bars_held: int = 0
     mae_r: float = 0.0          # worst drawdown in R while open
     mfe_r: float = 0.0          # best excursion in R while open
+    entry_hour: int = 0         # for time-of-day analysis
+    bars_to_retest: int = 0
 
     def to_dict(self) -> dict[str, Any]:
         d = asdict(self)
@@ -91,6 +110,8 @@ class Backtester:
         rejections: list[dict] = []
         realized_R = 0.0
         taken_today = 0
+        won_today = False
+        stop_after_win = bool(filters.get("stop_after_first_win", False))
 
         engines: dict[str, BreakRetestEngine] = {}
         open_trades: dict[str, tuple[Trade, dict]] = {}
@@ -114,52 +135,53 @@ class Backtester:
             a = compute_daily_atr(prior) if prior is not None else 0.0
             engines[sym] = BreakRetestEngine(sym, cfg, a)
 
-        # Merge all symbols' bars into one time-ordered stream
-        timeline = sorted({ts for sl in day_slices.values() for ts in sl.index})
+        # One sorted stream of (timestamp, symbol, bar) instead of scanning
+        # every symbol at every timestamp.
+        events: list = []
+        last_bar: dict[str, _Bar] = {}
+        for sym, sl in day_slices.items():
+            for row in sl.itertuples():
+                bar = _Bar(row.Index, row.open, row.high, row.low,
+                           row.close, row.volume)
+                events.append((row.Index, sym, bar))
+                last_bar[sym] = bar
+        events.sort(key=lambda e: e[0])
 
-        for ts in timeline:
-            # 1. manage open positions first
-            for sym in list(open_trades.keys()):
-                sl = day_slices[sym]
-                if ts not in sl.index:
-                    continue
-                bar = sl.loc[ts]
+        for ts, sym, bar in events:
+            # 1. manage this symbol's open position first
+            if sym in open_trades:
                 trade, meta = open_trades[sym]
-                closed = self._update_open_trade(trade, meta, bar, ts)
-                if closed:
+                if self._update_open_trade(trade, meta, bar, ts):
                     trades.append(trade)
                     realized_R += trade.r_multiple
+                    if trade.r_multiple > 0:
+                        won_today = True
                     del open_trades[sym]
+                continue
 
-            # 2. daily loss limit
+            # 2. daily guards
             if realized_R <= -abs(cfg.risk.max_daily_loss_R):
                 continue
             if taken_today >= filters.max_trades_per_day:
                 continue
+            if stop_after_win and won_today:
+                continue
+            if per_symbol_count.get(sym, 0) >= filters.max_trades_per_symbol_per_day:
+                continue
 
-            # 3. look for new signals
-            for sym, sl in day_slices.items():
-                if ts not in sl.index or sym in open_trades:
-                    continue
-                if per_symbol_count.get(sym, 0) >= filters.max_trades_per_symbol_per_day:
-                    continue
-                signal = engines[sym].on_bar(sl.loc[ts])
-                if signal is None:
-                    continue
-                if signal.shares <= 0:
-                    continue
-                trade, meta = self._open_trade(signal)
-                open_trades[sym] = (trade, meta)
-                per_symbol_count[sym] = per_symbol_count.get(sym, 0) + 1
-                taken_today += 1
-                if taken_today >= filters.max_trades_per_day:
-                    break
+            # 3. look for a new signal
+            signal = engines[sym].on_bar(bar)
+            if signal is None or signal.shares <= 0:
+                continue
+            trade, meta = self._open_trade(signal)
+            open_trades[sym] = (trade, meta)
+            per_symbol_count[sym] = per_symbol_count.get(sym, 0) + 1
+            taken_today += 1
 
         # 4. flatten anything still open at the time stop
         for sym, (trade, meta) in open_trades.items():
-            sl = day_slices[sym]
-            last = sl.iloc[-1]
-            self._close_trade(trade, meta, float(last["close"]), sl.index[-1],
+            last = last_bar[sym]
+            self._close_trade(trade, meta, float(last["close"]), last.name,
                               "time_stop")
             trades.append(trade)
 
@@ -190,6 +212,8 @@ class Backtester:
             target=signal.target,
             shares=signal.shares,
             pattern=signal.pattern,
+            entry_hour=signal.timestamp.hour,
+            bars_to_retest=signal.bars_to_retest,
         )
         meta = {
             "risk_per_share": risk_per_share if risk_per_share > 0 else 1e-9,
@@ -283,6 +307,7 @@ class Backtester:
             rej_counts[rej["reason"]] = rej_counts.get(rej["reason"], 0) + 1
 
         stats = {
+            "buckets": _buckets(trades),
             "n_trades": len(trades),
             "trading_days": n_days,
             "trades_per_day": round(len(trades) / n_days, 2) if n_days else 0,
@@ -313,6 +338,42 @@ class Backtester:
             "equity_curve": [round(float(x), 2) for x in curve],
             "stats": stats,
         }
+
+
+def _buckets(trades: list[Trade]) -> dict[str, list[dict]]:
+    """Expectancy sliced by attribute.
+
+    This is what turns a backtest from a verdict into a diagnosis: it says
+    WHICH trades lose, not just that the average loses. Buckets with fewer
+    than 20 trades are reported but should not be acted on — slicing 900
+    trades enough ways will always surface a flattering subset by chance.
+    """
+    def group(key_fn, label_fn=str):
+        out: dict = {}
+        for t in trades:
+            out.setdefault(key_fn(t), []).append(t.r_multiple)
+        rows = []
+        for key, rs in sorted(out.items(), key=lambda kv: str(kv[0])):
+            arr = np.array(rs)
+            rows.append({
+                "bucket": label_fn(key),
+                "n": len(arr),
+                "expectancy_R": round(float(arr.mean()), 3),
+                "win_rate_pct": round(100 * float((arr > 0).mean()), 1),
+                "total_R": round(float(arr.sum()), 2),
+                "reliable": len(arr) >= 20,
+            })
+        return rows
+
+    return {
+        "by_hour": group(lambda t: t.entry_hour, lambda h: f"{h:02d}:00-{h:02d}:59"),
+        "by_direction": group(lambda t: t.direction),
+        "by_pattern": group(lambda t: t.pattern),
+        "by_symbol": group(lambda t: t.symbol),
+        "by_bars_to_retest": group(lambda t: min(t.bars_to_retest, 6),
+                                   lambda b: f"{b}+" if b == 6 else str(b)),
+        "by_exit": group(lambda t: t.exit_reason),
+    }
 
 
 def _max_streak(mask: np.ndarray) -> int:
