@@ -105,15 +105,37 @@ def find_signals(df: pd.DataFrame, p: dict) -> list[int]:
     return [i for i, v in enumerate(ok.to_numpy()) if v and i > s]
 
 
-def run_portfolio(data: dict[str, pd.DataFrame], p: dict,
-                  equity: float = 10000.0) -> dict:
-    """Walk the calendar once, holding up to `max_open` positions."""
-    prepared = {s: indicators(d, p) for s, d in data.items() if len(d) > p["slow"] + 30}
+def prepare(data: dict[str, pd.DataFrame], p: dict) -> dict[str, pd.DataFrame]:
+    """Indicators computed ONCE over full history, including warmup.
+
+    Slicing first and computing after would restart every moving average at
+    the start of each slice - a 200-period EMA needs 200 bars, so the opening
+    months of each period would be driven by a meaningless average.
+    """
+    return {s: indicators(d, p) for s, d in data.items() if len(d) > p["slow"] + 30}
+
+
+def signal_times(prepared: dict[str, pd.DataFrame], p: dict) -> dict[str, set]:
+    out = {}
+    for sym, d in prepared.items():
+        out[sym] = {d.index[i] for i in find_signals(d, p)}
+    return out
+
+
+def run_portfolio(prepared: dict[str, pd.DataFrame], p: dict,
+                  equity: float = 10000.0, sigs: dict | None = None,
+                  lo=None, hi=None) -> dict:
+    """Walk the calendar once, holding up to `max_open` positions.
+
+    `prepared` already carries indicators over full history. `lo`/`hi` bound
+    the TRADING window; bars before `lo` are still used for the averages.
+    """
     if not prepared:
         return {"trades": [], "stats": {"n_trades": 0}}
 
-    signals = {s: set(find_signals(d, p)) for s, d in prepared.items()}
-    calendar = sorted({ts for d in prepared.values() for ts in d.index})
+    signals = sigs if sigs is not None else signal_times(prepared, p)
+    calendar = sorted({ts for d in prepared.values() for ts in d.index
+                       if (lo is None or ts >= lo) and (hi is None or ts < hi)})
     pos: dict[str, dict] = {}
     trades: list[SwingTrade] = []
     risk_frac = p["risk_pct"] / 100.0
@@ -171,9 +193,9 @@ def run_portfolio(data: dict[str, pd.DataFrame], p: dict,
                 continue
             if day not in d.index:
                 continue
-            i = d.index.get_loc(day)
-            if i not in signals[sym]:
+            if day not in signals.get(sym, ()):
                 continue
+            i = d.index.get_loc(day)
             bar = d.iloc[i]
             lookback = d.iloc[max(0, i - p["touch_window"]):i + 1]
             pullback_low = float(lookback["low"].min())
@@ -245,16 +267,26 @@ def grid() -> list[tuple[str, dict]]:
     return out
 
 
-def by_periods(data: dict, p: dict, n: int) -> dict:
-    days = sorted({d for df in data.values() for d in df.index})
+def by_periods(data: dict, p: dict, n: int, trade_from=None) -> dict:
+    prepared = prepare(data, p)
+    if not prepared:
+        return {"n": 0, "expectancy_R": 0.0, "total_R": 0.0,
+                "periods_positive": 0, "periods_scored": 0,
+                "worst_period_R": 0.0, "max_dd_pct": 0.0}
+    sigs = signal_times(prepared, p)
+    days = sorted({d for df in prepared.values() for d in df.index
+                   if trade_from is None or d >= trade_from})
+    if len(days) < n * 20:
+        return {"n": 0, "expectancy_R": 0.0, "total_R": 0.0,
+                "periods_positive": 0, "periods_scored": 0,
+                "worst_period_R": 0.0, "max_dd_pct": 0.0}
     edges = [days[int(len(days) * i / n)] for i in range(n)]
     edges.append(days[-1] + pd.Timedelta(days=1))
     per, total_n, total_R = [], 0, 0.0
     worst_dd = 0.0
     for i in range(n):
-        sl = {s: d[(d.index >= edges[i]) & (d.index < edges[i + 1])]
-              for s, d in data.items()}
-        st = run_portfolio(sl, p)["stats"]
+        st = run_portfolio(prepared, p, sigs=sigs,
+                           lo=edges[i], hi=edges[i + 1])["stats"]
         per.append({"n": st["n_trades"], "expectancy_R": st["expectancy_R"]})
         total_n += st["n_trades"]
         total_R += st["total_R"]
@@ -272,18 +304,25 @@ def by_periods(data: dict, p: dict, n: int) -> dict:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--start", default="2012-01-01")
+    ap.add_argument("--start", default="2023-01-01",
+                    help="first date trades may be TAKEN")
     ap.add_argument("--end", default=None)
-    ap.add_argument("--periods", type=int, default=5)
-    ap.add_argument("--min-trades", type=int, default=200)
+    ap.add_argument("--periods", type=int, default=4)
+    ap.add_argument("--min-trades", type=int, default=100)
     args = ap.parse_args(argv)
+
+    # Fetch well before the trading window so the slow EMA and ATR are valid
+    # on day one. Without this the first ~10 months would trade off averages
+    # that had not converged.
+    trade_from = pd.Timestamp(args.start, tz="America/New_York")
+    fetch_from = (trade_from - pd.Timedelta(days=500)).date().isoformat()
 
     creds = Credentials.from_env()
     try:
         md = MarketData(creds, feed="iex")
-        log.info("Fetching daily bars for %d research symbols from %s",
-                 len(RESEARCH), args.start)
-        research = md.daily_bars(RESEARCH, start=args.start, end=args.end)
+        log.info("Fetching daily bars for %d research symbols from %s "
+                 "(trading from %s)", len(RESEARCH), fetch_from, args.start)
+        research = md.daily_bars(RESEARCH, start=fetch_from, end=args.end)
     except AlpacaError as exc:
         log.error("Market data unavailable: %s", exc)
         return 1
@@ -298,7 +337,7 @@ def main(argv=None) -> int:
     log.info("Scoring %d configurations across %d periods", len(configs), args.periods)
     results = []
     for i, (name, p) in enumerate(configs, 1):
-        st = by_periods(research, p, args.periods)
+        st = by_periods(research, p, args.periods, trade_from=trade_from)
         st["name"], st["params"] = name, p
         results.append(st)
         log.info("  %-34s n=%-5d exp=%+.4fR  positive %d/%d",
@@ -317,11 +356,14 @@ def main(argv=None) -> int:
         log.info("Winner %s — single holdout run on %d unseen symbols",
                  winner["name"], len(HOLDOUT))
         try:
-            hd = md.daily_bars(HOLDOUT, start=args.start, end=args.end)
+            hd = md.daily_bars(HOLDOUT, start=fetch_from, end=args.end)
             hd = {s: d for s, d in hd.items() if len(d) > 250}
             if hd:
-                holdout = by_periods(hd, winner["params"], args.periods)
-                full = run_portfolio(hd, winner["params"])["stats"]
+                holdout = by_periods(hd, winner["params"], args.periods,
+                                     trade_from=trade_from)
+                prep = prepare(hd, winner["params"])
+                full = run_portfolio(prep, winner["params"],
+                                     lo=trade_from)["stats"]
                 holdout["return_pct"] = full.get("return_pct")
                 holdout["win_rate_pct"] = full.get("win_rate_pct")
                 holdout["exit_reasons"] = full.get("exit_reasons")
@@ -344,7 +386,8 @@ def render(p: dict) -> str:
     out = [
         "# Daily trend pullback",
         "",
-        f"**Research:** {p['research_symbols']} large caps · from {p['start']} · daily bars  ",
+        f"**Research:** {p['research_symbols']} large caps · trading from "
+        f"{p['start']} · daily bars (indicators warmed on earlier history)  ",
         f"**Locked holdout:** {len(HOLDOUT)} different companies (insurers, "
         "financials, industrials, materials) — opened once, at the end  ",
         f"**Generated:** {datetime.now():%Y-%m-%d %H:%M}",
@@ -355,7 +398,7 @@ def render(p: dict) -> str:
         "|---|---|---|---|---|---|",
     ]
     for r in p["results"][:12]:
-        warn = "" if r["n"] >= 200 else " ⚠"
+        warn = "" if r["n"] >= 100 else " ⚠"
         out.append(f"| `{r['name']}` | {r['n']}{warn} | {r['expectancy_R']:+.4f}R | "
                    f"{r['periods_positive']}/{r['periods_scored']} | "
                    f"{r['worst_period_R']:+.4f}R | {r['max_dd_pct']}% |")
