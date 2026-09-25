@@ -1,0 +1,77 @@
+2026-09-25 22:59:33,448 INFO Fetching daily bars for 40 research symbols from 2021-08-19 (trading from 2023-01-01)
+2026-09-25 22:59:35,462 INFO 40 symbols, 51190 total daily bars
+2026-09-25 22:59:35,462 INFO Scoring 30 configurations across 4 periods
+2026-09-25 22:59:36,212 INFO   ema10_tgt0.0_trail1_stop0.3        n=532   exp=+0.0216R  positive 3/4
+2026-09-25 22:59:36,956 INFO   ema10_tgt0.0_trail1_stop0.5        n=475   exp=-0.0324R  positive 3/4
+2026-09-25 22:59:37,693 INFO   ema10_tgt0.0_trail1_stop1.0        n=386   exp=-0.0132R  positive 2/4
+2026-09-25 22:59:38,453 INFO   ema10_tgt2.0_trail1_stop0.3        n=592   exp=+0.0262R  positive 3/4
+2026-09-25 22:59:39,204 INFO   ema10_tgt2.0_trail1_stop0.5        n=554   exp=-0.0094R  positive 2/4
+2026-09-25 22:59:39,919 INFO   ema10_tgt2.0_trail1_stop1.0        n=419   exp=+0.0086R  positive 2/4
+2026-09-25 22:59:40,593 INFO   ema10_tgt2.0_trail0_stop0.3        n=461   exp=-0.0017R  positive 2/4
+2026-09-25 22:59:41,253 INFO   ema10_tgt2.0_trail0_stop0.5        n=426   exp=-0.0345R  positive 2/4
+2026-09-25 22:59:41,918 INFO   ema10_tgt2.0_trail0_stop1.0        n=334   exp=-0.0219R  positive 2/4
+2026-09-25 22:59:42,614 INFO   ema10_tgt3.0_trail1_stop0.3        n=559   exp=+0.0651R  positive 3/4
+2026-09-25 22:59:43,303 INFO   ema10_tgt3.0_trail1_stop0.5        n=514   exp=+0.0134R  positive 3/4
+2026-09-25 22:59:43,974 INFO   ema10_tgt3.0_trail1_stop1.0        n=403   exp=+0.0089R  positive 2/4
+2026-09-25 22:59:44,643 INFO   ema10_tgt3.0_trail0_stop0.3        n=361   exp=+0.0460R  positive 3/4
+2026-09-25 22:59:45,300 INFO   ema10_tgt3.0_trail0_stop0.5        n=342   exp=+0.0406R  positive 3/4
+2026-09-25 22:59:45,950 INFO   ema10_tgt3.0_trail0_stop1.0        n=265   exp=+0.0543R  positive 2/4
+2026-09-25 22:59:46,629 INFO   ema20_tgt0.0_trail1_stop0.3        n=443   exp=+0.0291R  positive 2/4
+2026-09-25 22:59:47,296 INFO   ema20_tgt0.0_trail1_stop0.5        n=403   exp=+0.1102R  positive 3/4
+2026-09-25 22:59:47,969 INFO   ema20_tgt0.0_trail1_stop1.0        n=320   exp=+0.0984R  positive 3/4
+2026-09-25 22:59:48,655 INFO   ema20_tgt2.0_trail1_stop0.3        n=580   exp=-0.0184R  positive 2/4
+2026-09-25 22:59:49,344 INFO   ema20_tgt2.0_trail1_stop0.5        n=498   exp=+0.0576R  positive 3/4
+2026-09-25 22:59:50,020 INFO   ema20_tgt2.0_trail1_stop1.0        n=381   exp=+0.0299R  positive 3/4
+2026-09-25 22:59:50,685 INFO   ema20_tgt2.0_trail0_stop0.3        n=478   exp=-0.0255R  positive 2/4
+2026-09-25 22:59:51,348 INFO   ema20_tgt2.0_trail0_stop0.5        n=400   exp=+0.0635R  positive 2/4
+2026-09-25 22:59:52,006 INFO   ema20_tgt2.0_trail0_stop1.0        n=327   exp=-0.0080R  positive 1/4
+2026-09-25 22:59:52,683 INFO   ema20_tgt3.0_trail1_stop0.3        n=525   exp=+0.0229R  positive 3/4
+2026-09-25 22:59:53,370 INFO   ema20_tgt3.0_trail1_stop0.5        n=454   exp=+0.0493R  positive 3/4
+2026-09-25 22:59:54,049 INFO   ema20_tgt3.0_trail1_stop1.0        n=355   exp=+0.0014R  positive 1/4
+2026-09-25 22:59:54,699 INFO   ema20_tgt3.0_trail0_stop0.3        n=371   exp=+0.0375R  positive 3/4
+2026-09-25 22:59:55,359 INFO   ema20_tgt3.0_trail0_stop0.5        n=341   exp=-0.0249R  positive 1/4
+2026-09-25 22:59:56,011 INFO   ema20_tgt3.0_trail0_stop1.0        n=261   exp=+0.0092R  positive 2/4
+2026-09-25 22:59:56,012 INFO Winner ema10_tgt3.0_trail1_stop0.3 — single holdout run on 30 unseen symbols
+
+# Daily trend pullback
+
+**Research:** 40 large caps · trading from 2023-01-01 · daily bars (indicators warmed on earlier history)  
+**Locked holdout:** 30 different companies (insurers, financials, industrials, materials) — opened once, at the end  
+**Generated:** 2026-09-25 22:59
+
+**30 configurations tried.** 13 passed.
+
+| Configuration | Trades | Expectancy | Positive in | Worst period | Max DD |
+|---|---|---|---|---|---|
+| `ema20_tgt0.0_trail1_stop0.5` | 403 | +0.1102R | 3/4 | -0.1706R | -25.57% |
+| `ema20_tgt0.0_trail1_stop1.0` | 320 | +0.0984R | 3/4 | -0.2818R | -26.13% |
+| `ema10_tgt3.0_trail1_stop0.3` | 559 | +0.0651R | 3/4 | -0.0818R | -30.79% |
+| `ema20_tgt2.0_trail0_stop0.5` | 400 | +0.0635R | 2/4 | -0.0092R | -24.41% |
+| `ema20_tgt2.0_trail1_stop0.5` | 498 | +0.0576R | 3/4 | -0.0821R | -21.94% |
+| `ema10_tgt3.0_trail0_stop1.0` | 265 | +0.0543R | 2/4 | -0.2247R | -26.6% |
+| `ema20_tgt3.0_trail1_stop0.5` | 454 | +0.0493R | 3/4 | -0.1402R | -24.17% |
+| `ema10_tgt3.0_trail0_stop0.3` | 361 | +0.0460R | 3/4 | -0.3056R | -36.13% |
+| `ema10_tgt3.0_trail0_stop0.5` | 342 | +0.0406R | 3/4 | -0.3774R | -38.34% |
+| `ema20_tgt3.0_trail0_stop0.3` | 371 | +0.0375R | 3/4 | -0.2054R | -28.28% |
+| `ema20_tgt2.0_trail1_stop1.0` | 381 | +0.0299R | 3/4 | -0.2012R | -25.19% |
+| `ema20_tgt0.0_trail1_stop0.3` | 443 | +0.0291R | 2/4 | -0.2728R | -30.03% |
+
+## Selected configuration
+
+**`ema10_tgt3.0_trail1_stop0.3`** — {"fast": 10, "mid": 50, "slow": 200, "touch_atr": 0.25, "touch_window": 3, "trend_bars": 10, "stop_atr": 0.3, "target_r": 3.0, "trail_ema": true, "trail_after_r": 1.0, "max_hold": 60, "risk_pct": 1.0, "max_open": 8}
+
+| | Research | **Holdout (unseen companies)** |
+|---|---|---|
+| Trades | 559 | **548** |
+| Expectancy | +0.0651R | **+0.1128R** |
+| Total R | +36.4 | **+61.8** |
+| Positive in | 3/4 | **2/4** |
+| Win rate | — | **48.3%** |
+| Return (1% risk) | — | **88.1%** |
+| Max drawdown | -30.79% | **-29.14%** |
+
+### Verdict
+
+**Did not clear the bar on unseen companies.**
+
+Expectancy +0.1128R over 548 trades, positive in 2/4 periods. Positive numbers that small do not survive real costs. No re-tuning against the holdout.
