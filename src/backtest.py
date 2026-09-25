@@ -219,6 +219,8 @@ class Backtester:
             "risk_per_share": risk_per_share if risk_per_share > 0 else 1e-9,
             "moved_to_breakeven": False,
             "partial_taken": False,
+            "partial_r": 0.0,
+            "remaining": 1.0,
             "original_stop": signal.stop,
         }
         return trade, meta
@@ -252,6 +254,15 @@ class Backtester:
             self._close_trade(trade, meta, trade.target, ts, "target")
             return True
 
+        if reached_1R and cfg.get("partial_at_1R", False) and not meta["partial_taken"]:
+            # Bank half the position at 1R, run the rest. Recorded as a
+            # weighted R so the trade's final number reflects both exits.
+            meta["partial_taken"] = True
+            meta["partial_r"] = 1.0
+            meta["remaining"] = 0.5
+            trade.stop = trade.entry
+            meta["moved_to_breakeven"] = True
+
         if cfg.breakeven_after_1R and reached_1R and not meta["moved_to_breakeven"]:
             trade.stop = trade.entry
             meta["moved_to_breakeven"] = True
@@ -275,8 +286,12 @@ class Backtester:
             move = fill - trade.entry
         else:
             move = trade.entry - fill
-        trade.r_multiple = round(move / rps, 3)
-        trade.pnl = round(move * trade.shares - self.commission * trade.shares * 2, 2)
+        final_r = move / rps
+        remaining = meta.get("remaining", 1.0)
+        blended = (1.0 - remaining) * meta.get("partial_r", 0.0) + remaining * final_r
+        trade.r_multiple = round(blended, 3)
+        trade.pnl = round(blended * rps * trade.shares
+                          - self.commission * trade.shares * 2, 2)
 
     # -----------------------------------------------------------------
     def _summarize(self, trades: list[Trade], rejections: list[dict],
