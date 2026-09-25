@@ -409,6 +409,7 @@ class Backtester:
             rej_counts[rej["reason"]] = rej_counts.get(rej["reason"], 0) + 1
 
         stats = {
+            "stop_analysis": _stop_analysis(trades),
             "buckets": _buckets(trades),
             "n_trades": len(trades),
             "trading_days": n_days,
@@ -461,6 +462,50 @@ def _htf_trend(df: pd.DataFrame, cfg):
     trend = np.sign(htf["close"] - ema)
     trend.index = trend.index + pd.Timedelta(minutes=minutes)
     return trend
+
+
+def _stop_analysis(trades: list[Trade]) -> dict:
+    """Was the stop in the right place?
+
+    The standard tool is Maximum Adverse Excursion: how far each trade went
+    AGAINST you before it resolved. If winners never took much heat, the stop
+    is further away than it needs to be and could be tightened - smaller
+    losses, bigger size, same winners. If winners routinely dipped close to
+    the stop, tightening it would convert those winners into losses.
+    """
+    if not trades:
+        return {}
+    wins = [t for t in trades if t.r_multiple > 0]
+    losses = [t for t in trades if t.r_multiple <= 0]
+
+    def pct(vals, q):
+        return round(float(np.percentile(vals, q)), 3) if vals else 0.0
+
+    win_mae = [abs(t.mae_r) for t in wins]
+    loss_mae = [abs(t.mae_r) for t in losses]
+    stop_dist_pct = [abs(t.entry - meta) / t.entry * 100
+                     for t, meta in ((t, t.stop) for t in trades) if t.entry]
+
+    out = {
+        "n_wins": len(wins),
+        "n_losses": len(losses),
+        "median_stop_distance_pct": round(float(np.median(stop_dist_pct)), 3)
+        if stop_dist_pct else 0.0,
+        "winner_mae_median_R": pct(win_mae, 50),
+        "winner_mae_p90_R": pct(win_mae, 90),
+        "winner_mae_max_R": round(max(win_mae), 3) if win_mae else 0.0,
+        "loser_mae_median_R": pct(loss_mae, 50),
+        "winner_mfe_median_R": round(float(np.median([t.mfe_r for t in wins])), 3)
+        if wins else 0.0,
+        "loser_mfe_median_R": round(float(np.median([t.mfe_r for t in losses])), 3)
+        if losses else 0.0,
+        "loser_mfe_p75_R": pct([t.mfe_r for t in losses], 75),
+    }
+    # What would a tighter stop have cost in winners?
+    for tight in (0.5, 0.7, 0.8):
+        killed = sum(1 for m in win_mae if m > tight)
+        out[f"winners_lost_at_{tight}R_stop"] = killed
+    return out
 
 
 def _buckets(trades: list[Trade]) -> dict[str, list[dict]]:
