@@ -26,6 +26,7 @@ import pandas as pd
 from .backtest import Backtester
 from .config import REPO_ROOT, Credentials, Section, load_config
 from .data import AlpacaError, MarketData
+from .history import record
 from .indicators import resample_bars
 
 REPORTS = REPO_ROOT / "reports"
@@ -42,6 +43,7 @@ log = logging.getLogger("sweep")
 # FIRST 5-minute candle, entries only 09:30-11:00, displacement required before
 # the retest counts, two attempts per session, done after one winner.
 FAITHFUL = {
+    "risk": {"exit_style": "fixed"},
     "strategy": {
         "session": {"opening_range_minutes": 5, "no_entries_before": "09:35",
                     "no_entries_after": "11:00", "flatten_at": "15:55"},
@@ -94,6 +96,15 @@ def variants() -> dict[str, dict]:
             {"strategy": {"retest": {"max_bars_after_break": 4}}}),
         "faithful +strong-volume": with_faithful(
             {"strategy": {"breakout": {"volume_multiple": 1.8}}}),
+        # the discretionary exit rules, and the 1H context gate
+        "faithful +momentum-exits": with_faithful({"risk": {"exit_style": "momentum"}}),
+        "faithful +momentum +1H": with_faithful(
+            {"risk": {"exit_style": "momentum"},
+             "strategy": {"filters": {"require_htf_alignment": True}}}),
+        "faithful +1H-context": with_faithful(
+            {"strategy": {"filters": {"require_htf_alignment": True}}}),
+        "faithful +momentum 5-candle": with_faithful(
+            {"risk": {"exit_style": "momentum", "observe_bars": 5}}),
     }
 
 
@@ -216,6 +227,22 @@ def main(argv: list[str] | None = None) -> int:
             })
             log.info("  %-28s @ %2dm  n=%-4d exp=%+.3fR  positive in %d/%d periods",
                      name, tf, total_n, overall, positive, len(scored))
+
+    # Record the best variant of this sweep in the run history so iterations
+    # can be compared against each other over time.
+    if rows:
+        best = max(rows, key=lambda r: (r.get("periods_positive", 0),
+                                        r["expectancy_R"]))
+        best_cfg = Section(deep_merge(dict(cfg), variants().get(best["variant"], {})))
+        best_cfg["strategy"]["timeframe_minutes"] = int(best["timeframe"].rstrip("m"))
+        record("sweep", dict(best_cfg),
+               {"n_trades": best["n"], "expectancy_R": best["expectancy_R"],
+                "total_R": best["total_R"], "win_rate_pct": 0.0,
+                "max_drawdown_pct": best["max_dd_pct"]},
+               label=best["variant"], symbols=symbols,
+               period=f"{args.start}->{args.end or 'today'}",
+               extra={"periods_positive": best.get("periods_positive", 0),
+                      "periods_scored": best.get("periods_scored", 0)})
 
     REPORTS.mkdir(exist_ok=True)
     (REPORTS / "sweep.json").write_text(json.dumps(rows, indent=2, default=str))
