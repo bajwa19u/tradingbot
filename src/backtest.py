@@ -19,6 +19,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from .indicators import resample_bars
 from .strategy.break_retest import (
     BreakRetestEngine,
     Signal,
@@ -83,6 +84,7 @@ class Backtester:
         trades: list[Trade] = []
         rejections: list[dict] = []
         days_traded: set = set()
+        htf = {sym: _htf_trend(df, self.cfg) for sym, df in bars_by_symbol.items()}
 
         # Group everything by trading day so the daily trade cap is real
         all_days = sorted({
@@ -92,7 +94,7 @@ class Backtester:
 
         for day in all_days:
             day_trades, day_rejections = self._run_day(
-                day, bars_by_symbol, daily_by_symbol
+                day, bars_by_symbol, daily_by_symbol, htf
             )
             trades.extend(day_trades)
             rejections.extend(day_rejections)
@@ -102,7 +104,8 @@ class Backtester:
         return self._summarize(trades, rejections, len(all_days))
 
     # -----------------------------------------------------------------
-    def _run_day(self, day, bars_by_symbol, daily_by_symbol
+    def _run_day(self, day, bars_by_symbol, daily_by_symbol,
+                 htf_by_symbol: dict | None = None
                  ) -> tuple[list[Trade], list[dict]]:
         cfg = self.cfg
         filters = cfg.strategy.filters
@@ -113,6 +116,7 @@ class Backtester:
         won_today = False
         stop_after_win = bool(filters.get("stop_after_first_win", False))
 
+        htf_by_symbol = htf_by_symbol or {}
         engines: dict[str, BreakRetestEngine] = {}
         open_trades: dict[str, tuple[Trade, dict]] = {}
         per_symbol_count: dict[str, int] = {}
@@ -133,7 +137,8 @@ class Backtester:
             prior = daily[daily.index.normalize() < day] if daily is not None \
                 and len(daily) else None
             a = compute_daily_atr(prior) if prior is not None else 0.0
-            engines[sym] = BreakRetestEngine(sym, cfg, a)
+            engines[sym] = BreakRetestEngine(sym, cfg, a,
+                                             htf_trend=htf_by_symbol.get(sym))
 
         # One sorted stream of (timestamp, symbol, bar) instead of scanning
         # every symbol at every timestamp.
@@ -203,13 +208,21 @@ class Backtester:
         else:
             fill = signal.entry * (1 - slip)
         risk_per_share = abs(fill - signal.stop)
+        # Under momentum management the target is not known at entry - it is
+        # decided by how the first few candles behave. Start it out of reach
+        # so the fixed-target check cannot close the trade first.
+        target = signal.target
+        if str(self.cfg.risk.get("exit_style", "fixed")) == "momentum":
+            reach = 999.0 * risk_per_share
+            target = fill + reach if signal.direction == "long" else fill - reach
+
         trade = Trade(
             symbol=signal.symbol,
             direction=signal.direction,
             entry_time=signal.timestamp,
             entry=round(fill, 4),
             stop=signal.stop,
-            target=signal.target,
+            target=target,
             shares=signal.shares,
             pattern=signal.pattern,
             entry_hour=signal.timestamp.hour,
@@ -221,6 +234,9 @@ class Backtester:
             "partial_taken": False,
             "partial_r": 0.0,
             "remaining": 1.0,
+            "peak_R": 0.0,
+            "decided": None,
+            "trailing": False,
             "original_stop": signal.stop,
         }
         return trade, meta
@@ -247,12 +263,20 @@ class Backtester:
 
         # Pessimistic: if both are touched in the same bar, the stop wins
         if hit_stop:
-            self._close_trade(trade, meta, trade.stop, ts,
-                              "breakeven" if meta["moved_to_breakeven"] else "stop")
+            if meta.get("trailing"):
+                reason = "trail"
+            elif meta["moved_to_breakeven"]:
+                reason = "breakeven"
+            else:
+                reason = "stop"
+            self._close_trade(trade, meta, trade.stop, ts, reason)
             return True
         if hit_target:
             self._close_trade(trade, meta, trade.target, ts, "target")
             return True
+
+        if str(cfg.get("exit_style", "fixed")) == "momentum":
+            return self._momentum_exit(trade, meta, bar, ts, high, low, rps)
 
         if reached_1R and cfg.get("partial_at_1R", False) and not meta["partial_taken"]:
             # Bank half the position at 1R, run the rest. Recorded as a
@@ -268,6 +292,72 @@ class Backtester:
             meta["moved_to_breakeven"] = True
 
         # Time stop
+        flatten_at = _parse_time(self.cfg.strategy.session.flatten_at)
+        if ts.time() >= flatten_at:
+            self._close_trade(trade, meta, float(bar["close"]), ts, "time_stop")
+            return True
+        return False
+
+    def _momentum_exit(self, trade: Trade, meta: dict, bar, ts: datetime,
+                       high: float, low: float, rps: float) -> bool:
+        """Discretionary-style exit management.
+
+        The trade is watched for `observe_bars` candles and then handled
+        according to how fast it moved:
+
+          fast   — reached `fast_target_R` inside the window: the stop is
+                   lifted to that level and then trailed behind each candle,
+                   letting the move run instead of capping it.
+          medium — got past `slow_target_R` but never convincingly through
+                   `fast_target_R`: take the money at `slow_target_R`.
+          slow   — never got going: target drops to `slow_target_R`.
+
+        Separately, the first time price comes back and touches the entry
+        after having moved away, the stop is moved to entry. One retest is
+        allowed, not two.
+        """
+        risk = self.cfg.risk
+        observe = int(risk.get("observe_bars", 3))
+        fast_R = float(risk.get("fast_target_R", 2.0))
+        slow_R = float(risk.get("slow_target_R", 1.5))
+        long = trade.direction == "long"
+
+        def price_at(r: float) -> float:
+            return trade.entry + r * rps if long else trade.entry - r * rps
+
+        high_R = (high - trade.entry) / rps if long else (trade.entry - low) / rps
+        low_R = (low - trade.entry) / rps if long else (trade.entry - high) / rps
+        meta["peak_R"] = max(meta.get("peak_R", 0.0), high_R)
+
+        # --- one retest of entry, then the stop sits at entry ---------------
+        if (not meta["moved_to_breakeven"]
+                and meta["peak_R"] >= float(risk.get("retest_arm_R", 0.3))
+                and low_R <= 0):
+            trade.stop = trade.entry
+            meta["moved_to_breakeven"] = True
+
+        # --- momentum assessment inside the observation window --------------
+        if not meta.get("decided"):
+            if high_R >= fast_R:
+                # Moved fast. Protect at the fast target and trail from here.
+                trade.stop = price_at(fast_R) if long else price_at(fast_R)
+                trade.target = price_at(99.0)          # effectively uncapped
+                meta["trailing"] = True
+                meta["decided"] = "fast"
+            elif trade.bars_held >= observe:
+                # Window is up and it never ran. Settle for the smaller target.
+                trade.target = price_at(slow_R)
+                meta["decided"] = "slow"
+            elif high_R >= slow_R:
+                # Got past the smaller target but has not cleared the big one.
+                trade.target = price_at(slow_R)
+                meta["decided"] = "medium"
+
+        # --- trail behind each completed candle once running ----------------
+        if meta.get("trailing"):
+            trail = float(bar["low"]) if long else float(bar["high"])
+            trade.stop = max(trade.stop, trail) if long else min(trade.stop, trail)
+
         flatten_at = _parse_time(self.cfg.strategy.session.flatten_at)
         if ts.time() >= flatten_at:
             self._close_trade(trade, meta, float(bar["close"]), ts, "time_stop")
@@ -353,6 +443,27 @@ class Backtester:
             "equity_curve": [round(float(x), 2) for x in curve],
             "stats": stats,
         }
+
+
+def _htf_trend(df: pd.DataFrame, cfg):
+    """+1/-1 trend from higher-timeframe bars, e.g. the 1-hour chart.
+
+    The series index is pushed forward by one HTF bar so that at any moment
+    only bars that have actually CLOSED are visible. Without that shift the
+    backtest would be reading the close of a candle still forming, which is
+    look-ahead and would flatter every result.
+    """
+    if df is None or not len(df):
+        return None
+    minutes = int(cfg.strategy.get("htf_minutes", 60))
+    period = int(cfg.strategy.get("htf_ema", 20))
+    htf = resample_bars(df, minutes)
+    if len(htf) < period + 1:
+        return None
+    ema = htf["close"].ewm(span=period, adjust=False).mean()
+    trend = np.sign(htf["close"] - ema)
+    trend.index = trend.index + pd.Timedelta(minutes=minutes)
+    return trend
 
 
 def _buckets(trades: list[Trade]) -> dict[str, list[dict]]:
