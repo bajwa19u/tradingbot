@@ -292,7 +292,8 @@ def by_periods(data: dict, p: dict, n: int, trade_from=None) -> dict:
         total_R += st["total_R"]
         worst_dd = min(worst_dd, st.get("max_drawdown_pct", 0.0))
     scored = [x for x in per if x["n"] >= 10]
-    return {"n": total_n,
+    return {"per_period": per,
+            "n": total_n,
             "expectancy_R": round(total_R / total_n, 4) if total_n else 0.0,
             "total_R": round(total_R, 1),
             "periods_positive": sum(1 for x in scored if x["expectancy_R"] > 0),
@@ -309,6 +310,10 @@ def main(argv=None) -> int:
     ap.add_argument("--end", default=None)
     ap.add_argument("--periods", type=int, default=4)
     ap.add_argument("--min-trades", type=int, default=100)
+    ap.add_argument("--only", default=None,
+                    help="run just this configuration by name - no search, no "
+                         "selection. Use it to test an already-chosen config "
+                         "on a different era.")
     args = ap.parse_args(argv)
 
     # Fetch well before the trading window so the slow EMA and ATR are valid
@@ -334,6 +339,13 @@ def main(argv=None) -> int:
         return 1
 
     configs = grid()
+    if args.only:
+        configs = [(n, p) for n, p in configs if n == args.only]
+        if not configs:
+            log.error("No configuration named %s. Available: %s",
+                      args.only, ", ".join(n for n, _ in grid()))
+            return 1
+        log.info("Single-configuration run (no search): %s", args.only)
     log.info("Scoring %d configurations across %d periods", len(configs), args.periods)
     results = []
     for i, (name, p) in enumerate(configs, 1):
