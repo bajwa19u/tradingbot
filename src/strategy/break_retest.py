@@ -208,6 +208,26 @@ class BreakRetestEngine:
             return False
         return True
 
+    def _volume_baseline(self, b) -> float:
+        """What counts as 'normal' volume for this bar.
+
+        Intraday volume is heavily front-loaded: the first 15 minutes routinely
+        trade several times what 11:00 does. Measuring a mid-morning breakout
+        against the opening range therefore rejects almost every real break,
+        which is exactly what the first backtest showed (2711 rejections).
+        The default baseline is a rolling window of recent bars, which tracks
+        the decay and asks the question the methodology actually asks: is
+        volume expanding *relative to what this stock has just been doing*?
+        """
+        mode = b.get("volume_baseline", "recent")
+        if mode == "opening_range":
+            return self.or_avg_volume
+        lookback = int(b.get("volume_lookback_bars", 6))
+        prior = self._bars[:-1][-lookback:]   # exclude the break bar itself
+        if not prior:
+            return self.or_avg_volume
+        return float(np.mean([float(x["volume"]) for x in prior]))
+
     # -- rule 2 -------------------------------------------------------------
     def _check_for_break(self, bar: pd.Series, ts: datetime) -> None:
         b = self.s.breakout
@@ -230,11 +250,12 @@ class BreakRetestEngine:
         if direction == "short" and not f.trade_shorts:
             return
 
-        if self.or_avg_volume > 0 and \
-                float(bar["volume"]) < b.volume_multiple * self.or_avg_volume:
+        baseline = self._volume_baseline(b)
+        if baseline > 0 and float(bar["volume"]) < b.volume_multiple * baseline:
             self._reject(ts, "break_volume_too_low",
                          f"{bar['volume']:.0f} < "
-                         f"{b.volume_multiple * self.or_avg_volume:.0f}")
+                         f"{b.volume_multiple * baseline:.0f} "
+                         f"(baseline={b.get('volume_baseline', 'recent')})")
             return
 
         self.direction = direction
@@ -381,16 +402,19 @@ def _minutes_since(ts: datetime, open_time: time) -> float:
 
 
 def compute_daily_atr(daily_bars: pd.DataFrame, period: int = 14) -> float:
-    """ATR in dollars from daily bars, scaled to an intraday-usable value.
+    """Plain 14-day ATR in dollars.
 
-    The opening-range and stop-buffer rules are expressed in ATR multiples,
-    so this needs to be an intraday-relevant number rather than a full daily
-    range. We use the daily ATR divided by the square root of the number of
-    5-minute buckets in a session, the standard volatility-scaling
-    approximation."""
+    Earlier this scaled the daily ATR down by sqrt(3/78) to approximate three
+    five-minute bars of volatility. That was wrong in practice: the opening
+    range is the most volatile stretch of the session, not an average one, so
+    ordinary ranges measured 2-3x the scaled figure and got thrown out as
+    "too wide" (538 rejections in the first backtest).
+
+    The value returned is now the raw daily ATR, and every *_atr_multiple in
+    config.yaml is a fraction of it — which is also far easier to reason
+    about: an opening range is typically 0.2-0.4 of a day's ATR.
+    """
     if daily_bars is None or len(daily_bars) < period + 1:
         return 0.0
     value = float(atr(daily_bars, period).iloc[-1])
-    if np.isnan(value):
-        return 0.0
-    return value / np.sqrt(78.0) * np.sqrt(3.0)  # ~3 five-minute bars of vol
+    return 0.0 if np.isnan(value) else value
