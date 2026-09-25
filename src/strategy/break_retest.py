@@ -117,6 +117,7 @@ class BreakRetestEngine:
         self.break_index: int | None = None
         self.extreme_since_break: float | None = None
         self.retest_seen = False
+        self.retest_kind = "level"
         self.rejections: list[Rejection] = []
         self._bars: list[pd.Series] = []
         self._vwap_num = 0.0
@@ -211,6 +212,27 @@ class BreakRetestEngine:
                          f"{ratio:.2f} ATR < {b.min_range_atr_multiple}")
             return False
         return True
+
+    def _breakout_fvg(self) -> tuple[float, float] | None:
+        """The fair-value gap left by the impulse that broke the level.
+
+        A bullish FVG is a three-candle imbalance: the high of the candle
+        before the breakout sits BELOW the low of the candle after it, so a
+        band of prices was skipped. Price often returns into that band rather
+        than all the way back to the level, and the methodology treats a
+        retest of either as valid.
+        """
+        if self.break_index is None or self.break_index < 1:
+            return None
+        if len(self._bars) < self.break_index + 2:
+            return None
+        before = self._bars[self.break_index - 1]
+        after = self._bars[self.break_index + 1]
+        if self.direction == "long":
+            lo, hi = float(before["high"]), float(after["low"])
+            return (lo, hi) if hi > lo else None
+        lo, hi = float(after["high"]), float(before["low"])
+        return (lo, hi) if hi > lo else None
 
     def _volume_baseline(self, b) -> float:
         """What counts as 'normal' volume for this bar.
@@ -310,7 +332,9 @@ class BreakRetestEngine:
             self._reject(ts, "failed_break", f"close {close:.2f} > level {self.level:.2f}")
             return None
 
-        # Did this bar actually touch the level?
+        # Did this bar touch the level - or the fair-value gap the breakout
+        # left behind? The methodology accepts either: "retest the range
+        # itself or a FVG created from the breakout".
         tol = (self.atr * r.tolerance_atr_multiple) if self.atr > 0 \
             else self.level * 0.002
         if self.direction == "long":
@@ -319,6 +343,19 @@ class BreakRetestEngine:
         else:
             touched = (float(bar["high"]) if r.allow_wick_only else close) \
                 >= self.level - tol
+
+        fvg = self._breakout_fvg() if r.get("allow_fvg", True) else None
+        if not touched and fvg is not None:
+            lo, hi = fvg
+            if self.direction == "long":
+                touched = float(bar["low"]) <= hi
+            else:
+                touched = float(bar["high"]) >= lo
+            if touched:
+                self.retest_kind = "fvg"
+        elif touched:
+            self.retest_kind = "level"
+
         if not touched:
             return None
         self.retest_seen = True
@@ -403,7 +440,7 @@ class BreakRetestEngine:
             risk_per_share=round(risk_per_share, 4),
             reward_multiple=risk_cfg.reward_multiple,
             level=round(float(self.level), 4),
-            pattern=pattern,
+            pattern=f"{pattern}@{self.retest_kind}",
             opening_range_high=round(float(self.or_high), 4),
             opening_range_low=round(float(self.or_low), 4),
             atr=round(self.atr, 4),
