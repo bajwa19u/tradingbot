@@ -1,8 +1,10 @@
 name: Backtest
 
 # Runs every Saturday morning, and any time you click "Run workflow".
-# Results are committed to reports/latest.md so the history of how the
-# strategy performed under each set of rules stays in the repo.
+#
+# Everything the run prints is captured to reports/last_run.log and committed
+# back to the repo, so a failure can be read straight from the repository
+# instead of dug out of the Actions log viewer.
 on:
   schedule:
     - cron: "0 13 * * 6"
@@ -36,72 +38,93 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Check required secrets are present
+      - name: Run the unit tests first
+        run: python -m pytest tests/ -q
+
+      - name: Diagnose the data connection
+        id: diag
+        continue-on-error: true
         env:
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
         run: |
-          missing=0
-          if [ -z "${ALPACA_API_KEY}" ]; then
-            echo "::error::ALPACA_API_KEY secret is not set"
-            missing=1
-          fi
-          if [ -z "${ALPACA_API_SECRET}" ]; then
-            echo "::error::ALPACA_API_SECRET secret is not set"
-            missing=1
-          fi
-          if [ "$missing" -eq 1 ]; then
-            echo "Add them at Settings -> Secrets and variables -> Actions."
-            exit 1
-          fi
-          echo "Alpaca credentials present."
-
-      - name: Run the unit tests first
-        run: python -m pytest tests/ -q
+          mkdir -p reports
+          set +e
+          python -m tools.diagnose 2>&1 | tee reports/last_run.log
+          echo "diag_exit=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
 
       - name: Backtest
+        id: bt
+        continue-on-error: true
         env:
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
-          # Inputs go through the environment rather than being pasted into
-          # the script, so a blank field cannot break the shell and a stray
-          # character cannot be executed.
           IN_START: ${{ inputs.start }}
           IN_END: ${{ inputs.end }}
           IN_SYMBOLS: ${{ inputs.symbols }}
         run: |
-          set -euo pipefail
+          set -uo pipefail
           ARGS=()
           [ -n "${IN_START:-}" ]   && ARGS+=(--start   "${IN_START}")   || true
           [ -n "${IN_END:-}" ]     && ARGS+=(--end     "${IN_END}")     || true
           [ -n "${IN_SYMBOLS:-}" ] && ARGS+=(--symbols "${IN_SYMBOLS}") || true
-          echo "Running: python -m src.run_backtest ${ARGS[*]:-(config defaults)}"
-          python -m src.run_backtest ${ARGS[@]+"${ARGS[@]}"}
+          {
+            echo ""
+            echo "============================================================"
+            echo "BACKTEST"
+            echo "============================================================"
+            echo "args: ${ARGS[*]:-(config defaults)}"
+          } >> reports/last_run.log
+          set +e
+          python -m src.run_backtest ${ARGS[@]+"${ARGS[@]}"} 2>&1 \
+            | tee -a reports/last_run.log
+          code=${PIPESTATUS[0]}
+          echo "bt_exit=${code}" >> "$GITHUB_OUTPUT"
+          echo "" >> reports/last_run.log
+          echo "exit code: ${code}" >> reports/last_run.log
 
-      - uses: actions/upload-artifact@v4
+      - name: Commit the log and any report
+        if: always()
+        run: |
+          git config user.name  "tradingbot"
+          git config user.email "tradingbot@users.noreply.github.com"
+          git add -A reports/ || true
+          if ! git diff --cached --quiet; then
+            git commit -m "backtest: run log and results [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed - log is still in the artifact"
+          else
+            echo "nothing to commit"
+          fi
+
+      - uses: actions/upload-artifact@v5
         if: always()
         with:
           name: backtest-report
           path: reports/
           if-no-files-found: ignore
 
-      - name: Commit the report
-        run: |
-          if [[ -n "$(git status --porcelain reports/)" ]]; then
-            git config user.name  "tradingbot"
-            git config user.email "tradingbot@users.noreply.github.com"
-            git add reports/
-            git commit -m "backtest: refresh results [skip ci]"
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
-            git push
-          fi
-
       - name: Summary
         if: always()
         run: |
-          if [ -f reports/latest.md ]; then
-            cat reports/latest.md >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "No report produced - see the Backtest step log above." \
-              >> "$GITHUB_STEP_SUMMARY"
+          {
+            if [ -f reports/latest.md ]; then
+              cat reports/latest.md
+            else
+              echo "## Backtest did not produce a report"
+              echo ""
+              echo "Full log committed to \`reports/last_run.log\`."
+              echo ""
+              echo '```'
+              tail -n 60 reports/last_run.log 2>/dev/null || echo "(no log)"
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail if the backtest failed
+        if: always()
+        run: |
+          if [ "${{ steps.bt.outputs.bt_exit }}" != "0" ]; then
+            echo "::error::Backtest exited ${{ steps.bt.outputs.bt_exit }} - see reports/last_run.log"
+            exit 1
           fi
