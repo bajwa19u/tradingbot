@@ -352,7 +352,24 @@ def render(p: dict, research, args, tf) -> str:
                 f"**{h['periods_positive']}/{h['periods_scored']}** |",
                 f"| Max drawdown | {w['max_dd_pct']}% | **{h['max_dd_pct']}%** |"]
         out += ["", "### Verdict", ""]
-        if h["expectancy_R"] > 0 and h["n"] >= 50:
+        strong = (h["expectancy_R"] >= 0.05 and h["n"] >= 100
+                  and h["periods_positive"] >= h["periods_scored"] - 1)
+        weak = h["expectancy_R"] > 0 and h["n"] >= 50
+        if weak and not strong:
+            out += ["**Positive on the holdout, but too small to trade.**", "",
+                    f"Expectancy of {h['expectancy_R']:+.3f}R means about "
+                    f"{abs(h['expectancy_R']) * 20:.2f} cents per trade if you "
+                    f"risk $20 - roughly ${h['expectancy_R'] * h['n'] * 20:.0f} "
+                    f"across all {h['n']} holdout trades. Commissions, wider "
+                    "real spreads, or one missed fill erases it.", "",
+                    f"It was also positive in only {h['periods_positive']} of "
+                    f"{h['periods_scored']} holdout periods, which is close to "
+                    "a coin flip.", "",
+                    "The right conclusion is not 'it works, trade it smaller'. "
+                    "It is that the search did not find an edge worth having, "
+                    "and the holdout confirmed the absence rather than a "
+                    "presence. Nothing here justifies risking money."]
+        elif strong:
             out += ["**It held up on data it had never seen.**", "",
                     "That is the strongest result this process can produce, and "
                     "it is still not a guarantee. Next steps, in order: paper "
