@@ -29,7 +29,7 @@ class EmaPullbackEngine:
     """One symbol, one trading day."""
 
     def __init__(self, symbol: str, cfg, daily_atr: float,
-                 avg_daily_volume: float = 0.0, htf_trend=None):
+                 avg_daily_volume: float = 0.0, htf_trend=None, context=None):
         self.symbol = symbol
         self.cfg = cfg
         self.p = cfg.strategy.get("ema_pullback", {})
@@ -42,6 +42,18 @@ class EmaPullbackEngine:
         self.ema_slow: float | None = None
         self.fast_hist: deque = deque(maxlen=200)
         self._seed: list[float] = []
+
+        # Seed the moving averages from previous sessions. Without this the
+        # engine restarts blind every morning and a 50-period EMA on 5-minute
+        # bars is not ready until four hours into the day - a 100-period one
+        # never is. That silently produced zero trades for this whole family.
+        warmup = list((context or {}).get("warmup_closes") or [])
+        if warmup:
+            need = max(self.slow_n, self.fast_n) * 3
+            for close in warmup[-need:]:
+                self._update_emas(close)
+                if self.ema_fast is not None:
+                    self.fast_hist.append(self.ema_fast)
 
         self.bars: list = []
         self.rejections: list[Rejection] = []
