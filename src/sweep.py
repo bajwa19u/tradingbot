@@ -87,6 +87,13 @@ def variants() -> dict[str, dict]:
         "faithful +no-breakeven": with_faithful({"risk": {"breakeven_after_1R": False}}),
         "faithful +loose-volume": with_faithful(
             {"strategy": {"breakout": {"volume_multiple": 1.0}}}),
+        "faithful +partial-at-1R": with_faithful({"risk": {"partial_at_1R": True}}),
+        "faithful +tight-window": with_faithful(
+            {"strategy": {"session": {"no_entries_after": "10:30"}}}),
+        "faithful +fast-retest-only": with_faithful(
+            {"strategy": {"retest": {"max_bars_after_break": 4}}}),
+        "faithful +strong-volume": with_faithful(
+            {"strategy": {"breakout": {"volume_multiple": 1.8}}}),
     }
 
 
@@ -139,6 +146,24 @@ def main(argv: list[str] | None = None) -> int:
         log.info("timeframe %dm: %d bars",
                  tf, sum(len(d) for d in by_tf[tf].values()))
 
+    # Split the period: variants are judged on the TRAIN window, then the
+    # winner is checked on dates it has never seen. A variant that only looks
+    # good on train is a curve-fit, and this is the only way to see that.
+    all_days = sorted({d for df in minute.values() if len(df)
+                       for d in df.index.normalize().unique()})
+    if len(all_days) < 40:
+        log.error("Only %d trading days - too few to split. Use a longer period.",
+                  len(all_days))
+        return 1
+    cut = all_days[int(len(all_days) * 0.7)]
+    log.info("Train: %s to %s | Test: %s to %s",
+             all_days[0].date(), cut.date(), cut.date(), all_days[-1].date())
+
+    def split(frames: dict, is_train: bool) -> dict:
+        return {sym: df[df.index.normalize() < cut] if is_train
+                else df[df.index.normalize() >= cut]
+                for sym, df in frames.items()}
+
     rows = []
     for tf in timeframes:
         for name, overrides in variants().items():
@@ -151,27 +176,30 @@ def main(argv: list[str] | None = None) -> int:
             variant_cfg["strategy"]["session"]["opening_range_minutes"] = \
                 int(math.ceil(orm / tf) * tf)
             try:
-                result = Backtester(variant_cfg).run(by_tf[tf], daily)
+                tr = Backtester(variant_cfg).run(split(by_tf[tf], True), daily)
+                te = Backtester(variant_cfg).run(split(by_tf[tf], False), daily)
             except Exception as exc:  # noqa: BLE001
                 log.warning("  %s @ %dm failed: %s", name, tf, exc)
                 continue
-            st = result["stats"]
-            rejects = st.get("rejection_reasons") or {}
+            a, b = tr["stats"], te["stats"]
+            rejects = a.get("rejection_reasons") or {}
             top_reject = max(rejects.items(), key=lambda kv: kv[1])[0] if rejects else ""
             rows.append({
                 "top_rejection": top_reject,
                 "timeframe": f"{tf}m",
                 "variant": name,
-                "n": st.get("n_trades", 0),
-                "win_rate": st.get("win_rate_pct", 0),
-                "expectancy_R": st.get("expectancy_R", 0),
-                "total_R": st.get("total_R", 0),
-                "profit_factor": st.get("profit_factor", 0),
-                "max_dd_pct": st.get("max_drawdown_pct", 0),
+                "n": a.get("n_trades", 0),
+                "expectancy_R": a.get("expectancy_R", 0),
+                "total_R": a.get("total_R", 0),
+                "max_dd_pct": a.get("max_drawdown_pct", 0),
+                "test_n": b.get("n_trades", 0),
+                "test_expectancy_R": b.get("expectancy_R", 0),
+                "test_total_R": b.get("total_R", 0),
+                "test_max_dd_pct": b.get("max_drawdown_pct", 0),
             })
-            log.info("  %-26s @ %2dm  n=%-4d  exp=%+.3fR  totalR=%+.1f",
+            log.info("  %-28s @ %2dm  train n=%-4d exp=%+.3fR | TEST n=%-4d exp=%+.3fR",
                      name, tf, rows[-1]["n"], rows[-1]["expectancy_R"],
-                     rows[-1]["total_R"])
+                     rows[-1]["test_n"], rows[-1]["test_expectancy_R"])
 
     REPORTS.mkdir(exist_ok=True)
     (REPORTS / "sweep.json").write_text(json.dumps(rows, indent=2, default=str))
@@ -182,40 +210,69 @@ def main(argv: list[str] | None = None) -> int:
 
 def render(rows: list[dict], symbols, start, end) -> str:
     out = [
-        "# Rule sweep",
+        "# Rule sweep (train / test split)",
         "",
         f"**Symbols:** {', '.join(symbols)}  ",
         f"**Period:** {start} → {end or 'today'}  ",
         f"**Generated:** {datetime.now():%Y-%m-%d %H:%M}",
         "",
-        "Every row ran on identical bars with identical costs. Only the rules "
-        "differ. Rows with n < 30 are too small to trust.",
+        "Variants are ranked by the **TRAIN** window. The **TEST** columns are "
+        "dates the variant was never selected on. Only the test column tells "
+        "you anything about the future.",
         "",
-        "| Timeframe | Variant | Trades | Win % | Expectancy | Total R | PF | Max DD | Top rejection |",
+        "| TF | Variant | Train n | Train exp | Train R | **Test n** | "
+        "**Test exp** | **Test R** | Test DD |",
         "|---|---|---|---|---|---|---|---|---|",
     ]
-    for r in sorted(rows, key=lambda r: -r["expectancy_R"]):
+    ranked = sorted(rows, key=lambda r: -r["expectancy_R"])
+    for r in ranked:
         warn = "" if r["n"] >= 30 else " ⚠"
+        twarn = "" if r["test_n"] >= 30 else " ⚠"
         out.append(
             f"| {r['timeframe']} | {r['variant']} | {r['n']}{warn} | "
-            f"{r['win_rate']} | {r['expectancy_R']:+.3f}R | {r['total_R']:+.1f} | "
-            f"{r['profit_factor']} | {r['max_dd_pct']}% | "
-            f"`{r.get('top_rejection','')}` |")
-    out += [
-        "",
-        "## How to read this",
-        "",
-        "- `current-rules` is the baseline that lost 0.234R per trade.",
-        "- `faithful` applies the published method: 5-minute opening range, "
-        "entries 09:30-11:00 only, displacement before the retest, two "
-        "attempts, done after one winner.",
-        "- Each `faithful +/-x` row changes exactly ONE rule, so the gap "
-        "between it and `faithful` is what that rule is worth.",
-        "- A positive expectancy here is necessary but nowhere near "
-        "sufficient. Ten variants across three timeframes is thirty chances "
-        "for noise to look like skill; the winner has to be re-tested on "
-        "dates it never saw before it means anything.",
-    ]
+            f"{r['expectancy_R']:+.3f}R | {r['total_R']:+.1f} | "
+            f"**{r['test_n']}{twarn}** | **{r['test_expectancy_R']:+.3f}R** | "
+            f"**{r['test_total_R']:+.1f}** | {r['test_max_dd_pct']}% |")
+
+    survivors = [r for r in ranked
+                 if r["expectancy_R"] > 0 and r["test_expectancy_R"] > 0
+                 and r["n"] >= 30 and r["test_n"] >= 30]
+    out += ["", "## Verdict", ""]
+    if survivors:
+        out += [f"**{len(survivors)} variant(s) were positive on BOTH windows "
+                f"with adequate sample size.**", ""]
+        for r in survivors:
+            out.append(f"- `{r['variant']}` @ {r['timeframe']} — train "
+                       f"{r['expectancy_R']:+.3f}R (n={r['n']}), test "
+                       f"{r['test_expectancy_R']:+.3f}R (n={r['test_n']})")
+        out += ["",
+                "This is a necessary condition, not proof. Before risking money: "
+                "re-run on different symbols, check the test drawdown is one you "
+                "could actually sit through, and paper-trade the live signals for "
+                "a few months. Free IEX data also understates volume, so the "
+                "volume filter behaves differently live."]
+    else:
+        out += ["**No variant was positive on both the train and the test "
+                "window with an adequate sample.**", "",
+                "That is a real result, not a bug. It means this setup, as "
+                "specified, did not have an edge on these symbols over this "
+                "period after costs. Options, in order of honesty:", "",
+                "1. Test different symbols or a different period - the edge may "
+                "be regime- or universe-specific.",
+                "2. Revisit the exit logic; entries are rarely the binding "
+                "constraint, exits usually are.",
+                "3. Accept that this particular published setup does not survive "
+                "mechanical testing, and stop putting money behind it.", "",
+                "What NOT to do: keep adding variants until one goes green. With "
+                "enough attempts one always will, and it will be noise."]
+    out += ["", "## Notes", "",
+            "- Slippage 0.03% each side; a bar touching both stop and target is "
+            "scored as a loss.",
+            "- Train window is the first 70% of dates, test is the last 30%.",
+            "- `faithful` = published method: 5-minute opening range, entries "
+            "09:30-11:00, displacement before retest, 2 attempts, done after a win.",
+            "- Each `faithful +/-x` changes exactly ONE rule, so the gap to "
+            "`faithful` prices that rule."]
     return "\n".join(out)
 
 
