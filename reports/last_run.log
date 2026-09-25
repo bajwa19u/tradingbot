@@ -1,86 +1,98 @@
 ==============================================================
 ALPACA DIAGNOSTIC
 ==============================================================
-ALPACA_API_KEY    : ALPA…EY (len 14)
-ALPACA_API_SECRET : ALPA…ET (len 17)
+ALPACA_API_KEY    : PKSG…SQ (len 26)
+ALPACA_API_SECRET : ED5A…nm (len 44)
 
 --- daily bars, iex ---
     params: {"symbols": "AAPL", "timeframe": "1Day", "start": "2026-09-05", "limit": 5, "feed": "iex"}
-    HTTP 401
-    body: <html>
-<head><title>401 Authorization Required</title></head>
-<body>
-<center><h1>401 Authorization Required</h1></center>
-<hr><center>nginx</center>
-</body>
-</html>
-
+    HTTP 200
+    body: {"bars":{"AAPL":[{"c":316.26,"h":320.7,"l":314.9,"n":21818,"o":317.24,"t":"2026-09-08T04:00:00Z","v":1126523,"vw":316.268959},{"c":315.42,"h":319.12,"l":309.92,"n":40824,"o":315.59,"t":"2026-09-09T04:00:00Z","v":2458568,"vw":313.953332},{"c":326.615,"h":326.66,"l":316.635,"n":41969,"o":316.76,"t":"2026-09-10T04:00:00Z","v":2202355,"vw":323.072279},{"c":332.245,"h":336.21,"l":326.57,"n":30142,"o":327.45,"t":"2026-09-11T04:00:00Z","v":1563982,"vw":333.431583},{"c":333,"h":335.5,"l":331.35,"n":26530,"o":334.7,"t":"2026-09-14T04:00:00Z","v":1335636,"vw":333.718123}]},"next_page_token":"QUFQTHxEfDE
+    -> 5 AAPL bars returned
 
 --- 5-minute bars, iex ---
     params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-05", "limit": 5, "feed": "iex"}
-    HTTP 401
-    body: <html>
-<head><title>401 Authorization Required</title></head>
-<body>
-<center><h1>401 Authorization Required</h1></center>
-<hr><center>nginx</center>
-</body>
-</html>
-
+    HTTP 200
+    body: {"bars":{"AAPL":[{"c":318.7,"h":318.7,"l":318.51,"n":5,"o":318.51,"t":"2026-09-08T12:00:00Z","v":250,"vw":318.612857},{"c":318.05,"h":318.05,"l":318.05,"n":1,"o":318.05,"t":"2026-09-08T12:35:00Z","v":40,"vw":318.05},{"c":318.25,"h":318.25,"l":318.12,"n":2,"o":318.12,"t":"2026-09-08T12:45:00Z","v":143,"vw":318.177273},{"c":317.72,"h":317.96,"l":317.72,"n":4,"o":317.96,"t":"2026-09-08T12:50:00Z","v":140,"vw":317.88},{"c":317.77,"h":317.77,"l":317.75,"n":2,"o":317.75,"t":"2026-09-08T12:55:00Z","v":130,"vw":317.757692}]},"next_page_token":"QUFQTHxNfDE3ODg4NzMzNjAwMDAwMDAwMDA="}
+    -> 5 AAPL bars returned
 
 --- 5-minute bars, sip ---
     params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-05", "limit": 5, "feed": "sip"}
-    HTTP 401
-    body: <html>
-<head><title>401 Authorization Required</title></head>
-<body>
-<center><h1>401 Authorization Required</h1></center>
-<hr><center>nginx</center>
-</body>
-</html>
-
+    HTTP 200
+    body: {"bars":{"AAPL":[{"c":318.6,"h":319.58,"l":318.25,"n":5668,"o":319,"t":"2026-09-08T08:00:00Z","v":96535,"vw":318.945595},{"c":318.74,"h":319.52,"l":318.5,"n":243,"o":318.5,"t":"2026-09-08T08:05:00Z","v":5419,"vw":318.820505},{"c":318.92,"h":318.92,"l":318.69,"n":43,"o":318.77,"t":"2026-09-08T08:10:00Z","v":1566,"vw":318.780733},{"c":318.57,"h":318.81,"l":318.49,"n":223,"o":318.73,"t":"2026-09-08T08:15:00Z","v":7426,"vw":318.692637},{"c":318.65,"h":318.78,"l":318.63,"n":116,"o":318.7001,"t":"2026-09-08T08:20:00Z","v":1986,"vw":318.697185}]},"next_page_token":"QUFQTHxNfDE3ODg4NTU5MDAwMDAwMDAwMDA
+    -> 5 AAPL bars returned
 
 --- 5-minute bars, no feed param ---
     params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-05", "limit": 5}
-    HTTP 401
-    body: <html>
-<head><title>401 Authorization Required</title></head>
-<body>
-<center><h1>401 Authorization Required</h1></center>
-<hr><center>nginx</center>
-</body>
-</html>
-
+    HTTP 200
+    body: {"bars":{"AAPL":[{"c":318.6,"h":319.58,"l":318.25,"n":5668,"o":319,"t":"2026-09-08T08:00:00Z","v":96535,"vw":318.945595},{"c":318.74,"h":319.52,"l":318.5,"n":243,"o":318.5,"t":"2026-09-08T08:05:00Z","v":5419,"vw":318.820505},{"c":318.92,"h":318.92,"l":318.69,"n":43,"o":318.77,"t":"2026-09-08T08:10:00Z","v":1566,"vw":318.780733},{"c":318.57,"h":318.81,"l":318.49,"n":223,"o":318.73,"t":"2026-09-08T08:15:00Z","v":7426,"vw":318.692637},{"c":318.65,"h":318.78,"l":318.63,"n":116,"o":318.7001,"t":"2026-09-08T08:20:00Z","v":1986,"vw":318.697185}]},"next_page_token":"QUFQTHxNfDE3ODg4NTU5MDAwMDAwMDAwMDA
+    -> 5 AAPL bars returned
 
 --- most-active screener ---
     params: {"by": "volume", "top": 3}
-    HTTP 401
-    body: <html>
-<head><title>401 Authorization Required</title></head>
-<body>
-<center><h1>401 Authorization Required</h1></center>
-<hr><center>nginx</center>
-</body>
-</html>
-
+    HTTP 200
+    body: {"last_updated":"2026-09-25T19:13:00.210532812Z","most_actives":[{"symbol":"GPUS","trade_count":154740,"volume":204769564},{"symbol":"AIFF","trade_count":393376,"volume":120112034},{"symbol":"GLND","trade_count":603251,"volume":112660883}]}
 
 ==============================================================
-RESULT: no bars request returned data. See the HTTP codes above:
-  401/403 -> keys wrong, or the plan does not cover that feed
-  200 with empty bars -> the date range has no history on that feed
+RESULT: at least one bars request returned data.
 
 ============================================================
 BACKTEST
 ============================================================
 args: --start 2025-06-01 --symbols AAPL, NVDA
-2026-09-25 19:05:35,677 INFO Backtesting AAPL, NVDA from 2025-06-01 to now
-2026-09-25 19:05:36,054 ERROR Market data unavailable: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
-<head><title>401 Authorization Required</title></head>
-<body>
-<center><h1>401 Authorization Required</h1></center>
-<hr><center>nginx</center>
-</body>
-</html>
+2026-09-25 19:13:33,884 INFO Backtesting AAPL, NVDA from 2025-06-01 to now
+2026-09-25 19:13:58,463 INFO   AAPL: 25782 intraday bars
+2026-09-25 19:13:58,463 INFO   NVDA: 25791 intraday bars
 
+# Break-and-retest backtest
 
-exit code: 1
+**Period:** 2025-06-01 → today  
+**Symbols:** AAPL, NVDA  
+**Timeframe:** 5-minute  
+**Target:** 2.0R, risking 1.0% of $2,000  
+**Generated:** 2026-09-25 19:14
+
+## Headline
+
+| Metric | Value |
+|---|---|
+| Trades | 7 over 332 days (0.02/day) |
+| Win rate | 28.6% |
+| Expectancy | -0.282R per trade |
+| Total | -1.97R · $-17.19 (-0.86%) |
+| Profit factor | 0.63 |
+| Max drawdown | -1.44% |
+| Avg win / avg loss | 1.692R / -1.072R |
+| Worst losing streak | 3 |
+| Avg hold | 10.6 bars |
+
+## How trades ended
+
+- **stop** — 5 (71%)
+- **target** — 2 (29%)
+
+## Why setups were rejected
+
+_This is the filter doing its job — high counts here are healthy._
+
+- `break_volume_too_low` — 2711
+- `opening_range_too_wide` — 538
+- `entry_window_closed` — 79
+- `no_confirmation_candle` — 32
+- `retest_never_came` — 29
+- `failed_break` — 9
+
+## Last 15 trades
+
+| Symbol | Dir | Entry time | Entry | Exit | R | Exit reason |
+|---|---|---|---|---|---|---|
+| AAPL | short | 2025-06-05T10:05 | 201.51 | 202.94 | -1.04 | stop |
+| AAPL | short | 2025-08-15T10:15 | 232.28 | 231.24 | +1.58 | target |
+| NVDA | long | 2025-10-16T10:50 | 182.87 | 182.36 | -1.12 | stop |
+| NVDA | long | 2025-12-03T10:40 | 181.68 | 180.90 | -1.07 | stop |
+| NVDA | short | 2025-12-10T10:50 | 182.86 | 183.90 | -1.06 | stop |
+| NVDA | short | 2026-06-05T10:20 | 211.80 | 209.42 | +1.81 | target |
+| NVDA | long | 2026-07-02T10:15 | 199.28 | 198.30 | -1.06 | stop |
+2026-09-25 19:14:03,936 INFO Wrote backtest_20260925_191403.json and reports/latest.md
+
+exit code: 0
