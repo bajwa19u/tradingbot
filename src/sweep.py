@@ -126,6 +126,13 @@ def variants() -> dict[str, dict]:
             {"risk": {"exit_style": "momentum", "retest_arm_R": 1.2}}),
         "faithful +momentum no-BE": with_faithful(
             {"risk": {"exit_style": "momentum", "retest_arm_R": 99.0}}),
+        # FVG retests are on by default now - this is the control that shows
+        # what they are worth.
+        "faithful -fvg": with_faithful(
+            {"strategy": {"retest": {"allow_fvg": False}}}),
+        "faithful +fast-retest +fvg-off": with_faithful(
+            {"strategy": {"retest": {"max_bars_after_break": 4,
+                                     "allow_fvg": False}}}),
 
         # --- a different strategy entirely: trend continuation off the EMA.
         # Not an opening-range play, so it gets the whole session.
