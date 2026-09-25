@@ -16,7 +16,9 @@ from src.indicators import (                              # noqa: E402
 from src.strategy.break_retest import BreakRetestEngine, State  # noqa: E402
 from tests import fixtures                                # noqa: E402
 
-ATR = 1.0
+# Daily ATR for the fixtures. Opening range is 1.00 wide, so 2.5 puts the
+# range at 0.40 of daily ATR - inside the 0.10-0.60 window.
+ATR = 2.5
 
 
 @pytest.fixture
@@ -49,6 +51,7 @@ def test_clean_long_setup_signals(cfg):
     assert sig.entry == pytest.approx(100.95)
     # stop below the confirmation low, minus the ATR buffer
     assert sig.stop == pytest.approx(100.5 - ATR * cfg.risk.stop_buffer_atr_multiple)
+    assert sig.atr == pytest.approx(ATR)
     assert sig.stop < sig.entry < sig.target
     # target is exactly reward_multiple x risk
     risk = sig.entry - sig.stop
@@ -163,9 +166,8 @@ def test_engulfing_detection():
 # ---------------------------------------------------------------------------
 # Backtester: does a known winner book ~+2R and a known loser ~-1R?
 # ---------------------------------------------------------------------------
-def _daily_stub(df, daily_range: float = 5.1):
-    """Prior daily bars whose ATR scales down to ~1.0 intraday, matching the
-    ATR the engine tests use directly."""
+def _daily_stub(df, daily_range: float = 2.5):
+    """Prior daily bars whose 14-day ATR equals the ATR the engine tests use."""
     import pandas as pd
     idx = pd.date_range(end=df.index[0].normalize() - pd.Timedelta(days=1),
                         periods=30, freq="D", tz=df.index.tz)
