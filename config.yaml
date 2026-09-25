@@ -32,6 +32,11 @@ universe:
 strategy:
   timeframe_minutes: 5
 
+  # Higher-timeframe context: only trade in the direction of the 1-hour trend
+  # (close vs its EMA). Turn on with filters.require_htf_alignment below.
+  htf_minutes: 60
+  htf_ema: 20
+
   session:
     market_open: "09:30"
     market_close: "16:00"
@@ -82,6 +87,7 @@ strategy:
     trade_longs: true
     trade_shorts: true
     require_vwap_alignment: true    # longs only above VWAP, shorts only below
+    require_htf_alignment: false    # longs only when the 1H trend is up, and vice versa
     require_daily_trend_alignment: false  # longs only if above 20-day SMA
     max_trades_per_symbol_per_day: 1
     max_trades_per_day: 2
@@ -97,7 +103,21 @@ risk:
   reward_multiple: 2.0          # take profit at 2R
   stop_buffer_atr_multiple: 0.03  # stop placed beyond the confirmation low by this (x daily ATR)
   partial_at_1R: false          # true = sell half at 1R
-  breakeven_after_1R: true      # move stop to entry once 1R is reached
+
+  # --- exit management ------------------------------------------------------
+  # fixed    : take profit at reward_multiple, breakeven stop after 1R
+  # momentum : watch the first `observe_bars` candles and adapt -
+  #            ran fast to fast_target_R  -> stop up to it, then trail
+  #            got past slow_target_R     -> bank it there
+  #            never got going            -> target drops to slow_target_R
+  #            plus: stop to entry the first time price retests entry
+  exit_style: momentum
+  observe_bars: 3
+  fast_target_R: 2.0
+  slow_target_R: 1.5
+  retest_arm_R: 0.3             # must move this far before a return counts as a retest
+
+  breakeven_after_1R: true      # (fixed style only) move stop to entry at 1R
   # Cap on a single position's notional value, as a % of equity.
   # NOTE: opening-range stops are tight, so a full 1%-risk position is often
   # worth more than the account. At 100 the bot will size down to what the
