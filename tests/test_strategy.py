@@ -604,3 +604,34 @@ def test_swing_warmup_window_excludes_early_trades():
     cut = prepared["S"].index[400]
     res = run_portfolio(prepared, p, lo=cut)
     assert all(t["entry_date"] >= str(cut.date()) for t in res["trades"])
+
+
+def test_inspect_gates_explain_every_rejected_bar():
+    """The per-bar explanation must name a specific failing rule, never come
+    back blank - otherwise it cannot settle a chart disagreement."""
+    import copy
+    from src.inspect_symbol import gates, why_not
+    from src.swing import BASE, indicators
+    p = copy.deepcopy(BASE)
+    df = indicators(_daily_uptrend(400, seed=2), p)
+    g = gates(df, p)
+    assert g["SIGNAL"].sum() > 0, "expected some entries on a clean uptrend"
+    for _, row in g.tail(120).iterrows():
+        reason = why_not(row)
+        assert reason and reason != "—", row.to_dict()
+        if row["SIGNAL"]:
+            assert reason == "ENTRY"
+
+
+def test_inspect_gates_match_find_signals():
+    """The explanation table and the live strategy must agree exactly."""
+    import copy
+    from src.inspect_symbol import gates
+    from src.swing import BASE, find_signals, indicators
+    p = copy.deepcopy(BASE)
+    df = indicators(_daily_uptrend(500, seed=7), p)
+    from_gates = set(df.index[gates(df, p)["SIGNAL"].to_numpy()])
+    from_engine = {df.index[i] for i in find_signals(df, p)}
+    # find_signals also skips the first `slow` bars; compare on the overlap
+    tail = df.index[p["slow"] + 1:]
+    assert {t for t in from_gates if t in tail} == {t for t in from_engine if t in tail}
