@@ -153,3 +153,40 @@ def retests_entry() -> pd.DataFrame:
         ("10:00", 101.20, 101.25, 100.95, 101.00, 55_000),   # retest of entry
         ("10:05", 101.00, 101.05, 100.70, 100.75, 60_000),   # stopped at entry
     ])
+
+
+# --- EMA pullback fixtures -------------------------------------------------
+def _trend_bars(n=70, start=100.0, step=0.25):
+    """A clean rising sequence, enough to seed a 50-period EMA."""
+    rows, px = [], start
+    for i in range(n):
+        hhmm = f"{9 + (30 + i * 5) // 60}:{(30 + i * 5) % 60:02d}"
+        rows.append((hhmm, px, px + 0.15, px - 0.10, px + step, 60_000))
+        px += step
+    return rows
+
+
+def ema_pullback_long() -> pd.DataFrame:
+    """Uptrend, a dip that touches the fast EMA, then a green candle that
+    closes back above it."""
+    rows = _trend_bars(70)
+    last = rows[-1][4]
+    # dip down into the EMA, then reject it
+    rows += [
+        ("15:20", last, last + 0.05, last - 2.60, last - 2.40, 90_000),  # touch
+        ("15:25", last - 2.40, last + 0.40, last - 2.50, last + 0.30, 95_000),  # confirm
+        ("15:30", last + 0.30, last + 3.00, last + 0.20, last + 2.80, 80_000),
+        ("15:35", last + 2.80, last + 4.00, last + 2.50, last + 3.80, 70_000),
+    ]
+    return bars(rows)
+
+
+def ema_pullback_chop() -> pd.DataFrame:
+    """Flat, directionless price. The slope filter must stand this down."""
+    rows, px = [], 100.0
+    for i in range(80):
+        hhmm = f"{9 + (30 + i * 5) // 60}:{(30 + i * 5) % 60:02d}"
+        wob = 0.30 if i % 2 else -0.30
+        rows.append((hhmm, px, px + 0.35, px - 0.35, px + wob, 60_000))
+        px += wob
+    return bars(rows)
