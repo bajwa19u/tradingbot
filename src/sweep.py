@@ -105,6 +105,15 @@ def variants() -> dict[str, dict]:
             {"strategy": {"filters": {"require_htf_alignment": True}}}),
         "faithful +momentum 5-candle": with_faithful(
             {"risk": {"exit_style": "momentum", "observe_bars": 5}}),
+        # How far must price travel before a return to entry counts as a
+        # "retest"? At 0.3R half of all trades scratched, which is noise
+        # neutralising trades before they can work.
+        "faithful +momentum arm0.8": with_faithful(
+            {"risk": {"exit_style": "momentum", "retest_arm_R": 0.8}}),
+        "faithful +momentum arm1.2": with_faithful(
+            {"risk": {"exit_style": "momentum", "retest_arm_R": 1.2}}),
+        "faithful +momentum no-BE": with_faithful(
+            {"risk": {"exit_style": "momentum", "retest_arm_R": 99.0}}),
     }
 
 
