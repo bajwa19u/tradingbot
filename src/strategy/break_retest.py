@@ -98,12 +98,13 @@ class BreakRetestEngine:
     """Feeds on bars for ONE symbol on ONE trading day."""
 
     def __init__(self, symbol: str, cfg, daily_atr: float,
-                 avg_daily_volume: float = 0.0, htf_trend=None):
+                 avg_daily_volume: float = 0.0, htf_trend=None, context=None):
         self.symbol = symbol
         self.cfg = cfg
         self.s = cfg.strategy
         self.atr = float(daily_atr) if daily_atr and daily_atr > 0 else 0.0
         self.avg_daily_volume = avg_daily_volume
+        self.context = context or {}
         # Higher-timeframe context (e.g. 1-hour trend), as a Series of +1/-1
         # already shifted so only fully-closed HTF bars are visible.
         self.htf_trend = htf_trend
