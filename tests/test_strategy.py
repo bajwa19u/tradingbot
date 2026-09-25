@@ -447,3 +447,60 @@ def test_fvg_can_be_switched_off(cfg):
     c["strategy"]["retest"]["allow_fvg"] = False
     engine, signals = run(fixtures.fvg_retest_long(), c)
     assert signals == [], "with FVG off, a gap-only retest must not fire"
+
+
+def test_ema_engine_is_warm_on_the_first_bar_of_the_day():
+    """Regression: without prior-session warmup a 50-period EMA is not ready
+    until hours into the session, and a 100-period one never is - which
+    silently produced ZERO trades for the whole ema_pullback family."""
+    from src.strategy import make_engine
+    c = load_config()
+    c["strategy"]["name"] = "ema_pullback"
+    c["strategy"]["ema_pullback"]["slow_ema"] = 100
+
+    cold = make_engine(c, "TEST", 2.5)
+    assert cold.ema_slow is None, "no warmup means no EMA, as before the fix"
+
+    warm = make_engine(c, "TEST", 2.5,
+                       context={"warmup_closes": [100.0 + i * 0.01
+                                                  for i in range(400)]})
+    assert warm.ema_slow is not None, "warmup must seed the slow EMA"
+    assert warm.ema_fast is not None
+    assert len(warm.fast_hist) > int(c["strategy"]["ema_pullback"]["slope_lookback"])
+
+
+def test_backtester_feeds_prior_session_closes(cfg):
+    """The warmup has to actually arrive from the backtester, not just be
+    supported by the engine."""
+    import pandas as pd
+    c = load_config()
+    c["strategy"]["name"] = "ema_pullback"
+    c["strategy"]["session"]["no_entries_after"] = "15:30"
+    df = fixtures.ema_pullback_long()
+    # duplicate the day so there IS a prior session to warm up from
+    prev = df.copy()
+    prev.index = prev.index - pd.Timedelta(days=1)
+    two_days = pd.concat([prev, df])
+    res = Backtester(c).run({"TEST": two_days}, {"TEST": _daily_stub(two_days)})
+    # day two starts warm, so it can trade in the morning rather than never
+    entries = [t["entry_time"] for t in res["trades"]]
+    assert res["stats"]["n_trades"] >= 1, res["stats"]
+
+
+def test_verdict_calls_a_tiny_positive_result_untradeable():
+    """A holdout expectancy that is positive but trivial must not be reported
+    as success - that is how people end up trading noise."""
+    from src.discover import render
+    w = {"name": "x/w/fixed", "n": 177, "expectancy_R": 0.020, "total_R": 3.5,
+         "periods_positive": 3, "periods_scored": 4, "worst_period_R": -0.05,
+         "max_dd_pct": -7.1}
+    h = {"n": 166, "expectancy_R": 0.007, "total_R": 1.2,
+         "periods_positive": 2, "periods_scored": 4, "worst_period_R": -0.1,
+         "max_dd_pct": -7.3}
+    class A:
+        start, end = "2024-06-01", None
+    text = render({"tried": 114, "scored": 114, "survivors": 2,
+                   "results": [w], "winner": w, "holdout": h}, ["TSLA"], A(), 5)
+    assert "too small to trade" in text
+    assert "Nothing here justifies risking money" in text
+    assert "held up on data it had never seen" not in text
