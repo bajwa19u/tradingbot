@@ -112,6 +112,7 @@ class BreakRetestEngine:
         self.direction: str | None = None
         self.level: float | None = None
         self.break_index: int | None = None
+        self.extreme_since_break: float | None = None
         self.retest_seen = False
         self.rejections: list[Rejection] = []
         self._bars: list[pd.Series] = []
@@ -223,9 +224,13 @@ class BreakRetestEngine:
         if mode == "opening_range":
             return self.or_avg_volume
         lookback = int(b.get("volume_lookback_bars", 6))
-        prior = self._bars[:-1][-lookback:]   # exclude the break bar itself
-        if not prior:
-            return self.or_avg_volume
+        end = len(self._bars) - 1             # exclude the break bar itself
+        prior = self._bars[max(0, end - lookback):end]
+        # "Relative volume" is meaningless off a single bar - and with a
+        # 5-minute opening range that single bar is the highest-volume bar of
+        # the day, which would veto every break. No history, no gate.
+        if len(prior) < 2:
+            return 0.0
         return float(np.mean([float(x["volume"]) for x in prior]))
 
     # -- rule 2 -------------------------------------------------------------
@@ -261,6 +266,7 @@ class BreakRetestEngine:
         self.direction = direction
         self.level = self.or_high if direction == "long" else self.or_low
         self.break_index = len(self._bars) - 1
+        self.extreme_since_break = high if direction == "long" else low
         self.state = State.BROKEN
 
     # -- rules 3 + 4 --------------------------------------------------------
@@ -279,6 +285,16 @@ class BreakRetestEngine:
             return None
 
         close = float(bar["close"])
+
+        # Track how far price ran before coming back. The methodology calls
+        # for "visible space on the chart" between the break and the retest —
+        # an immediate pullback that never displaced is not the setup.
+        if self.direction == "long":
+            self.extreme_since_break = max(self.extreme_since_break or close,
+                                           float(bar["high"]))
+        else:
+            self.extreme_since_break = min(self.extreme_since_break or close,
+                                           float(bar["low"]))
 
         # Failed break — price closed back through the level
         invalid_pct = r.invalidate_close_beyond_pct / 100.0
@@ -303,6 +319,16 @@ class BreakRetestEngine:
         if not touched:
             return None
         self.retest_seen = True
+
+        # "Visible space" gate: the break must have travelled far enough from
+        # the level before returning to it.
+        min_disp = float(r.get("min_displacement_atr", 0.0))
+        if min_disp > 0 and self.atr > 0 and self.extreme_since_break is not None:
+            travelled = abs(self.extreme_since_break - self.level)
+            if travelled < min_disp * self.atr:
+                self._reject(ts, "no_displacement_before_retest",
+                             f"{travelled:.2f} < {min_disp * self.atr:.2f}")
+                return None
 
         # Confirmation candle
         if len(self._bars) < 2:
