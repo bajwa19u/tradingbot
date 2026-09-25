@@ -64,6 +64,9 @@ strategy:
     min_bars_after_break: 1
     tolerance_atr_multiple: 0.08  # how close price must come back to the level
     allow_wick_only: true         # wick into the level counts as a touch
+    # "Visible space on the chart": the break must travel this far (x daily
+    # ATR) away from the level before a return counts as a retest. 0 = off.
+    min_displacement_atr: 0.0
     invalidate_close_beyond_pct: 0.10  # close back THROUGH the level = setup dead
 
   # --- Step 3: the confirmation candle --------------------------------------
@@ -82,6 +85,7 @@ strategy:
     require_daily_trend_alignment: false  # longs only if above 20-day SMA
     max_trades_per_symbol_per_day: 1
     max_trades_per_day: 4
+    stop_after_first_win: false   # the methodology stops the session after one winner
 
 # ---------------------------------------------------------------------------
 # Risk management — 2R, exactly as the methodology specifies
