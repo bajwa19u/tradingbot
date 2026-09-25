@@ -98,12 +98,15 @@ class BreakRetestEngine:
     """Feeds on bars for ONE symbol on ONE trading day."""
 
     def __init__(self, symbol: str, cfg, daily_atr: float,
-                 avg_daily_volume: float = 0.0):
+                 avg_daily_volume: float = 0.0, htf_trend=None):
         self.symbol = symbol
         self.cfg = cfg
         self.s = cfg.strategy
         self.atr = float(daily_atr) if daily_atr and daily_atr > 0 else 0.0
         self.avg_daily_volume = avg_daily_volume
+        # Higher-timeframe context (e.g. 1-hour trend), as a Series of +1/-1
+        # already shifted so only fully-closed HTF bars are visible.
+        self.htf_trend = htf_trend
 
         self.state = State.WAITING_FOR_RANGE
         self.or_high: float | None = None
@@ -344,6 +347,20 @@ class BreakRetestEngine:
                 float(bar["volume"]) <= float(prev["volume"]):
             self._reject(ts, "confirmation_volume_flat")
             return None
+
+        if f.get("require_htf_alignment", False) and self.htf_trend is not None:
+            try:
+                trend = self.htf_trend.asof(ts)
+            except Exception:
+                trend = None
+            if trend is None or (isinstance(trend, float) and np.isnan(trend)):
+                pass                      # no context yet - do not block
+            elif self.direction == "long" and trend <= 0:
+                self._reject(ts, "htf_context_against_long")
+                return None
+            elif self.direction == "short" and trend >= 0:
+                self._reject(ts, "htf_context_against_short")
+                return None
 
         if f.require_vwap_alignment and not np.isnan(self.vwap):
             if self.direction == "long" and close < self.vwap:
