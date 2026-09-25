@@ -12,7 +12,7 @@ mode: signals_only          # signals_only | paper | live   (paper/live = future
 # ---------------------------------------------------------------------------
 universe:
   # Always-scanned core names
-  watchlist: [AAPL, MSFT, NVDA, AMD, TSLA, META, AMZN, GOOGL]
+  watchlist: [TSLA, NVDA, AAPL, AMD]   # the four names the method names
 
   # Add the day's most active / highest relative-volume movers
   include_top_movers: true
@@ -35,9 +35,9 @@ strategy:
   session:
     market_open: "09:30"
     market_close: "16:00"
-    opening_range_minutes: 15     # 3 x 5-min bars build the opening range
-    no_entries_before: "09:45"    # let the range form
-    no_entries_after: "14:30"     # avoid late-day chop
+    opening_range_minutes: 5      # the FIRST 5-min candle, per the published method
+    no_entries_before: "09:35"    # once the first candle has closed
+    no_entries_after: "11:00"     # the method trades the open only
     flatten_at: "15:55"           # time stop — close anything still open
 
   # --- Step 1: the break -----------------------------------------------------
@@ -55,8 +55,8 @@ strategy:
     volume_lookback_bars: 6
     volume_multiple: 1.3          # break bar volume vs that baseline
 
-    max_range_atr_multiple: 0.60  # opening range wider than 60% of daily ATR = already extended
-    min_range_atr_multiple: 0.10  # tighter than 10% of daily ATR = no real level
+    max_range_atr_multiple: 0.45  # a one-candle range is narrower than a 15-min one
+    min_range_atr_multiple: 0.03
 
   # --- Step 2: the retest ----------------------------------------------------
   retest:
@@ -66,7 +66,7 @@ strategy:
     allow_wick_only: true         # wick into the level counts as a touch
     # "Visible space on the chart": the break must travel this far (x daily
     # ATR) away from the level before a return counts as a retest. 0 = off.
-    min_displacement_atr: 0.0
+    min_displacement_atr: 0.15
     invalidate_close_beyond_pct: 0.10  # close back THROUGH the level = setup dead
 
   # --- Step 3: the confirmation candle --------------------------------------
@@ -84,8 +84,8 @@ strategy:
     require_vwap_alignment: true    # longs only above VWAP, shorts only below
     require_daily_trend_alignment: false  # longs only if above 20-day SMA
     max_trades_per_symbol_per_day: 1
-    max_trades_per_day: 4
-    stop_after_first_win: false   # the methodology stops the session after one winner
+    max_trades_per_day: 2
+    stop_after_first_win: true    # the methodology stops the session after one winner
 
 # ---------------------------------------------------------------------------
 # Risk management — 2R, exactly as the methodology specifies
