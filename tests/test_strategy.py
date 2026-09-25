@@ -44,7 +44,7 @@ def test_clean_long_setup_signals(cfg):
     assert len(signals) == 1, "a textbook setup must produce exactly one signal"
     sig = signals[0]
     assert sig.direction == "long"
-    assert sig.pattern == "hammer"
+    assert sig.pattern == "hammer@level"   # tagged with what was retested
     assert sig.opening_range_high == pytest.approx(100.5)
     assert sig.opening_range_low == pytest.approx(99.5)
     assert sig.level == pytest.approx(100.5)
@@ -429,3 +429,21 @@ def test_stop_analysis_reports_heat_taken_by_winners(cfg):
     # and a 0.5R stop would therefore NOT have killed it
     assert sa["winners_lost_at_0.5R_stop"] == 0, sa
     assert sa["median_stop_distance_pct"] > 0
+
+
+def test_fvg_retest_is_accepted_when_price_never_reaches_the_level(cfg):
+    """The methodology allows a retest of the breakout's fair-value gap, not
+    just of the range level. Without it this setup is thrown away."""
+    engine, signals = run(fixtures.fvg_retest_long(), cfg)
+    assert len(signals) == 1, [r.reason for r in engine.rejections]
+    assert signals[0].pattern.endswith("@fvg"), signals[0].pattern
+    # price never came back to the 100.50 level
+    lows = fixtures.fvg_retest_long()["low"].iloc[4:]
+    assert lows.min() > 100.50
+
+
+def test_fvg_can_be_switched_off(cfg):
+    c = load_config()
+    c["strategy"]["retest"]["allow_fvg"] = False
+    engine, signals = run(fixtures.fvg_retest_long(), c)
+    assert signals == [], "with FVG off, a gap-only retest must not fire"
