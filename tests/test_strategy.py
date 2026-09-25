@@ -538,11 +538,11 @@ def test_swing_takes_nothing_in_a_downtrend():
 
 
 def test_swing_portfolio_respects_the_position_cap():
-    from src.swing import BASE, run_portfolio
+    from src.swing import BASE, prepare, run_portfolio
     import copy
     p = copy.deepcopy(BASE); p["max_open"] = 2
     data = {f"S{i}": _daily_uptrend(seed=i) for i in range(6)}
-    res = run_portfolio(data, p)
+    res = run_portfolio(prepare(data, p), p)
     assert res["stats"]["n_trades"] > 0
     # never more than max_open held at once
     opens = sorted((t["entry_date"], 1) for t in res["trades"])
@@ -570,3 +570,37 @@ def test_swing_uses_only_closed_bars():
     cut = full[len(full) // 2]
     truncated = find_signals(indicators(df.iloc[:cut + 1], BASE), BASE)
     assert cut in truncated, "signal vanished when future bars were removed"
+
+
+def test_swing_indicators_are_not_restarted_per_period():
+    """Regression: slicing before computing restarted every moving average,
+    so the first months of each period traded off averages that had not
+    converged. Indicators must come from full history."""
+    import copy, pandas as pd
+    from src.swing import BASE, prepare, run_portfolio, signal_times
+    data = {"S": _daily_uptrend(600, seed=3)}
+    p = copy.deepcopy(BASE)
+    prepared = prepare(data, p)
+    sigs = signal_times(prepared, p)
+
+    days = prepared["S"].index
+    mid = days[len(days) // 2]
+    # trading only the back half must reuse the SAME signals as the full run
+    late_full = {t for t in sigs["S"] if t >= mid}
+    res = run_portfolio(prepared, p, sigs=sigs, lo=mid)
+    for t in res["trades"]:
+        assert pd.Timestamp(t["entry_date"]).date() >= mid.date()
+    # and the slow EMA at the window start must already be warm
+    assert prepared["S"].loc[mid, f"ema{p['slow']}"] > 0
+    assert len(late_full) > 0
+
+
+def test_swing_warmup_window_excludes_early_trades():
+    import copy
+    from src.swing import BASE, prepare, run_portfolio
+    data = {"S": _daily_uptrend(600, seed=4)}
+    p = copy.deepcopy(BASE)
+    prepared = prepare(data, p)
+    cut = prepared["S"].index[400]
+    res = run_portfolio(prepared, p, lo=cut)
+    assert all(t["entry_date"] >= str(cut.date()) for t in res["trades"])
