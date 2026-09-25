@@ -504,3 +504,69 @@ def test_verdict_calls_a_tiny_positive_result_untradeable():
     assert "too small to trade" in text
     assert "Nothing here justifies risking money" in text
     assert "held up on data it had never seen" not in text
+
+
+# ---------------------------------------------------------------------------
+# Daily trend pullback (swing)
+# ---------------------------------------------------------------------------
+def _daily_uptrend(n=400, start=50.0, drift=0.0015, wobble=0.012, seed=5):
+    """A rising series with regular dips - the shape the setup looks for."""
+    import numpy as np, pandas as pd
+    rng = np.random.default_rng(seed)
+    idx = pd.bdate_range("2015-01-02", periods=n, tz="America/New_York")
+    px = start * np.cumprod(1 + drift + rng.normal(0, wobble, n))
+    o = np.concatenate([[start], px[:-1]])
+    h = np.maximum(o, px) * (1 + np.abs(rng.normal(0, 0.004, n)))
+    l = np.minimum(o, px) * (1 - np.abs(rng.normal(0, 0.006, n)))
+    return pd.DataFrame({"open": o, "high": h, "low": l, "close": px,
+                         "volume": 1e6}, index=idx)
+
+
+def test_swing_finds_pullbacks_in_an_uptrend():
+    from src.swing import BASE, find_signals, indicators
+    df = indicators(_daily_uptrend(), BASE)
+    sigs = find_signals(df, BASE)
+    assert len(sigs) > 5, f"expected several pullback entries, got {len(sigs)}"
+
+
+def test_swing_takes_nothing_in_a_downtrend():
+    """The trend stack must gate everything - no longs while price is under
+    the long EMA."""
+    from src.swing import BASE, find_signals, indicators
+    df = indicators(_daily_uptrend(drift=-0.0015, seed=9), BASE)
+    assert find_signals(df, BASE) == []
+
+
+def test_swing_portfolio_respects_the_position_cap():
+    from src.swing import BASE, run_portfolio
+    import copy
+    p = copy.deepcopy(BASE); p["max_open"] = 2
+    data = {f"S{i}": _daily_uptrend(seed=i) for i in range(6)}
+    res = run_portfolio(data, p)
+    assert res["stats"]["n_trades"] > 0
+    # never more than max_open held at once
+    opens = sorted((t["entry_date"], 1) for t in res["trades"])
+    closes = sorted((t["exit_date"], -1) for t in res["trades"])
+    live = mx = 0
+    for _, delta in sorted(opens + closes):
+        live += delta
+        mx = max(mx, live)
+    assert mx <= p["max_open"], f"held {mx} positions with a cap of {p['max_open']}"
+
+
+def test_swing_research_and_holdout_universes_are_disjoint():
+    from src.swing import RESEARCH, HOLDOUT
+    assert not set(RESEARCH) & set(HOLDOUT)
+    assert len(HOLDOUT) >= 20
+
+
+def test_swing_uses_only_closed_bars():
+    """A signal on bar i must not depend on data after bar i."""
+    from src.swing import BASE, find_signals, indicators
+    df = _daily_uptrend()
+    full = find_signals(indicators(df, BASE), BASE)
+    if not full:
+        return
+    cut = full[len(full) // 2]
+    truncated = find_signals(indicators(df.iloc[:cut + 1], BASE), BASE)
+    assert cut in truncated, "signal vanished when future bars were removed"
