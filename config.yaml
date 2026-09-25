@@ -85,6 +85,9 @@ strategy:
     # "Visible space on the chart": the break must travel this far (x daily
     # ATR) away from the level before a return counts as a retest. 0 = off.
     min_displacement_atr: 0.15
+    # A retest of the fair-value gap left by the breakout counts too, not
+    # just a retest of the level itself.
+    allow_fvg: true
     invalidate_close_beyond_pct: 0.10  # close back THROUGH the level = setup dead
 
   # --- Step 3: the confirmation candle --------------------------------------
