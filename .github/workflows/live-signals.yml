@@ -3,9 +3,18 @@ name: Live signals
 # Runs every 5 minutes through the US market day. The cron window is
 # deliberately wide (UTC has no daylight-saving awareness); the script itself
 # checks the real Eastern time and exits immediately outside 09:30-16:00 ET.
+# SCHEDULE DISABLED 2026-09-26.
+#
+# This fired every 5 minutes on the intraday break-and-retest strategy, which
+# measured -0.234R per trade over 942 trades and -87% drawdown. Leaving it on
+# was sending alerts for a setup we had already proven loses money, and
+# burning Actions minutes to do it.
+#
+# Re-enable by uncommenting the schedule below - but only for a strategy that
+# has survived a forward test, not a backtest.
 on:
-  schedule:
-    - cron: "*/5 13-21 * * 1-5"
+  # schedule:
+  #   - cron: "*/5 13-21 * * 1-5"
   workflow_dispatch:
     inputs:
       dry_run:
