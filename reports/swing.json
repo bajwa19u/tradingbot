@@ -1,7 +1,53 @@
 {
-  "tried": 30,
-  "survivors": 13,
+  "tried": 39,
+  "survivors": 17,
   "results": [
+    {
+      "per_period": [
+        {
+          "n": 71,
+          "expectancy_R": 0.1721
+        },
+        {
+          "n": 117,
+          "expectancy_R": 0.3699
+        },
+        {
+          "n": 89,
+          "expectancy_R": -0.0306
+        },
+        {
+          "n": 96,
+          "expectancy_R": 0.0244
+        }
+      ],
+      "n": 373,
+      "expectancy_R": 0.1477,
+      "total_R": 55.1,
+      "periods_positive": 3,
+      "periods_scored": 4,
+      "worst_period_R": -0.0306,
+      "max_dd_pct": -18.65,
+      "name": "ema10_tgt3.0_stop0.3_slope2.0",
+      "params": {
+        "fast": 10,
+        "mid": 50,
+        "slow": 200,
+        "touch_atr": 0.25,
+        "touch_window": 3,
+        "trend_bars": 10,
+        "stop_atr": 0.3,
+        "target_r": 3.0,
+        "trail_ema": true,
+        "trail_after_r": 1.0,
+        "max_hold": 60,
+        "risk_pct": 1.0,
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 2.0,
+        "cooldown_bars": 0
+      }
+    },
     {
       "per_period": [
         {
@@ -42,7 +88,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -85,7 +134,148 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
+      }
+    },
+    {
+      "per_period": [
+        {
+          "n": 57,
+          "expectancy_R": -0.1019
+        },
+        {
+          "n": 71,
+          "expectancy_R": 0.6262
+        },
+        {
+          "n": 61,
+          "expectancy_R": -0.1628
+        },
+        {
+          "n": 62,
+          "expectancy_R": -0.1344
+        }
+      ],
+      "n": 251,
+      "expectancy_R": 0.0817,
+      "total_R": 20.5,
+      "periods_positive": 1,
+      "periods_scored": 4,
+      "worst_period_R": -0.1628,
+      "max_dd_pct": -19.2,
+      "name": "ema20_tgt0.0_stop0.5_slope2.0",
+      "params": {
+        "fast": 20,
+        "mid": 50,
+        "slow": 200,
+        "touch_atr": 0.25,
+        "touch_window": 3,
+        "trend_bars": 10,
+        "stop_atr": 0.5,
+        "target_r": 0.0,
+        "trail_ema": true,
+        "trail_after_r": 1.0,
+        "max_hold": 60,
+        "risk_pct": 1.0,
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 2.0,
+        "cooldown_bars": 0
+      }
+    },
+    {
+      "per_period": [
+        {
+          "n": 107,
+          "expectancy_R": 0.1787
+        },
+        {
+          "n": 143,
+          "expectancy_R": 0.2214
+        },
+        {
+          "n": 120,
+          "expectancy_R": -0.0637
+        },
+        {
+          "n": 146,
+          "expectancy_R": -0.0456
+        }
+      ],
+      "n": 516,
+      "expectancy_R": 0.0707,
+      "total_R": 36.5,
+      "periods_positive": 2,
+      "periods_scored": 4,
+      "worst_period_R": -0.0637,
+      "max_dd_pct": -27.13,
+      "name": "ema10_tgt3.0_stop0.3_slope0.5",
+      "params": {
+        "fast": 10,
+        "mid": 50,
+        "slow": 200,
+        "touch_atr": 0.25,
+        "touch_window": 3,
+        "trend_bars": 10,
+        "stop_atr": 0.3,
+        "target_r": 3.0,
+        "trail_ema": true,
+        "trail_after_r": 1.0,
+        "max_hold": 60,
+        "risk_pct": 1.0,
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.5,
+        "cooldown_bars": 0
+      }
+    },
+    {
+      "per_period": [
+        {
+          "n": 108,
+          "expectancy_R": 0.0573
+        },
+        {
+          "n": 153,
+          "expectancy_R": 0.2164
+        },
+        {
+          "n": 114,
+          "expectancy_R": -0.0528
+        },
+        {
+          "n": 141,
+          "expectancy_R": 0.0127
+        }
+      ],
+      "n": 516,
+      "expectancy_R": 0.068,
+      "total_R": 35.1,
+      "periods_positive": 3,
+      "periods_scored": 4,
+      "worst_period_R": -0.0528,
+      "max_dd_pct": -24.86,
+      "name": "ema10_tgt3.0_stop0.3_slope1.0",
+      "params": {
+        "fast": 10,
+        "mid": 50,
+        "slow": 200,
+        "touch_atr": 0.25,
+        "touch_window": 3,
+        "trend_bars": 10,
+        "stop_atr": 0.3,
+        "target_r": 3.0,
+        "trail_ema": true,
+        "trail_after_r": 1.0,
+        "max_hold": 60,
+        "risk_pct": 1.0,
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 1.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -128,7 +318,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -171,7 +364,56 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
+      }
+    },
+    {
+      "per_period": [
+        {
+          "n": 78,
+          "expectancy_R": 0.0347
+        },
+        {
+          "n": 98,
+          "expectancy_R": 0.3365
+        },
+        {
+          "n": 77,
+          "expectancy_R": -0.1932
+        },
+        {
+          "n": 91,
+          "expectancy_R": 0.0035
+        }
+      ],
+      "n": 344,
+      "expectancy_R": 0.0613,
+      "total_R": 21.1,
+      "periods_positive": 3,
+      "periods_scored": 4,
+      "worst_period_R": -0.1932,
+      "max_dd_pct": -26.57,
+      "name": "ema20_tgt0.0_stop0.5_slope1.0",
+      "params": {
+        "fast": 20,
+        "mid": 50,
+        "slow": 200,
+        "touch_atr": 0.25,
+        "touch_window": 3,
+        "trend_bars": 10,
+        "stop_atr": 0.5,
+        "target_r": 0.0,
+        "trail_ema": true,
+        "trail_after_r": 1.0,
+        "max_hold": 60,
+        "risk_pct": 1.0,
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 1.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -214,7 +456,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -257,7 +502,56 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
+      }
+    },
+    {
+      "per_period": [
+        {
+          "n": 84,
+          "expectancy_R": 0.0671
+        },
+        {
+          "n": 105,
+          "expectancy_R": 0.2782
+        },
+        {
+          "n": 85,
+          "expectancy_R": -0.2613
+        },
+        {
+          "n": 93,
+          "expectancy_R": 0.0735
+        }
+      ],
+      "n": 367,
+      "expectancy_R": 0.0529,
+      "total_R": 19.4,
+      "periods_positive": 3,
+      "periods_scored": 4,
+      "worst_period_R": -0.2613,
+      "max_dd_pct": -29.77,
+      "name": "ema20_tgt0.0_stop0.5_slope0.5",
+      "params": {
+        "fast": 20,
+        "mid": 50,
+        "slow": 200,
+        "touch_atr": 0.25,
+        "touch_window": 3,
+        "trend_bars": 10,
+        "stop_atr": 0.5,
+        "target_r": 0.0,
+        "trail_ema": true,
+        "trail_after_r": 1.0,
+        "max_hold": 60,
+        "risk_pct": 1.0,
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.5,
+        "cooldown_bars": 0
       }
     },
     {
@@ -300,7 +594,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -343,7 +640,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -386,7 +686,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -429,7 +732,56 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
+      }
+    },
+    {
+      "per_period": [
+        {
+          "n": 59,
+          "expectancy_R": -0.0156
+        },
+        {
+          "n": 91,
+          "expectancy_R": 0.2139
+        },
+        {
+          "n": 70,
+          "expectancy_R": -0.0224
+        },
+        {
+          "n": 69,
+          "expectancy_R": -0.1164
+        }
+      ],
+      "n": 289,
+      "expectancy_R": 0.0311,
+      "total_R": 9.0,
+      "periods_positive": 1,
+      "periods_scored": 4,
+      "worst_period_R": -0.1164,
+      "max_dd_pct": -15.89,
+      "name": "ema20_tgt2.0_stop0.5_slope2.0",
+      "params": {
+        "fast": 20,
+        "mid": 50,
+        "slow": 200,
+        "touch_atr": 0.25,
+        "touch_window": 3,
+        "trend_bars": 10,
+        "stop_atr": 0.5,
+        "target_r": 2.0,
+        "trail_ema": true,
+        "trail_after_r": 1.0,
+        "max_hold": 60,
+        "risk_pct": 1.0,
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 2.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -472,7 +824,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -515,7 +870,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -558,7 +916,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -601,7 +962,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -644,7 +1008,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -687,7 +1054,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -730,7 +1100,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -773,7 +1146,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -816,7 +1192,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -859,7 +1238,56 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
+      }
+    },
+    {
+      "per_period": [
+        {
+          "n": 102,
+          "expectancy_R": 0.0392
+        },
+        {
+          "n": 140,
+          "expectancy_R": 0.0634
+        },
+        {
+          "n": 99,
+          "expectancy_R": -0.1305
+        },
+        {
+          "n": 116,
+          "expectancy_R": -0.005
+        }
+      ],
+      "n": 457,
+      "expectancy_R": -0.0013,
+      "total_R": -0.6,
+      "periods_positive": 2,
+      "periods_scored": 4,
+      "worst_period_R": -0.1305,
+      "max_dd_pct": -27.3,
+      "name": "ema20_tgt2.0_stop0.5_slope0.5",
+      "params": {
+        "fast": 20,
+        "mid": 50,
+        "slow": 200,
+        "touch_atr": 0.25,
+        "touch_window": 3,
+        "trend_bars": 10,
+        "stop_atr": 0.5,
+        "target_r": 2.0,
+        "trail_ema": true,
+        "trail_after_r": 1.0,
+        "max_hold": 60,
+        "risk_pct": 1.0,
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.5,
+        "cooldown_bars": 0
       }
     },
     {
@@ -902,7 +1330,56 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
+      }
+    },
+    {
+      "per_period": [
+        {
+          "n": 98,
+          "expectancy_R": 0.0047
+        },
+        {
+          "n": 129,
+          "expectancy_R": 0.031
+        },
+        {
+          "n": 87,
+          "expectancy_R": -0.0705
+        },
+        {
+          "n": 99,
+          "expectancy_R": -0.0002
+        }
+      ],
+      "n": 413,
+      "expectancy_R": -0.0039,
+      "total_R": -1.6,
+      "periods_positive": 2,
+      "periods_scored": 4,
+      "worst_period_R": -0.0705,
+      "max_dd_pct": -24.94,
+      "name": "ema20_tgt2.0_stop0.5_slope1.0",
+      "params": {
+        "fast": 20,
+        "mid": 50,
+        "slow": 200,
+        "touch_atr": 0.25,
+        "touch_window": 3,
+        "trend_bars": 10,
+        "stop_atr": 0.5,
+        "target_r": 2.0,
+        "trail_ema": true,
+        "trail_after_r": 1.0,
+        "max_hold": 60,
+        "risk_pct": 1.0,
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 1.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -945,7 +1422,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -988,7 +1468,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -1031,7 +1514,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -1074,7 +1560,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -1117,7 +1606,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -1160,7 +1652,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -1203,7 +1698,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -1246,7 +1744,10 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     },
     {
@@ -1289,37 +1790,40 @@
         "trail_after_r": 1.0,
         "max_hold": 60,
         "risk_pct": 1.0,
-        "max_open": 8
+        "max_open": 8,
+        "slope_bars": 20,
+        "min_slope_atr": 0.0,
+        "cooldown_bars": 0
       }
     }
   ],
   "winner": {
     "per_period": [
       {
-        "n": 130,
-        "expectancy_R": 0.1487
+        "n": 71,
+        "expectancy_R": 0.1721
       },
       {
-        "n": 151,
-        "expectancy_R": 0.1537
+        "n": 117,
+        "expectancy_R": 0.3699
       },
       {
-        "n": 133,
-        "expectancy_R": -0.0818
+        "n": 89,
+        "expectancy_R": -0.0306
       },
       {
-        "n": 145,
-        "expectancy_R": 0.0333
+        "n": 96,
+        "expectancy_R": 0.0244
       }
     ],
-    "n": 559,
-    "expectancy_R": 0.0651,
-    "total_R": 36.4,
+    "n": 373,
+    "expectancy_R": 0.1477,
+    "total_R": 55.1,
     "periods_positive": 3,
     "periods_scored": 4,
-    "worst_period_R": -0.0818,
-    "max_dd_pct": -30.79,
-    "name": "ema10_tgt3.0_trail1_stop0.3",
+    "worst_period_R": -0.0306,
+    "max_dd_pct": -18.65,
+    "name": "ema10_tgt3.0_stop0.3_slope2.0",
     "params": {
       "fast": 10,
       "mid": 50,
@@ -1333,43 +1837,46 @@
       "trail_after_r": 1.0,
       "max_hold": 60,
       "risk_pct": 1.0,
-      "max_open": 8
+      "max_open": 8,
+      "slope_bars": 20,
+      "min_slope_atr": 2.0,
+      "cooldown_bars": 0
     }
   },
   "holdout": {
     "per_period": [
       {
-        "n": 112,
-        "expectancy_R": -0.0308
+        "n": 51,
+        "expectancy_R": 0.2117
       },
       {
-        "n": 162,
-        "expectancy_R": 0.4127
+        "n": 119,
+        "expectancy_R": 0.3104
       },
       {
-        "n": 126,
-        "expectancy_R": -0.0916
+        "n": 82,
+        "expectancy_R": -0.056
       },
       {
-        "n": 148,
-        "expectancy_R": 0.0667
+        "n": 98,
+        "expectancy_R": 0.0739
       }
     ],
-    "n": 548,
-    "expectancy_R": 0.1128,
-    "total_R": 61.8,
-    "periods_positive": 2,
+    "n": 350,
+    "expectancy_R": 0.1437,
+    "total_R": 50.3,
+    "periods_positive": 3,
     "periods_scored": 4,
-    "worst_period_R": -0.0916,
-    "max_dd_pct": -29.14,
-    "return_pct": 88.1,
+    "worst_period_R": -0.056,
+    "max_dd_pct": -21.94,
+    "return_pct": 61.3,
     "win_rate_pct": 48.3,
     "exit_reasons": {
-      "stop": 246,
-      "trail": 177,
-      "ema_exit": 44,
-      "target": 63,
-      "time": 6
+      "stop": 158,
+      "trail": 124,
+      "ema_exit": 20,
+      "target": 45,
+      "time": 5
     }
   },
   "research_symbols": 40,
