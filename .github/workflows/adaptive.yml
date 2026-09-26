@@ -1,0 +1,84 @@
+name: Adaptive
+
+# The self-improving loop: refit on a trailing window, trade forward, repeat.
+# Reports ADAPTIVE against a STATIC config and a HINDSIGHT upper bound, so
+# "does refitting actually help?" is answered rather than assumed.
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: "First date the loop may trade"
+        required: false
+        default: "2024-01-01"
+      end:
+        description: "Last date (blank = today)"
+        required: false
+      lookback:
+        description: "Trading days each refit fits on"
+        required: false
+        default: "252"
+      refit:
+        description: "Trading days between refits"
+        required: false
+        default: "21"
+      universe:
+        description: "research or holdout"
+        required: false
+        default: "research"
+
+permissions:
+  contents: write
+
+jobs:
+  adaptive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest tests/ -q
+      - name: Walk forward
+        id: go
+        continue-on-error: true
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          IN_START: ${{ inputs.start }}
+          IN_END: ${{ inputs.end }}
+          IN_LB: ${{ inputs.lookback }}
+          IN_RF: ${{ inputs.refit }}
+          IN_UNI: ${{ inputs.universe }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports
+          ARGS=(--start "${IN_START:-2024-01-01}" --lookback "${IN_LB:-252}" \
+                --refit "${IN_RF:-21}" --universe "${IN_UNI:-research}")
+          [ -n "${IN_END:-}" ] && ARGS+=(--end "${IN_END}") || true
+          set +e
+          python -m src.adaptive "${ARGS[@]}" 2>&1 | tee reports/adaptive_run.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name  "tradingbot"
+          git config user.email "tradingbot@users.noreply.github.com"
+          git add -A reports/ || true
+          if ! git diff --cached --quiet; then
+            git commit -m "adaptive: walk-forward results [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed"
+          fi
+      - name: Summary
+        if: always()
+        run: |
+          F="reports/adaptive_${{ inputs.universe }}.md"
+          [ -f "$F" ] || F="reports/adaptive_research.md"
+          if [ -f "$F" ]; then cat "$F" >> "$GITHUB_STEP_SUMMARY"; else
+            { echo '```'; tail -n 40 reports/adaptive_run.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"; fi
+      - name: Fail if the run failed
+        if: always()
+        run: '[ "${{ steps.go.outputs.code }}" = "0" ] || exit 1'
