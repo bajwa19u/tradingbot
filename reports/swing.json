@@ -5,33 +5,25 @@
     {
       "per_period": [
         {
-          "n": 0,
-          "expectancy_R": 0.0
+          "n": 27,
+          "expectancy_R": -0.0983
         },
         {
-          "n": 13,
-          "expectancy_R": -0.2146
+          "n": 23,
+          "expectancy_R": -0.2259
         },
         {
-          "n": 74,
-          "expectancy_R": 0.0814
-        },
-        {
-          "n": 31,
-          "expectancy_R": -0.1774
-        },
-        {
-          "n": 26,
-          "expectancy_R": -0.3648
+          "n": 21,
+          "expectancy_R": 0.0703
         }
       ],
-      "n": 144,
-      "expectancy_R": -0.0819,
-      "total_R": -11.8,
+      "n": 71,
+      "expectancy_R": -0.0901,
+      "total_R": -6.4,
       "periods_positive": 1,
-      "periods_scored": 4,
-      "worst_period_R": -0.3648,
-      "max_dd_pct": -12.6,
+      "periods_scored": 3,
+      "worst_period_R": -0.2259,
+      "max_dd_pct": -8.35,
       "name": "ema10_tgt3.0_stop0.3_slope2.0",
       "params": {
         "fast": 10,
@@ -56,5 +48,5 @@
   "winner": null,
   "holdout": null,
   "research_symbols": 40,
-  "start": "2016-01-01"
+  "start": "2026-01-01"
 }
