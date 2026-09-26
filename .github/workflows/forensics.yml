@@ -1,0 +1,78 @@
+name: Forensics
+
+# Why losers lose, and what the rules threw away. Diagnostic only - it does
+# not tune anything.
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: "Start date"
+        required: false
+        default: "2026-01-01"
+      end:
+        description: "End date (blank = today)"
+        required: false
+      universe:
+        description: "movers | research | holdout"
+        required: false
+        default: "movers"
+      move_atr:
+        description: "A 'big move' is a run-up of this many ATR"
+        required: false
+        default: "3.0"
+
+permissions:
+  contents: write
+
+jobs:
+  forensics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest tests/ -q
+      - name: Analyse
+        id: go
+        continue-on-error: true
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          IN_START: ${{ inputs.start }}
+          IN_END: ${{ inputs.end }}
+          IN_UNI: ${{ inputs.universe }}
+          IN_MOVE: ${{ inputs.move_atr }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports
+          ARGS=(--start "${IN_START:-2026-01-01}" --universe "${IN_UNI:-movers}" \
+                --move-atr "${IN_MOVE:-3.0}")
+          [ -n "${IN_END:-}" ] && ARGS+=(--end "${IN_END}") || true
+          set +e
+          python -m src.forensics "${ARGS[@]}" 2>&1 | tee reports/forensics_run.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name  "tradingbot"
+          git config user.email "tradingbot@users.noreply.github.com"
+          git add -A reports/ || true
+          if ! git diff --cached --quiet; then
+            git commit -m "forensics: ${{ inputs.universe }} [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed"
+          fi
+      - name: Summary
+        if: always()
+        run: |
+          F="reports/forensics_${{ inputs.universe }}.md"
+          [ -f "$F" ] || F="reports/forensics_movers.md"
+          if [ -f "$F" ]; then cat "$F" >> "$GITHUB_STEP_SUMMARY"; else
+            { echo '```'; tail -n 40 reports/forensics_run.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"; fi
+      - name: Fail if the run failed
+        if: always()
+        run: '[ "${{ steps.go.outputs.code }}" = "0" ] || exit 1'
