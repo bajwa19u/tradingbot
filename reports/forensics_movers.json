@@ -1,0 +1,377 @@
+{
+  "universe": "movers",
+  "symbols": 36,
+  "start": "2026-01-01",
+  "end": null,
+  "stats": {
+    "n_trades": 38,
+    "win_rate_pct": 47.4,
+    "expectancy_R": 0.0238,
+    "total_R": 0.9,
+    "profit_factor": 1.05,
+    "final_equity": 10062.99,
+    "return_pct": 0.6,
+    "max_drawdown_pct": -7.84,
+    "avg_bars_held": 8.1,
+    "exit_reasons": {
+      "stop": 18,
+      "trail": 16,
+      "target": 3,
+      "ema_exit": 1
+    }
+  },
+  "autopsy": {
+    "n_wins": 18,
+    "n_losses": 20,
+    "features": [
+      {
+        "feature": "atr_pct",
+        "winners_median": 5.35,
+        "losers_median": 3.8,
+        "separation": 0.64
+      },
+      {
+        "feature": "range_pct",
+        "winners_median": 6.4,
+        "losers_median": 3.85,
+        "separation": 0.47
+      },
+      {
+        "feature": "gap_pct",
+        "winners_median": 0.4,
+        "losers_median": -0.02,
+        "separation": 0.35
+      },
+      {
+        "feature": "rvol",
+        "winners_median": 1.14,
+        "losers_median": 0.94,
+        "separation": 0.32
+      },
+      {
+        "feature": "ext_from_ema_atr",
+        "winners_median": 0.45,
+        "losers_median": 0.45,
+        "separation": 0.3
+      },
+      {
+        "feature": "slope_atr",
+        "winners_median": 3.86,
+        "losers_median": 3.86,
+        "separation": -0.23
+      },
+      {
+        "feature": "above_slow_atr",
+        "winners_median": 5.33,
+        "losers_median": 5.4,
+        "separation": -0.16
+      }
+    ]
+  },
+  "missed": {
+    "big_moves_caught": 18,
+    "big_moves_missed": 2130,
+    "capture_rate_pct": 0.8,
+    "blocked_by": [
+      {
+        "gate": "trend too new",
+        "opportunities_blocked": 1950,
+        "median_move_atr": 4.87
+      },
+      {
+        "gate": "trend has gone flat",
+        "opportunities_blocked": 1622,
+        "median_move_atr": 4.75
+      },
+      {
+        "gate": "no uptrend (EMA stack out of order)",
+        "opportunities_blocked": 1586,
+        "median_move_atr": 4.82
+      },
+      {
+        "gate": "no green close back above the EMA",
+        "opportunities_blocked": 1468,
+        "median_move_atr": 4.81
+      },
+      {
+        "gate": "closed below the mid EMA - pullback too deep",
+        "opportunities_blocked": 1184,
+        "median_move_atr": 4.72
+      },
+      {
+        "gate": "no pullback to the EMA",
+        "opportunities_blocked": 238,
+        "median_move_atr": 5.74
+      },
+      {
+        "gate": "ENTRY",
+        "opportunities_blocked": 36,
+        "median_move_atr": 5.31
+      }
+    ]
+  },
+  "worst": [
+    {
+      "symbol": "ROKU",
+      "entry_date": "2026-08-28",
+      "entry": 157.7288,
+      "stop": 155.6421,
+      "exit_date": "2026-09-01",
+      "exit": 155.5643,
+      "reason": "stop",
+      "r_multiple": -1.037,
+      "bars_held": 2,
+      "mae_r": -1.06,
+      "mfe_r": 0.0
+    },
+    {
+      "symbol": "ROKU",
+      "entry_date": "2026-09-02",
+      "entry": 157.8089,
+      "stop": 154.9217,
+      "exit_date": "2026-09-08",
+      "exit": 154.8442,
+      "reason": "stop",
+      "r_multiple": -1.027,
+      "bars_held": 3,
+      "mae_r": -1.43,
+      "mfe_r": 0.34
+    },
+    {
+      "symbol": "ABNB",
+      "entry_date": "2026-05-08",
+      "entry": 141.5307,
+      "stop": 136.6515,
+      "exit_date": "2026-05-12",
+      "exit": 136.5831,
+      "reason": "stop",
+      "r_multiple": -1.014,
+      "bars_held": 2,
+      "mae_r": -1.47,
+      "mfe_r": 0.87
+    },
+    {
+      "symbol": "ABNB",
+      "entry_date": "2026-09-03",
+      "entry": 185.2426,
+      "stop": 178.7741,
+      "exit_date": "2026-09-08",
+      "exit": 178.6847,
+      "reason": "stop",
+      "r_multiple": -1.014,
+      "bars_held": 2,
+      "mae_r": -1.87,
+      "mfe_r": 0.0
+    },
+    {
+      "symbol": "ZM",
+      "entry_date": "2026-08-19",
+      "entry": 107.5337,
+      "stop": 103.4769,
+      "exit_date": "2026-08-24",
+      "exit": 103.4251,
+      "reason": "stop",
+      "r_multiple": -1.013,
+      "bars_held": 3,
+      "mae_r": -1.1,
+      "mfe_r": 0.26
+    },
+    {
+      "symbol": "SNOW",
+      "entry_date": "2026-08-19",
+      "entry": 324.9974,
+      "stop": 312.788,
+      "exit_date": "2026-08-25",
+      "exit": 312.6316,
+      "reason": "stop",
+      "r_multiple": -1.013,
+      "bars_held": 4,
+      "mae_r": -1.32,
+      "mfe_r": 0.68
+    },
+    {
+      "symbol": "ABNB",
+      "entry_date": "2026-08-28",
+      "entry": 189.4647,
+      "stop": 182.4733,
+      "exit_date": "2026-08-31",
+      "exit": 182.382,
+      "reason": "stop",
+      "r_multiple": -1.013,
+      "bars_held": 1,
+      "mae_r": -1.08,
+      "mfe_r": 0.0
+    },
+    {
+      "symbol": "ABNB",
+      "entry_date": "2026-01-13",
+      "entry": 140.09,
+      "stop": 133.6755,
+      "exit_date": "2026-01-14",
+      "exit": 133.6086,
+      "reason": "stop",
+      "r_multiple": -1.01,
+      "bars_held": 1,
+      "mae_r": -1.53,
+      "mfe_r": 0.0
+    },
+    {
+      "symbol": "SHOP",
+      "entry_date": "2026-08-27",
+      "entry": 154.3671,
+      "stop": 145.3383,
+      "exit_date": "2026-08-31",
+      "exit": 145.2656,
+      "reason": "stop",
+      "r_multiple": -1.008,
+      "bars_held": 2,
+      "mae_r": -1.04,
+      "mfe_r": 0.23
+    },
+    {
+      "symbol": "ROKU",
+      "entry_date": "2026-01-05",
+      "entry": 114.7423,
+      "stop": 107.1484,
+      "exit_date": "2026-01-12",
+      "exit": 107.0949,
+      "reason": "stop",
+      "r_multiple": -1.007,
+      "bars_held": 5,
+      "mae_r": -1.05,
+      "mfe_r": 0.11
+    }
+  ],
+  "best": [
+    {
+      "symbol": "ARM",
+      "entry_date": "2026-05-06",
+      "entry": 237.4587,
+      "stop": 288.3157,
+      "exit_date": "2026-06-01",
+      "exit": 367.0395,
+      "reason": "target",
+      "r_multiple": 2.996,
+      "bars_held": 17,
+      "mae_r": -0.84,
+      "mfe_r": 4.25
+    },
+    {
+      "symbol": "ARM",
+      "entry_date": "2026-04-28",
+      "entry": 198.6793,
+      "stop": 198.1674,
+      "exit_date": "2026-05-06",
+      "exit": 229.3848,
+      "reason": "target",
+      "r_multiple": 2.989,
+      "bars_held": 6,
+      "mae_r": -0.43,
+      "mfe_r": 3.97
+    },
+    {
+      "symbol": "ROKU",
+      "entry_date": "2026-07-27",
+      "entry": 143.0315,
+      "stop": 144.6059,
+      "exit_date": "2026-08-06",
+      "exit": 150.3402,
+      "reason": "target",
+      "r_multiple": 2.969,
+      "bars_held": 8,
+      "mae_r": 0.0,
+      "mfe_r": 3.05
+    },
+    {
+      "symbol": "SNOW",
+      "entry_date": "2026-06-26",
+      "entry": 248.5642,
+      "stop": 320.7101,
+      "exit_date": "2026-08-19",
+      "exit": 320.5498,
+      "reason": "trail",
+      "r_multiple": 2.053,
+      "bars_held": 37,
+      "mae_r": -0.06,
+      "mfe_r": 2.66
+    },
+    {
+      "symbol": "NET",
+      "entry_date": "2026-07-29",
+      "entry": 270.6052,
+      "stop": 300.62,
+      "exit_date": "2026-08-18",
+      "exit": 300.4697,
+      "reason": "trail",
+      "r_multiple": 1.273,
+      "bars_held": 14,
+      "mae_r": -0.14,
+      "mfe_r": 2.62
+    },
+    {
+      "symbol": "ZM",
+      "entry_date": "2026-04-29",
+      "entry": 95.7478,
+      "stop": 102.3404,
+      "exit_date": "2026-05-12",
+      "exit": 102.2892,
+      "reason": "trail",
+      "r_multiple": 0.929,
+      "bars_held": 9,
+      "mae_r": -0.31,
+      "mfe_r": 2.24
+    },
+    {
+      "symbol": "ROKU",
+      "entry_date": "2026-04-30",
+      "entry": 116.6083,
+      "stop": 123.6248,
+      "exit_date": "2026-05-15",
+      "exit": 123.563,
+      "reason": "trail",
+      "r_multiple": 0.91,
+      "bars_held": 11,
+      "mae_r": -0.18,
+      "mfe_r": 1.91
+    },
+    {
+      "symbol": "AMD",
+      "entry_date": "2026-05-20",
+      "entry": 447.7738,
+      "stop": 495.5545,
+      "exit_date": "2026-06-05",
+      "exit": 495.3067,
+      "reason": "trail",
+      "r_multiple": 0.77,
+      "bars_held": 11,
+      "mae_r": -0.26,
+      "mfe_r": 1.59
+    },
+    {
+      "symbol": "ARM",
+      "entry_date": "2026-06-11",
+      "entry": 342.8213,
+      "stop": 380.3603,
+      "exit_date": "2026-06-23",
+      "exit": 380.1702,
+      "reason": "trail",
+      "r_multiple": 0.698,
+      "bars_held": 7,
+      "mae_r": 0.0,
+      "mfe_r": 2.04
+    },
+    {
+      "symbol": "NVDA",
+      "entry_date": "2026-05-06",
+      "entry": 207.7738,
+      "stop": 218.1907,
+      "exit_date": "2026-05-21",
+      "exit": 218.0816,
+      "reason": "trail",
+      "r_multiple": 0.688,
+      "bars_held": 11,
+      "mae_r": -0.08,
+      "mfe_r": 1.92
+    }
+  ]
+}

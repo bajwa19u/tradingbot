@@ -1,0 +1,75 @@
+# Trade forensics — movers universe
+
+**36 symbols · from 2026-01-01 · 2026-09-26 23:54**
+
+## Baseline
+
+38 trades · +0.0238R expectancy · 47.4% win rate · -7.84% max drawdown
+
+## Autopsy — do losers differ from winners?
+
+18 winners vs 20 losers. **Separation** is the gap between the two groups in pooled standard deviations: above 0.5 is worth a rule, below 0.2 is noise.
+
+| Condition at entry | Winners | Losers | Separation |
+|---|---|---|---|
+| atr_pct | 5.35 | 3.8 | **+0.64** ⬅ |
+| range_pct | 6.4 | 3.85 | **+0.47** |
+| gap_pct | 0.4 | -0.02 | **+0.35** |
+| rvol | 1.14 | 0.94 | **+0.32** |
+| ext_from_ema_atr | 0.45 | 0.45 | **+0.30** |
+| slope_atr | 3.86 | 3.86 | **-0.23** |
+| above_slow_atr | 5.33 | 5.4 | **-0.16** |
+
+**Read:** `atr_pct` differs by +0.64 SD. Worth testing as a rule.
+
+## What we missed
+
+Big moves (a run-up of 3.0 ATR within 20 days) in this universe and period:
+
+- **Caught:** 18
+- **Missed:** 2130
+- **Capture rate:** 0.8%
+
+### Which gate blocked the moves we missed
+
+| Gate | Opportunities blocked | Median move |
+|---|---|---|
+| trend too new | 1950 | 4.87 ATR |
+| trend has gone flat | 1622 | 4.75 ATR |
+| no uptrend (EMA stack out of order) | 1586 | 4.82 ATR |
+| no green close back above the EMA | 1468 | 4.81 ATR |
+| closed below the mid EMA - pullback too deep | 1184 | 4.72 ATR |
+| no pullback to the EMA | 238 | 5.74 ATR |
+| ENTRY | 36 | 5.31 ATR |
+
+_A gate near the top of this list is expensive. But removing it also lets through every move it correctly avoided — the autopsy above is what says whether that trade is worth making._
+
+## Ten worst trades
+
+| Symbol | Entry | Exit | R | Reason | Days |
+|---|---|---|---|---|---|
+| ROKU | 2026-08-28 | 2026-09-01 | -1.04 | stop | 2 |
+| ROKU | 2026-09-02 | 2026-09-08 | -1.03 | stop | 3 |
+| ABNB | 2026-05-08 | 2026-05-12 | -1.01 | stop | 2 |
+| ABNB | 2026-09-03 | 2026-09-08 | -1.01 | stop | 2 |
+| ZM | 2026-08-19 | 2026-08-24 | -1.01 | stop | 3 |
+| SNOW | 2026-08-19 | 2026-08-25 | -1.01 | stop | 4 |
+| ABNB | 2026-08-28 | 2026-08-31 | -1.01 | stop | 1 |
+| ABNB | 2026-01-13 | 2026-01-14 | -1.01 | stop | 1 |
+| SHOP | 2026-08-27 | 2026-08-31 | -1.01 | stop | 2 |
+| ROKU | 2026-01-05 | 2026-01-12 | -1.01 | stop | 5 |
+
+## Ten best trades
+
+| Symbol | Entry | Exit | R | Reason | Days |
+|---|---|---|---|---|---|
+| ARM | 2026-05-06 | 2026-06-01 | +3.00 | target | 17 |
+| ARM | 2026-04-28 | 2026-05-06 | +2.99 | target | 6 |
+| ROKU | 2026-07-27 | 2026-08-06 | +2.97 | target | 8 |
+| SNOW | 2026-06-26 | 2026-08-19 | +2.05 | trail | 37 |
+| NET | 2026-07-29 | 2026-08-18 | +1.27 | trail | 14 |
+| ZM | 2026-04-29 | 2026-05-12 | +0.93 | trail | 9 |
+| ROKU | 2026-04-30 | 2026-05-15 | +0.91 | trail | 11 |
+| AMD | 2026-05-20 | 2026-06-05 | +0.77 | trail | 11 |
+| ARM | 2026-06-11 | 2026-06-23 | +0.70 | trail | 7 |
+| NVDA | 2026-05-06 | 2026-05-21 | +0.69 | trail | 11 |
