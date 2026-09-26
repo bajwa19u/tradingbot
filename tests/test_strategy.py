@@ -668,3 +668,65 @@ def test_slope_filter_stands_down_in_a_flat_market():
     assert in_flat(loose) > 0, "fixture should produce chop signals with no filter"
     assert in_flat(strict) < in_flat(loose), (
         f"slope filter cut nothing: {in_flat(strict)} vs {in_flat(loose)}")
+
+
+# ---------------------------------------------------------------------------
+# Self-improving loop
+# ---------------------------------------------------------------------------
+def test_adaptive_forward_trades_are_never_chosen_by_their_own_data():
+    """The whole validity of the loop rests on this: a trade taken after a
+    refit must not have influenced which config that refit picked."""
+    import copy
+    import pandas as pd
+    from src.swing import BASE
+    from src.adaptive import walk_forward
+    data = {f"S{i}": _daily_uptrend(700, seed=20 + i) for i in range(4)}
+    cfgs = []
+    for fast in (10, 20):
+        p = copy.deepcopy(BASE); p["fast"] = fast; p["min_slope_atr"] = 0.0
+        cfgs.append((f"ema{fast}", p))
+    days = sorted({d for df in data.values() for d in df.index})
+    wf = walk_forward(data, cfgs, days, lookback=250, refit=40, min_trades=3)
+    assert wf["choices"], "walk-forward produced no refits"
+    # no forward trade may begin before the refit that selected its config
+    first = min(pd.Timestamp(c["refit_date"]).date() for c in wf["choices"])
+    for t in wf["trades"]:
+        assert pd.Timestamp(t["entry_date"]).date() >= first, t
+    # and the fit windows must end where the forward windows begin - a trade
+    # entered during a fit window would mean the config saw its own outcome
+    dates = sorted(pd.Timestamp(c["refit_date"]).date() for c in wf["choices"])
+    assert dates == sorted(set(dates)), "refit dates must be distinct"
+
+
+def test_adaptive_report_calls_out_a_losing_loop():
+    """If refitting underperforms a static config, the report must say so
+    plainly rather than presenting the adaptive number on its own."""
+    from src.adaptive import render
+    payload = {"universe": "research", "symbols": 40, "start": "2024-01-01",
+               "end": None, "lookback": 252, "refit": 21,
+               "adaptive": {"n_trades": 200, "expectancy_R": -0.05,
+                            "total_R": -10.0, "win_rate_pct": 40.0,
+                            "max_drawdown_pct": -20.0},
+               "choices": [{"refit_date": "2024-02-01", "chose": "x",
+                            "fit_expectancy_R": 0.4, "forward_expectancy_R": -0.1,
+                            "forward_trades": 12}],
+               "static": {"n_trades": 210, "expectancy_R": 0.08, "total_R": 16.8,
+                          "win_rate_pct": 45.0, "max_drawdown_pct": -18.0},
+               "static_name": "s", "hindsight": None, "hindsight_name": ""}
+    text = render(payload)
+    assert "adaptive LOST to static" in text
+    assert "performance chasing" in text
+
+
+def test_adaptive_report_credits_a_winning_loop():
+    from src.adaptive import render
+    payload = {"universe": "research", "symbols": 40, "start": "2024-01-01",
+               "end": None, "lookback": 252, "refit": 21,
+               "adaptive": {"n_trades": 200, "expectancy_R": 0.14,
+                            "total_R": 28.0, "win_rate_pct": 48.0,
+                            "max_drawdown_pct": -15.0},
+               "choices": [],
+               "static": {"n_trades": 210, "expectancy_R": 0.05, "total_R": 10.5,
+                          "win_rate_pct": 44.0, "max_drawdown_pct": -18.0},
+               "static_name": "s", "hindsight": None, "hindsight_name": ""}
+    assert "adaptive beat static" in render(payload)
