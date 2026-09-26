@@ -1,0 +1,94 @@
+2026-09-26 23:32:16,099 INFO Fetching 30 holdout symbols from 2021-07-12
+2026-09-26 23:32:17,108 INFO Walk-forward: 39 configs, 252-day lookback, refit every 21 days
+2026-09-26 23:32:27,429 INFO   2024-01-02  fit picked ema10_tgt3.0_stop0.3_slope2.0      (0.342R on 59) -> forward -0.397R on 14
+2026-09-26 23:32:33,018 INFO   2024-02-01  fit picked ema10_tgt3.0_stop0.3_slope2.0      (0.253R on 77) -> forward 1.176R on 3
+2026-09-26 23:32:38,615 INFO   2024-03-04  fit picked ema10_tgt3.0_stop0.3_slope2.0      (0.414R on 75) -> forward 0.286R on 6
+2026-09-26 23:32:44,361 INFO   2024-04-03  fit picked ema10_tgt3.0_trail0_stop0.5        (0.794R on 55) -> forward -1.023R on 15
+2026-09-26 23:32:50,205 INFO   2024-05-02  fit picked ema10_tgt3.0_trail0_stop0.5        (0.696R on 55) -> forward -0.225R on 10
+2026-09-26 23:32:55,995 INFO   2024-06-03  fit picked ema10_tgt3.0_trail0_stop0.5        (0.751R on 63) -> forward -1.021R on 4
+2026-09-26 23:33:02,144 INFO   2024-07-03  fit picked ema10_tgt3.0_trail0_stop0.3        (0.571R on 75) -> forward 0.980R on 10
+2026-09-26 23:33:08,121 INFO   2024-08-02  fit picked ema10_tgt2.0_trail0_stop1.0        (0.491R on 63) -> forward 1.988R on 1
+2026-09-26 23:33:14,276 INFO   2024-09-03  fit picked ema10_tgt3.0_trail0_stop1.0        (0.655R on 53) -> forward -1.020R on 2
+2026-09-26 23:33:20,414 INFO   2024-10-02  fit picked ema10_tgt3.0_trail0_stop1.0        (0.824R on 49) -> forward -1.018R on 5
+2026-09-26 23:33:26,707 INFO   2024-10-31  fit picked ema10_tgt3.0_trail0_stop0.5        (0.901R on 71) -> forward 2.316R on 6
+2026-09-26 23:33:33,236 INFO   2024-12-02  fit picked ema10_tgt3.0_trail0_stop1.0        (0.782R on 65) -> forward -1.016R on 11
+2026-09-26 23:33:40,225 INFO   2025-01-02  fit picked ema20_tgt0.0_stop0.5_slope1.0      (0.477R on 92) -> forward 0.000R on 0
+2026-09-26 23:33:46,647 INFO   2025-02-04  fit picked ema10_tgt2.0_trail0_stop1.0        (0.516R on 67) -> forward -1.009R on 8
+2026-09-26 23:33:53,181 INFO   2025-03-06  fit picked ema20_tgt0.0_trail1_stop0.3        (0.451R on 115) -> forward -0.094R on 2
+2026-09-26 23:33:59,593 INFO   2025-04-04  fit picked ema20_tgt0.0_trail1_stop0.3        (0.157R on 118) -> forward -0.925R on 3
+2026-09-26 23:34:05,744 INFO   2025-05-06  fit picked ema20_tgt0.0_stop0.5_slope1.0      (0.331R on 72) -> forward -0.846R on 2
+2026-09-26 23:34:11,790 INFO   2025-06-05  fit picked ema20_tgt0.0_stop0.5_slope0.5      (0.274R on 75) -> forward -1.025R on 8
+2026-09-26 23:34:17,847 INFO   2025-07-08  fit picked ema20_tgt0.0_trail1_stop1.0        (0.356R on 69) -> forward -0.671R on 6
+2026-09-26 23:34:23,940 INFO   2025-08-06  fit picked ema10_tgt3.0_trail0_stop0.5        (0.272R on 64) -> forward 0.000R on 0
+2026-09-26 23:34:29,462 INFO   2025-09-05  fit picked ema10_tgt2.0_trail0_stop0.5        (0.167R on 87) -> forward -0.267R on 12
+2026-09-26 23:34:35,552 INFO   2025-10-06  fit picked ema10_tgt3.0_trail0_stop0.5        (0.087R on 67) -> forward -1.013R on 13
+2026-09-26 23:34:41,700 INFO   2025-11-04  fit picked ema20_tgt3.0_trail0_stop0.5        (0.154R on 59) -> forward 0.183R on 10
+2026-09-26 23:34:47,736 INFO   2025-12-04  fit picked ema10_tgt3.0_stop0.3_slope0.5      (-0.054R on 117) -> forward 0.222R on 8
+2026-09-26 23:34:53,892 INFO   2026-01-06  fit picked ema10_tgt2.0_trail0_stop1.0        (0.149R on 62) -> forward -1.010R on 5
+2026-09-26 23:35:00,202 INFO   2026-02-05  fit picked ema10_tgt2.0_trail0_stop0.5        (0.219R on 93) -> forward -0.261R on 8
+2026-09-26 23:35:05,946 INFO   2026-03-09  fit picked ema10_tgt3.0_trail0_stop0.5        (0.345R on 67) -> forward -1.013R on 3
+2026-09-26 23:35:12,433 INFO   2026-04-08  fit picked ema10_tgt3.0_trail0_stop0.5        (0.306R on 69) -> forward -1.012R on 7
+2026-09-26 23:35:19,154 INFO   2026-05-07  fit picked ema10_tgt3.0_stop0.3_slope2.0      (0.203R on 111) -> forward 0.064R on 6
+2026-09-26 23:35:26,056 INFO   2026-06-08  fit picked ema10_tgt3.0_trail0_stop1.0        (0.250R on 68) -> forward -1.005R on 2
+2026-09-26 23:35:32,829 INFO   2026-07-09  fit picked ema10_tgt3.0_stop0.3_slope2.0      (0.158R on 111) -> forward 0.863R on 10
+2026-09-26 23:35:38,823 INFO   2026-08-07  fit picked ema10_tgt3.0_stop0.3_slope2.0      (0.163R on 106) -> forward -0.804R on 15
+2026-09-26 23:35:45,658 INFO   2026-09-08  fit picked ema10_tgt3.0_trail1_stop0.3        (0.133R on 166) -> forward -0.915R on 8
+
+# Self-improving loop — holdout universe
+
+**Symbols:** 30 · **From:** 2024-01-01 · **Refits:** every 21 trading days on a 252-day lookback  
+**Generated:** 2026-09-26 23:36
+
+Every ADAPTIVE trade was chosen by data that ended before the trade began. Nothing here is fitted to the trades it is judged on.
+
+| | Trades | Expectancy | Total R | Win % | Max DD |
+|---|---|---|---|---|---|
+| **ADAPTIVE** (refits itself) | 223 | **-0.3675R** | -82.0 | 20.6 | -56.84% |
+| STATIC (`ema10_tgt3.0_stop0.3_slope2.0`, never changes) | 288 | +0.0915R | +26.4 | 45.8 | -20.74% |
+| HINDSIGHT (`ema20_tgt2.0_trail0_stop1.0`, unknowable at the time) | 212 | +0.1366R | +29.0 | 42.0 | -22.6% |
+
+## Does refitting help?
+
+**No — adaptive LOST to static by -0.4590R per trade.** The loop chased configurations that had just had a good run and then stopped working. This is the expected failure of performance chasing, and it is the reason to measure it rather than assume it.
+
+_HINDSIGHT is what the best fixed config would have returned if you had known in advance which one it was. It is not achievable; it is there to show how much of the gap is foresight rather than method._
+
+## What it chose, and what happened next
+
+| Refit | Chose | Fit expectancy | Forward expectancy | Forward trades |
+|---|---|---|---|---|
+| 2024-01-02 | `ema10_tgt3.0_stop0.3_slope2.0` | +0.342R | **-0.397R** | 14 |
+| 2024-02-01 | `ema10_tgt3.0_stop0.3_slope2.0` | +0.253R | **+1.176R** | 3 |
+| 2024-03-04 | `ema10_tgt3.0_stop0.3_slope2.0` | +0.414R | **+0.286R** | 6 |
+| 2024-04-03 | `ema10_tgt3.0_trail0_stop0.5` | +0.794R | **-1.023R** | 15 |
+| 2024-05-02 | `ema10_tgt3.0_trail0_stop0.5` | +0.696R | **-0.225R** | 10 |
+| 2024-06-03 | `ema10_tgt3.0_trail0_stop0.5` | +0.751R | **-1.021R** | 4 |
+| 2024-07-03 | `ema10_tgt3.0_trail0_stop0.3` | +0.571R | **+0.980R** | 10 |
+| 2024-08-02 | `ema10_tgt2.0_trail0_stop1.0` | +0.491R | **+1.988R** | 1 |
+| 2024-09-03 | `ema10_tgt3.0_trail0_stop1.0` | +0.655R | **-1.020R** | 2 |
+| 2024-10-02 | `ema10_tgt3.0_trail0_stop1.0` | +0.824R | **-1.018R** | 5 |
+| 2024-10-31 | `ema10_tgt3.0_trail0_stop0.5` | +0.901R | **+2.316R** | 6 |
+| 2024-12-02 | `ema10_tgt3.0_trail0_stop1.0` | +0.782R | **-1.016R** | 11 |
+| 2025-01-02 | `ema20_tgt0.0_stop0.5_slope1.0` | +0.477R | **+0.000R** | 0 |
+| 2025-02-04 | `ema10_tgt2.0_trail0_stop1.0` | +0.516R | **-1.009R** | 8 |
+| 2025-03-06 | `ema20_tgt0.0_trail1_stop0.3` | +0.451R | **-0.094R** | 2 |
+| 2025-04-04 | `ema20_tgt0.0_trail1_stop0.3` | +0.157R | **-0.925R** | 3 |
+| 2025-05-06 | `ema20_tgt0.0_stop0.5_slope1.0` | +0.331R | **-0.846R** | 2 |
+| 2025-06-05 | `ema20_tgt0.0_stop0.5_slope0.5` | +0.274R | **-1.025R** | 8 |
+| 2025-07-08 | `ema20_tgt0.0_trail1_stop1.0` | +0.356R | **-0.671R** | 6 |
+| 2025-08-06 | `ema10_tgt3.0_trail0_stop0.5` | +0.272R | **+0.000R** | 0 |
+| 2025-09-05 | `ema10_tgt2.0_trail0_stop0.5` | +0.167R | **-0.267R** | 12 |
+| 2025-10-06 | `ema10_tgt3.0_trail0_stop0.5` | +0.087R | **-1.013R** | 13 |
+| 2025-11-04 | `ema20_tgt3.0_trail0_stop0.5` | +0.154R | **+0.183R** | 10 |
+| 2025-12-04 | `ema10_tgt3.0_stop0.3_slope0.5` | -0.054R | **+0.222R** | 8 |
+| 2026-01-06 | `ema10_tgt2.0_trail0_stop1.0` | +0.149R | **-1.010R** | 5 |
+| 2026-02-05 | `ema10_tgt2.0_trail0_stop0.5` | +0.219R | **-0.261R** | 8 |
+| 2026-03-09 | `ema10_tgt3.0_trail0_stop0.5` | +0.345R | **-1.013R** | 3 |
+| 2026-04-08 | `ema10_tgt3.0_trail0_stop0.5` | +0.306R | **-1.012R** | 7 |
+| 2026-05-07 | `ema10_tgt3.0_stop0.3_slope2.0` | +0.203R | **+0.064R** | 6 |
+| 2026-06-08 | `ema10_tgt3.0_trail0_stop1.0` | +0.250R | **-1.005R** | 2 |
+| 2026-07-09 | `ema10_tgt3.0_stop0.3_slope2.0` | +0.158R | **+0.863R** | 10 |
+| 2026-08-07 | `ema10_tgt3.0_stop0.3_slope2.0` | +0.163R | **-0.804R** | 15 |
+| 2026-09-08 | `ema10_tgt3.0_trail1_stop0.3` | +0.133R | **-0.915R** | 8 |
+
+_The gap between the fit column and the forward column is the cost of selection. If fit is consistently high and forward consistently low, the search is finding noise._

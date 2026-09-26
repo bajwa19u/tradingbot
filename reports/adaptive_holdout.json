@@ -1,0 +1,318 @@
+{
+  "universe": "holdout",
+  "symbols": 30,
+  "start": "2024-01-01",
+  "end": null,
+  "lookback": 252,
+  "refit": 21,
+  "adaptive": {
+    "n_trades": 223,
+    "expectancy_R": -0.3675,
+    "total_R": -82.0,
+    "win_rate_pct": 20.6,
+    "max_drawdown_pct": -56.84,
+    "return_pct": -56.8
+  },
+  "choices": [
+    {
+      "refit_date": "2024-01-02",
+      "chose": "ema10_tgt3.0_stop0.3_slope2.0",
+      "fit_expectancy_R": 0.3423,
+      "fit_trades": 59,
+      "forward_trades": 14,
+      "forward_expectancy_R": -0.3974
+    },
+    {
+      "refit_date": "2024-02-01",
+      "chose": "ema10_tgt3.0_stop0.3_slope2.0",
+      "fit_expectancy_R": 0.2531,
+      "fit_trades": 77,
+      "forward_trades": 3,
+      "forward_expectancy_R": 1.1763
+    },
+    {
+      "refit_date": "2024-03-04",
+      "chose": "ema10_tgt3.0_stop0.3_slope2.0",
+      "fit_expectancy_R": 0.4137,
+      "fit_trades": 75,
+      "forward_trades": 6,
+      "forward_expectancy_R": 0.2863
+    },
+    {
+      "refit_date": "2024-04-03",
+      "chose": "ema10_tgt3.0_trail0_stop0.5",
+      "fit_expectancy_R": 0.7941,
+      "fit_trades": 55,
+      "forward_trades": 15,
+      "forward_expectancy_R": -1.0227
+    },
+    {
+      "refit_date": "2024-05-02",
+      "chose": "ema10_tgt3.0_trail0_stop0.5",
+      "fit_expectancy_R": 0.6956,
+      "fit_trades": 55,
+      "forward_trades": 10,
+      "forward_expectancy_R": -0.2252
+    },
+    {
+      "refit_date": "2024-06-03",
+      "chose": "ema10_tgt3.0_trail0_stop0.5",
+      "fit_expectancy_R": 0.751,
+      "fit_trades": 63,
+      "forward_trades": 4,
+      "forward_expectancy_R": -1.0212
+    },
+    {
+      "refit_date": "2024-07-03",
+      "chose": "ema10_tgt3.0_trail0_stop0.3",
+      "fit_expectancy_R": 0.5711,
+      "fit_trades": 75,
+      "forward_trades": 10,
+      "forward_expectancy_R": 0.9798
+    },
+    {
+      "refit_date": "2024-08-02",
+      "chose": "ema10_tgt2.0_trail0_stop1.0",
+      "fit_expectancy_R": 0.4909,
+      "fit_trades": 63,
+      "forward_trades": 1,
+      "forward_expectancy_R": 1.988
+    },
+    {
+      "refit_date": "2024-09-03",
+      "chose": "ema10_tgt3.0_trail0_stop1.0",
+      "fit_expectancy_R": 0.6553,
+      "fit_trades": 53,
+      "forward_trades": 2,
+      "forward_expectancy_R": -1.0205
+    },
+    {
+      "refit_date": "2024-10-02",
+      "chose": "ema10_tgt3.0_trail0_stop1.0",
+      "fit_expectancy_R": 0.8237,
+      "fit_trades": 49,
+      "forward_trades": 5,
+      "forward_expectancy_R": -1.0178
+    },
+    {
+      "refit_date": "2024-10-31",
+      "chose": "ema10_tgt3.0_trail0_stop0.5",
+      "fit_expectancy_R": 0.9011,
+      "fit_trades": 71,
+      "forward_trades": 6,
+      "forward_expectancy_R": 2.316
+    },
+    {
+      "refit_date": "2024-12-02",
+      "chose": "ema10_tgt3.0_trail0_stop1.0",
+      "fit_expectancy_R": 0.7817,
+      "fit_trades": 65,
+      "forward_trades": 11,
+      "forward_expectancy_R": -1.0156
+    },
+    {
+      "refit_date": "2025-01-02",
+      "chose": "ema20_tgt0.0_stop0.5_slope1.0",
+      "fit_expectancy_R": 0.4771,
+      "fit_trades": 92,
+      "forward_trades": 0,
+      "forward_expectancy_R": 0.0
+    },
+    {
+      "refit_date": "2025-02-04",
+      "chose": "ema10_tgt2.0_trail0_stop1.0",
+      "fit_expectancy_R": 0.5156,
+      "fit_trades": 67,
+      "forward_trades": 8,
+      "forward_expectancy_R": -1.0092
+    },
+    {
+      "refit_date": "2025-03-06",
+      "chose": "ema20_tgt0.0_trail1_stop0.3",
+      "fit_expectancy_R": 0.4509,
+      "fit_trades": 115,
+      "forward_trades": 2,
+      "forward_expectancy_R": -0.094
+    },
+    {
+      "refit_date": "2025-04-04",
+      "chose": "ema20_tgt0.0_trail1_stop0.3",
+      "fit_expectancy_R": 0.1569,
+      "fit_trades": 118,
+      "forward_trades": 3,
+      "forward_expectancy_R": -0.9247
+    },
+    {
+      "refit_date": "2025-05-06",
+      "chose": "ema20_tgt0.0_stop0.5_slope1.0",
+      "fit_expectancy_R": 0.3308,
+      "fit_trades": 72,
+      "forward_trades": 2,
+      "forward_expectancy_R": -0.846
+    },
+    {
+      "refit_date": "2025-06-05",
+      "chose": "ema20_tgt0.0_stop0.5_slope0.5",
+      "fit_expectancy_R": 0.2739,
+      "fit_trades": 75,
+      "forward_trades": 8,
+      "forward_expectancy_R": -1.0249
+    },
+    {
+      "refit_date": "2025-07-08",
+      "chose": "ema20_tgt0.0_trail1_stop1.0",
+      "fit_expectancy_R": 0.3564,
+      "fit_trades": 69,
+      "forward_trades": 6,
+      "forward_expectancy_R": -0.671
+    },
+    {
+      "refit_date": "2025-08-06",
+      "chose": "ema10_tgt3.0_trail0_stop0.5",
+      "fit_expectancy_R": 0.2718,
+      "fit_trades": 64,
+      "forward_trades": 0,
+      "forward_expectancy_R": 0.0
+    },
+    {
+      "refit_date": "2025-09-05",
+      "chose": "ema10_tgt2.0_trail0_stop0.5",
+      "fit_expectancy_R": 0.1669,
+      "fit_trades": 87,
+      "forward_trades": 12,
+      "forward_expectancy_R": -0.2667
+    },
+    {
+      "refit_date": "2025-10-06",
+      "chose": "ema10_tgt3.0_trail0_stop0.5",
+      "fit_expectancy_R": 0.0869,
+      "fit_trades": 67,
+      "forward_trades": 13,
+      "forward_expectancy_R": -1.0132
+    },
+    {
+      "refit_date": "2025-11-04",
+      "chose": "ema20_tgt3.0_trail0_stop0.5",
+      "fit_expectancy_R": 0.1536,
+      "fit_trades": 59,
+      "forward_trades": 10,
+      "forward_expectancy_R": 0.1833
+    },
+    {
+      "refit_date": "2025-12-04",
+      "chose": "ema10_tgt3.0_stop0.3_slope0.5",
+      "fit_expectancy_R": -0.0542,
+      "fit_trades": 117,
+      "forward_trades": 8,
+      "forward_expectancy_R": 0.2218
+    },
+    {
+      "refit_date": "2026-01-06",
+      "chose": "ema10_tgt2.0_trail0_stop1.0",
+      "fit_expectancy_R": 0.1491,
+      "fit_trades": 62,
+      "forward_trades": 5,
+      "forward_expectancy_R": -1.01
+    },
+    {
+      "refit_date": "2026-02-05",
+      "chose": "ema10_tgt2.0_trail0_stop0.5",
+      "fit_expectancy_R": 0.2193,
+      "fit_trades": 93,
+      "forward_trades": 8,
+      "forward_expectancy_R": -0.2613
+    },
+    {
+      "refit_date": "2026-03-09",
+      "chose": "ema10_tgt3.0_trail0_stop0.5",
+      "fit_expectancy_R": 0.3446,
+      "fit_trades": 67,
+      "forward_trades": 3,
+      "forward_expectancy_R": -1.0127
+    },
+    {
+      "refit_date": "2026-04-08",
+      "chose": "ema10_tgt3.0_trail0_stop0.5",
+      "fit_expectancy_R": 0.3061,
+      "fit_trades": 69,
+      "forward_trades": 7,
+      "forward_expectancy_R": -1.0117
+    },
+    {
+      "refit_date": "2026-05-07",
+      "chose": "ema10_tgt3.0_stop0.3_slope2.0",
+      "fit_expectancy_R": 0.2029,
+      "fit_trades": 111,
+      "forward_trades": 6,
+      "forward_expectancy_R": 0.0642
+    },
+    {
+      "refit_date": "2026-06-08",
+      "chose": "ema10_tgt3.0_trail0_stop1.0",
+      "fit_expectancy_R": 0.2501,
+      "fit_trades": 68,
+      "forward_trades": 2,
+      "forward_expectancy_R": -1.005
+    },
+    {
+      "refit_date": "2026-07-09",
+      "chose": "ema10_tgt3.0_stop0.3_slope2.0",
+      "fit_expectancy_R": 0.1582,
+      "fit_trades": 111,
+      "forward_trades": 10,
+      "forward_expectancy_R": 0.863
+    },
+    {
+      "refit_date": "2026-08-07",
+      "chose": "ema10_tgt3.0_stop0.3_slope2.0",
+      "fit_expectancy_R": 0.1634,
+      "fit_trades": 106,
+      "forward_trades": 15,
+      "forward_expectancy_R": -0.8037
+    },
+    {
+      "refit_date": "2026-09-08",
+      "chose": "ema10_tgt3.0_trail1_stop0.3",
+      "fit_expectancy_R": 0.1325,
+      "fit_trades": 166,
+      "forward_trades": 8,
+      "forward_expectancy_R": -0.9146
+    }
+  ],
+  "static": {
+    "n_trades": 288,
+    "win_rate_pct": 45.8,
+    "expectancy_R": 0.0915,
+    "total_R": 26.4,
+    "profit_factor": 1.18,
+    "final_equity": 12683.28,
+    "return_pct": 26.8,
+    "max_drawdown_pct": -20.74,
+    "avg_bars_held": 10.3,
+    "exit_reasons": {
+      "stop": 137,
+      "trail": 96,
+      "target": 36,
+      "ema_exit": 14,
+      "time": 5
+    }
+  },
+  "static_name": "ema10_tgt3.0_stop0.3_slope2.0",
+  "hindsight": {
+    "n_trades": 212,
+    "win_rate_pct": 42.0,
+    "expectancy_R": 0.1366,
+    "total_R": 29.0,
+    "profit_factor": 1.24,
+    "final_equity": 13089.37,
+    "return_pct": 30.9,
+    "max_drawdown_pct": -22.6,
+    "avg_bars_held": 21.8,
+    "exit_reasons": {
+      "stop": 118,
+      "target": 69,
+      "time": 25
+    }
+  },
+  "hindsight_name": "ema20_tgt2.0_trail0_stop1.0"
+}
