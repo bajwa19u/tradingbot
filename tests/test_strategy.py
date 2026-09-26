@@ -730,3 +730,53 @@ def test_adaptive_report_credits_a_winning_loop():
                           "win_rate_pct": 44.0, "max_drawdown_pct": -18.0},
                "static_name": "s", "hindsight": None, "hindsight_name": ""}
     assert "adaptive beat static" in render(payload)
+
+
+# ---------------------------------------------------------------------------
+# Forensics
+# ---------------------------------------------------------------------------
+def test_autopsy_finds_a_planted_difference():
+    """If losers really do differ from winners, the autopsy must surface it;
+    otherwise the tool cannot be trusted when it reports no difference."""
+    import copy
+    from src.forensics import autopsy
+    from src.swing import BASE, prepare, run_portfolio, signal_times
+    p = copy.deepcopy(BASE); p["min_slope_atr"] = 0.0
+    data = {f"S{i}": _daily_uptrend(500, seed=30 + i) for i in range(4)}
+    prepared = prepare(data, p)
+    res = run_portfolio(prepared, p, sigs=signal_times(prepared, p))
+    a = autopsy(prepared, res["trades"], p)
+    assert a and a["features"], "autopsy produced nothing"
+    for f in a["features"]:
+        assert "separation" in f and "winners_median" in f
+    # separation must be a finite number, not NaN
+    import math
+    assert all(math.isfinite(f["separation"]) for f in a["features"])
+
+
+def test_autopsy_reports_no_signal_when_there_is_none():
+    from src.forensics import render
+    payload = {"universe": "movers", "symbols": 36, "start": "2026-01-01",
+               "end": None,
+               "stats": {"n_trades": 120, "expectancy_R": -0.05,
+                         "win_rate_pct": 40.0, "max_drawdown_pct": -20.0},
+               "autopsy": {"n_wins": 48, "n_losses": 72, "features": [
+                   {"feature": "atr_pct", "winners_median": 3.1,
+                    "losers_median": 3.0, "separation": 0.05}]},
+               "missed": {"big_moves_caught": 10, "big_moves_missed": 90,
+                          "capture_rate_pct": 10.0, "blocked_by": []},
+               "worst": [], "best": []}
+    text = render(payload)
+    assert "no condition separates winners from losers" in text
+    assert "fitting noise" in text
+
+
+def test_forensics_flags_small_samples():
+    from src.forensics import render
+    payload = {"universe": "movers", "symbols": 36, "start": "2026-08-01",
+               "end": None,
+               "stats": {"n_trades": 8, "expectancy_R": 0.4,
+                         "win_rate_pct": 62.0, "max_drawdown_pct": -5.0},
+               "autopsy": {}, "missed": {}, "worst": [], "best": []}
+    text = render(payload)
+    assert "Fewer than 30 trades" in text
