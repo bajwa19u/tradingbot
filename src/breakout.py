@@ -155,6 +155,9 @@ def main(argv=None) -> int:
     ap.add_argument("--periods", type=int, default=3)
     ap.add_argument("--min-trades", type=int, default=40)
     ap.add_argument("--universe", default="movers", choices=list(UNIVERSES))
+    ap.add_argument("--only", default=None,
+                    help="run ONE named config - no search, no selection. For "
+                         "testing an already-chosen config on fresh data.")
     args = ap.parse_args(argv)
 
     universe = UNIVERSES[args.universe]
@@ -175,6 +178,13 @@ def main(argv=None) -> int:
         return 1
 
     configs = grid_bo()
+    if args.only:
+        configs = [(n, q) for n, q in configs if n == args.only]
+        if not configs:
+            log.error("No config named %s. Available: %s", args.only,
+                      ", ".join(n for n, _ in grid_bo()))
+            return 1
+        log.info("Single-config validation run (no search): %s", args.only)
     log.info("Scoring %d breakout configurations", len(configs))
     results = []
     for name, p in configs:
