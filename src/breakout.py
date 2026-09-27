@@ -114,6 +114,30 @@ def grid_bo() -> list[tuple[str, dict]]:
     return out
 
 
+def median_atr_pct(df: pd.DataFrame, upto=None) -> float:
+    """How volatile this stock typically is, as a % of price.
+
+    Measured over history BEFORE the trading window, so selecting on it is
+    not peeking at the period being tested.
+    """
+    d = df[df.index < upto] if upto is not None else df
+    if len(d) < 60:
+        return 0.0
+    a = atr(d, 14).tail(120)
+    px = d["close"].tail(120)
+    return float((100 * a / px).median())
+
+
+def split_by_volatility(data: dict, upto=None) -> tuple[dict, dict]:
+    """Top half vs bottom half of the universe by typical daily range."""
+    ranked = sorted(((median_atr_pct(d, upto), s) for s, d in data.items()),
+                    reverse=True)
+    half = len(ranked) // 2
+    loud = {s: data[s] for _, s in ranked[:half]}
+    quiet = {s: data[s] for _, s in ranked[half:]}
+    return loud, quiet
+
+
 def by_periods(data: dict, p: dict, n: int, trade_from=None) -> dict:
     prepared = prepare(data, p)
     if not prepared:
@@ -137,8 +161,14 @@ def by_periods(data: dict, p: dict, n: int, trade_from=None) -> dict:
         total_n += st["n_trades"]
         total_R += st["total_R"]
         worst = min(worst, st.get("max_drawdown_pct", 0.0))
+    full = run_portfolio(prepared, p, sigs=sigs, lo=trade_from)
+    fs = full["stats"]
+    wins = sum(1 for t in full["trades"] if t["r_multiple"] > 0)
     scored = [x for x in per if x["n"] >= 8]
     return {"per_period": per, "n": total_n,
+            "wins": wins, "losses": len(full["trades"]) - wins,
+            "win_rate_pct": fs.get("win_rate_pct", 0.0),
+            "return_pct": fs.get("return_pct", 0.0),
             "expectancy_R": round(total_R / total_n, 4) if total_n else 0.0,
             "total_R": round(total_R, 1),
             "periods_positive": sum(1 for x in scored if x["expectancy_R"] > 0),
@@ -155,6 +185,13 @@ def main(argv=None) -> int:
     ap.add_argument("--periods", type=int, default=3)
     ap.add_argument("--min-trades", type=int, default=40)
     ap.add_argument("--universe", default="movers", choices=list(UNIVERSES))
+    ap.add_argument("--vol-split", action="store_true",
+                    help="also score the loud and quiet halves of the "
+                         "universe separately")
+    ap.add_argument("--min-atr-pct", type=float, default=0.0,
+                    help="drop symbols whose typical daily range is below "
+                         "this %% of price, judged on history before the "
+                         "trading window")
     ap.add_argument("--only", default=None,
                     help="run ONE named config - no search, no selection. For "
                          "testing an already-chosen config on fresh data.")
@@ -176,6 +213,16 @@ def main(argv=None) -> int:
     if not data:
         log.error("No data.")
         return 1
+
+    if args.min_atr_pct:
+        before = len(data)
+        data = {s: d for s, d in data.items()
+                if median_atr_pct(d, trade_from) >= args.min_atr_pct}
+        log.info("Volatility screen >= %.1f%%: kept %d of %d symbols",
+                 args.min_atr_pct, len(data), before)
+        if not data:
+            log.error("Screen removed every symbol.")
+            return 1
 
     configs = grid_bo()
     if args.only:
@@ -220,6 +267,21 @@ def main(argv=None) -> int:
         except AlpacaError as exc:
             log.warning("Holdout fetch failed: %s", exc)
 
+    halves = {}
+    if args.vol_split and winner:
+        loud, quiet = split_by_volatility(data, trade_from)
+        for label, subset in (("loud", loud), ("quiet", quiet)):
+            if subset:
+                halves[label] = by_periods(subset, winner["params"],
+                                           args.periods, trade_from=trade_from)
+                halves[label]["symbols"] = len(subset)
+                halves[label]["median_atr_pct"] = round(float(np.median(
+                    [median_atr_pct(d, trade_from) for d in subset.values()])), 2)
+                log.info("  %-5s half: %d symbols, %d trades, %.1f%% win, "
+                         "%+.1f%% return", label, len(subset),
+                         halves[label]["n"], halves[label].get("win_rate_pct", 0),
+                         halves[label].get("return_pct", 0))
+
     # what the best result would look like if the data were pure noise
     n = max((r["n"] for r in results), default=0)
     noise = round(1.3 / np.sqrt(n) * np.sqrt(2 * np.log(len(configs))), 3) \
@@ -229,7 +291,8 @@ def main(argv=None) -> int:
                "start": args.start, "tried": len(configs),
                "survivors": len(survivors), "noise_floor": noise,
                "results": sorted(results, key=lambda r: -r["expectancy_R"]),
-               "winner": winner, "holdout": hold, "holdout_size": len(holdout)}
+               "winner": winner, "holdout": hold, "holdout_size": len(holdout),
+               "halves": halves}
     REPORTS.mkdir(exist_ok=True)
     (REPORTS / "breakout.json").write_text(json.dumps(payload, indent=2, default=str))
     text = render(payload)
@@ -239,65 +302,94 @@ def main(argv=None) -> int:
 
 
 def render(p: dict) -> str:
+    """Plain terms: trades won, trades lost, win rate, profit."""
     out = [
         "# Expansion breakout",
         "",
         f"**{p['symbols']} {p['universe']} symbols · from {p['start']} · "
         f"{datetime.now():%Y-%m-%d %H:%M}**",
         "",
-        f"**{p['tried']} configurations tried.** {p['survivors']} passed.",
+        f"**{p['tried']} settings tried.** {p['survivors']} passed.",
         "",
-        f"> With this many configurations and this sample size, the best "
-        f"result from pure noise would be about **+{p['noise_floor']}R**. "
-        "Anything at or below that is indistinguishable from luck.",
-        "",
-        "| Configuration | Trades | Expectancy | Positive in | Worst period | Max DD |",
-        "|---|---|---|---|---|---|",
     ]
+    if p["tried"] > 1:
+        out += [f"> Trying {p['tried']} settings on data this size produces a "
+                f"best result of roughly **+{p['noise_floor']}R** by luck "
+                "alone. Treat anything near that as noise.", ""]
+
+    out += ["| Settings | Trades | Won | Lost | Win % | Profit |",
+            "|---|---|---|---|---|---|"]
     for r in p["results"][:12]:
         warn = "" if r["n"] >= 40 else " ⚠"
-        out.append(f"| `{r['name']}` | {r['n']}{warn} | {r['expectancy_R']:+.4f}R | "
-                   f"{r['periods_positive']}/{r['periods_scored']} | "
-                   f"{r['worst_period_R']:+.4f}R | {r['max_dd_pct']}% |")
+        out.append(f"| `{r['name']}` | {r['n']}{warn} | {r.get('wins','—')} | "
+                   f"{r.get('losses','—')} | {r.get('win_rate_pct','—')}% | "
+                   f"**{r.get('return_pct',0):+.1f}%** |")
 
     w, h = p.get("winner"), p.get("holdout")
     out += ["", "## Selected", ""]
     if not w:
-        out += ["**Nothing passed.** No configuration was profitable while "
-                "staying positive across periods on an adequate sample. The "
-                "holdout was not opened.", "",
-                "Worth noting what that means: a search over "
-                f"{p['tried']} configurations could not find a profitable one "
-                "even by chance. When a dataset cannot be overfitted, the "
-                "premise is wrong for it rather than merely mistuned."]
+        out += ["**Nothing passed.** No setting was profitable while staying "
+                "positive across periods on an adequate number of trades. The "
+                "unseen stocks were not touched.", "",
+                f"Worth noting: a search over {p['tried']} settings could not "
+                "find a profitable one even by accident. When a dataset cannot "
+                "be overfitted, the idea is wrong for it rather than mistuned."]
         return "\n".join(out)
 
-    beats_noise = w["expectancy_R"] > p["noise_floor"]
     out += [f"**`{w['name']}`**", "",
-            "| | Search universe | **Holdout (unseen)** |", "|---|---|---|",
+            "| | Tuned on | **Never seen** |", "|---|---|---|",
             f"| Trades | {w['n']} | **{h['n'] if h else 'n/a'}** |"]
     if h:
-        out += [f"| Expectancy | {w['expectancy_R']:+.4f}R | "
-                f"**{h['expectancy_R']:+.4f}R** |",
-                f"| Total R | {w['total_R']:+.1f} | **{h['total_R']:+.1f}** |",
-                f"| Positive in | {w['periods_positive']}/{w['periods_scored']} "
-                f"| **{h['periods_positive']}/{h['periods_scored']}** |",
-                f"| Win rate | — | **{h.get('win_rate_pct','—')}%** |",
-                f"| Max drawdown | {w['max_dd_pct']}% | **{h['max_dd_pct']}%** |"]
+        out += [f"| Won / lost | {w.get('wins','—')} / {w.get('losses','—')} | "
+                f"**{h.get('wins','—')} / {h.get('losses','—')}** |",
+                f"| Win rate | {w.get('win_rate_pct','—')}% | "
+                f"**{h.get('win_rate_pct','—')}%** |",
+                f"| Profit | {w.get('return_pct',0):+.1f}% | "
+                f"**{h.get('return_pct',0):+.1f}%** |",
+                f"| Worst drop | {w['max_dd_pct']}% | **{h['max_dd_pct']}%** |"]
+
+    halves = p.get("halves") or {}
+    if halves:
+        out += ["", "## Does it need volatile stocks?", "",
+                "Same settings, universe split by typical daily range.", "",
+                "| Half | Symbols | Typical range | Trades | Won | Lost | Win % | Profit |",
+                "|---|---|---|---|---|---|---|---|"]
+        for label in ("loud", "quiet"):
+            hh = halves.get(label)
+            if not hh:
+                continue
+            out.append(f"| **{label}** | {hh.get('symbols','—')} | "
+                       f"{hh.get('median_atr_pct','—')}% | {hh['n']} | "
+                       f"{hh.get('wins','—')} | {hh.get('losses','—')} | "
+                       f"{hh.get('win_rate_pct','—')}% | "
+                       f"**{hh.get('return_pct',0):+.1f}%** |")
+        loud, quiet = halves.get("loud"), halves.get("quiet")
+        if loud and quiet:
+            gap = loud.get("return_pct", 0) - quiet.get("return_pct", 0)
+            out += ["", "**Read:** " + (
+                f"the volatile half returned {gap:+.1f}% more than the quiet "
+                "half. The edge lives in the movers, and the quiet names are "
+                "diluting it — screen them out."
+                if gap > 5 else
+                f"the two halves are within {abs(gap):.1f}% of each other. "
+                "Volatility does not explain the difference, so screening on "
+                "it would not help.")]
+
     out += ["", "### Verdict", ""]
-    if not beats_noise:
-        out.append(f"**Below the noise floor.** {w['expectancy_R']:+.4f}R does "
-                   f"not clear the +{p['noise_floor']}R a search this size "
-                   "produces by chance. Not tradeable.")
-    elif h and h["expectancy_R"] > 0 and h["n"] >= 30:
-        out.append(f"**Clears the noise floor (+{p['noise_floor']}R) and stayed "
-                   "positive on unseen symbols.** That is the first result in "
-                   "this project to do both. Paper trade it before anything "
-                   "else — and do not re-tune against that holdout.")
+    beats = w["expectancy_R"] > p["noise_floor"] or p["tried"] == 1
+    if not beats:
+        out.append(f"**Too close to noise.** {w.get('return_pct',0):+.1f}% on "
+                   f"the tuned set does not clear what {p['tried']} settings "
+                   "produce by chance. Not tradeable.")
+    elif h and h.get("return_pct", 0) > 0 and h["n"] >= 30:
+        out.append(f"**Profitable on stocks it had never seen: "
+                   f"{h.get('return_pct',0):+.1f}% over {h['n']} trades, "
+                   f"{h.get('wins','—')} winners against "
+                   f"{h.get('losses','—')} losers.** Paper trade it next. Do "
+                   "not re-tune against those stocks - they have been used.")
     else:
-        out.append(f"**Clears the noise floor but did not hold on unseen "
-                   "symbols.** The search universe result was fitted; the "
-                   "holdout is the honest number.")
+        out.append("**Worked where it was tuned, not on unseen stocks.** The "
+                   "unseen number is the honest one.")
     return "\n".join(out)
 
 
