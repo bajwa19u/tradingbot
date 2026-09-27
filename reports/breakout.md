@@ -1,25 +1,15 @@
 # Expansion breakout
 
-**33 movers symbols · from 2026-01-01 · 2026-09-27 21:46**
+**36 movers symbols · from 2026-06-29 · 2026-09-27 22:16**
 
-**1 settings tried.** 1 passed.
+**1 settings tried.** 0 passed.
 
 | Settings | Trades | Won | Lost | Win % | Profit |
 |---|---|---|---|---|---|
-| `base10_sq4.0_vol1.0_atr0.0` | 56 | 32 | 24 | 57.1% | **+14.6%** |
+| `base10_sq4.0_vol1.0_atr0.0` | 18 ⚠ | 13 | 5 | 72.2% | **+10.3%** |
 
 ## Selected
 
-**`base10_sq4.0_vol1.0_atr0.0`**
+**Nothing passed.** No setting was profitable while staying positive across periods on an adequate number of trades. The unseen stocks were not touched.
 
-| | Tuned on | **Never seen** |
-|---|---|---|
-| Trades | 56 | **57** |
-| Won / lost | 32 / 24 | **26 / 31** |
-| Win rate | 57.1% | **45.6%** |
-| Profit | +14.6% | **-2.4%** |
-| Worst drop | -8.33% | **-14.4%** |
-
-### Verdict
-
-**Worked where it was tuned, not on unseen stocks.** The unseen number is the honest one.
+Worth noting: a search over 1 settings could not find a profitable one even by accident. When a dataset cannot be overfitted, the idea is wrong for it rather than mistuned.
