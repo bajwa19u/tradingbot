@@ -905,6 +905,38 @@ def test_breakout_split_says_inconclusive_when_neither_half_is_volatile():
     assert "edge lives in the movers" not in text
 
 
+def test_breakout_never_claims_unseen_stocks_it_did_not_have():
+    """The wide universe contains every list, so no symbols are left over. The
+    report printed a "Never seen" column anyway, filled with names that were
+    inside the traded set - the one wrong number that would read as proof."""
+    from src.breakout import render
+    w = {"name": "x", "n": 69, "expectancy_R": 0.9, "total_R": 54.0,
+         "periods_positive": 3, "periods_scored": 3, "worst_period_R": 0.2,
+         "max_dd_pct": -11.1, "wins": 35, "losses": 34, "win_rate_pct": 50.7,
+         "return_pct": 5.3}
+    payload = {"universe": "wide", "symbols": 103, "start": "2026-01-01",
+               "tried": 1, "survivors": 1, "noise_floor": 0.40,
+               "results": [w], "winner": w, "holdout": None,
+               "holdout_size": 0}
+    text = render(payload)
+    assert "Never seen" not in text
+    assert "In-sample only" in text
+
+
+def test_breakout_holdout_never_overlaps_the_traded_universe():
+    """movers and research share three names. A holdout that merely is a
+    different list is not a holdout."""
+    from src.breakout import UNIVERSES
+    from src.forensics import MOVERS
+    from src.swing import RESEARCH
+    for name in UNIVERSES:
+        universe = set(UNIVERSES[name])
+        candidate = [] if name == "wide" else (
+            RESEARCH if name == "movers" else MOVERS)
+        holdout = [s for s in candidate if s not in universe]
+        assert not (set(holdout) & universe), f"{name} holdout leaks"
+
+
 def test_breakout_trade_count_equals_wins_plus_losses():
     """The first report showed 48 trades with 32 wins and 30 losses, because
     the trade count was summed over period slices (which cut trades at each
@@ -932,3 +964,91 @@ def test_breakout_report_respects_the_noise_floor():
                "tried": 36, "survivors": 1, "noise_floor": 0.40,
                "results": [w], "winner": w, "holdout": None, "holdout_size": 40}
     assert "Too close to noise" in render(payload)
+
+
+# ---------------------------------------------------------------------------
+# Paper account (the forward test)
+# ---------------------------------------------------------------------------
+def _paper_base(**kw):
+    base = {"generated": "2026-09-29 18:00", "as_of": "2026-09-29",
+            "settings": {"start": "2026-09-29", "equity": 2000.0,
+                         "risk_pct": 1.0, "halt_drawdown_pct": 25.0},
+            "symbols": 33, "trades": [], "open": [], "n": 0, "wins": 0,
+            "losses": 0, "win_rate_pct": 0.0, "return_pct": 0.0,
+            "max_dd_pct": 0.0, "halted": False}
+    base.update(kw)
+    return base
+
+
+def test_paper_reads_its_settings_from_config():
+    """The four numbers the owner is allowed to change have to come from
+    config.yaml, not from the defaults in the module."""
+    from src.paper import settings
+    s = settings()
+    assert set(s) == {"start", "equity", "risk_pct", "halt_drawdown_pct"}
+    assert s["equity"] > 0 and 0 < s["risk_pct"] <= 100
+    assert s["halt_drawdown_pct"] > 0
+
+
+def test_paper_sizing_refuses_a_position_it_cannot_afford():
+    """On $2,000 at 1% risk the budget is $20. A stop $45 away cannot be taken
+    at any whole size - the backtest's fractional shares hide this, and sizing
+    up to 'make it work' is how a 1% risk becomes a 2.3% risk."""
+    from src.paper import shares
+    assert shares(100.0, 5.0, 2000.0, 1.0) == 4
+    assert shares(410.0, 45.0, 2000.0, 1.0) == 0
+    assert shares(100.0, 0.0, 2000.0, 1.0) == 0      # no divide by zero
+
+
+def test_paper_halt_line_stops_listing_new_entries():
+    """The stop has to actually stop. A halted report that still shows entries
+    is an invitation to trade through the drawdown."""
+    from src.paper import render
+    op = [{"symbol": "NVDA", "entry_date": "2026-10-07", "entry": 182.4,
+           "stop": 171.2, "risk_per_share": 11.2, "bars_held": 2,
+           "best_R": 0.6, "target": 199.2, "trailing": False, "shares": 1}]
+    text = render(_paper_base(n=30, wins=9, losses=21, win_rate_pct=30.0,
+                              return_pct=-26.0, max_dd_pct=-27.4, halted=True,
+                              open=op, trades=[]))
+    assert "STOPPED" in text
+    assert "Open now" not in text
+    assert "NVDA" not in text
+
+
+def test_paper_says_a_short_record_is_not_a_verdict():
+    """Ten trades of luck must not read like proof."""
+    from src.paper import render
+    text = render(_paper_base(n=10, wins=7, losses=3, win_rate_pct=70.0,
+                              return_pct=12.0, max_dd_pct=-3.0))
+    assert "too few to judge" in text
+    text = render(_paper_base(n=60, wins=34, losses=26, win_rate_pct=56.7,
+                              return_pct=18.0, max_dd_pct=-9.0))
+    assert "too few to judge" not in text
+
+
+def test_paper_empty_run_is_reported_as_normal():
+    """Empty days are expected for this setup; the report must not read like a
+    failure, because that is what prompts pointless tinkering."""
+    from src.paper import render
+    text = render(_paper_base())
+    assert "No trades yet" in text
+    assert "Nothing is wrong" in text
+
+
+def test_paper_open_positions_come_from_the_backtest_engine():
+    """run_portfolio must expose still-open positions. If paper trading grew
+    its own copy of the entry rules they would drift, which is exactly how the
+    inspector diverged from the live signals before."""
+    import copy
+    from src.breakout import BASE_BO, prepare, signal_times_bo
+    from src.swing import run_portfolio
+    p = copy.deepcopy(BASE_BO)
+    p.update({"base_len": 15, "touch_window": 15, "squeeze_atr": 6.0,
+              "vol_mult": 1.05, "min_atr_pct": 0.0, "risk_pct": 1.0})
+    data = {f"S{i}": _coil_then_break(n_coil=30 + i * 3, seed=i + 1)
+            for i in range(4)}
+    out = run_portfolio(prepare(data, p), p, equity=2000.0)
+    assert "open" in out
+    for o in out["open"]:
+        assert o["stop"] < o["entry"] < o["target"]
+        assert o["risk_per_share"] > 0
