@@ -21,7 +21,8 @@
           "expectancy_R": -0.0249
         }
       ],
-      "n": 48,
+      "n": 62,
+      "n_periods_sum": 48,
       "wins": 32,
       "losses": 30,
       "win_rate_pct": 51.6,
@@ -31,7 +32,7 @@
       "periods_positive": 2,
       "periods_scored": 3,
       "worst_period_R": -0.0249,
-      "max_dd_pct": -4.94,
+      "max_dd_pct": -8.74,
       "name": "base10_sq4.0_vol1.0_atr0.0",
       "params": {
         "base_len": 10,
@@ -72,7 +73,8 @@
         "expectancy_R": -0.0249
       }
     ],
-    "n": 48,
+    "n": 62,
+    "n_periods_sum": 48,
     "wins": 32,
     "losses": 30,
     "win_rate_pct": 51.6,
@@ -82,7 +84,7 @@
     "periods_positive": 2,
     "periods_scored": 3,
     "worst_period_R": -0.0249,
-    "max_dd_pct": -4.94,
+    "max_dd_pct": -8.74,
     "name": "base10_sq4.0_vol1.0_atr0.0",
     "params": {
       "base_len": 10,
@@ -122,7 +124,8 @@
         "expectancy_R": 0.4077
       }
     ],
-    "n": 51,
+    "n": 61,
+    "n_periods_sum": 51,
     "wins": 35,
     "losses": 26,
     "win_rate_pct": 57.4,
@@ -132,7 +135,7 @@
     "periods_positive": 2,
     "periods_scored": 3,
     "worst_period_R": -0.479,
-    "max_dd_pct": -8.78
+    "max_dd_pct": -9.25
   },
   "holdout_size": 36,
   "halves": {
@@ -151,7 +154,8 @@
           "expectancy_R": 0.0236
         }
       ],
-      "n": 41,
+      "n": 46,
+      "n_periods_sum": 41,
       "wins": 24,
       "losses": 22,
       "win_rate_pct": 52.2,
@@ -161,7 +165,7 @@
       "periods_positive": 3,
       "periods_scored": 3,
       "worst_period_R": 0.0236,
-      "max_dd_pct": -2.99,
+      "max_dd_pct": -5.71,
       "symbols": 15,
       "median_atr_pct": 2.02
     },
@@ -180,7 +184,8 @@
           "expectancy_R": -0.1438
         }
       ],
-      "n": 42,
+      "n": 51,
+      "n_periods_sum": 42,
       "wins": 27,
       "losses": 24,
       "win_rate_pct": 52.9,
@@ -190,7 +195,7 @@
       "periods_positive": 1,
       "periods_scored": 3,
       "worst_period_R": -0.4585,
-      "max_dd_pct": -6.56,
+      "max_dd_pct": -8.29,
       "symbols": 15,
       "median_atr_pct": 1.65
     }
