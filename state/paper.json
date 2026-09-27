@@ -1,0 +1,20 @@
+{
+  "generated": "2026-09-27 02:17",
+  "as_of": "2026-09-25",
+  "settings": {
+    "start": "2026-09-29",
+    "equity": 2000.0,
+    "risk_pct": 1.0,
+    "halt_drawdown_pct": 25.0
+  },
+  "symbols": 35,
+  "trades": [],
+  "open": [],
+  "n": 0,
+  "wins": 0,
+  "losses": 0,
+  "win_rate_pct": 0.0,
+  "return_pct": 0.0,
+  "max_dd_pct": 0.0,
+  "halted": false
+}
