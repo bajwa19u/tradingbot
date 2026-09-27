@@ -50,7 +50,43 @@ MOVERS = [
 # needs volatile stocks requires a list that holds both kinds.
 WIDE = sorted(set(MOVERS) | set(HOLDOUT) | set(RESEARCH))
 
+# A clean holdout for the VOLATILITY-SCREENED rule.
+#
+# Why this list had to exist: research and holdout are mega-caps. Screening
+# them at 3% daily range left 2 symbols and 6 trades - no test at all. A rule
+# that only trades movers can only be checked against movers.
+#
+# Chosen by CATEGORY, not by performance: sectors that are structurally
+# volatile - crypto miners and treasuries, quantum, space and eVTOL, small
+# modular nuclear, beaten-down growth software, EV charging, biotech. No 2026
+# return was looked at before writing this list, and the 3% screen is applied
+# to history BEFORE the trading window. Names already used anywhere else in
+# this project are excluded by construction (asserted in the tests).
+#
+# Selecting a "volatile sector" list is still a judgement informed by the past.
+# It is not a judgement informed by these stocks' returns, which is the thing
+# that would invalidate the test.
+FRESH = [
+    # crypto miners and treasury companies
+    "RIOT", "CLSK", "HUT", "BITF", "WULF", "CIFR", "CORZ", "IREN", "BTBT",
+    # quantum and AI infrastructure
+    "RGTI", "QBTS", "SOUN", "BBAI", "AI", "APLD",
+    # space and electric aviation
+    "ASTS", "LUNR", "RDW", "JOBY", "ACHR",
+    # small modular nuclear and power
+    "OKLO", "SMR", "LEU", "NNE",
+    # beaten-down growth software
+    "PATH", "S", "FVRR", "TWLO", "ZS", "OKTA", "GTLB", "MDB", "APP", "RDDT",
+    # EV, charging and storage
+    "QS", "CHPT", "BLNK", "LYFT",
+    # retail-heavy and high-short-interest
+    "GME", "AMC", "OPEN", "BYND", "WOLF", "TLRY",
+    # biotech
+    "MRNA", "NVAX", "VKTX", "CRSP", "BEAM", "NTLA", "RXRX",
+]
+
 UNIVERSES = {"research": RESEARCH, "holdout": HOLDOUT, "movers": MOVERS,
+             "fresh": FRESH,
              "wide": WIDE}
 
 
