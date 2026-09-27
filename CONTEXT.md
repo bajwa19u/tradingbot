@@ -2,8 +2,9 @@
 
 Handoff note so a new conversation can pick up without re-deriving anything.
 
-**Status as of 2026-09-27: one rule has survived an out-of-sample test and is
-now in a forward test. Nothing is being searched or tuned any more.**
+**Status as of 2026-09-27: the screened breakout FAILED its out-of-sample
+test. +14.6% where it was tuned, -2.4% on 50 volatile stocks it had never
+seen. It joins the other eight. Nothing here is tradeable.**
 
 ## What this repo is
 
@@ -21,35 +22,42 @@ multiples are for internal work, not for reports.
 
 ## Where it landed
 
-`base10_sq4.0_vol1.0_atr0.0` on the volatility-screened movers universe:
+`base10_sq4.0_vol1.0_atr0.0`, volatility-screened at 3%, 2026 YTD:
 
-| | Tuned on | Never seen |
+| | Tuned on (33 movers) | Never seen (50 fresh volatile) |
 |---|---|---|
-| Trades | 56 | 68 |
-| Won / lost | 32 / 24 | 37 / 31 |
-| Win % | 57.1% | 54.4% |
-| Profit | +14.6% | +14.5% |
-| Worst drop | −8.3% | −11.6% |
+| Trades | 56 | 57 |
+| Won / lost | 32 / 24 | 26 / 31 |
+| Win % | 57.1% | **45.6%** |
+| Profit | +14.6% | **-2.4%** |
+| Worst drop | -8.3% | -14.4% |
 
-**The profit is the same on both sides.** That is the point. Every earlier
-result in this project fell apart out of sample; the adaptive loop fit at
-+0.4R and forward-tested at −1.0R over 33 refits. A rule with no fit-vs-forward
-gap is the first thing here that has not behaved like memorised noise.
+A 17-point gap between fit and forward. Same shape as everything else in this
+project: profitable where it was chosen, flat-to-losing everywhere else.
 
-### What the volatility screen is and where it came from
+### The number that was wrong, and why it matters
 
-Skip any symbol whose typical daily range is under **3.0%** of price, judged on
-history *before* the trading window. Two independent measurements point at it:
+An earlier version of this file recorded **+14.5% on 68 unseen trades, no
+fit-vs-forward gap** and called it the first honest signal here. That was an
+artifact. A push reported a commit sha for content one edit behind - the file
+had not finished syncing when the push read it - so the fix making the
+volatility screen apply to the holdout never reached GitHub, though the commit
+message said it had. That run screened the tuned side and left the unseen side
+unscreened: two different strategies compared to each other.
 
-1. The autopsy on 2026 found the one condition separating winners from losers
-   was daily range — 5.35% vs 3.80%, +0.64 SD. Nothing else came close.
-2. Split across all 103 names, the volatile half returned +24.4% on 65 trades
-   at 61.5% win, the quiet half +5.8% on 56 at 51.8%.
+Pushes are now verified by reading content back from GitHub and comparing git
+hashes (`push_verified.py` pattern). **A returned commit sha proves a commit
+happened, not that the right bytes are in it.**
 
-**The honest limit:** the 3.0% threshold was chosen after seeing a split that
-covered every symbol on every list. No stock is naive to that decision any
-more, so there is no clean backtest left to run on it. The only remaining
-honest test is forward, which is why `src/paper.py` exists.
+### Why a fresh universe had to be built
+
+Applying the 3% screen to the research list left **2 symbols and 6 trades** -
+those lists are mega-caps, and mega-caps do not move 3% a day. A rule that
+only trades movers can only be checked against movers. `FRESH` (51 liquid,
+structurally volatile names in `src/forensics.py`) was chosen by sector and
+not by return, and is kept out of `wide`. 50 of 51 passed the screen.
+
+**FRESH has now been used once. It is no longer a clean holdout.**
 
 ## The other headline finding, still true
 
@@ -74,7 +82,7 @@ from a forensic finding, not a sweep.
 | Daily swing, 2016–2022 | −0.082R | bear markets |
 | Daily swing, 2026 YTD | −0.090R (71) | losing |
 | Adaptive loop vs static | −0.368R vs +0.092R | 33 refits, all failed |
-| Expansion breakout, screened, unseen | **+14.5%, 54.4%, 37W/31L** | holds up |
+| Expansion breakout, screened, unseen | **-2.4%, 45.6%, 26W/31L** | fails like the rest |
 
 ## Bugs found and fixed (all have regression tests)
 
@@ -153,10 +161,11 @@ this project came from reading charts, not from searching parameters.**
 
 ## Next steps
 
-1. **Let the paper account run.** It needs 20+ closed trades before its
-   numbers mean anything, 50+ before they settle. Do not touch the rule while
-   it accumulates — that restarts the clock and is the exact mistake the
-   adaptive loop proved costly.
+1. **Decide whether the paper account should keep running.** It costs nothing
+   and a forward test is still the only measurement that has never lied here.
+   But it is now forward-testing a rule that failed a clean out-of-sample
+   test, so the prior is low. Running it with eyes open is defensible;
+   running it as though the rule is proven is not.
 2. On a $2,000 account at 1% risk the budget is $20 a trade, so some signals
    are un-takeable at any whole share count. `paper.md` marks these "too
    small". Worth counting how often it happens.
