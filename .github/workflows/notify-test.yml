@@ -1,0 +1,41 @@
+name: Notify test
+
+# Sends one message through the configured Discord webhook so you can confirm
+# alerts land in the channel you expect, before anything depends on them.
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Send
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          python - <<'PY'
+          import os, sys, requests
+          url = os.environ.get("DISCORD_WEBHOOK_URL", "")
+          if not url:
+              print("::error::DISCORD_WEBHOOK_URL secret is empty")
+              sys.exit(1)
+          if not url.startswith("https://discord.com/api/webhooks/"):
+              print("::error::That does not look like a Discord webhook URL "
+                    "(should start https://discord.com/api/webhooks/)")
+              sys.exit(1)
+          msg = (
+              "**TradingBot — connection test**\n"
+              "If you can read this, alerts will reach this channel.\n"
+              "_Paper mode. No trades are being placed._"
+          )
+          r = requests.post(url, json={"content": msg}, timeout=20)
+          print("HTTP", r.status_code, r.text[:200])
+          r.raise_for_status()
+          print("Delivered.")
+          PY
