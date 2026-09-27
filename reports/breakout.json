@@ -1,6 +1,6 @@
 {
-  "universe": "movers",
-  "symbols": 36,
+  "universe": "fresh",
+  "symbols": 51,
   "start": "2026-06-29",
   "tried": 1,
   "survivors": 0,
@@ -10,25 +10,25 @@
       "per_period": [
         {
           "n": 5,
-          "expectancy_R": -0.1786
+          "expectancy_R": -0.6572
         },
         {
-          "n": 6,
-          "expectancy_R": 0.2053
+          "n": 7,
+          "expectancy_R": 0.552
         }
       ],
-      "n": 18,
-      "n_periods_sum": 11,
-      "wins": 13,
-      "losses": 5,
-      "win_rate_pct": 72.2,
-      "return_pct": 10.3,
-      "expectancy_R": 0.0273,
-      "total_R": 0.3,
+      "n": 15,
+      "n_periods_sum": 12,
+      "wins": 9,
+      "losses": 6,
+      "win_rate_pct": 60.0,
+      "return_pct": 3.8,
+      "expectancy_R": 0.05,
+      "total_R": 0.6,
       "periods_positive": 0,
       "periods_scored": 0,
       "worst_period_R": 0.0,
-      "max_dd_pct": -2.0,
+      "max_dd_pct": -3.25,
       "name": "base10_sq4.0_vol1.0_atr0.0",
       "params": {
         "base_len": 10,

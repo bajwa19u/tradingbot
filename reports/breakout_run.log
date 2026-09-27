@@ -1,18 +1,18 @@
-2026-09-27 22:15:59,620 INFO Fetching 36 movers symbols
-2026-09-27 22:16:00,280 INFO Volatility screen >= 3.0%: kept 36 of 36 symbols
-2026-09-27 22:16:00,281 INFO Single-config validation run (no search): base10_sq4.0_vol1.0_atr0.0
-2026-09-27 22:16:00,281 INFO Scoring 1 breakout configurations
-2026-09-27 22:16:00,439 INFO   base10_sq4.0_vol1.0_atr0.0         n=18   exp=+0.0273R  positive 0/0
+2026-09-27 22:19:50,660 INFO Fetching 51 fresh symbols
+2026-09-27 22:19:51,731 INFO Volatility screen >= 3.0%: kept 51 of 51 symbols
+2026-09-27 22:19:51,732 INFO Single-config validation run (no search): base10_sq4.0_vol1.0_atr0.0
+2026-09-27 22:19:51,732 INFO Scoring 1 breakout configurations
+2026-09-27 22:19:52,155 INFO   base10_sq4.0_vol1.0_atr0.0         n=15   exp=+0.0500R  positive 0/0
 
 # Expansion breakout
 
-**36 movers symbols · from 2026-06-29 · 2026-09-27 22:16**
+**51 fresh symbols · from 2026-06-29 · 2026-09-27 22:19**
 
 **1 settings tried.** 0 passed.
 
 | Settings | Trades | Won | Lost | Win % | Profit |
 |---|---|---|---|---|---|
-| `base10_sq4.0_vol1.0_atr0.0` | 18 ⚠ | 13 | 5 | 72.2% | **+10.3%** |
+| `base10_sq4.0_vol1.0_atr0.0` | 15 ⚠ | 9 | 6 | 60.0% | **+3.8%** |
 
 ## Selected
 
