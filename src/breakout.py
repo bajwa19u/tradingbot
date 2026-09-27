@@ -164,9 +164,13 @@ def by_periods(data: dict, p: dict, n: int, trade_from=None) -> dict:
     full = run_portfolio(prepared, p, sigs=sigs, lo=trade_from)
     fs = full["stats"]
     wins = sum(1 for t in full["trades"] if t["r_multiple"] > 0)
+    n_full = len(full["trades"])
     scored = [x for x in per if x["n"] >= 8]
-    return {"per_period": per, "n": total_n,
-            "wins": wins, "losses": len(full["trades"]) - wins,
+    # Everything reported to a human comes from the single full-window run, so
+    # trades always equals won + lost. The per-period slices cut trades at each
+    # boundary, so their trade count is smaller and must not be mixed in.
+    return {"per_period": per, "n": n_full, "n_periods_sum": total_n,
+            "wins": wins, "losses": n_full - wins,
             "win_rate_pct": fs.get("win_rate_pct", 0.0),
             "return_pct": fs.get("return_pct", 0.0),
             "expectancy_R": round(total_R / total_n, 4) if total_n else 0.0,
@@ -175,7 +179,7 @@ def by_periods(data: dict, p: dict, n: int, trade_from=None) -> dict:
             "periods_scored": len(scored),
             "worst_period_R": round(min((x["expectancy_R"] for x in scored),
                                         default=0.0), 4),
-            "max_dd_pct": round(worst, 2)}
+            "max_dd_pct": round(fs.get("max_drawdown_pct", worst), 2)}
 
 
 def main(argv=None) -> int:
@@ -256,14 +260,10 @@ def main(argv=None) -> int:
             hd = md.daily_bars(holdout, start=fetch_from, end=args.end)
             hd = {s: d for s, d in hd.items() if len(d) > 260}
             if hd:
+                # by_periods already reports win rate, return and drawdown from
+                # its own full-window run, so there is nothing to recompute.
                 hold = by_periods(hd, winner["params"], args.periods,
                                   trade_from=trade_from)
-                prep = prepare(hd, winner["params"])
-                full = run_portfolio(prep, winner["params"],
-                                     sigs=signal_times_bo(prep, winner["params"]),
-                                     lo=trade_from)["stats"]
-                hold["win_rate_pct"] = full.get("win_rate_pct")
-                hold["return_pct"] = full.get("return_pct")
         except AlpacaError as exc:
             log.warning("Holdout fetch failed: %s", exc)
 
