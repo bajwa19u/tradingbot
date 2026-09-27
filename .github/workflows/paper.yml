@@ -20,6 +20,10 @@ on:
         description: "Print the report instead of committing it"
         type: boolean
         default: false
+      sample:
+        description: "Send one worked example of the alert and stop"
+        type: boolean
+        default: false
 
 concurrency:
   group: paper
@@ -50,17 +54,19 @@ jobs:
           ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           IN_DRY: ${{ inputs.dry_run }}
+          IN_SAMPLE: ${{ inputs.sample }}
         run: |
           set -uo pipefail
           mkdir -p reports state
           ARGS=()
           if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
+          if [ "${IN_SAMPLE:-false}" = "true" ]; then ARGS+=(--sample); fi
           set +e
           python -m src.paper "${ARGS[@]}" 2>&1 | tee reports/paper_run.log
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
 
       - name: Commit the record
-        if: always() && inputs.dry_run != true
+        if: always() && inputs.dry_run != true && inputs.sample != true
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
