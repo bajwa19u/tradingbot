@@ -1,65 +1,20 @@
-2026-09-27 00:34:50,679 INFO Fetching 36 movers symbols
-2026-09-27 00:34:51,094 INFO Scoring 36 breakout configurations
-2026-09-27 00:34:51,413 INFO   base10_sq1.8_vol1.0_atr0.0         n=18   exp=-0.3500R  positive 0/1
-2026-09-27 00:34:51,721 INFO   base10_sq1.8_vol1.0_atr4.0         n=14   exp=-0.3214R  positive 0/0
-2026-09-27 00:34:52,040 INFO   base10_sq1.8_vol1.5_atr0.0         n=14   exp=-0.3214R  positive 0/1
-2026-09-27 00:34:52,349 INFO   base10_sq1.8_vol1.5_atr4.0         n=10   exp=-0.2700R  positive 0/0
-2026-09-27 00:34:52,707 INFO   base10_sq2.5_vol1.0_atr0.0         n=45   exp=+0.0089R  positive 2/3
-2026-09-27 00:34:53,065 INFO   base10_sq2.5_vol1.0_atr4.0         n=36   exp=-0.0417R  positive 2/3
-2026-09-27 00:34:53,398 INFO   base10_sq2.5_vol1.5_atr0.0         n=32   exp=-0.0531R  positive 2/3
-2026-09-27 00:34:53,721 INFO   base10_sq2.5_vol1.5_atr4.0         n=24   exp=-0.0708R  positive 1/2
-2026-09-27 00:34:54,096 INFO   base10_sq4.0_vol1.0_atr0.0         n=51   exp=+0.1980R  positive 2/3
-2026-09-27 00:34:54,498 INFO   base10_sq4.0_vol1.0_atr4.0         n=47   exp=+0.0277R  positive 2/3
-2026-09-27 00:34:54,863 INFO   base10_sq4.0_vol1.5_atr0.0         n=43   exp=+0.0721R  positive 2/3
-2026-09-27 00:34:55,220 INFO   base10_sq4.0_vol1.5_atr4.0         n=39   exp=-0.0154R  positive 2/3
-2026-09-27 00:34:55,508 INFO   base15_sq1.8_vol1.0_atr0.0         n=0    exp=+0.0000R  positive 0/0
-2026-09-27 00:34:55,802 INFO   base15_sq1.8_vol1.0_atr4.0         n=0    exp=+0.0000R  positive 0/0
-2026-09-27 00:34:56,089 INFO   base15_sq1.8_vol1.5_atr0.0         n=0    exp=+0.0000R  positive 0/0
-2026-09-27 00:34:56,377 INFO   base15_sq1.8_vol1.5_atr4.0         n=0    exp=+0.0000R  positive 0/0
-2026-09-27 00:34:56,688 INFO   base15_sq2.5_vol1.0_atr0.0         n=12   exp=-0.3000R  positive 0/0
-2026-09-27 00:34:57,004 INFO   base15_sq2.5_vol1.0_atr4.0         n=9    exp=-0.0667R  positive 0/0
-2026-09-27 00:34:57,308 INFO   base15_sq2.5_vol1.5_atr0.0         n=7    exp=-0.0143R  positive 0/0
-2026-09-27 00:34:57,606 INFO   base15_sq2.5_vol1.5_atr4.0         n=6    exp=+0.1500R  positive 0/0
-2026-09-27 00:34:57,975 INFO   base15_sq4.0_vol1.0_atr0.0         n=43   exp=-0.0047R  positive 2/3
-2026-09-27 00:34:58,348 INFO   base15_sq4.0_vol1.0_atr4.0         n=39   exp=-0.0795R  positive 2/3
-2026-09-27 00:34:58,703 INFO   base15_sq4.0_vol1.5_atr0.0         n=32   exp=+0.0500R  positive 2/3
-2026-09-27 00:34:59,072 INFO   base15_sq4.0_vol1.5_atr4.0         n=27   exp=+0.0185R  positive 2/3
-2026-09-27 00:34:59,361 INFO   base25_sq1.8_vol1.0_atr0.0         n=0    exp=+0.0000R  positive 0/0
-2026-09-27 00:34:59,650 INFO   base25_sq1.8_vol1.0_atr4.0         n=0    exp=+0.0000R  positive 0/0
-2026-09-27 00:34:59,939 INFO   base25_sq1.8_vol1.5_atr0.0         n=0    exp=+0.0000R  positive 0/0
-2026-09-27 00:35:00,228 INFO   base25_sq1.8_vol1.5_atr4.0         n=0    exp=+0.0000R  positive 0/0
-2026-09-27 00:35:00,518 INFO   base25_sq2.5_vol1.0_atr0.0         n=0    exp=+0.0000R  positive 0/0
-2026-09-27 00:35:00,808 INFO   base25_sq2.5_vol1.0_atr4.0         n=0    exp=+0.0000R  positive 0/0
-2026-09-27 00:35:01,096 INFO   base25_sq2.5_vol1.5_atr0.0         n=0    exp=+0.0000R  positive 0/0
-2026-09-27 00:35:01,384 INFO   base25_sq2.5_vol1.5_atr4.0         n=0    exp=+0.0000R  positive 0/0
-2026-09-27 00:35:01,713 INFO   base25_sq4.0_vol1.0_atr0.0         n=20   exp=+0.1100R  positive 1/1
-2026-09-27 00:35:02,039 INFO   base25_sq4.0_vol1.0_atr4.0         n=15   exp=+0.0800R  positive 0/0
-2026-09-27 00:35:02,367 INFO   base25_sq4.0_vol1.5_atr0.0         n=17   exp=-0.0118R  positive 0/0
-2026-09-27 00:35:02,682 INFO   base25_sq4.0_vol1.5_atr4.0         n=12   exp=-0.1000R  positive 0/0
-2026-09-27 00:35:02,683 INFO Winner base10_sq4.0_vol1.0_atr0.0 — one run on 40 unseen symbols
+2026-09-27 00:41:58,561 INFO Fetching 30 holdout symbols
+2026-09-27 00:41:59,808 INFO Single-config validation run (no search): base10_sq4.0_vol1.0_atr0.0
+2026-09-27 00:41:59,808 INFO Scoring 1 breakout configurations
+2026-09-27 00:42:00,223 INFO   base10_sq4.0_vol1.0_atr0.0         n=48   exp=+0.0167R  positive 2/3
+2026-09-27 00:42:00,223 INFO Winner base10_sq4.0_vol1.0_atr0.0 — one run on 36 unseen symbols
 
 # Expansion breakout
 
-**36 movers symbols · from 2026-01-01 · 2026-09-27 00:35**
+**30 holdout symbols · from 2026-01-01 · 2026-09-27 00:42**
 
-**36 configurations tried.** 4 passed.
+**1 configurations tried.** 1 passed.
 
-> With this many configurations and this sample size, the best result from pure noise would be about **+0.487R**. Anything at or below that is indistinguishable from luck.
+> With this many configurations and this sample size, the best result from pure noise would be about **+0.0R**. Anything at or below that is indistinguishable from luck.
 
 | Configuration | Trades | Expectancy | Positive in | Worst period | Max DD |
 |---|---|---|---|---|---|
-| `base10_sq4.0_vol1.0_atr0.0` | 51 | +0.1980R | 2/3 | -0.4790R | -8.78% |
-| `base15_sq2.5_vol1.5_atr4.0` | 6 ⚠ | +0.1500R | 0/0 | +0.0000R | -1.99% |
-| `base25_sq4.0_vol1.0_atr0.0` | 20 ⚠ | +0.1100R | 1/1 | +0.4147R | -3.52% |
-| `base25_sq4.0_vol1.0_atr4.0` | 15 ⚠ | +0.0800R | 0/0 | +0.0000R | -2.54% |
-| `base10_sq4.0_vol1.5_atr0.0` | 43 | +0.0721R | 2/3 | -0.5063R | -9.69% |
-| `base15_sq4.0_vol1.5_atr0.0` | 32 ⚠ | +0.0500R | 2/3 | -0.5066R | -5.92% |
-| `base10_sq4.0_vol1.0_atr4.0` | 47 | +0.0277R | 2/3 | -0.6590R | -9.91% |
-| `base15_sq4.0_vol1.5_atr4.0` | 27 ⚠ | +0.0185R | 2/3 | -0.3964R | -5.01% |
-| `base10_sq2.5_vol1.0_atr0.0` | 45 | +0.0089R | 2/3 | -0.7318R | -9.8% |
-| `base15_sq1.8_vol1.0_atr0.0` | 0 ⚠ | +0.0000R | 0/0 | +0.0000R | 0.0% |
-| `base15_sq1.8_vol1.0_atr4.0` | 0 ⚠ | +0.0000R | 0/0 | +0.0000R | 0.0% |
-| `base15_sq1.8_vol1.5_atr0.0` | 0 ⚠ | +0.0000R | 0/0 | +0.0000R | 0.0% |
+| `base10_sq4.0_vol1.0_atr0.0` | 48 | +0.0167R | 2/3 | -0.0249R | -4.94% |
 
 ## Selected
 
@@ -67,13 +22,13 @@
 
 | | Search universe | **Holdout (unseen)** |
 |---|---|---|
-| Trades | 51 | **54** |
-| Expectancy | +0.1980R | **+0.3130R** |
-| Total R | +10.1 | **+16.9** |
+| Trades | 48 | **51** |
+| Expectancy | +0.0167R | **+0.1980R** |
+| Total R | +0.8 | **+10.1** |
 | Positive in | 2/3 | **2/3** |
-| Win rate | — | **55.6%** |
-| Max drawdown | -8.78% | **-6.61%** |
+| Win rate | — | **57.4%** |
+| Max drawdown | -4.94% | **-8.78%** |
 
 ### Verdict
 
-**Below the noise floor.** +0.1980R does not clear the +0.487R a search this size produces by chance. Not tradeable.
+**Clears the noise floor (+0.0R) and stayed positive on unseen symbols.** That is the first result in this project to do both. Paper trade it before anything else — and do not re-tune against that holdout.
