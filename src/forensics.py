@@ -45,7 +45,13 @@ MOVERS = [
     "ENPH", "FSLR", "PLUG", "UPST", "IONQ", "LCID", "NIO", "BABA", "ZM",
 ]
 
-UNIVERSES = {"research": RESEARCH, "holdout": HOLDOUT, "movers": MOVERS}
+# Everything at once. Its only job is the volatility split: a median cut can
+# only separate what the universe already contains, so asking whether the edge
+# needs volatile stocks requires a list that holds both kinds.
+WIDE = sorted(set(MOVERS) | set(HOLDOUT) | set(RESEARCH))
+
+UNIVERSES = {"research": RESEARCH, "holdout": HOLDOUT, "movers": MOVERS,
+             "wide": WIDE}
 
 
 def features_at(df: pd.DataFrame, i: int, p: dict) -> dict:
