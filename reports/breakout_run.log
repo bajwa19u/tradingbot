@@ -1,20 +1,20 @@
-2026-09-27 01:09:56,667 INFO Fetching 30 holdout symbols
-2026-09-27 01:09:57,562 INFO Single-config validation run (no search): base10_sq4.0_vol1.0_atr0.0
-2026-09-27 01:09:57,562 INFO Scoring 1 breakout configurations
-2026-09-27 01:09:58,154 INFO   base10_sq4.0_vol1.0_atr0.0         n=62   exp=+0.0167R  positive 2/3
-2026-09-27 01:09:58,154 INFO Winner base10_sq4.0_vol1.0_atr0.0 — one run on 36 unseen symbols
-2026-09-27 01:09:59,886 INFO   loud  half: 15 symbols, 46 trades, 52.2% win, +3.6% return
-2026-09-27 01:10:00,319 INFO   quiet half: 15 symbols, 51 trades, 52.9% win, -1.9% return
+2026-09-27 01:46:23,124 INFO Fetching 103 wide symbols
+2026-09-27 01:46:25,093 INFO Single-config validation run (no search): base10_sq4.0_vol1.0_atr0.0
+2026-09-27 01:46:25,093 INFO Scoring 1 breakout configurations
+2026-09-27 01:46:26,395 INFO   base10_sq4.0_vol1.0_atr0.0         n=69   exp=+0.1534R  positive 2/3
+2026-09-27 01:46:26,395 INFO Winner base10_sq4.0_vol1.0_atr0.0 — one run on 36 unseen symbols
+2026-09-27 01:46:28,684 INFO   loud  half: 51 symbols, 65 trades, 61.5% win, +24.4% return
+2026-09-27 01:46:29,550 INFO   quiet half: 52 symbols, 56 trades, 51.8% win, +5.8% return
 
 # Expansion breakout
 
-**30 holdout symbols · from 2026-01-01 · 2026-09-27 01:10**
+**103 wide symbols · from 2026-01-01 · 2026-09-27 01:46**
 
 **1 settings tried.** 1 passed.
 
 | Settings | Trades | Won | Lost | Win % | Profit |
 |---|---|---|---|---|---|
-| `base10_sq4.0_vol1.0_atr0.0` | 62 | 32 | 30 | 51.6% | **-4.2%** |
+| `base10_sq4.0_vol1.0_atr0.0` | 69 | 35 | 34 | 50.7% | **+5.3%** |
 
 ## Selected
 
@@ -22,11 +22,11 @@
 
 | | Tuned on | **Never seen** |
 |---|---|---|
-| Trades | 62 | **61** |
-| Won / lost | 32 / 30 | **35 / 26** |
-| Win rate | 51.6% | **57.4%** |
-| Profit | -4.2% | **+14.0%** |
-| Worst drop | -8.74% | **-9.25%** |
+| Trades | 69 | **61** |
+| Won / lost | 35 / 34 | **35 / 26** |
+| Win rate | 50.7% | **57.4%** |
+| Profit | +5.3% | **+14.0%** |
+| Worst drop | -11.06% | **-9.25%** |
 
 ## Does it need volatile stocks?
 
@@ -34,10 +34,10 @@ Same settings, universe split by typical daily range.
 
 | Half | Symbols | Typical range | Trades | Won | Lost | Win % | Profit |
 |---|---|---|---|---|---|---|---|
-| **loud** | 15 | 2.02% | 46 | 24 | 22 | 52.2% | **+3.6%** |
-| **quiet** | 15 | 1.65% | 51 | 27 | 24 | 52.9% | **-1.9%** |
+| **loud** | 51 | 4.09% | 65 | 40 | 25 | 61.5% | **+24.4%** |
+| **quiet** | 52 | 1.77% | 56 | 29 | 27 | 51.8% | **+5.8%** |
 
-**Read:** the volatile half returned +5.5% more than the quiet half. The edge lives in the movers, and the quiet names are diluting it — screen them out.
+**Read:** the volatile half returned +18.6% more than the quiet half, on a real 2.3% separation in daily range. The edge lives in the movers — screen the quiet names out.
 
 ### Verdict
 

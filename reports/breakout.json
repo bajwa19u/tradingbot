@@ -1,6 +1,6 @@
 {
-  "universe": "holdout",
-  "symbols": 30,
+  "universe": "wide",
+  "symbols": 103,
   "start": "2026-01-01",
   "tried": 1,
   "survivors": 1,
@@ -9,30 +9,30 @@
     {
       "per_period": [
         {
-          "n": 17,
-          "expectancy_R": 0.0162
+          "n": 21,
+          "expectancy_R": 0.4307
         },
         {
-          "n": 16,
-          "expectancy_R": 0.0586
+          "n": 18,
+          "expectancy_R": 0.4819
         },
         {
-          "n": 15,
-          "expectancy_R": -0.0249
+          "n": 19,
+          "expectancy_R": -0.4639
         }
       ],
-      "n": 62,
-      "n_periods_sum": 48,
-      "wins": 32,
-      "losses": 30,
-      "win_rate_pct": 51.6,
-      "return_pct": -4.2,
-      "expectancy_R": 0.0167,
-      "total_R": 0.8,
+      "n": 69,
+      "n_periods_sum": 58,
+      "wins": 35,
+      "losses": 34,
+      "win_rate_pct": 50.7,
+      "return_pct": 5.3,
+      "expectancy_R": 0.1534,
+      "total_R": 8.9,
       "periods_positive": 2,
       "periods_scored": 3,
-      "worst_period_R": -0.0249,
-      "max_dd_pct": -8.74,
+      "worst_period_R": -0.4639,
+      "max_dd_pct": -11.06,
       "name": "base10_sq4.0_vol1.0_atr0.0",
       "params": {
         "base_len": 10,
@@ -61,30 +61,30 @@
   "winner": {
     "per_period": [
       {
-        "n": 17,
-        "expectancy_R": 0.0162
+        "n": 21,
+        "expectancy_R": 0.4307
       },
       {
-        "n": 16,
-        "expectancy_R": 0.0586
+        "n": 18,
+        "expectancy_R": 0.4819
       },
       {
-        "n": 15,
-        "expectancy_R": -0.0249
+        "n": 19,
+        "expectancy_R": -0.4639
       }
     ],
-    "n": 62,
-    "n_periods_sum": 48,
-    "wins": 32,
-    "losses": 30,
-    "win_rate_pct": 51.6,
-    "return_pct": -4.2,
-    "expectancy_R": 0.0167,
-    "total_R": 0.8,
+    "n": 69,
+    "n_periods_sum": 58,
+    "wins": 35,
+    "losses": 34,
+    "win_rate_pct": 50.7,
+    "return_pct": 5.3,
+    "expectancy_R": 0.1534,
+    "total_R": 8.9,
     "periods_positive": 2,
     "periods_scored": 3,
-    "worst_period_R": -0.0249,
-    "max_dd_pct": -8.74,
+    "worst_period_R": -0.4639,
+    "max_dd_pct": -11.06,
     "name": "base10_sq4.0_vol1.0_atr0.0",
     "params": {
       "base_len": 10,
@@ -142,62 +142,62 @@
     "loud": {
       "per_period": [
         {
-          "n": 13,
-          "expectancy_R": 0.4528
+          "n": 22,
+          "expectancy_R": -0.004
         },
         {
-          "n": 16,
-          "expectancy_R": 0.1099
+          "n": 19,
+          "expectancy_R": 0.65
         },
         {
-          "n": 12,
-          "expectancy_R": 0.0236
+          "n": 19,
+          "expectancy_R": 0.2525
         }
       ],
-      "n": 46,
-      "n_periods_sum": 41,
-      "wins": 24,
-      "losses": 22,
-      "win_rate_pct": 52.2,
-      "return_pct": 3.6,
-      "expectancy_R": 0.1951,
-      "total_R": 8.0,
-      "periods_positive": 3,
+      "n": 65,
+      "n_periods_sum": 60,
+      "wins": 40,
+      "losses": 25,
+      "win_rate_pct": 61.5,
+      "return_pct": 24.4,
+      "expectancy_R": 0.2833,
+      "total_R": 17.0,
+      "periods_positive": 2,
       "periods_scored": 3,
-      "worst_period_R": 0.0236,
-      "max_dd_pct": -5.71,
-      "symbols": 15,
-      "median_atr_pct": 2.02
+      "worst_period_R": -0.004,
+      "max_dd_pct": -6.18,
+      "symbols": 51,
+      "median_atr_pct": 4.09
     },
     "quiet": {
       "per_period": [
         {
-          "n": 17,
-          "expectancy_R": 0.1156
+          "n": 16,
+          "expectancy_R": 0.5256
         },
         {
-          "n": 13,
-          "expectancy_R": -0.4585
+          "n": 16,
+          "expectancy_R": 0.4923
         },
         {
-          "n": 12,
-          "expectancy_R": -0.1438
+          "n": 16,
+          "expectancy_R": -0.3354
         }
       ],
-      "n": 51,
-      "n_periods_sum": 42,
-      "wins": 27,
-      "losses": 24,
-      "win_rate_pct": 52.9,
-      "return_pct": -1.9,
-      "expectancy_R": -0.1357,
-      "total_R": -5.7,
-      "periods_positive": 1,
+      "n": 56,
+      "n_periods_sum": 48,
+      "wins": 29,
+      "losses": 27,
+      "win_rate_pct": 51.8,
+      "return_pct": 5.8,
+      "expectancy_R": 0.2271,
+      "total_R": 10.9,
+      "periods_positive": 2,
       "periods_scored": 3,
-      "worst_period_R": -0.4585,
-      "max_dd_pct": -8.29,
-      "symbols": 15,
-      "median_atr_pct": 1.65
+      "worst_period_R": -0.3354,
+      "max_dd_pct": -8.94,
+      "symbols": 52,
+      "median_atr_pct": 1.77
     }
   }
 }
