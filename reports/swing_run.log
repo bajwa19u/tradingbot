@@ -1,20 +1,68 @@
-2026-09-26 23:55:08,468 INFO Fetching daily bars for 40 research symbols from 2024-08-19 (trading from 2026-01-01)
-2026-09-26 23:55:09,360 INFO 40 symbols, 21120 total daily bars
-2026-09-26 23:55:09,361 INFO Single-configuration run (no search): ema10_tgt3.0_stop0.3_slope2.0
-2026-09-26 23:55:09,361 INFO Scoring 1 configurations across 3 periods
-2026-09-26 23:55:09,742 INFO   ema10_tgt3.0_stop0.3_slope2.0      n=71    exp=-0.0901R  positive 1/3
+2026-09-27 00:02:17,678 INFO Fetching daily bars for 36 movers symbols from 2024-08-19 (trading from 2026-01-01)
+2026-09-27 00:02:18,757 INFO 36 symbols, 19008 total daily bars
+2026-09-27 00:02:18,758 INFO Scoring 39 configurations across 3 periods
+2026-09-27 00:02:19,183 INFO   ema10_tgt0.0_trail1_stop0.3        n=72    exp=-0.1139R  positive 1/3
+2026-09-27 00:02:19,602 INFO   ema10_tgt0.0_trail1_stop0.5        n=64    exp=-0.1672R  positive 1/3
+2026-09-27 00:02:20,024 INFO   ema10_tgt0.0_trail1_stop1.0        n=55    exp=-0.2618R  positive 1/3
+2026-09-27 00:02:20,444 INFO   ema10_tgt2.0_trail1_stop0.3        n=75    exp=-0.1773R  positive 1/3
+2026-09-27 00:02:20,864 INFO   ema10_tgt2.0_trail1_stop0.5        n=68    exp=-0.2044R  positive 1/3
+2026-09-27 00:02:21,286 INFO   ema10_tgt2.0_trail1_stop1.0        n=57    exp=-0.2474R  positive 1/3
+2026-09-27 00:02:21,707 INFO   ema10_tgt2.0_trail0_stop0.3        n=66    exp=-0.3242R  positive 1/3
+2026-09-27 00:02:22,129 INFO   ema10_tgt2.0_trail0_stop0.5        n=59    exp=-0.3458R  positive 1/3
+2026-09-27 00:02:22,584 INFO   ema10_tgt2.0_trail0_stop1.0        n=47    exp=-0.2191R  positive 2/3
+2026-09-27 00:02:23,011 INFO   ema10_tgt3.0_trail1_stop0.3        n=73    exp=-0.1534R  positive 1/3
+2026-09-27 00:02:23,439 INFO   ema10_tgt3.0_trail1_stop0.5        n=65    exp=-0.1800R  positive 1/3
+2026-09-27 00:02:23,876 INFO   ema10_tgt3.0_trail1_stop1.0        n=56    exp=-0.2571R  positive 2/3
+2026-09-27 00:02:24,298 INFO   ema10_tgt3.0_trail0_stop0.3        n=52    exp=-0.2442R  positive 2/3
+2026-09-27 00:02:24,716 INFO   ema10_tgt3.0_trail0_stop0.5        n=50    exp=-0.2400R  positive 2/3
+2026-09-27 00:02:25,138 INFO   ema10_tgt3.0_trail0_stop1.0        n=39    exp=-0.1513R  positive 2/3
+2026-09-27 00:02:25,559 INFO   ema20_tgt0.0_trail1_stop0.3        n=66    exp=-0.3288R  positive 0/3
+2026-09-27 00:02:25,980 INFO   ema20_tgt0.0_trail1_stop0.5        n=58    exp=-0.3500R  positive 0/3
+2026-09-27 00:02:26,397 INFO   ema20_tgt0.0_trail1_stop1.0        n=50    exp=-0.3920R  positive 0/3
+2026-09-27 00:02:26,816 INFO   ema20_tgt2.0_trail1_stop0.3        n=72    exp=-0.2542R  positive 0/3
+2026-09-27 00:02:27,226 INFO   ema20_tgt2.0_trail1_stop0.5        n=62    exp=-0.3081R  positive 1/3
+2026-09-27 00:02:27,640 INFO   ema20_tgt2.0_trail1_stop1.0        n=53    exp=-0.2396R  positive 2/3
+2026-09-27 00:02:28,049 INFO   ema20_tgt2.0_trail0_stop0.3        n=67    exp=-0.2925R  positive 1/3
+2026-09-27 00:02:28,474 INFO   ema20_tgt2.0_trail0_stop0.5        n=52    exp=-0.3135R  positive 1/3
+2026-09-27 00:02:28,882 INFO   ema20_tgt2.0_trail0_stop1.0        n=43    exp=-0.2163R  positive 2/3
+2026-09-27 00:02:29,293 INFO   ema20_tgt3.0_trail1_stop0.3        n=68    exp=-0.2779R  positive 0/3
+2026-09-27 00:02:29,742 INFO   ema20_tgt3.0_trail1_stop0.5        n=62    exp=-0.3694R  positive 0/3
+2026-09-27 00:02:30,154 INFO   ema20_tgt3.0_trail1_stop1.0        n=51    exp=-0.3902R  positive 0/3
+2026-09-27 00:02:30,562 INFO   ema20_tgt3.0_trail0_stop0.3        n=54    exp=-0.2000R  positive 2/3
+2026-09-27 00:02:30,967 INFO   ema20_tgt3.0_trail0_stop0.5        n=51    exp=-0.3333R  positive 1/3
+2026-09-27 00:02:31,377 INFO   ema20_tgt3.0_trail0_stop1.0        n=42    exp=-0.2810R  positive 2/3
+2026-09-27 00:02:31,791 INFO   ema10_tgt3.0_stop0.3_slope0.5      n=61    exp=-0.0344R  positive 2/3
+2026-09-27 00:02:32,191 INFO   ema10_tgt3.0_stop0.3_slope1.0      n=56    exp=-0.1339R  positive 1/3
+2026-09-27 00:02:32,562 INFO   ema10_tgt3.0_stop0.3_slope2.0      n=37    exp=-0.0081R  positive 1/2
+2026-09-27 00:02:32,977 INFO   ema20_tgt0.0_stop0.5_slope0.5      n=48    exp=-0.2354R  positive 1/3
+2026-09-27 00:02:33,378 INFO   ema20_tgt0.0_stop0.5_slope1.0      n=41    exp=-0.1951R  positive 0/2
+2026-09-27 00:02:33,740 INFO   ema20_tgt0.0_stop0.5_slope2.0      n=28    exp=-0.3179R  positive 0/1
+2026-09-27 00:02:34,168 INFO   ema20_tgt2.0_stop0.5_slope0.5      n=54    exp=-0.2296R  positive 0/3
+2026-09-27 00:02:34,571 INFO   ema20_tgt2.0_stop0.5_slope1.0      n=45    exp=-0.1756R  positive 0/2
+2026-09-27 00:02:34,940 INFO   ema20_tgt2.0_stop0.5_slope2.0      n=31    exp=-0.3548R  positive 0/2
 
 # Daily trend pullback
 
-**Research:** 40 large caps · trading from 2026-01-01 · daily bars (indicators warmed on earlier history)  
+**Research:** 36 large caps · trading from 2026-01-01 · daily bars (indicators warmed on earlier history)  
 **Locked holdout:** 30 different companies (insurers, financials, industrials, materials) — opened once, at the end  
-**Generated:** 2026-09-26 23:55
+**Generated:** 2026-09-27 00:02
 
-**1 configurations tried.** 0 passed.
+**39 configurations tried.** 0 passed.
 
 | Configuration | Trades | Expectancy | Positive in | Worst period | Max DD |
 |---|---|---|---|---|---|
-| `ema10_tgt3.0_stop0.3_slope2.0` | 71 ⚠ | -0.0901R | 1/3 | -0.2259R | -8.35% |
+| `ema10_tgt3.0_stop0.3_slope2.0` | 37 ⚠ | -0.0081R | 1/2 | -0.1877R | -7.84% |
+| `ema10_tgt3.0_stop0.3_slope0.5` | 61 ⚠ | -0.0344R | 2/3 | -0.7329R | -10.47% |
+| `ema10_tgt0.0_trail1_stop0.3` | 72 ⚠ | -0.1139R | 1/3 | -0.8016R | -14.89% |
+| `ema10_tgt3.0_stop0.3_slope1.0` | 56 ⚠ | -0.1339R | 1/3 | -0.6905R | -8.64% |
+| `ema10_tgt3.0_trail0_stop1.0` | 39 ⚠ | -0.1513R | 2/3 | -1.0046R | -15.77% |
+| `ema10_tgt3.0_trail1_stop0.3` | 73 ⚠ | -0.1534R | 1/3 | -0.8016R | -14.89% |
+| `ema10_tgt0.0_trail1_stop0.5` | 64 ⚠ | -0.1672R | 1/3 | -0.8292R | -13.94% |
+| `ema20_tgt2.0_stop0.5_slope1.0` | 45 ⚠ | -0.1756R | 0/2 | -0.1057R | -7.64% |
+| `ema10_tgt2.0_trail1_stop0.3` | 75 ⚠ | -0.1773R | 1/3 | -0.7573R | -14.8% |
+| `ema10_tgt3.0_trail1_stop0.5` | 65 ⚠ | -0.1800R | 1/3 | -0.8292R | -13.94% |
+| `ema20_tgt0.0_stop0.5_slope1.0` | 41 ⚠ | -0.1951R | 0/2 | -0.2016R | -5.62% |
+| `ema20_tgt3.0_trail0_stop0.3` | 54 ⚠ | -0.2000R | 2/3 | -1.0092R | -16.69% |
 
 ## Selected configuration
 
