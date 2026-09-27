@@ -142,7 +142,7 @@ def run_portfolio(prepared: dict[str, pd.DataFrame], p: dict,
     the TRADING window; bars before `lo` are still used for the averages.
     """
     if not prepared:
-        return {"trades": [], "stats": {"n_trades": 0}}
+        return {"trades": [], "stats": {"n_trades": 0}, "open": []}
 
     signals = sigs if sigs is not None else signal_times(prepared, p)
     calendar = sorted({ts for d in prepared.values() for ts in d.index
@@ -219,14 +219,29 @@ def run_portfolio(prepared: dict[str, pd.DataFrame], p: dict,
                         "date": str(day.date()), "bars": 0,
                         "mfe": 0.0, "mae": 0.0, "trailing": False}
 
-    return summarize(trades, risk_frac, equity)
+    out = summarize(trades, risk_frac, equity)
+    # Positions still open when the data runs out. The backtest ignores these
+    # on purpose - an unfinished trade has no result to score. Paper trading is
+    # the opposite case: the open ones are the only ones that need acting on,
+    # and they must come from this function rather than a second copy of the
+    # entry rules, which is how the inspector drifted from the signals before.
+    out["open"] = [
+        {"symbol": sym, "entry_date": st["date"], "entry": round(st["entry"], 2),
+         "stop": round(st["stop"], 2), "risk_per_share": round(st["rps"], 2),
+         "bars_held": st["bars"], "best_R": round(st["mfe"], 2),
+         "target": round(st["entry"] + max(p["target_r"], 1.5) * st["rps"], 2),
+         "trailing": st["trailing"]}
+        for sym, st in sorted(pos.items())
+    ]
+    return out
 
 
 def summarize(trades: list[SwingTrade], risk_frac: float, equity: float) -> dict:
     if not trades:
         return {"trades": [], "stats": {"n_trades": 0, "expectancy_R": 0.0,
                                         "total_R": 0.0, "win_rate_pct": 0.0,
-                                        "max_drawdown_pct": 0.0}}
+                                        "return_pct": 0.0,
+                                        "max_drawdown_pct": 0.0}, "open": []}
     trades.sort(key=lambda t: t.exit_date)
     r = np.array([t.r_multiple for t in trades])
     curve, eq = [], equity
