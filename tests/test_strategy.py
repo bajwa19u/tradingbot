@@ -855,6 +855,31 @@ def test_breakout_base_excludes_the_current_bar():
     assert abs(float(row["base_high"]) - float(prior_high)) < 1e-9
 
 
+def test_breakout_report_flags_the_volatility_split():
+    """The split table must state which half carries the edge, since that is
+    the decision it exists to inform."""
+    from src.breakout import render
+    w = {"name": "x", "n": 60, "expectancy_R": 0.9, "total_R": 54.0,
+         "periods_positive": 3, "periods_scored": 3, "worst_period_R": 0.2,
+         "max_dd_pct": -8.0, "wins": 34, "losses": 26, "win_rate_pct": 56.7,
+         "return_pct": 22.0}
+    h = dict(w, n=50, wins=28, losses=22, return_pct=15.0, max_dd_pct=-9.0)
+    payload = {"universe": "movers", "symbols": 36, "start": "2026-01-01",
+               "tried": 36, "survivors": 1, "noise_floor": 0.40,
+               "results": [w], "winner": w, "holdout": h, "holdout_size": 40,
+               "halves": {
+                   "loud":  {"symbols": 18, "median_atr_pct": 5.4, "n": 40,
+                             "wins": 25, "losses": 15, "win_rate_pct": 62.5,
+                             "return_pct": 24.0},
+                   "quiet": {"symbols": 18, "median_atr_pct": 2.1, "n": 20,
+                             "wins": 8, "losses": 12, "win_rate_pct": 40.0,
+                             "return_pct": -2.0}}}
+    text = render(payload)
+    assert "Does it need volatile stocks?" in text
+    assert "edge lives in the movers" in text
+    assert "never seen" in text
+
+
 def test_breakout_report_respects_the_noise_floor():
     from src.breakout import render
     w = {"name": "x", "n": 60, "expectancy_R": 0.20, "total_R": 12.0,
@@ -863,4 +888,4 @@ def test_breakout_report_respects_the_noise_floor():
     payload = {"universe": "movers", "symbols": 36, "start": "2026-01-01",
                "tried": 36, "survivors": 1, "noise_floor": 0.40,
                "results": [w], "winner": w, "holdout": None, "holdout_size": 40}
-    assert "Below the noise floor" in render(payload)
+    assert "Too close to noise" in render(payload)
