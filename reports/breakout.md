@@ -1,6 +1,6 @@
 # Expansion breakout
 
-**33 movers symbols · from 2026-01-01 · 2026-09-27 19:42**
+**33 movers symbols · from 2026-01-01 · 2026-09-27 21:46**
 
 **1 settings tried.** 1 passed.
 
@@ -14,11 +14,11 @@
 
 | | Tuned on | **Never seen** |
 |---|---|---|
-| Trades | 56 | **6** |
-| Won / lost | 32 / 24 | **4 / 2** |
-| Win rate | 57.1% | **66.7%** |
-| Profit | +14.6% | **+5.1%** |
-| Worst drop | -8.33% | **-1.0%** |
+| Trades | 56 | **57** |
+| Won / lost | 32 / 24 | **26 / 31** |
+| Win rate | 57.1% | **45.6%** |
+| Profit | +14.6% | **-2.4%** |
+| Worst drop | -8.33% | **-14.4%** |
 
 ### Verdict
 

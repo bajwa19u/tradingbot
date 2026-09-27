@@ -112,31 +112,31 @@
   "holdout": {
     "per_period": [
       {
-        "n": 3,
-        "expectancy_R": 0.329
+        "n": 20,
+        "expectancy_R": -0.5171
       },
       {
-        "n": 3,
-        "expectancy_R": 1.3477
+        "n": 17,
+        "expectancy_R": 0.2339
       },
       {
-        "n": 0,
-        "expectancy_R": 0.0
+        "n": 16,
+        "expectancy_R": 0.0441
       }
     ],
-    "n": 6,
-    "n_periods_sum": 6,
-    "wins": 4,
-    "losses": 2,
-    "win_rate_pct": 66.7,
-    "return_pct": 5.1,
-    "expectancy_R": 0.8333,
-    "total_R": 5.0,
-    "periods_positive": 0,
-    "periods_scored": 0,
-    "worst_period_R": 0.0,
-    "max_dd_pct": -1.0
+    "n": 57,
+    "n_periods_sum": 53,
+    "wins": 26,
+    "losses": 31,
+    "win_rate_pct": 45.6,
+    "return_pct": -2.4,
+    "expectancy_R": -0.1057,
+    "total_R": -5.6,
+    "periods_positive": 2,
+    "periods_scored": 3,
+    "worst_period_R": -0.5171,
+    "max_dd_pct": -14.4
   },
-  "holdout_size": 37,
+  "holdout_size": 51,
   "halves": {}
 }
