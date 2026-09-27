@@ -1,0 +1,85 @@
+name: Paper account
+
+# The forward test. Runs after the US close on weekdays, scores the rule on the
+# day's real bars, and commits reports/paper.md so the record builds up in the
+# repo where it can be read from anywhere.
+#
+# 21:30 UTC is 17:30 Eastern in summer and 16:30 in winter, so the daily bar is
+# always closed by then. The script asks Alpaca for whatever the latest bar is
+# rather than assuming a date, so an early or late run is harmless.
+#
+# Unlike the old live-signals job, this one is safe to leave on: it does not
+# send alerts for a strategy that has not survived a forward test - it IS the
+# forward test.
+on:
+  schedule:
+    - cron: "30 21 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Print the report instead of committing it"
+        type: boolean
+        default: false
+
+concurrency:
+  group: paper
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Score the paper account
+        id: run
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          IN_DRY: ${{ inputs.dry_run }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports state
+          ARGS=()
+          if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
+          set +e
+          python -m src.paper "${ARGS[@]}" 2>&1 | tee reports/paper_run.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit the record
+        if: always() && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports state
+          if ! git diff --cached --quiet; then
+            git commit -m "paper: daily score [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/paper.md ]; then
+            cat reports/paper.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            { echo '```'; tail -n 40 reports/paper_run.log; echo '```'; } \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Fail if scoring failed
+        if: always() && steps.run.outputs.code != '0'
+        run: exit 1
