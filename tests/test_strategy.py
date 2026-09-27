@@ -880,6 +880,24 @@ def test_breakout_report_flags_the_volatility_split():
     assert "never seen" in text
 
 
+def test_breakout_trade_count_equals_wins_plus_losses():
+    """The first report showed 48 trades with 32 wins and 30 losses, because
+    the trade count was summed over period slices (which cut trades at each
+    boundary) while wins and losses came from the full run. Every headline
+    number must come from the same run."""
+    import copy
+    from src.breakout import BASE_BO, by_periods
+    p = copy.deepcopy(BASE_BO)
+    p.update({"base_len": 15, "touch_window": 15, "squeeze_atr": 6.0,
+              "vol_mult": 1.05, "min_atr_pct": 0.0})
+    data = {f"S{i}": _coil_then_break(n_coil=30 + i * 3, seed=i + 1)
+            for i in range(6)}
+    st = by_periods(data, p, 3)
+    assert st["n"] > 0, "fixture produced no trades, so nothing is tested"
+    assert st["n"] == st["wins"] + st["losses"], (
+        f"{st['n']} trades but {st['wins']} won and {st['losses']} lost")
+
+
 def test_breakout_report_respects_the_noise_floor():
     from src.breakout import render
     w = {"name": "x", "n": 60, "expectancy_R": 0.20, "total_R": 12.0,
