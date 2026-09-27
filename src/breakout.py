@@ -209,7 +209,20 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
 
     universe = UNIVERSES[args.universe]
-    holdout = RESEARCH if args.universe == "movers" else MOVERS
+    # A holdout has to be symbols this run never touched. "wide" is every list
+    # at once, so nothing is left over and the column must not be printed -
+    # claiming "never seen" for names inside the tuning set is the worst kind of
+    # wrong number, because it reads as the confirmation the whole run exists to
+    # produce.
+    # Also, movers and research share three names (TSLA, NVDA, AMD), so the
+    # holdout has to have the traded universe subtracted from it, not merely be
+    # a different list.
+    candidate = [] if args.universe == "wide" else (
+        RESEARCH if args.universe == "movers" else MOVERS)
+    holdout = [s for s in candidate if s not in set(universe)]
+    if len(holdout) != len(candidate):
+        log.info("Holdout trimmed to %d symbols - %d were in the traded "
+                 "universe", len(holdout), len(candidate) - len(holdout))
     trade_from = pd.Timestamp(args.start, tz="America/New_York")
     fetch_from = (trade_from - pd.Timedelta(days=500)).date().isoformat()
 
@@ -343,17 +356,28 @@ def render(p: dict) -> str:
                 "be overfitted, the idea is wrong for it rather than mistuned."]
         return "\n".join(out)
 
-    out += [f"**`{w['name']}`**", "",
-            "| | Tuned on | **Never seen** |", "|---|---|---|",
-            f"| Trades | {w['n']} | **{h['n'] if h else 'n/a'}** |"]
-    if h:
-        out += [f"| Won / lost | {w.get('wins','—')} / {w.get('losses','—')} | "
+    out += [f"**`{w['name']}`**", ""]
+    if h and p.get("holdout_size"):
+        out += ["| | Tuned on | **Never seen** |", "|---|---|---|",
+                f"| Trades | {w['n']} | **{h['n']}** |",
+                f"| Won / lost | {w.get('wins','—')} / {w.get('losses','—')} | "
                 f"**{h.get('wins','—')} / {h.get('losses','—')}** |",
                 f"| Win rate | {w.get('win_rate_pct','—')}% | "
                 f"**{h.get('win_rate_pct','—')}%** |",
                 f"| Profit | {w.get('return_pct',0):+.1f}% | "
                 f"**{h.get('return_pct',0):+.1f}%** |",
                 f"| Worst drop | {w['max_dd_pct']}% | **{h['max_dd_pct']}%** |"]
+    else:
+        out += ["| | Tuned on |", "|---|---|",
+                f"| Trades | {w['n']} |",
+                f"| Won / lost | {w.get('wins','—')} / {w.get('losses','—')} |",
+                f"| Win rate | {w.get('win_rate_pct','—')}% |",
+                f"| Profit | {w.get('return_pct',0):+.1f}% |",
+                f"| Worst drop | {w['max_dd_pct']}% |", "",
+                "**No unseen stocks in this run.** Every symbol on the lists "
+                "was traded, so there is nothing left to check the result "
+                "against. These numbers are in-sample and prove nothing on "
+                "their own."]
 
     halves = p.get("halves") or {}
     if halves:
@@ -411,6 +435,11 @@ def render(p: dict) -> str:
         out.append(f"**Too close to noise.** {w.get('return_pct',0):+.1f}% on "
                    f"the tuned set does not clear what {p['tried']} settings "
                    "produce by chance. Not tradeable.")
+    elif not p.get("holdout_size"):
+        out.append("**In-sample only.** This run traded every symbol on the "
+                   "lists, so there were no unseen stocks to check against. "
+                   "Use it to compare halves or settings against each other, "
+                   "never as evidence the rule works.")
     elif h and h.get("return_pct", 0) > 0 and h["n"] >= 30:
         out.append(f"**Profitable on stocks it had never seen: "
                    f"{h.get('return_pct',0):+.1f}% over {h['n']} trades, "
