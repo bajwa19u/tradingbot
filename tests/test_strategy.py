@@ -1170,3 +1170,18 @@ def test_paper_trade_log_appends_and_never_rewrites(tmp_path, monkeypatch):
     assert rows[1]["pnl"]["account_pct"] == 1.50
     P.log_events(now, [], [])                    # nothing new
     assert len((tmp_path / "trade_log.jsonl").read_text().splitlines()) == 2
+
+
+def test_paper_sample_goes_through_the_real_alert_builder():
+    """A hand-written mock-up would stop matching the code the first time the
+    code changed, and then it would teach the wrong format."""
+    from src.paper import sample
+    text = sample()
+    assert "SAMPLE" in text and "NOT A REAL SIGNAL" in text
+    assert "END OF SAMPLE" in text
+    for piece in ("ENTRY — NVDA", "CLOSED — PLTR", "CLOSED — COIN",
+                  "182.40", "171.20", "199.20", "1 share",
+                  "+11.40%", "+1.50%", "-7.15%", "-1.00%",
+                  "reached the target", "hit the stop loss",
+                  "Coiled 10 days", "Paper only"):
+        assert piece in text, piece
