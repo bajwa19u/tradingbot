@@ -19,6 +19,14 @@ on:
       only:
         description: "Run ONE named config, no search (e.g. base10_sq4.0_vol1.0_atr0.0)"
         required: false
+      vol_split:
+        description: "Also score the loud and quiet halves separately"
+        type: boolean
+        default: false
+      min_atr_pct:
+        description: "Drop symbols quieter than this %% typical daily range (0 = keep all)"
+        required: false
+        default: "0"
       universe:
         description: "movers | research | holdout"
         required: false
@@ -50,6 +58,8 @@ jobs:
           IN_PERIODS: ${{ inputs.periods }}
           IN_UNI: ${{ inputs.universe }}
           IN_ONLY: ${{ inputs.only }}
+          IN_SPLIT: ${{ inputs.vol_split }}
+          IN_MINATR: ${{ inputs.min_atr_pct }}
         run: |
           set -uo pipefail
           mkdir -p reports
@@ -57,6 +67,8 @@ jobs:
                 --universe "${IN_UNI:-movers}")
           [ -n "${IN_END:-}" ] && ARGS+=(--end "${IN_END}") || true
           [ -n "${IN_ONLY:-}" ] && ARGS+=(--only "${IN_ONLY}") || true
+          [ "${IN_SPLIT:-false}" = "true" ] && ARGS+=(--vol-split) || true
+          [ -n "${IN_MINATR:-}" ] && [ "${IN_MINATR}" != "0" ] && ARGS+=(--min-atr-pct "${IN_MINATR}") || true
           set +e
           python -m src.breakout "${ARGS[@]}" 2>&1 | tee reports/breakout_run.log
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
