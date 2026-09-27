@@ -45,6 +45,13 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(mess
                     stream=sys.stdout)
 log = logging.getLogger("breakout")
 
+# Thresholds for reading the volatility split. The autopsy measured winners at
+# a 5.35% median daily range against 3.80% for losers; 4.0% sits between them,
+# so a "loud" half below it is not loud in any sense that matters.
+VOL_BAR_PCT = 4.0        # loud half must clear this to test the idea at all
+MIN_VOL_SPREAD_PCT = 1.0  # the two halves must differ by at least this much
+MIN_HALF_GAP_PCT = 10.0   # profit gap worth calling a finding
+
 BASE_BO = {
     # entry
     "base_len": 15,          # bars that must be coiling
@@ -366,14 +373,37 @@ def render(p: dict) -> str:
         loud, quiet = halves.get("loud"), halves.get("quiet")
         if loud and quiet:
             gap = loud.get("return_pct", 0) - quiet.get("return_pct", 0)
-            out += ["", "**Read:** " + (
-                f"the volatile half returned {gap:+.1f}% more than the quiet "
-                "half. The edge lives in the movers, and the quiet names are "
-                "diluting it — screen them out."
-                if gap > 5 else
-                f"the two halves are within {abs(gap):.1f}% of each other. "
-                "Volatility does not explain the difference, so screening on "
-                "it would not help.")]
+            # The split is a median cut, so "loud" only means louder than the
+            # rest of this universe. If the loud half is still calmer than the
+            # bar the autopsy set (winners averaged 5.35% daily range), the
+            # test never put the idea under load and must not be read as
+            # confirming it.
+            loud_atr = loud.get("median_atr_pct") or 0.0
+            quiet_atr = quiet.get("median_atr_pct") or 0.0
+            spread = loud_atr - quiet_atr
+            if loud_atr < VOL_BAR_PCT:
+                out += ["", "**Read:** inconclusive, and not because of the "
+                        f"result. The loud half's typical daily range is only "
+                        f"{loud_atr:.1f}%, against the {VOL_BAR_PCT:.1f}% "
+                        "average of past winners — so both halves are quiet "
+                        "names and neither tested the idea. Re-run this split "
+                        "on a universe that actually contains movers."]
+            elif spread < MIN_VOL_SPREAD_PCT:
+                out += ["", "**Read:** inconclusive. The two halves differ by "
+                        f"only {spread:.1f}% in typical daily range, which is "
+                        "too little separation to attribute anything to "
+                        "volatility."]
+            elif gap > MIN_HALF_GAP_PCT:
+                out += ["", "**Read:** the volatile half returned "
+                        f"{gap:+.1f}% more than the quiet half, on a real "
+                        f"{spread:.1f}% separation in daily range. The edge "
+                        "lives in the movers — screen the quiet names out."]
+            else:
+                out += ["", "**Read:** the halves are within "
+                        f"{abs(gap):.1f}% of each other despite a {spread:.1f}%"
+                        " separation in daily range. Volatility does not "
+                        "explain the result, so screening on it would not "
+                        "help."]
 
     out += ["", "### Verdict", ""]
     beats = w["expectancy_R"] > p["noise_floor"] or p["tried"] == 1
