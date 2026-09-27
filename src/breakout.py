@@ -203,6 +203,11 @@ def main(argv=None) -> int:
                     help="drop symbols whose typical daily range is below "
                          "this %% of price, judged on history before the "
                          "trading window")
+    ap.add_argument("--holdout", default="auto",
+                    choices=["auto", "none", *UNIVERSES],
+                    help="which unseen list to check against. A screened run "
+                         "needs a volatile holdout - the mega-cap lists leave "
+                         "2 symbols after a 3%% screen.")
     ap.add_argument("--only", default=None,
                     help="run ONE named config - no search, no selection. For "
                          "testing an already-chosen config on fresh data.")
@@ -217,8 +222,16 @@ def main(argv=None) -> int:
     # Also, movers and research share three names (TSLA, NVDA, AMD), so the
     # holdout has to have the traded universe subtracted from it, not merely be
     # a different list.
-    candidate = [] if args.universe == "wide" else (
-        RESEARCH if args.universe == "movers" else MOVERS)
+    # --holdout picks WHICH unseen list to check against. It matters more than
+    # it looks: screening the mega-cap lists at 3% daily range leaves 2 symbols,
+    # so a screened run needs a holdout of volatile names or there is no test.
+    if args.holdout == "auto":
+        candidate = [] if args.universe == "wide" else (
+            RESEARCH if args.universe == "movers" else MOVERS)
+    elif args.holdout == "none":
+        candidate = []
+    else:
+        candidate = UNIVERSES[args.holdout]
     holdout = [s for s in candidate if s not in set(universe)]
     if len(holdout) != len(candidate):
         log.info("Holdout trimmed to %d symbols - %d were in the traded "
