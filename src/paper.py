@@ -381,13 +381,70 @@ def notify(text: str) -> None:
         log.error("Could not send the alert: %s", exc)
 
 
+def sample() -> str:
+    """A worked example of the alert, built with invented numbers.
+
+    It goes through `alert()` like any other day, so what lands in the channel
+    is the real format rather than a hand-copied imitation of it. A mock-up
+    written by hand would stop matching the code the first time the code
+    changed, and then it would be teaching the wrong thing.
+    """
+    c = {"start": "2026-09-29", "equity": 2000.0, "risk_pct": 1.0,
+         "halt_drawdown_pct": 25.0}
+    win = {"symbol": "PLTR", "entry_date": "2026-09-30",
+           "exit_date": "2026-10-06", "entry": 42.10, "stop": 38.90,
+           "exit": 46.90, "r_multiple": 1.5, "reason": "target",
+           "bars_held": 5, "target": 46.90, "shares": 6,
+           "why": "Coiled 10 days inside $38.20–$41.60 (2.1x ATR, tight), "
+                  "then closed above $41.60 on 1.8x normal volume. Daily "
+                  "range 4.3% — volatile enough to move."}
+    loss = {"symbol": "COIN", "entry_date": "2026-10-02",
+            "exit_date": "2026-10-05", "entry": 310.50, "stop": 288.30,
+            "exit": 288.30, "r_multiple": -1.0, "reason": "stop",
+            "bars_held": 3, "target": 343.80, "shares": 0,
+            "why": "Coiled 10 days inside $296.10–$308.90 (2.2x ATR, tight), "
+                   "then closed above $308.90 on 1.4x normal volume. Daily "
+                   "range 5.1% — volatile enough to move."}
+    for t in (win, loss):
+        t["pnl"] = pnl(t, c["risk_pct"])
+    live = {"symbol": "NVDA", "entry_date": "2026-10-07", "entry": 182.40,
+            "stop": 171.20, "risk_per_share": 11.20, "bars_held": 0,
+            "best_R": 0.0, "target": 199.20, "trailing": False, "shares": 1,
+            "why": "Coiled 10 days inside $168.40–$181.90 (2.4x ATR, tight), "
+                   "then closed above $181.90 on 1.6x normal volume. Daily "
+                   "range 3.6% — volatile enough to move."}
+    now = {"as_of": "2026-10-07", "settings": c, "trades": [win, loss],
+           "open": [live], "n": 2, "wins": 1, "losses": 1,
+           "win_rate_pct": 50.0, "return_pct": 0.5, "max_dd_pct": -1.0,
+           "halted": False}
+    empty = {"as_of": "", "settings": c, "trades": [], "open": [], "n": 0,
+             "wins": 0, "losses": 0, "win_rate_pct": 0.0, "return_pct": 0.0,
+             "max_dd_pct": 0.0, "halted": False}
+    banner = ("⚠️ **SAMPLE — NOT A REAL SIGNAL.** Invented numbers, sent once "
+              "so you can see the format. ⚠️\n\n")
+    return banner + alert(now, empty) + (
+        "\n\n⚠️ **END OF SAMPLE.** The first real one comes after a day the "
+        "rule actually fires. ⚠️")
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true",
                     help="print the report instead of writing it")
     ap.add_argument("--no-notify", action="store_true",
                     help="score and write, but send nothing")
+    ap.add_argument("--sample", action="store_true",
+                    help="send one worked example of the alert and exit")
     args = ap.parse_args(argv)
+
+    if args.sample:
+        text = sample()
+        print(text)
+        if not args.dry_run:
+            notify(text)
+            log.info("Sample sent.")
+        return 0
+
     before = previous()          # read before the write overwrites it
     try:
         r = score()
