@@ -77,6 +77,41 @@ def screened(data: dict, before: pd.Timestamp) -> dict:
     return keep
 
 
+def why(prepared: dict, symbol: str, entry_date: str, p: dict) -> str:
+    """Plain-language reason this trade was taken.
+
+    Read off the entry bar itself rather than written by hand, so it can never
+    describe a setup other than the one the rule actually fired on. Every
+    number here is a condition in `find_signals_bo`.
+    """
+    df = prepared.get(symbol)
+    if df is None:
+        return "—"
+    rows = df.index[df.index.astype(str).str.startswith(entry_date)]
+    if len(rows) == 0:
+        return "—"
+    bar = df.loc[rows[0]]
+    a, close = float(bar["atr"]), float(bar["close"])
+    bh, bl, bv = (float(bar["base_high"]), float(bar["base_low"]),
+                  float(bar["base_vol"]))
+    tight = (bh - bl) / a if a else 0.0
+    rvol = float(bar["volume"]) / bv if bv else 0.0
+    atr_pct = 100 * a / close if close else 0.0
+    return (f"Coiled {p['base_len']} days inside ${bl:,.2f}–${bh:,.2f} "
+            f"({tight:.1f}x ATR, tight), then closed above ${bh:,.2f} on "
+            f"{rvol:.1f}x normal volume. Daily range {atr_pct:.1f}% — "
+            "volatile enough to move.")
+
+
+def pnl(t: dict, risk_pct: float) -> dict:
+    """What the trade did, three ways: the stock's move, the account's, and R."""
+    entry, ex = float(t["entry"]), float(t.get("exit") or 0.0)
+    move = 100 * (ex - entry) / entry if entry and ex else 0.0
+    return {"move_pct": round(move, 2),
+            "account_pct": round(t["r_multiple"] * risk_pct, 2),
+            "r": t["r_multiple"]}
+
+
 def shares(entry: float, risk_per_share: float, equity: float,
            risk_pct: float) -> int:
     """Whole shares at the configured risk. Returns 0 when one share would
@@ -113,6 +148,14 @@ def score(argv=None) -> dict:
     for o in result["open"]:
         o["shares"] = shares(o["entry"], o["risk_per_share"], cfg["equity"],
                              cfg["risk_pct"])
+        o["why"] = why(prepared, o["symbol"], o["entry_date"], p)
+    for t in closed:
+        t["why"] = why(prepared, t["symbol"], t["entry_date"], p)
+        t["pnl"] = pnl(t, cfg["risk_pct"])
+        t["target"] = round(t["entry"] + max(p["target_r"], 1.5)
+                            * (t["entry"] - t["stop"]), 2)
+        t["shares"] = shares(t["entry"], t["entry"] - t["stop"],
+                             cfg["equity"], cfg["risk_pct"])
 
     dd = st.get("max_drawdown_pct", 0.0)
     return {"generated": datetime.now().strftime("%Y-%m-%d %H:%M"),
@@ -147,7 +190,7 @@ def render(r: dict) -> str:
             f"{r['win_rate_pct']}% | **{r['return_pct']:+.1f}%** |", ""]
 
     if r["n"] < 20:
-        out += [f"> {r['n']} closed trades is too few to judge. The backtest "
+        out += [f"> {r['n']} closed trade{'s' if r['n'] != 1 else ''} is too few to judge. The backtest "
                 "needed 50 or more before its numbers stopped moving around. "
                 "Read this as a record, not a verdict, until then.", ""]
 
@@ -177,6 +220,9 @@ def render(r: dict) -> str:
                        f"${o['entry']:.2f} | ${o['stop']:.2f}{trail} | "
                        f"${o['target']:.2f} | {sz} | {o['best_R']}R |")
         out.append("")
+        for o in r["open"]:
+            out.append(f"- **{o['symbol']}** — {o.get('why', '—')}")
+        out.append("")
         if any(not o["shares"] for o in r["open"]):
             out += ["> A row marked *too small* means one share would risk "
                     f"more than {c['risk_pct']:.0f}% of the account. Skip it "
@@ -184,23 +230,165 @@ def render(r: dict) -> str:
 
     if r["trades"]:
         out += ["## Closed", "",
-                "| Symbol | In | Out | Result | Why it ended |",
-                "|---|---|---|---|---|"]
+                "| Symbol | In | Out | Entry | Exit | Stock | Account | "
+                "Why it ended |",
+                "|---|---|---|---|---|---|---|---|"]
         for t in reversed(r["trades"][-25:]):
-            mark = "won" if t["r_multiple"] > 0 else "lost"
+            pl = t.get("pnl") or {}
             out.append(f"| {t['symbol']} | {t['entry_date']} | "
-                       f"{t['exit_date']} | {mark} | {t['reason']} |")
+                       f"{t['exit_date']} | ${float(t.get('entry') or 0):,.2f} "
+                       f"| ${float(t.get('exit') or 0):,.2f} | "
+                       f"{pl.get('move_pct', 0):+.2f}% | "
+                       f"**{pl.get('account_pct', 0):+.2f}%** | "
+                       f"{_plain_reason(t['reason'])} |")
         if len(r["trades"]) > 25:
             out.append("")
             out.append(f"*Showing the last 25 of {len(r['trades'])}.*")
     return "\n".join(out)
 
 
+def previous() -> dict:
+    """Yesterday's scoring, so today's message can say what actually changed."""
+    path = STATE / "paper.json"
+    if not path.exists():
+        return {}
+    try:
+        return json.loads(path.read_text())
+    except (json.JSONDecodeError, OSError) as exc:
+        log.warning("Could not read the previous run (%s)", exc)
+        return {}
+
+
+def _key(t: dict) -> tuple:
+    return (t["symbol"], t["entry_date"], t.get("exit_date", ""))
+
+
+def changes(now: dict, before: dict) -> tuple[list, list, bool]:
+    """What is new since the last run: positions opened, trades closed, and
+    whether the halt has just tripped."""
+    opened = [o for o in now["open"]
+              if _key(o) not in {_key(o2) for o2 in before.get("open", [])}]
+    closed = [t for t in now["trades"]
+              if _key(t) not in {_key(t2) for t2 in before.get("trades", [])}]
+    return opened, closed, bool(now["halted"] and not before.get("halted"))
+
+
+def alert(now: dict, before: dict) -> str | None:
+    """The message to send, or None when nothing happened.
+
+    Silence on quiet days is deliberate. A bot that pings every evening to say
+    "no trades" gets muted within a week, and then the one message that matters
+    goes unread too.
+    """
+    opened, closed, newly_halted = changes(now, before)
+    if not (opened or closed or newly_halted):
+        return None
+
+    c = now["settings"]
+    lines = [f"**TradingBot — {now['as_of']}**", ""]
+
+    if newly_halted:
+        lines += [f"🛑 **STOPPED — drawdown {now['max_dd_pct']}% passed the "
+                  f"{c['halt_drawdown_pct']}% line.** No new entries until "
+                  "this is reviewed.", ""]
+
+    for t in closed:
+        # Every field is read defensively: a message that raises would take
+        # down the whole scoring run, and the record matters more than the ping.
+        won = t["r_multiple"] > 0
+        p = t.get("pnl") or {}
+        size = t.get("shares") or 0
+        entry, ex = float(t.get("entry") or 0), float(t.get("exit") or 0)
+        cash = size * (ex - entry)
+        lines += [f"{'🟢' if won else '🔴'} **CLOSED — {t['symbol']}** "
+                  f"({'won' if won else 'lost'})",
+                  f"Entered `${entry:,.2f}` on {t['entry_date']} · "
+                  f"exited `${ex:,.2f}` on {t['exit_date']}",
+                  f"Stop was `${t.get('stop', 0):,.2f}` · target was "
+                  f"`${t.get('target', 0):,.2f}` · held "
+                  f"{t.get('bars_held', 0)} days",
+                  f"**P/L: {p.get('move_pct', 0):+.2f}% on the stock · "
+                  f"{p.get('account_pct', 0):+.2f}% of the account** "
+                  f"({p.get('r', 0):+.2f}R"
+                  + (f", ${cash:+,.2f} on {size} share"
+                     f"{'s' if size != 1 else ''}" if size else "")
+                  + ")",
+                  f"Ended on: {_plain_reason(t['reason'])}",
+                  f"_Why it was taken: {t.get('why', '—')}_", ""]
+
+    if opened and not now["halted"]:
+        for o in opened:
+            size = (f"{o['shares']} share{'s' if o['shares'] != 1 else ''}"
+                    if o["shares"] else "**0 — too small for this account**")
+            risk = o["shares"] * o["risk_per_share"]
+            gain = o["shares"] * (o["target"] - o["entry"])
+            lines += [f"🔵 **ENTRY — {o['symbol']}**",
+                      f"Price `${o['entry']:,.2f}` on {o['entry_date']}",
+                      f"Stop `${o['stop']:,.2f}` "
+                      f"({100 * (o['entry'] - o['stop']) / o['entry']:.1f}% "
+                      f"below) · target `${o['target']:,.2f}` "
+                      f"(+{100 * (o['target'] - o['entry']) / o['entry']:.1f}%)",
+                      f"Size {size}"
+                      + (f" · risking `${risk:,.2f}` to make `${gain:,.2f}`"
+                         if o["shares"] else ""),
+                      f"**Why:** {o.get('why', '—')}", ""]
+
+    lines += [f"Record so far: **{now['n']} trade"
+              f"{'s' if now['n'] != 1 else ''}, {now['wins']} won, "
+              f"{now['losses']} lost, {now['win_rate_pct']}% win, "
+              f"{now['return_pct']:+.1f}%**"]
+    if now["n"] < 20:
+        lines.append("_Too few trades to mean anything yet._")
+    lines.append("_Paper only. No orders are being placed._")
+    return "\n".join(lines)
+
+
+def _plain_reason(reason: str) -> str:
+    return {"stop": "hit the stop loss",
+            "trail": "trailing stop caught it after it had run",
+            "target": "reached the target",
+            "ema_exit": "closed below the moving average after being in profit",
+            "time": "ran out of time and was closed at the close",
+            }.get(reason, reason)
+
+
+def log_events(now: dict, opened: list, closed: list) -> None:
+    """Append every posted event to state/trade_log.jsonl, forever.
+
+    state/paper.json is rewritten on each run because the ledger is derived.
+    This file is the opposite: append-only, never rewritten, so there is a
+    permanent record of what was posted and when - which is what makes it
+    possible later to ask why the losers lost.
+    """
+    if not (opened or closed):
+        return
+    STATE.mkdir(exist_ok=True)
+    path = STATE / "trade_log.jsonl"
+    rows = ([{"event": "entry", "posted": now["as_of"], **o} for o in opened]
+            + [{"event": "exit", "posted": now["as_of"], **t} for t in closed])
+    with path.open("a", encoding="utf-8") as fh:
+        for row in rows:
+            fh.write(json.dumps(row, default=str) + "\n")
+    log.info("Logged %d event(s) to %s", len(rows), path.name)
+
+
+def notify(text: str) -> None:
+    try:
+        from .notify import Notifier
+        Notifier(load_config(), Credentials.from_env()).send(
+            text, subject="TradingBot — paper account")
+    except Exception as exc:                      # never fail the run over this
+        log.error("Could not send the alert: %s", exc)
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true",
                     help="print the report instead of writing it")
+    ap.add_argument("--no-notify", action="store_true",
+                    help="score and write, but send nothing")
     args = ap.parse_args(argv)
+    before = previous()          # read before the write overwrites it
     try:
         r = score()
     except AlpacaError as exc:
@@ -208,8 +396,11 @@ def main(argv=None) -> int:
         return 1
 
     text = render(r)
+    message = alert(r, before)
     if args.dry_run:
         print(text)
+        print("\n--- Discord message " + ("---\n" + message if message
+                                          else "--- (nothing to send)"))
         return 0
 
     REPORTS.mkdir(exist_ok=True)
@@ -220,6 +411,15 @@ def main(argv=None) -> int:
              r["n"], len(r["open"]), r["return_pct"], r["max_dd_pct"])
     if r["halted"]:
         log.error("HALTED at %.1f%% drawdown", r["max_dd_pct"])
+
+    opened, closed, _ = changes(r, before)
+    log_events(r, opened, closed)
+
+    if message and not args.no_notify:
+        notify(message)
+        log.info("Alert sent.")
+    elif not message:
+        log.info("Nothing changed today — staying quiet.")
     return 0
 
 
