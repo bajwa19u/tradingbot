@@ -780,3 +780,87 @@ def test_forensics_flags_small_samples():
                "autopsy": {}, "missed": {}, "worst": [], "best": []}
     text = render(payload)
     assert "Fewer than 30 trades" in text
+
+
+# ---------------------------------------------------------------------------
+# Expansion breakout
+# ---------------------------------------------------------------------------
+def _coil_then_break(n_coil=40, seed=3):
+    """A long quiet range, then a decisive break upward on volume."""
+    import numpy as np, pandas as pd
+    rng = np.random.default_rng(seed)
+    n = 260 + n_coil + 20
+    idx = pd.bdate_range("2024-01-02", periods=n, tz="America/New_York")
+    px = np.empty(n)
+    px[:260] = 100 + np.cumsum(rng.normal(0, 0.9, 260))        # history
+    base = px[259]
+    px[260:260 + n_coil] = base + rng.normal(0, 0.12, n_coil)  # coil, tight
+    px[260 + n_coil:] = base + 1.5 + np.arange(20) * 0.9       # expansion
+    o = np.concatenate([[px[0]], px[:-1]])
+    h = np.maximum(o, px) + 0.15
+    l = np.minimum(o, px) - 0.15
+    v = np.full(n, 1e6)
+    v[260 + n_coil] = 5e6                                       # volume surge
+    return pd.DataFrame({"open": o, "high": h, "low": l, "close": px,
+                         "volume": v}, index=idx)
+
+
+def test_breakout_fires_on_expansion_out_of_a_coil():
+    import copy
+    from src.breakout import BASE_BO, find_signals_bo, indicators_bo
+    p = copy.deepcopy(BASE_BO)
+    p.update({"base_len": 15, "touch_window": 15, "squeeze_atr": 6.0,
+              "vol_mult": 1.2, "min_atr_pct": 0.0})
+    df = indicators_bo(_coil_then_break(), p)
+    sigs = find_signals_bo(df, p)
+    assert sigs, "a coil followed by a volume break must produce a signal"
+    # and it must fire at or just after the expansion, not during the coil
+    first = df.index[sigs[0]]
+    assert first >= df.index[270], f"fired during the coil at {first}"
+
+
+def test_breakout_ignores_a_break_with_no_volume():
+    import copy
+    from src.breakout import BASE_BO, find_signals_bo, indicators_bo
+    p = copy.deepcopy(BASE_BO)
+    p.update({"base_len": 15, "touch_window": 15, "squeeze_atr": 6.0,
+              "vol_mult": 3.0, "min_atr_pct": 0.0})
+    df = _coil_then_break()
+    df["volume"] = 1e6          # flat volume everywhere - no surge
+    assert find_signals_bo(indicators_bo(df, p), p) == []
+
+
+def test_breakout_volatility_floor_excludes_quiet_stocks():
+    """The autopsy's one real finding: winners were far more volatile."""
+    import copy
+    from src.breakout import BASE_BO, find_signals_bo, indicators_bo
+    p = copy.deepcopy(BASE_BO)
+    p.update({"base_len": 15, "touch_window": 15, "squeeze_atr": 6.0,
+              "vol_mult": 1.2, "min_atr_pct": 0.0})
+    df = indicators_bo(_coil_then_break(), p)
+    loose = len(find_signals_bo(df, p))
+    p["min_atr_pct"] = 50.0      # nothing is this volatile
+    assert loose > 0 and find_signals_bo(df, p) == []
+
+
+def test_breakout_base_excludes_the_current_bar():
+    """If the breakout bar's own high counted toward the base, the level it
+    breaks would move with it and nothing would ever trigger correctly."""
+    import copy
+    from src.breakout import BASE_BO, indicators_bo
+    p = copy.deepcopy(BASE_BO)
+    df = indicators_bo(_coil_then_break(), p)
+    row = df.iloc[-1]
+    prior_high = df["high"].iloc[-1 - p["base_len"]:-1].max()
+    assert abs(float(row["base_high"]) - float(prior_high)) < 1e-9
+
+
+def test_breakout_report_respects_the_noise_floor():
+    from src.breakout import render
+    w = {"name": "x", "n": 60, "expectancy_R": 0.20, "total_R": 12.0,
+         "periods_positive": 2, "periods_scored": 3, "worst_period_R": -0.1,
+         "max_dd_pct": -10.0}
+    payload = {"universe": "movers", "symbols": 36, "start": "2026-01-01",
+               "tried": 36, "survivors": 1, "noise_floor": 0.40,
+               "results": [w], "winner": w, "holdout": None, "holdout_size": 40}
+    assert "Below the noise floor" in render(payload)
