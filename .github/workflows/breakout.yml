@@ -28,9 +28,13 @@ on:
         required: false
         default: "0"
       universe:
-        description: "movers | research | holdout | wide (all three, for the volatility split)"
+        description: "movers | research | holdout | fresh | wide"
         required: false
         default: "movers"
+      holdout:
+        description: "Unseen list to check against: auto | none | fresh | research | holdout | movers"
+        required: false
+        default: "auto"
 
 permissions:
   contents: write
@@ -57,6 +61,7 @@ jobs:
           IN_END: ${{ inputs.end }}
           IN_PERIODS: ${{ inputs.periods }}
           IN_UNI: ${{ inputs.universe }}
+          IN_HOLD: ${{ inputs.holdout }}
           IN_ONLY: ${{ inputs.only }}
           IN_SPLIT: ${{ inputs.vol_split }}
           IN_MINATR: ${{ inputs.min_atr_pct }}
@@ -64,7 +69,8 @@ jobs:
           set -uo pipefail
           mkdir -p reports
           ARGS=(--start "${IN_START:-2026-01-01}" --periods "${IN_PERIODS:-3}" \
-                --universe "${IN_UNI:-movers}")
+                --universe "${IN_UNI:-movers}"
+                --holdout "${IN_HOLD:-auto}")
           [ -n "${IN_END:-}" ] && ARGS+=(--end "${IN_END}") || true
           [ -n "${IN_ONLY:-}" ] && ARGS+=(--only "${IN_ONLY}") || true
           [ "${IN_SPLIT:-false}" = "true" ] && ARGS+=(--vol-split) || true
