@@ -16,6 +16,9 @@ on:
         description: "Market periods to score separately"
         required: false
         default: "3"
+      only:
+        description: "Run ONE named config, no search (e.g. base10_sq4.0_vol1.0_atr0.0)"
+        required: false
       universe:
         description: "movers | research | holdout"
         required: false
@@ -46,12 +49,14 @@ jobs:
           IN_END: ${{ inputs.end }}
           IN_PERIODS: ${{ inputs.periods }}
           IN_UNI: ${{ inputs.universe }}
+          IN_ONLY: ${{ inputs.only }}
         run: |
           set -uo pipefail
           mkdir -p reports
           ARGS=(--start "${IN_START:-2026-01-01}" --periods "${IN_PERIODS:-3}" \
                 --universe "${IN_UNI:-movers}")
           [ -n "${IN_END:-}" ] && ARGS+=(--end "${IN_END}") || true
+          [ -n "${IN_ONLY:-}" ] && ARGS+=(--only "${IN_ONLY}") || true
           set +e
           python -m src.breakout "${ARGS[@]}" 2>&1 | tee reports/breakout_run.log
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
