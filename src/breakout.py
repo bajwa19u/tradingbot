@@ -273,12 +273,21 @@ def main(argv=None) -> int:
 
     hold = None
     winner = survivors[0] if survivors else None
-    if winner:
+    if winner and holdout:
         log.info("Winner %s — one run on %d unseen symbols", winner["name"],
                  len(holdout))
         try:
             hd = md.daily_bars(holdout, start=fetch_from, end=args.end)
             hd = {s: d for s, d in hd.items() if len(d) > 260}
+            if args.min_atr_pct:
+                # The screen is part of the rule, so it has to apply to the
+                # unseen names too. Testing a screened universe against an
+                # unscreened holdout compares two different strategies.
+                kept = {s: d for s, d in hd.items()
+                        if median_atr_pct(d, trade_from) >= args.min_atr_pct}
+                log.info("Holdout screen >= %.1f%%: kept %d of %d",
+                         args.min_atr_pct, len(kept), len(hd))
+                hd = kept
             if hd:
                 # by_periods already reports win rate, return and drawdown from
                 # its own full-window run, so there is nothing to recompute.
