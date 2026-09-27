@@ -159,3 +159,16 @@ notifications:
   channels: [discord]           # discord | telegram | email | console
   send_heartbeat: true          # daily "bot is alive, N setups watched" message
   include_chart_levels: true
+
+# ---------------------------------------------------------------------------
+# Paper account — the forward test
+#
+# The rule itself is fixed in src/paper.py on purpose: changing it restarts the
+# forward test, which is the only measurement in this project that has not
+# been wrong. These four settings are yours to change.
+# ---------------------------------------------------------------------------
+paper:
+  start: "2026-09-29"           # day the forward test begins; do not move it
+  equity: 2000.0                # account size
+  risk_pct: 1.0                 # risked per trade, so $20 on $2,000
+  halt_drawdown_pct: 25.0       # stop trading at this drawdown until reviewed
