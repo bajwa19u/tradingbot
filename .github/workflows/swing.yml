@@ -13,6 +13,10 @@ on:
         description: "Market periods to score separately"
         required: false
         default: "4"
+      universe:
+        description: "research | holdout | movers"
+        required: false
+        default: "research"
       only:
         description: "Run ONE named config with no search (e.g. ema10_tgt3.0_trail1_stop0.3)"
         required: false
@@ -45,12 +49,13 @@ jobs:
           IN_START: ${{ inputs.start }}
           IN_PERIODS: ${{ inputs.periods }}
           IN_ONLY: ${{ inputs.only }}
+          IN_UNI: ${{ inputs.universe }}
           IN_END: ${{ inputs.end }}
         run: |
           set -uo pipefail
           mkdir -p reports
           set +e
-          ARGS=(--start "${IN_START:-2023-01-01}" --periods "${IN_PERIODS:-4}")
+          ARGS=(--start "${IN_START:-2023-01-01}" --periods "${IN_PERIODS:-4}" --universe "${IN_UNI:-research}")
           [ -n "${IN_ONLY:-}" ] && ARGS+=(--only "${IN_ONLY}") || true
           [ -n "${IN_END:-}" ] && ARGS+=(--end "${IN_END}") || true
           python -m src.swing "${ARGS[@]}" 2>&1 | tee reports/swing_run.log
