@@ -880,6 +880,31 @@ def test_breakout_report_flags_the_volatility_split():
     assert "never seen" in text
 
 
+def test_breakout_split_says_inconclusive_when_neither_half_is_volatile():
+    """A median cut only makes one half louder than the other. If the loud half
+    is still calmer than the bar the autopsy set, the split never tested the
+    idea and must not be reported as confirming it."""
+    from src.breakout import render
+    w = {"name": "x", "n": 62, "expectancy_R": 0.9, "total_R": 54.0,
+         "periods_positive": 3, "periods_scored": 3, "worst_period_R": 0.2,
+         "max_dd_pct": -8.7, "wins": 32, "losses": 30, "win_rate_pct": 51.6,
+         "return_pct": -4.2}
+    h = dict(w, n=61, wins=35, losses=26, return_pct=14.0, max_dd_pct=-9.3)
+    payload = {"universe": "holdout", "symbols": 30, "start": "2026-01-01",
+               "tried": 1, "survivors": 1, "noise_floor": 0.40,
+               "results": [w], "winner": w, "holdout": h, "holdout_size": 36,
+               "halves": {
+                   "loud":  {"symbols": 15, "median_atr_pct": 2.02, "n": 46,
+                             "wins": 24, "losses": 22, "win_rate_pct": 52.2,
+                             "return_pct": 3.6},
+                   "quiet": {"symbols": 15, "median_atr_pct": 1.65, "n": 51,
+                             "wins": 27, "losses": 24, "win_rate_pct": 52.9,
+                             "return_pct": -1.9}}}
+    text = render(payload)
+    assert "inconclusive" in text
+    assert "edge lives in the movers" not in text
+
+
 def test_breakout_trade_count_equals_wins_plus_losses():
     """The first report showed 48 trades with 32 wins and 30 losses, because
     the trade count was summed over period slices (which cut trades at each
