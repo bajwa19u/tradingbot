@@ -1,0 +1,76 @@
+name: Breakout
+
+# Expansion out of a volatility contraction - enter as a trend begins.
+# Built from the 2026 forensics finding, not from a parameter search.
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: "First date trades may be taken"
+        required: false
+        default: "2026-01-01"
+      end:
+        description: "Last date (blank = today)"
+        required: false
+      periods:
+        description: "Market periods to score separately"
+        required: false
+        default: "3"
+      universe:
+        description: "movers | research | holdout"
+        required: false
+        default: "movers"
+
+permissions:
+  contents: write
+
+jobs:
+  breakout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest tests/ -q
+      - name: Search
+        id: go
+        continue-on-error: true
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          IN_START: ${{ inputs.start }}
+          IN_END: ${{ inputs.end }}
+          IN_PERIODS: ${{ inputs.periods }}
+          IN_UNI: ${{ inputs.universe }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports
+          ARGS=(--start "${IN_START:-2026-01-01}" --periods "${IN_PERIODS:-3}" \
+                --universe "${IN_UNI:-movers}")
+          [ -n "${IN_END:-}" ] && ARGS+=(--end "${IN_END}") || true
+          set +e
+          python -m src.breakout "${ARGS[@]}" 2>&1 | tee reports/breakout_run.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name  "tradingbot"
+          git config user.email "tradingbot@users.noreply.github.com"
+          git add -A reports/ || true
+          if ! git diff --cached --quiet; then
+            git commit -m "breakout: results [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed"
+          fi
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/breakout.md ]; then cat reports/breakout.md >> "$GITHUB_STEP_SUMMARY"; else
+            { echo '```'; tail -n 40 reports/breakout_run.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"; fi
+      - name: Fail if the run failed
+        if: always()
+        run: '[ "${{ steps.go.outputs.code }}" = "0" ] || exit 1'
