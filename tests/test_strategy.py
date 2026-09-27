@@ -1052,3 +1052,121 @@ def test_paper_open_positions_come_from_the_backtest_engine():
     for o in out["open"]:
         assert o["stop"] < o["entry"] < o["target"]
         assert o["risk_per_share"] > 0
+
+
+def test_paper_stays_quiet_when_nothing_happened():
+    """A bot that pings every evening to say 'no trades' gets muted, and then
+    the message that matters goes unread too."""
+    from src.paper import alert
+    now = _paper_base(n=4, wins=2, losses=2, win_rate_pct=50.0,
+                      return_pct=1.0, max_dd_pct=-2.0,
+                      trades=[{"symbol": "PLTR", "entry_date": "2026-09-30",
+                               "exit_date": "2026-10-02", "r_multiple": 1.5,
+                               "reason": "target"}])
+    assert alert(now, now) is None
+
+
+def test_paper_alerts_on_a_new_trade_and_on_the_halt():
+    from src.paper import alert
+    closed = {"symbol": "PLTR", "entry_date": "2026-09-30",
+              "exit_date": "2026-10-02", "r_multiple": 1.5, "reason": "target"}
+    now = _paper_base(n=1, wins=1, losses=0, win_rate_pct=100.0,
+                      return_pct=1.5, max_dd_pct=0.0, trades=[closed])
+    msg = alert(now, _paper_base())
+    assert msg and "PLTR" in msg and "won" in msg
+    assert "Too few trades" in msg
+
+    halted = _paper_base(n=30, wins=9, losses=21, win_rate_pct=30.0,
+                         return_pct=-26.0, max_dd_pct=-27.4, halted=True)
+    msg = alert(halted, _paper_base(n=30, wins=9, losses=21, max_dd_pct=-20.0))
+    assert msg and "STOPPED" in msg
+    # and it does not fire the same alarm again the next day
+    assert alert(halted, halted) is None
+
+
+def test_paper_halt_suppresses_new_entries_in_the_alert_too():
+    """The report stops listing entries when halted; the message must agree,
+    or the two disagree about whether to trade."""
+    from src.paper import alert
+    op = [{"symbol": "NVDA", "entry_date": "2026-10-07", "entry": 182.4,
+           "stop": 171.2, "risk_per_share": 11.2, "bars_held": 0,
+           "best_R": 0.0, "target": 199.2, "trailing": False, "shares": 1}]
+    now = _paper_base(n=30, wins=9, losses=21, win_rate_pct=30.0,
+                      return_pct=-26.0, max_dd_pct=-27.4, halted=True, open=op)
+    msg = alert(now, _paper_base(n=30, max_dd_pct=-20.0))
+    assert msg and "STOPPED" in msg and "Opened" not in msg
+
+
+def _closed_trade(**kw):
+    t = {"symbol": "PLTR", "entry_date": "2026-09-30", "exit_date": "2026-10-06",
+         "entry": 42.10, "stop": 38.90, "exit": 46.90, "r_multiple": 1.5,
+         "reason": "target", "bars_held": 5, "target": 46.90, "shares": 6,
+         "pnl": {"move_pct": 11.40, "account_pct": 1.50, "r": 1.5},
+         "why": "Coiled 10 days inside $38.20-$41.60 (2.1x ATR, tight), then "
+                "closed above $41.60 on 1.8x normal volume."}
+    t.update(kw)
+    return t
+
+
+def _open_pos(**kw):
+    o = {"symbol": "NVDA", "entry_date": "2026-10-07", "entry": 182.40,
+         "stop": 171.20, "risk_per_share": 11.20, "bars_held": 0,
+         "best_R": 0.0, "target": 199.20, "trailing": False, "shares": 1,
+         "why": "Coiled 10 days inside $168.40-$181.90 (2.4x ATR, tight)."}
+    o.update(kw)
+    return o
+
+
+def test_paper_entry_message_carries_everything_needed_to_take_the_trade():
+    """Price, stop, target, size and the reason - the owner asked for all
+    five, and a signal without the reason cannot be reviewed later."""
+    from src.paper import alert
+    msg = alert(_paper_base(open=[_open_pos()]), _paper_base())
+    assert "ENTRY" in msg and "NVDA" in msg
+    assert "182.40" in msg          # price
+    assert "171.20" in msg          # stop
+    assert "199.20" in msg          # target
+    assert "1 share" in msg         # size
+    assert "Coiled 10 days" in msg  # reason
+
+
+def test_paper_exit_message_states_profit_or_loss_as_a_percentage():
+    from src.paper import alert
+    msg = alert(_paper_base(n=1, wins=1, losses=0, win_rate_pct=100.0,
+                            return_pct=1.5, trades=[_closed_trade()]),
+                _paper_base())
+    assert "CLOSED" in msg
+    assert "+11.40%" in msg and "on the stock" in msg
+    assert "+1.50%" in msg and "of the account" in msg
+    assert "42.10" in msg and "46.90" in msg and "38.90" in msg
+    assert "reached the target" in msg          # plain, not "target"
+    assert "Coiled 10 days" in msg              # reason repeated on exit
+    assert "1 trade," in msg                    # not "1 trades"
+
+
+def test_paper_pnl_is_computed_from_the_prices():
+    from src.paper import pnl
+    p = pnl({"entry": 100.0, "exit": 110.0, "r_multiple": 2.0}, 1.0)
+    assert p["move_pct"] == 10.0 and p["account_pct"] == 2.0
+    loss = pnl({"entry": 100.0, "exit": 95.0, "r_multiple": -1.0}, 1.0)
+    assert loss["move_pct"] == -5.0 and loss["account_pct"] == -1.0
+    assert pnl({"entry": 0.0, "exit": 0.0, "r_multiple": 0.0}, 1.0)["move_pct"] == 0.0
+
+
+def test_paper_trade_log_appends_and_never_rewrites(tmp_path, monkeypatch):
+    """paper.json is derived and rewritten every run. The log is the permanent
+    record - if a later run could truncate it, there would be nothing to
+    learn from."""
+    import json
+    import src.paper as P
+    monkeypatch.setattr(P, "STATE", tmp_path)
+    now = _paper_base(as_of="2026-10-07")
+    P.log_events(now, [_open_pos()], [])
+    P.log_events(dict(now, as_of="2026-10-08"), [], [_closed_trade()])
+    rows = [json.loads(l) for l in
+            (tmp_path / "trade_log.jsonl").read_text().splitlines()]
+    assert [r["event"] for r in rows] == ["entry", "exit"]
+    assert rows[0]["symbol"] == "NVDA" and rows[0]["posted"] == "2026-10-07"
+    assert rows[1]["pnl"]["account_pct"] == 1.50
+    P.log_events(now, [], [])                    # nothing new
+    assert len((tmp_path / "trade_log.jsonl").read_text().splitlines()) == 2
