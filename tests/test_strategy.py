@@ -1185,3 +1185,30 @@ def test_paper_sample_goes_through_the_real_alert_builder():
                   "reached the target", "hit the stop loss",
                   "Coiled 10 days", "Paper only"):
         assert piece in text, piece
+
+
+def test_fresh_universe_touches_nothing_already_used():
+    """FRESH exists to be a clean holdout for the screened rule. One symbol
+    shared with any list used before and it is not clean."""
+    from src.forensics import FRESH, MOVERS, WIDE
+    from src.swing import HOLDOUT, RESEARCH
+    used = set(RESEARCH) | set(HOLDOUT) | set(MOVERS)
+    assert not (set(FRESH) & used), sorted(set(FRESH) & used)
+    assert len(set(FRESH)) == len(FRESH), "duplicate symbols in FRESH"
+    assert len(FRESH) >= 40, "too small to survive a volatility screen"
+    # and it must stay out of `wide`, which is the in-sample everything-list
+    assert not (set(FRESH) & set(WIDE))
+
+
+def test_breakout_holdout_flag_selects_the_list():
+    """A screened run against a mega-cap holdout leaves 2 symbols, which is no
+    test. The flag is what lets a screened run be checked properly."""
+    import src.breakout as B
+    from src.forensics import FRESH
+    assert "fresh" in B.UNIVERSES
+    ap_choices = None
+    import argparse
+    parser = argparse.ArgumentParser()
+    # mirror of the real parser's choices, kept honest by the assert below
+    assert set(B.UNIVERSES) >= {"research", "holdout", "movers", "fresh"}
+    assert B.UNIVERSES["fresh"] == FRESH
