@@ -28,7 +28,7 @@ on:
         required: false
         default: "0"
       universe:
-        description: "movers | research | holdout"
+        description: "movers | research | holdout | wide (all three, for the volatility split)"
         required: false
         default: "movers"
 
