@@ -1,6 +1,6 @@
 # Expansion breakout
 
-**33 movers symbols · from 2026-01-01 · 2026-09-27 01:52**
+**33 movers symbols · from 2026-01-01 · 2026-09-27 19:42**
 
 **1 settings tried.** 1 passed.
 
@@ -14,12 +14,12 @@
 
 | | Tuned on | **Never seen** |
 |---|---|---|
-| Trades | 56 | **68** |
-| Won / lost | 32 / 24 | **37 / 31** |
-| Win rate | 57.1% | **54.4%** |
-| Profit | +14.6% | **+14.5%** |
-| Worst drop | -8.33% | **-11.55%** |
+| Trades | 56 | **6** |
+| Won / lost | 32 / 24 | **4 / 2** |
+| Win rate | 57.1% | **66.7%** |
+| Profit | +14.6% | **+5.1%** |
+| Worst drop | -8.33% | **-1.0%** |
 
 ### Verdict
 
-**Profitable on stocks it had never seen: +14.5% over 68 trades, 37 winners against 31 losers.** Paper trade it next. Do not re-tune against those stocks - they have been used.
+**Worked where it was tuned, not on unseen stocks.** The unseen number is the honest one.
