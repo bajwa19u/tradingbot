@@ -340,6 +340,8 @@ def main(argv=None) -> int:
     ap.add_argument("--end", default=None)
     ap.add_argument("--periods", type=int, default=4)
     ap.add_argument("--min-trades", type=int, default=100)
+    ap.add_argument("--universe", default="research",
+                    help="research | holdout | movers")
     ap.add_argument("--only", default=None,
                     help="run just this configuration by name - no search, no "
                          "selection. Use it to test an already-chosen config "
@@ -353,11 +355,19 @@ def main(argv=None) -> int:
     fetch_from = (trade_from - pd.Timedelta(days=500)).date().isoformat()
 
     creds = Credentials.from_env()
+    from .forensics import MOVERS, UNIVERSES
+    universe = UNIVERSES.get(args.universe, RESEARCH)
+    # Hold out a universe the search never sees. When the search itself runs
+    # on movers, the mega-cap list becomes the holdout and vice versa.
+    holdout_universe = (RESEARCH if args.universe == "movers"
+                        else MOVERS if args.universe == "research"
+                        else HOLDOUT)
     try:
         md = MarketData(creds, feed="iex")
-        log.info("Fetching daily bars for %d research symbols from %s "
-                 "(trading from %s)", len(RESEARCH), fetch_from, args.start)
-        research = md.daily_bars(RESEARCH, start=fetch_from, end=args.end)
+        log.info("Fetching daily bars for %d %s symbols from %s "
+                 "(trading from %s)", len(universe), args.universe,
+                 fetch_from, args.start)
+        research = md.daily_bars(universe, start=fetch_from, end=args.end)
     except AlpacaError as exc:
         log.error("Market data unavailable: %s", exc)
         return 1
@@ -396,9 +406,9 @@ def main(argv=None) -> int:
     winner = survivors[0] if survivors else None
     if winner:
         log.info("Winner %s — single holdout run on %d unseen symbols",
-                 winner["name"], len(HOLDOUT))
+                 winner["name"], len(holdout_universe))
         try:
-            hd = md.daily_bars(HOLDOUT, start=fetch_from, end=args.end)
+            hd = md.daily_bars(holdout_universe, start=fetch_from, end=args.end)
             hd = {s: d for s, d in hd.items() if len(d) > 250}
             if hd:
                 holdout = by_periods(hd, winner["params"], args.periods,
