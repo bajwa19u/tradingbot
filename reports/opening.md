@@ -1,7 +1,7 @@
-# Opening drive — core
+# Opening range breakout — core
 
 1-minute bars · 66 trading days (2026-06-25 to 2026-09-28) · 12 symbols
-Window 09:30–10:00 ET · levels: prior-day high/low/close and premarket high/low · hold limit 120 min · slippage 0.05% each way
+Window 09:30–10:00 ET · levels: the session's own opening range · hold limit 120 min · slippage 0.05% each way
 
 ## Does the free feed have a usable premarket?
 
@@ -17,70 +17,58 @@ Window 09:30–10:00 ET · levels: prior-day high/low/close and premarket high/l
 
 | rule | trades | win % | won | lost | profit % | avg/trade |
 |---|---|---|---|---|---|---|
-| retest/level/3.0R/pen0.5 | 182 | 34.1% | 62 | 120 | +12.5% | +0.069% |
-| retest/level/3.0R/pen0.0 | 182 | 33.5% | 61 | 121 | +8.6% | +0.047% |
-| retest/level/2.0R/pen0.5 | 182 | 39.6% | 72 | 110 | +7.7% | +0.042% |
-| drive/level/3.0R/pen0.5 | 303 | 35.6% | 108 | 195 | +4.4% | +0.015% |
-| retest/level/1.5R/pen0.5 | 182 | 45.1% | 82 | 100 | +3.0% | +0.017% |
-| retest/session/3.0R/pen0.5 | 182 | 42.9% | 78 | 104 | +3.0% | +0.016% |
-| retest/level/2.0R/pen0.0 | 182 | 39.0% | 71 | 111 | +2.4% | +0.013% |
-| retest/session/2.0R/pen0.5 | 182 | 44.0% | 80 | 102 | -1.1% | -0.006% |
-| retest/session/3.0R/pen0.0 | 182 | 41.2% | 75 | 107 | -2.5% | -0.014% |
-| retest/bar/3.0R/pen0.0 | 182 | 32.4% | 59 | 123 | -4.0% | -0.022% |
-| retest/session/1.5R/pen0.5 | 182 | 45.1% | 82 | 100 | -7.0% | -0.038% |
-| retest/level/1.5R/pen0.0 | 182 | 42.9% | 78 | 104 | -7.0% | -0.039% |
-| retest/session/2.0R/pen0.0 | 182 | 41.8% | 76 | 106 | -10.3% | -0.057% |
-| drive/session/3.0R/pen0.5 | 303 | 42.2% | 128 | 175 | -11.7% | -0.039% |
-| drive/session/3.0R/pen0.0 | 345 | 40.6% | 140 | 205 | -12.0% | -0.035% |
-| drive/level/2.0R/pen0.5 | 303 | 38.0% | 115 | 188 | -13.5% | -0.045% |
-| retest/bar/3.0R/pen0.5 | 182 | 31.3% | 57 | 125 | -13.8% | -0.076% |
-| retest/session/1.5R/pen0.0 | 182 | 42.9% | 78 | 104 | -15.1% | -0.083% |
-| drive/session/2.0R/pen0.5 | 303 | 43.2% | 131 | 172 | -21.1% | -0.070% |
-| drive/session/2.0R/pen0.0 | 345 | 42.0% | 145 | 200 | -22.6% | -0.066% |
-| drive/session/1.5R/pen0.5 | 303 | 43.9% | 133 | 170 | -27.3% | -0.090% |
-| retest/bar/2.0R/pen0.0 | 182 | 34.1% | 62 | 120 | -28.3% | -0.156% |
-| retest/bar/2.0R/pen0.5 | 182 | 35.2% | 64 | 118 | -28.6% | -0.157% |
-| drive/session/1.5R/pen0.0 | 345 | 42.9% | 148 | 197 | -30.4% | -0.088% |
-| drive/level/3.0R/pen0.0 | 345 | 30.1% | 104 | 241 | -34.1% | -0.099% |
-| retest/bar/1.5R/pen0.0 | 182 | 37.4% | 68 | 114 | -34.2% | -0.188% |
-| drive/level/1.5R/pen0.5 | 303 | 39.9% | 121 | 182 | -35.1% | -0.116% |
-| drive/level/2.0R/pen0.0 | 345 | 34.5% | 119 | 226 | -39.2% | -0.114% |
-| retest/bar/1.5R/pen0.5 | 182 | 37.9% | 69 | 113 | -42.2% | -0.232% |
-| drive/bar/3.0R/pen0.0 | 345 | 30.1% | 104 | 241 | -56.4% | -0.164% |
-| drive/level/1.5R/pen0.0 | 345 | 37.7% | 130 | 215 | -61.0% | -0.177% |
-| drive/bar/3.0R/pen0.5 | 303 | 27.7% | 84 | 219 | -79.2% | -0.261% |
-| drive/bar/1.5R/pen0.5 | 303 | 34.7% | 105 | 198 | -83.9% | -0.277% |
-| drive/bar/1.5R/pen0.0 | 345 | 35.7% | 123 | 222 | -86.3% | -0.250% |
-| drive/bar/2.0R/pen0.0 | 345 | 31.9% | 110 | 235 | -89.0% | -0.258% |
-| drive/bar/2.0R/pen0.5 | 303 | 29.4% | 89 | 214 | -100.9% | -0.333% |
+| drive/level/3.0R/OR15m | 320 | 30.9% | 99 | 221 | +4.1% | +0.013% |
+| retest/session/2.0R/OR15m | 123 | 48.8% | 60 | 63 | +3.1% | +0.025% |
+| retest/session/3.0R/OR15m | 123 | 48.8% | 60 | 63 | +2.3% | +0.019% |
+| retest/session/1.5R/OR15m | 123 | 48.8% | 60 | 63 | +1.2% | +0.010% |
+| retest/level/3.0R/OR15m | 123 | 31.7% | 39 | 84 | +0.7% | +0.006% |
+| drive/session/3.0R/OR5m | 450 | 46.2% | 208 | 242 | -1.1% | -0.002% |
+| drive/session/2.0R/OR5m | 450 | 46.2% | 208 | 242 | -4.5% | -0.010% |
+| retest/session/2.0R/OR5m | 199 | 43.7% | 87 | 112 | -4.7% | -0.024% |
+| retest/session/3.0R/OR5m | 199 | 43.7% | 87 | 112 | -4.7% | -0.024% |
+| retest/session/1.5R/OR5m | 199 | 43.7% | 87 | 112 | -5.7% | -0.029% |
+| retest/level/2.0R/OR15m | 123 | 35.8% | 44 | 79 | -9.8% | -0.080% |
+| drive/session/1.5R/OR5m | 450 | 46.4% | 209 | 241 | -11.7% | -0.026% |
+| drive/session/2.0R/OR15m | 320 | 44.1% | 141 | 179 | -12.4% | -0.039% |
+| drive/session/1.5R/OR15m | 320 | 44.1% | 141 | 179 | -14.4% | -0.045% |
+| drive/session/3.0R/OR15m | 320 | 44.1% | 141 | 179 | -16.1% | -0.050% |
+| retest/level/1.5R/OR15m | 123 | 39.0% | 48 | 75 | -17.0% | -0.138% |
+| retest/level/3.0R/OR5m | 199 | 26.6% | 53 | 146 | -25.3% | -0.127% |
+| retest/level/2.0R/OR5m | 199 | 31.2% | 62 | 137 | -32.9% | -0.165% |
+| drive/level/2.0R/OR15m | 320 | 33.8% | 108 | 212 | -37.5% | -0.117% |
+| retest/level/1.5R/OR5m | 199 | 35.7% | 71 | 128 | -40.4% | -0.203% |
+| drive/level/3.0R/OR5m | 450 | 28.9% | 130 | 320 | -46.5% | -0.103% |
+| drive/level/1.5R/OR15m | 320 | 38.1% | 122 | 198 | -49.7% | -0.155% |
+| drive/level/2.0R/OR5m | 450 | 33.6% | 151 | 299 | -62.5% | -0.139% |
+| drive/level/1.5R/OR5m | 450 | 38.0% | 171 | 279 | -72.8% | -0.162% |
 
 ## The best one, then the same rule on dates it never saw
 
-**retest/level/3.0R/pen0.5**
+**drive/level/3.0R/OR15m**
 
 | rule | trades | win % | won | lost | profit % | avg/trade |
 |---|---|---|---|---|---|---|
-| explore | 182 | 34.1% | 62 | 120 | +12.5% | +0.069% |
-| holdout (unseen) | 87 | 26.4% | 23 | 64 | -18.2% | -0.209% |
+| explore | 320 | 30.9% | 99 | 221 | +4.1% | +0.013% |
+| holdout (unseen) | 133 | 27.1% | 36 | 97 | -30.4% | -0.229% |
 
 - break-even win rate at 3.0R: **25.0%**
-- best-of-36 noise floor on the explore split: **±8.59%** win rate
+- best-of-24 noise floor on the explore split: **±6.1%** win rate
 
 ## Verdict
 
 - **The best explore configuration loses money on unseen dates.** That is the signature of a fitted result, and it is the same thing every configuration search in this project has produced. Do not deploy it.
+- The explore edge (30.9% versus 25.0% break-even) is inside the ±6.1% band that searching 24 configurations produces on random data.
 
 ## By level — which price actually matters
 
 | rule | trades | win % | won | lost | profit % | avg/trade |
 |---|---|---|---|---|---|---|
-| pdh | 74 | 31.1% | 23 | 51 | -3.5% | -0.047% |
-| pdl | 72 | 25.0% | 18 | 54 | -12.3% | -0.171% |
-| pdc | 123 | 35.8% | 44 | 79 | +10.2% | +0.083% |
+| orh | 234 | 28.2% | 66 | 168 | -32.0% | -0.137% |
+| orl | 219 | 31.5% | 69 | 150 | +5.7% | +0.026% |
 
 ## By side
 
 | rule | trades | win % | won | lost | profit % | avg/trade |
 |---|---|---|---|---|---|---|
-| short | 141 | 29.8% | 42 | 99 | -5.8% | -0.041% |
-| long | 128 | 33.6% | 43 | 85 | +0.1% | +0.001% |
+| short | 219 | 31.5% | 69 | 150 | +5.7% | +0.026% |
+| long | 234 | 28.2% | 66 | 168 | -32.0% | -0.137% |
