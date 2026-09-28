@@ -58,6 +58,7 @@ BASE_BO = {
     "squeeze_atr": 2.5,      # base range must be tighter than this x ATR
     "vol_mult": 1.3,         # breakout volume vs the base average
     "min_atr_pct": 4.0,      # volatility floor, from the autopsy
+    "entry_style": "close",  # "close" = the tested rule; "level" = intraday
     "require_above_slow": False,   # deliberately OFF - the evidence says the
                                    # EMA stack was blocking the real moves
     # exits / sizing, reused from the swing engine
@@ -96,7 +97,14 @@ def find_signals_bo(df: pd.DataFrame, p: dict) -> list[int]:
 
     volatile = (100 * a / close) >= p["min_atr_pct"]
     coiled = (bh - bl) <= p["squeeze_atr"] * a
-    broke = (close > bh) & (close > df["open"])
+    if p.get("entry_style") == "level":
+        # Intraday entry: the level was crossed at some point during the day,
+        # whether or not it held to the close. This deliberately includes the
+        # days the close-based rule rejects - failed breakouts - because
+        # whether those sink it is the entire question.
+        broke = df["high"] > bh
+    else:
+        broke = (close > bh) & (close > df["open"])
     pushed = vol >= p["vol_mult"] * bv
     ok = volatile & coiled & broke & pushed & a.notna() & bh.notna()
     if p.get("require_above_slow"):
@@ -203,6 +211,11 @@ def main(argv=None) -> int:
                     help="drop symbols whose typical daily range is below "
                          "this %% of price, judged on history before the "
                          "trading window")
+    ap.add_argument("--entry-style", default="close",
+                    choices=["close", "level"],
+                    help="close = buy the closing price (the tested rule); "
+                         "level = buy the moment price crosses the breakout "
+                         "level intraday")
     ap.add_argument("--holdout", default="auto",
                     choices=["auto", "none", *UNIVERSES],
                     help="which unseen list to check against. A screened run "
@@ -268,6 +281,10 @@ def main(argv=None) -> int:
             log.error("No config named %s. Available: %s", args.only,
                       ", ".join(n for n, _ in grid_bo()))
             return 1
+    if args.entry_style != "close":
+        configs = [(n, {**q, "entry_style": args.entry_style})
+                   for n, q in configs]
+        log.info("Entry style: %s", args.entry_style)
         log.info("Single-config validation run (no search): %s", args.only)
     log.info("Scoring %d breakout configurations", len(configs))
     results = []
