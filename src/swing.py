@@ -216,11 +216,12 @@ def run_portfolio(prepared: dict[str, pd.DataFrame], p: dict,
             # or the open when the day gapped straight past it. The gap case
             # matters: pretending a gapped-away level was filled is the most
             # common way an intraday backtest flatters itself.
+            slip = 1 + p.get("entry_slippage_pct", 0.05) / 100.0
             if p.get("entry_style") == "level" and "base_high" in d.columns:
                 level = float(bar["base_high"])
-                entry = max(level, float(bar["open"])) * 1.0005
+                entry = max(level, float(bar["open"])) * slip
             else:
-                entry = float(bar["close"]) * 1.0005
+                entry = float(bar["close"]) * slip
             stop = pullback_low - float(bar["atr"]) * p["stop_atr"]
             rps = entry - stop
             if rps <= 0 or rps / entry > 0.25:
