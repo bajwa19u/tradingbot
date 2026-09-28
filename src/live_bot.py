@@ -145,6 +145,11 @@ def scan(cfg: dict) -> tuple[list[dict], str, bool]:
     return trades, stamp, closed_for_day
 
 
+def money(x: float) -> str:
+    """-$15.00, not $-15.00. The sign belongs in front of the number."""
+    return f"{'-' if x < 0 else '+'}${abs(x):,.2f}"
+
+
 LEVEL_LABEL = {"pmh": "premarket high", "pml": "premarket low",
                "pdh": "yesterday's high", "pdl": "yesterday's low",
                "pdc": "yesterday's close"}
@@ -216,7 +221,7 @@ def close_msg(t: dict) -> str:
     return (f"{'✅' if won else '❌'} **CLOSED {t['symbol']}**  ·  "
             f"{t['exit_time']} ET\n"
             f"Exit `${t['exit']:,.2f}` — {why}\n"
-            f"**{t['pct']:+.2f}%**  (${(t.get('cash') or 0):+,.2f})")
+            f"**{t['pct']:+.2f}%**  ({money(t.get('cash') or 0)})")
 
 
 def summary_msg(trades: list[dict], date: str) -> str:
@@ -231,7 +236,7 @@ def summary_msg(trades: list[dict], date: str) -> str:
              f"**{len(done)} trade{'s' if len(done) != 1 else ''} · "
              f"{won} won, {len(done) - won} lost · "
              f"{100 * won / len(done):.0f}% win rate**",
-             f"**{pct:+.2f}%  (${cash:+,.2f})**", ""]
+             f"**{pct:+.2f}%  ({money(cash)})**", ""]
     for t in done:
         lines.append(f"{'✅' if (t['pct'] or 0) > 0 else '❌'} {t['symbol']} "
                      f"{t['entry_time']}→{t['exit_time']}  {t['pct']:+.2f}%")
@@ -270,12 +275,15 @@ def all_trades(cfg: dict, now: pd.Timestamp) -> tuple[list[dict], str, bool]:
     not take the retest rule off the air, and the reverse.
     """
     trades, stamp, day_done = [], "—", False
-    try:
-        trades, stamp, day_done = scan(cfg)
-    except AlpacaError as exc:
-        log.error("Retest scan failed: %s", exc)
-    except Exception as exc:                                   # noqa: BLE001
-        log.exception("Retest scan blew up: %s", exc)
+    # Before 09:45 the retest rule cannot fire by its own definition, so
+    # fetching five-minute bars for it every forty-five seconds is pure waste.
+    if now.time() >= pd.Timestamp(OPEN_T).time():
+        try:
+            trades, stamp, day_done = scan(cfg)
+        except AlpacaError as exc:
+            log.error("Retest scan failed: %s", exc)
+        except Exception as exc:                               # noqa: BLE001
+            log.exception("Retest scan blew up: %s", exc)
     try:
         trades += opening_scan(cfg, now)
     except AlpacaError as exc:
