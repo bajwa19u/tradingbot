@@ -1,0 +1,668 @@
+2026-09-28 22:25:40,015 INFO Polling every 60s until 23:59 ET
+2026-09-28 22:25:41,653 INFO 18:25:40 ET · bars through 15:55 · 24 trade(s) today · 39 new message(s)
+
+👀 **WATCHING · SHORT AMD**  ·  09:35 ET
+Entry `$618.07`
+🛑 SL `$628.92`
+🎯 TP `$596.38`
+_broke the opening-range low $621.01 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED AMD closed**  ·  10:52 ET
+Exit `$596.68` — hit target
+**+1.97%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT META**  ·  09:36 ET
+Entry `$723.20`
+🛑 SL `$749.73`
+🎯 TP `$670.15`
+_broke the opening-range low $725.91 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED META closed**  ·  11:36 ET
+Exit `$721.46` — closed on the hold limit
+**+0.07%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT AVGO**  ·  09:38 ET
+Entry `$352.01`
+🛑 SL `$355.86`
+🎯 TP `$344.32`
+_broke the opening-range low $352.25 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED AVGO closed**  ·  11:38 ET
+Exit `$350.59` — closed on the hold limit
+**+0.37%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT TSLA**  ·  09:40 ET
+Entry `$364.51`
+🛑 SL `$369.62`
+🎯 TP `$354.29`
+_broke the opening-range low $364.92 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED TSLA closed**  ·  11:40 ET
+Exit `$360.04` — closed on the hold limit
+**+0.88%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT MU**  ·  09:43 ET
+Entry `$1,063.71`
+🛑 SL `$1,084.44`
+🎯 TP `$1,022.25`
+_broke the opening-range low $1,064.37 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED MU closed**  ·  11:43 ET
+Exit `$1,039.19` — closed on the hold limit
+**+1.18%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT SMCI**  ·  09:46 ET
+Entry `$42.26`
+🛑 SL `$43.06`
+🎯 TP `$40.67`
+_broke the opening-range low $42.30 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED SMCI closed**  ·  11:46 ET
+Exit `$41.52` — closed on the hold limit
+**+0.93%** _(tracking only — no position was taken)_
+
+🔻 **SHORT GOOGL**  ·  11:45 ET
+Entry `$339.91`
+🛑 SL `$340.98`
+🎯 TP `$337.78`
+18 shares · risking `$19.19`
+
+❌ **CLOSED GOOGL**  ·  12:25 ET
+Exit `$340.98` — hit stop
+**-1.00%**  (-$19.19)
+
+🔻 **SHORT AMZN**  ·  14:25 ET
+Entry `$246.79`
+🛑 SL `$247.15`
+🎯 TP `$246.07`
+55 shares · risking `$19.70`
+
+✅ **CLOSED AMZN**  ·  15:00 ET
+Exit `$246.07` — hit target
+**+2.00%**  (+$39.40)
+
+🔻 **SHORT AMZN**  ·  14:35 ET
+Entry `$246.75`
+🛑 SL `$247.06`
+🎯 TP `$246.12`
+63 shares · risking `$19.71`
+
+✅ **CLOSED AMZN**  ·  15:00 ET
+Exit `$246.12` — hit target
+**+2.00%**  (+$39.42)
+
+🔻 **SHORT MU**  ·  14:45 ET
+Entry `$1,053.62`
+🛑 SL `$1,056.24`
+🎯 TP `$1,048.37`
+7 shares · risking `$18.37`
+
+❌ **CLOSED MU**  ·  14:55 ET
+Exit `$1,056.24` — hit stop
+**-1.00%**  (-$18.37)
+
+🔻 **SHORT META**  ·  15:05 ET
+Entry `$718.88`
+🛑 SL `$722.47`
+🎯 TP `$711.71`
+5 shares · risking `$17.93`
+
+✅ **CLOSED META**  ·  15:55 ET
+Exit `$715.54` — closed at the bell
+**+0.93%**  (+$16.70)
+
+🔻 **SHORT MSFT**  ·  15:05 ET
+Entry `$510.45`
+🛑 SL `$511.43`
+🎯 TP `$508.49`
+20 shares · risking `$19.56`
+
+✅ **CLOSED MSFT**  ·  15:55 ET
+Exit `$509.36` — closed at the bell
+**+1.11%**  (+$21.80)
+
+🔻 **SHORT AVGO**  ·  15:10 ET
+Entry `$350.17`
+🛑 SL `$351.03`
+🎯 TP `$348.44`
+23 shares · risking `$19.89`
+
+✅ **CLOSED AVGO**  ·  15:55 ET
+Exit `$349.70` — closed at the bell
+**+0.54%**  (+$10.70)
+
+🔻 **SHORT META**  ·  15:15 ET
+Entry `$718.27`
+🛑 SL `$720.44`
+🎯 TP `$713.94`
+9 shares · risking `$19.49`
+
+✅ **CLOSED META**  ·  15:55 ET
+Exit `$713.94` — hit target
+**+2.00%**  (+$38.97)
+
+🔻 **SHORT PLTR**  ·  15:15 ET
+Entry `$187.81`
+🛑 SL `$188.26`
+🎯 TP `$186.90`
+44 shares · risking `$19.85`
+
+❌ **CLOSED PLTR**  ·  15:30 ET
+Exit `$188.26` — hit stop
+**-1.00%**  (-$19.85)
+
+🔻 **SHORT MSFT**  ·  15:25 ET
+Entry `$510.64`
+🛑 SL `$511.30`
+🎯 TP `$509.31`
+30 shares · risking `$19.89`
+
+✅ **CLOSED MSFT**  ·  15:35 ET
+Exit `$509.31` — hit target
+**+2.00%**  (+$39.77)
+
+🔻 **SHORT AVGO**  ·  15:30 ET
+Entry `$349.95`
+🛑 SL `$350.64`
+🎯 TP `$348.59`
+29 shares · risking `$19.85`
+
+✅ **CLOSED AVGO**  ·  15:55 ET
+Exit `$349.70` — closed at the bell
+**+0.37%**  (+$7.39)
+
+🔻 **SHORT AMZN**  ·  15:35 ET
+Entry `$246.16`
+🛑 SL `$246.86`
+🎯 TP `$244.76`
+28 shares · risking `$19.65`
+
+❌ **CLOSED AMZN**  ·  15:55 ET
+Exit `$246.33` — closed at the bell
+**-0.24%**  (-$4.76)
+
+🔻 **SHORT AMZN**  ·  15:35 ET
+Entry `$246.16`
+🛑 SL `$246.76`
+🎯 TP `$244.96`
+33 shares · risking `$19.74`
+
+❌ **CLOSED AMZN**  ·  15:55 ET
+Exit `$246.33` — closed at the bell
+**-0.28%**  (-$5.61)
+
+📊 **Monday 28 September**
+
+**Traded**
+**13 trades · 8 won, 5 lost · 62% win rate**
+**+7.43%**  (+$146.37)
+❌ GOOGL 11:45→12:25  -1.00%
+✅ AMZN 14:25→15:00  +2.00%
+✅ AMZN 14:35→15:00  +2.00%
+❌ MU 14:45→14:55  -1.00%
+✅ META 15:05→15:55  +0.93%
+✅ MSFT 15:05→15:55  +1.11%
+✅ AVGO 15:10→15:55  +0.54%
+✅ META 15:15→15:55  +2.00%
+❌ PLTR 15:15→15:30  -1.00%
+✅ MSFT 15:25→15:35  +2.00%
+✅ AVGO 15:30→15:55  +0.37%
+❌ AMZN 15:35→15:55  -0.24%
+❌ AMZN 15:35→15:55  -0.28%
+
+**Watched** _(opening range · no positions)_
+**6 trades · 6 won, 0 lost · 100% win rate**
+**+5.40%**
+🟢 AMD 09:35→10:52  +1.97%
+🟢 META 09:36→11:36  +0.07%
+🟢 AVGO 09:38→11:38  +0.37%
+🟢 TSLA 09:40→11:40  +0.88%
+🟢 MU 09:43→11:43  +1.18%
+🟢 SMCI 09:46→11:46  +0.93%
+
+_Paper only. No orders were placed._
+2026-09-28 22:26:43,355 INFO 18:26:41 ET · bars through 15:55 · 24 trade(s) today · 39 new message(s)
+
+👀 **WATCHING · SHORT AMD**  ·  09:35 ET
+Entry `$618.07`
+🛑 SL `$628.92`
+🎯 TP `$596.38`
+_broke the opening-range low $621.01 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED AMD closed**  ·  10:52 ET
+Exit `$596.68` — hit target
+**+1.97%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT META**  ·  09:36 ET
+Entry `$723.20`
+🛑 SL `$749.73`
+🎯 TP `$670.15`
+_broke the opening-range low $725.91 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED META closed**  ·  11:36 ET
+Exit `$721.46` — closed on the hold limit
+**+0.07%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT AVGO**  ·  09:38 ET
+Entry `$352.01`
+🛑 SL `$355.86`
+🎯 TP `$344.32`
+_broke the opening-range low $352.25 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED AVGO closed**  ·  11:38 ET
+Exit `$350.59` — closed on the hold limit
+**+0.37%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT TSLA**  ·  09:40 ET
+Entry `$364.51`
+🛑 SL `$369.62`
+🎯 TP `$354.29`
+_broke the opening-range low $364.92 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED TSLA closed**  ·  11:40 ET
+Exit `$360.04` — closed on the hold limit
+**+0.88%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT MU**  ·  09:43 ET
+Entry `$1,063.71`
+🛑 SL `$1,084.44`
+🎯 TP `$1,022.25`
+_broke the opening-range low $1,064.37 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED MU closed**  ·  11:43 ET
+Exit `$1,039.19` — closed on the hold limit
+**+1.18%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT SMCI**  ·  09:46 ET
+Entry `$42.26`
+🛑 SL `$43.06`
+🎯 TP `$40.67`
+_broke the opening-range low $42.30 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED SMCI closed**  ·  11:46 ET
+Exit `$41.52` — closed on the hold limit
+**+0.93%** _(tracking only — no position was taken)_
+
+🔻 **SHORT GOOGL**  ·  11:45 ET
+Entry `$339.91`
+🛑 SL `$340.98`
+🎯 TP `$337.78`
+18 shares · risking `$19.19`
+
+❌ **CLOSED GOOGL**  ·  12:25 ET
+Exit `$340.98` — hit stop
+**-1.00%**  (-$19.19)
+
+🔻 **SHORT AMZN**  ·  14:25 ET
+Entry `$246.79`
+🛑 SL `$247.15`
+🎯 TP `$246.07`
+55 shares · risking `$19.70`
+
+✅ **CLOSED AMZN**  ·  15:00 ET
+Exit `$246.07` — hit target
+**+2.00%**  (+$39.40)
+
+🔻 **SHORT AMZN**  ·  14:35 ET
+Entry `$246.75`
+🛑 SL `$247.06`
+🎯 TP `$246.12`
+63 shares · risking `$19.71`
+
+✅ **CLOSED AMZN**  ·  15:00 ET
+Exit `$246.12` — hit target
+**+2.00%**  (+$39.42)
+
+🔻 **SHORT MU**  ·  14:45 ET
+Entry `$1,053.62`
+🛑 SL `$1,056.24`
+🎯 TP `$1,048.37`
+7 shares · risking `$18.37`
+
+❌ **CLOSED MU**  ·  14:55 ET
+Exit `$1,056.24` — hit stop
+**-1.00%**  (-$18.37)
+
+🔻 **SHORT META**  ·  15:05 ET
+Entry `$718.88`
+🛑 SL `$722.47`
+🎯 TP `$711.71`
+5 shares · risking `$17.93`
+
+✅ **CLOSED META**  ·  15:55 ET
+Exit `$715.54` — closed at the bell
+**+0.93%**  (+$16.70)
+
+🔻 **SHORT MSFT**  ·  15:05 ET
+Entry `$510.45`
+🛑 SL `$511.43`
+🎯 TP `$508.49`
+20 shares · risking `$19.56`
+
+✅ **CLOSED MSFT**  ·  15:55 ET
+Exit `$509.36` — closed at the bell
+**+1.11%**  (+$21.80)
+
+🔻 **SHORT AVGO**  ·  15:10 ET
+Entry `$350.17`
+🛑 SL `$351.03`
+🎯 TP `$348.44`
+23 shares · risking `$19.89`
+
+✅ **CLOSED AVGO**  ·  15:55 ET
+Exit `$349.70` — closed at the bell
+**+0.54%**  (+$10.70)
+
+🔻 **SHORT META**  ·  15:15 ET
+Entry `$718.27`
+🛑 SL `$720.44`
+🎯 TP `$713.94`
+9 shares · risking `$19.49`
+
+✅ **CLOSED META**  ·  15:55 ET
+Exit `$713.94` — hit target
+**+2.00%**  (+$38.97)
+
+🔻 **SHORT PLTR**  ·  15:15 ET
+Entry `$187.81`
+🛑 SL `$188.26`
+🎯 TP `$186.90`
+44 shares · risking `$19.85`
+
+❌ **CLOSED PLTR**  ·  15:30 ET
+Exit `$188.26` — hit stop
+**-1.00%**  (-$19.85)
+
+🔻 **SHORT MSFT**  ·  15:25 ET
+Entry `$510.64`
+🛑 SL `$511.30`
+🎯 TP `$509.31`
+30 shares · risking `$19.89`
+
+✅ **CLOSED MSFT**  ·  15:35 ET
+Exit `$509.31` — hit target
+**+2.00%**  (+$39.77)
+
+🔻 **SHORT AVGO**  ·  15:30 ET
+Entry `$349.95`
+🛑 SL `$350.64`
+🎯 TP `$348.59`
+29 shares · risking `$19.85`
+
+✅ **CLOSED AVGO**  ·  15:55 ET
+Exit `$349.70` — closed at the bell
+**+0.37%**  (+$7.39)
+
+🔻 **SHORT AMZN**  ·  15:35 ET
+Entry `$246.16`
+🛑 SL `$246.86`
+🎯 TP `$244.76`
+28 shares · risking `$19.65`
+
+❌ **CLOSED AMZN**  ·  15:55 ET
+Exit `$246.33` — closed at the bell
+**-0.24%**  (-$4.76)
+
+🔻 **SHORT AMZN**  ·  15:35 ET
+Entry `$246.16`
+🛑 SL `$246.76`
+🎯 TP `$244.96`
+33 shares · risking `$19.74`
+
+❌ **CLOSED AMZN**  ·  15:55 ET
+Exit `$246.33` — closed at the bell
+**-0.28%**  (-$5.61)
+
+📊 **Monday 28 September**
+
+**Traded**
+**13 trades · 8 won, 5 lost · 62% win rate**
+**+7.43%**  (+$146.37)
+❌ GOOGL 11:45→12:25  -1.00%
+✅ AMZN 14:25→15:00  +2.00%
+✅ AMZN 14:35→15:00  +2.00%
+❌ MU 14:45→14:55  -1.00%
+✅ META 15:05→15:55  +0.93%
+✅ MSFT 15:05→15:55  +1.11%
+✅ AVGO 15:10→15:55  +0.54%
+✅ META 15:15→15:55  +2.00%
+❌ PLTR 15:15→15:30  -1.00%
+✅ MSFT 15:25→15:35  +2.00%
+✅ AVGO 15:30→15:55  +0.37%
+❌ AMZN 15:35→15:55  -0.24%
+❌ AMZN 15:35→15:55  -0.28%
+
+**Watched** _(opening range · no positions)_
+**6 trades · 6 won, 0 lost · 100% win rate**
+**+5.40%**
+🟢 AMD 09:35→10:52  +1.97%
+🟢 META 09:36→11:36  +0.07%
+🟢 AVGO 09:38→11:38  +0.37%
+🟢 TSLA 09:40→11:40  +0.88%
+🟢 MU 09:43→11:43  +1.18%
+🟢 SMCI 09:46→11:46  +0.93%
+
+_Paper only. No orders were placed._
+2026-09-28 22:27:44,895 INFO 18:27:43 ET · bars through 15:55 · 24 trade(s) today · 39 new message(s)
+
+👀 **WATCHING · SHORT AMD**  ·  09:35 ET
+Entry `$618.07`
+🛑 SL `$628.92`
+🎯 TP `$596.38`
+_broke the opening-range low $621.01 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED AMD closed**  ·  10:52 ET
+Exit `$596.68` — hit target
+**+1.97%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT META**  ·  09:36 ET
+Entry `$723.20`
+🛑 SL `$749.73`
+🎯 TP `$670.15`
+_broke the opening-range low $725.91 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED META closed**  ·  11:36 ET
+Exit `$721.46` — closed on the hold limit
+**+0.07%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT AVGO**  ·  09:38 ET
+Entry `$352.01`
+🛑 SL `$355.86`
+🎯 TP `$344.32`
+_broke the opening-range low $352.25 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED AVGO closed**  ·  11:38 ET
+Exit `$350.59` — closed on the hold limit
+**+0.37%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT TSLA**  ·  09:40 ET
+Entry `$364.51`
+🛑 SL `$369.62`
+🎯 TP `$354.29`
+_broke the opening-range low $364.92 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED TSLA closed**  ·  11:40 ET
+Exit `$360.04` — closed on the hold limit
+**+0.88%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT MU**  ·  09:43 ET
+Entry `$1,063.71`
+🛑 SL `$1,084.44`
+🎯 TP `$1,022.25`
+_broke the opening-range low $1,064.37 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED MU closed**  ·  11:43 ET
+Exit `$1,039.19` — closed on the hold limit
+**+1.18%** _(tracking only — no position was taken)_
+
+👀 **WATCHING · SHORT SMCI**  ·  09:46 ET
+Entry `$42.26`
+🛑 SL `$43.06`
+🎯 TP `$40.67`
+_broke the opening-range low $42.30 · tracking only, this rule has not passed a holdout test — no position_
+
+🟢 **WATCHED SMCI closed**  ·  11:46 ET
+Exit `$41.52` — closed on the hold limit
+**+0.93%** _(tracking only — no position was taken)_
+
+🔻 **SHORT GOOGL**  ·  11:45 ET
+Entry `$339.91`
+🛑 SL `$340.98`
+🎯 TP `$337.78`
+18 shares · risking `$19.19`
+
+❌ **CLOSED GOOGL**  ·  12:25 ET
+Exit `$340.98` — hit stop
+**-1.00%**  (-$19.19)
+
+🔻 **SHORT AMZN**  ·  14:25 ET
+Entry `$246.79`
+🛑 SL `$247.15`
+🎯 TP `$246.07`
+55 shares · risking `$19.70`
+
+✅ **CLOSED AMZN**  ·  15:00 ET
+Exit `$246.07` — hit target
+**+2.00%**  (+$39.40)
+
+🔻 **SHORT AMZN**  ·  14:35 ET
+Entry `$246.75`
+🛑 SL `$247.06`
+🎯 TP `$246.12`
+63 shares · risking `$19.71`
+
+✅ **CLOSED AMZN**  ·  15:00 ET
+Exit `$246.12` — hit target
+**+2.00%**  (+$39.42)
+
+🔻 **SHORT MU**  ·  14:45 ET
+Entry `$1,053.62`
+🛑 SL `$1,056.24`
+🎯 TP `$1,048.37`
+7 shares · risking `$18.37`
+
+❌ **CLOSED MU**  ·  14:55 ET
+Exit `$1,056.24` — hit stop
+**-1.00%**  (-$18.37)
+
+🔻 **SHORT META**  ·  15:05 ET
+Entry `$718.88`
+🛑 SL `$722.47`
+🎯 TP `$711.71`
+5 shares · risking `$17.93`
+
+✅ **CLOSED META**  ·  15:55 ET
+Exit `$715.54` — closed at the bell
+**+0.93%**  (+$16.70)
+
+🔻 **SHORT MSFT**  ·  15:05 ET
+Entry `$510.45`
+🛑 SL `$511.43`
+🎯 TP `$508.49`
+20 shares · risking `$19.56`
+
+✅ **CLOSED MSFT**  ·  15:55 ET
+Exit `$509.36` — closed at the bell
+**+1.11%**  (+$21.80)
+
+🔻 **SHORT AVGO**  ·  15:10 ET
+Entry `$350.17`
+🛑 SL `$351.03`
+🎯 TP `$348.44`
+23 shares · risking `$19.89`
+
+✅ **CLOSED AVGO**  ·  15:55 ET
+Exit `$349.70` — closed at the bell
+**+0.54%**  (+$10.70)
+
+🔻 **SHORT META**  ·  15:15 ET
+Entry `$718.27`
+🛑 SL `$720.44`
+🎯 TP `$713.94`
+9 shares · risking `$19.49`
+
+✅ **CLOSED META**  ·  15:55 ET
+Exit `$713.94` — hit target
+**+2.00%**  (+$38.97)
+
+🔻 **SHORT PLTR**  ·  15:15 ET
+Entry `$187.81`
+🛑 SL `$188.26`
+🎯 TP `$186.90`
+44 shares · risking `$19.85`
+
+❌ **CLOSED PLTR**  ·  15:30 ET
+Exit `$188.26` — hit stop
+**-1.00%**  (-$19.85)
+
+🔻 **SHORT MSFT**  ·  15:25 ET
+Entry `$510.64`
+🛑 SL `$511.30`
+🎯 TP `$509.31`
+30 shares · risking `$19.89`
+
+✅ **CLOSED MSFT**  ·  15:35 ET
+Exit `$509.31` — hit target
+**+2.00%**  (+$39.77)
+
+🔻 **SHORT AVGO**  ·  15:30 ET
+Entry `$349.95`
+🛑 SL `$350.64`
+🎯 TP `$348.59`
+29 shares · risking `$19.85`
+
+✅ **CLOSED AVGO**  ·  15:55 ET
+Exit `$349.70` — closed at the bell
+**+0.37%**  (+$7.39)
+
+🔻 **SHORT AMZN**  ·  15:35 ET
+Entry `$246.16`
+🛑 SL `$246.86`
+🎯 TP `$244.76`
+28 shares · risking `$19.65`
+
+❌ **CLOSED AMZN**  ·  15:55 ET
+Exit `$246.33` — closed at the bell
+**-0.24%**  (-$4.76)
+
+🔻 **SHORT AMZN**  ·  15:35 ET
+Entry `$246.16`
+🛑 SL `$246.76`
+🎯 TP `$244.96`
+33 shares · risking `$19.74`
+
+❌ **CLOSED AMZN**  ·  15:55 ET
+Exit `$246.33` — closed at the bell
+**-0.28%**  (-$5.61)
+
+📊 **Monday 28 September**
+
+**Traded**
+**13 trades · 8 won, 5 lost · 62% win rate**
+**+7.43%**  (+$146.37)
+❌ GOOGL 11:45→12:25  -1.00%
+✅ AMZN 14:25→15:00  +2.00%
+✅ AMZN 14:35→15:00  +2.00%
+❌ MU 14:45→14:55  -1.00%
+✅ META 15:05→15:55  +0.93%
+✅ MSFT 15:05→15:55  +1.11%
+✅ AVGO 15:10→15:55  +0.54%
+✅ META 15:15→15:55  +2.00%
+❌ PLTR 15:15→15:30  -1.00%
+✅ MSFT 15:25→15:35  +2.00%
+✅ AVGO 15:30→15:55  +0.37%
+❌ AMZN 15:35→15:55  -0.24%
+❌ AMZN 15:35→15:55  -0.28%
+
+**Watched** _(opening range · no positions)_
+**6 trades · 6 won, 0 lost · 100% win rate**
+**+5.40%**
+🟢 AMD 09:35→10:52  +1.97%
+🟢 META 09:36→11:36  +0.07%
+🟢 AVGO 09:38→11:38  +0.37%
+🟢 TSLA 09:40→11:40  +0.88%
+🟢 MU 09:43→11:43  +1.18%
+🟢 SMCI 09:46→11:46  +0.93%
+
+_Paper only. No orders were placed._
+2026-09-28 22:28:46,512 INFO 18:28:44 ET · bars through 15:55 · 24 trade(s) today · 39 new message(s)
