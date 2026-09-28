@@ -1,7 +1,7 @@
 {
   "universe": "movers",
-  "symbols": 33,
-  "start": "2026-01-01",
+  "symbols": 34,
+  "start": "2024-01-01",
   "tried": 1,
   "survivors": 1,
   "noise_floor": 0.0,
@@ -9,30 +9,34 @@
     {
       "per_period": [
         {
-          "n": 24,
-          "expectancy_R": -0.4203
+          "n": 53,
+          "expectancy_R": 0.3248
         },
         {
-          "n": 20,
-          "expectancy_R": 0.2866
+          "n": 52,
+          "expectancy_R": 0.4561
         },
         {
-          "n": 20,
-          "expectancy_R": 0.122
+          "n": 48,
+          "expectancy_R": 0.0276
+        },
+        {
+          "n": 46,
+          "expectancy_R": 0.3102
         }
       ],
-      "n": 69,
-      "n_periods_sum": 64,
-      "wins": 38,
-      "losses": 31,
-      "win_rate_pct": 55.1,
-      "return_pct": 7.2,
-      "expectancy_R": -0.0312,
-      "total_R": -2.0,
-      "periods_positive": 2,
-      "periods_scored": 3,
-      "worst_period_R": -0.4203,
-      "max_dd_pct": -10.23,
+      "n": 205,
+      "n_periods_sum": 199,
+      "wins": 115,
+      "losses": 90,
+      "win_rate_pct": 56.1,
+      "return_pct": 69.7,
+      "expectancy_R": 0.2839,
+      "total_R": 56.5,
+      "periods_positive": 4,
+      "periods_scored": 4,
+      "worst_period_R": 0.0276,
+      "max_dd_pct": -11.89,
       "name": "base10_sq4.0_vol1.0_atr0.0",
       "params": {
         "base_len": 10,
@@ -40,7 +44,7 @@
         "vol_mult": 1.0,
         "min_atr_pct": 0.0,
         "entry_style": "level",
-        "entry_slippage_pct": 0.5,
+        "entry_slippage_pct": 0.25,
         "require_above_slow": false,
         "fast": 10,
         "mid": 50,
@@ -63,30 +67,34 @@
   "winner": {
     "per_period": [
       {
-        "n": 24,
-        "expectancy_R": -0.4203
+        "n": 53,
+        "expectancy_R": 0.3248
       },
       {
-        "n": 20,
-        "expectancy_R": 0.2866
+        "n": 52,
+        "expectancy_R": 0.4561
       },
       {
-        "n": 20,
-        "expectancy_R": 0.122
+        "n": 48,
+        "expectancy_R": 0.0276
+      },
+      {
+        "n": 46,
+        "expectancy_R": 0.3102
       }
     ],
-    "n": 69,
-    "n_periods_sum": 64,
-    "wins": 38,
-    "losses": 31,
-    "win_rate_pct": 55.1,
-    "return_pct": 7.2,
-    "expectancy_R": -0.0312,
-    "total_R": -2.0,
-    "periods_positive": 2,
-    "periods_scored": 3,
-    "worst_period_R": -0.4203,
-    "max_dd_pct": -10.23,
+    "n": 205,
+    "n_periods_sum": 199,
+    "wins": 115,
+    "losses": 90,
+    "win_rate_pct": 56.1,
+    "return_pct": 69.7,
+    "expectancy_R": 0.2839,
+    "total_R": 56.5,
+    "periods_positive": 4,
+    "periods_scored": 4,
+    "worst_period_R": 0.0276,
+    "max_dd_pct": -11.89,
     "name": "base10_sq4.0_vol1.0_atr0.0",
     "params": {
       "base_len": 10,
@@ -94,7 +102,7 @@
       "vol_mult": 1.0,
       "min_atr_pct": 0.0,
       "entry_style": "level",
-      "entry_slippage_pct": 0.5,
+      "entry_slippage_pct": 0.25,
       "require_above_slow": false,
       "fast": 10,
       "mid": 50,
@@ -116,30 +124,34 @@
   "holdout": {
     "per_period": [
       {
-        "n": 24,
-        "expectancy_R": -0.4456
+        "n": 48,
+        "expectancy_R": 0.3913
       },
       {
-        "n": 21,
-        "expectancy_R": 0.8359
+        "n": 53,
+        "expectancy_R": 0.186
       },
       {
-        "n": 21,
-        "expectancy_R": 0.0431
+        "n": 41,
+        "expectancy_R": 0.0302
+      },
+      {
+        "n": 47,
+        "expectancy_R": 0.5954
       }
     ],
-    "n": 74,
-    "n_periods_sum": 66,
-    "wins": 36,
-    "losses": 38,
-    "win_rate_pct": 48.6,
-    "return_pct": 8.5,
-    "expectancy_R": 0.1182,
-    "total_R": 7.8,
-    "periods_positive": 2,
-    "periods_scored": 3,
-    "worst_period_R": -0.4456,
-    "max_dd_pct": -17.44
+    "n": 207,
+    "n_periods_sum": 189,
+    "wins": 119,
+    "losses": 88,
+    "win_rate_pct": 57.5,
+    "return_pct": 69.3,
+    "expectancy_R": 0.3063,
+    "total_R": 57.9,
+    "periods_positive": 4,
+    "periods_scored": 4,
+    "worst_period_R": 0.0302,
+    "max_dd_pct": -17.38
   },
   "holdout_size": 51,
   "halves": {}
