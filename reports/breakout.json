@@ -1,40 +1,45 @@
 {
-  "universe": "fresh",
-  "symbols": 51,
-  "start": "2026-06-29",
+  "universe": "movers",
+  "symbols": 33,
+  "start": "2026-01-01",
   "tried": 1,
-  "survivors": 0,
+  "survivors": 1,
   "noise_floor": 0.0,
   "results": [
     {
       "per_period": [
         {
-          "n": 5,
-          "expectancy_R": -0.6572
+          "n": 27,
+          "expectancy_R": -0.4
         },
         {
-          "n": 7,
-          "expectancy_R": 0.552
+          "n": 21,
+          "expectancy_R": 0.3096
+        },
+        {
+          "n": 21,
+          "expectancy_R": 0.2946
         }
       ],
-      "n": 15,
-      "n_periods_sum": 12,
-      "wins": 9,
-      "losses": 6,
-      "win_rate_pct": 60.0,
-      "return_pct": 3.8,
-      "expectancy_R": 0.05,
-      "total_R": 0.6,
-      "periods_positive": 0,
-      "periods_scored": 0,
-      "worst_period_R": 0.0,
-      "max_dd_pct": -3.25,
+      "n": 78,
+      "n_periods_sum": 69,
+      "wins": 39,
+      "losses": 39,
+      "win_rate_pct": 50.0,
+      "return_pct": 4.3,
+      "expectancy_R": 0.0275,
+      "total_R": 1.9,
+      "periods_positive": 2,
+      "periods_scored": 3,
+      "worst_period_R": -0.4,
+      "max_dd_pct": -11.44,
       "name": "base10_sq4.0_vol1.0_atr0.0",
       "params": {
         "base_len": 10,
         "squeeze_atr": 4.0,
         "vol_mult": 1.0,
         "min_atr_pct": 0.0,
+        "entry_style": "level",
         "require_above_slow": false,
         "fast": 10,
         "mid": 50,
@@ -54,8 +59,86 @@
       }
     }
   ],
-  "winner": null,
-  "holdout": null,
-  "holdout_size": 0,
+  "winner": {
+    "per_period": [
+      {
+        "n": 27,
+        "expectancy_R": -0.4
+      },
+      {
+        "n": 21,
+        "expectancy_R": 0.3096
+      },
+      {
+        "n": 21,
+        "expectancy_R": 0.2946
+      }
+    ],
+    "n": 78,
+    "n_periods_sum": 69,
+    "wins": 39,
+    "losses": 39,
+    "win_rate_pct": 50.0,
+    "return_pct": 4.3,
+    "expectancy_R": 0.0275,
+    "total_R": 1.9,
+    "periods_positive": 2,
+    "periods_scored": 3,
+    "worst_period_R": -0.4,
+    "max_dd_pct": -11.44,
+    "name": "base10_sq4.0_vol1.0_atr0.0",
+    "params": {
+      "base_len": 10,
+      "squeeze_atr": 4.0,
+      "vol_mult": 1.0,
+      "min_atr_pct": 0.0,
+      "entry_style": "level",
+      "require_above_slow": false,
+      "fast": 10,
+      "mid": 50,
+      "slow": 200,
+      "stop_atr": 0.3,
+      "target_r": 3.0,
+      "trail_ema": true,
+      "trail_after_r": 1.0,
+      "max_hold": 40,
+      "risk_pct": 1.0,
+      "max_open": 8,
+      "touch_window": 10,
+      "slope_bars": 0,
+      "min_slope_atr": 0.0,
+      "trend_bars": 0,
+      "touch_atr": 0.0
+    }
+  },
+  "holdout": {
+    "per_period": [
+      {
+        "n": 25,
+        "expectancy_R": -0.4692
+      },
+      {
+        "n": 25,
+        "expectancy_R": 0.6331
+      },
+      {
+        "n": 21,
+        "expectancy_R": -0.026
+      }
+    ],
+    "n": 77,
+    "n_periods_sum": 71,
+    "wins": 35,
+    "losses": 42,
+    "win_rate_pct": 45.5,
+    "return_pct": 9.7,
+    "expectancy_R": 0.0507,
+    "total_R": 3.6,
+    "periods_positive": 1,
+    "periods_scored": 3,
+    "worst_period_R": -0.4692,
+    "max_dd_pct": -18.37
+  },
+  "holdout_size": 51,
   "halves": {}
 }
