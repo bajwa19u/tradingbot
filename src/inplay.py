@@ -280,12 +280,15 @@ def row(name: str, t: dict) -> str:
             f"{t['lost']} | {t['profit_pct']:+.1f}% | {t['avg_pct']:+.3f}% |")
 
 
+FRACS = [0.05, 0.10, 0.20]
+
+
 def grid() -> list[dict]:
     """Small and pre-specified. The claim under test is that SELECTION is
     what matters, so the dimension that has to vary is how many names are
     traded — including the unfiltered case the research says fails."""
     out = []
-    for top, frac, side in product((0, 20, 10, 5), (0.05, 0.10, 0.20),
+    for top, frac, side in product((0, 20, 10, 5), tuple(FRACS),
                                    ("both", "short")):
         out.append({**BASE, "select_top": top, "atr_frac": frac, "side": side,
                     "name": f"top{top or 'ALL'}/atr{frac}/{side}"})
@@ -327,7 +330,7 @@ def research(data, dailies, universe: str) -> str:
          "Opening-range break on the names with the most abnormal opening "
          "volume. No profit target — out at the stop or at the bell. Stop is "
          "a fraction of the 14-day ATR. Slippage "
-         f"{op.SLIP_PCT}% each way, no leverage.", "",
+         f"**{op.SLIP_PCT}% each way**, no leverage.", "",
          "## Does choosing what to trade change anything?", "", HEAD]
     for r in sorted(results, key=lambda r: -r["profit_pct"]):
         L.append(row(r["name"], r))
@@ -421,11 +424,24 @@ def parse_args(argv=None):
     ap.add_argument("--days", type=int, default=60)
     ap.add_argument("--universe", default="wide")
     ap.add_argument("--symbols", default="")
+    ap.add_argument("--slippage", type=float, default=op.SLIP_PCT,
+                    help="percent each way, charged on entry and exit")
+    ap.add_argument("--stops", default="",
+                    help="comma-separated ATR fractions to test, e.g. 0.2,0.3,0.5")
     return ap.parse_args(argv)
 
 
 def main(argv=None) -> int:
     args = parse_args(argv)
+    # Costs are a setting, not a constant. The 0.05% default is an
+    # assumption, and the sensitivity pass showed the whole result lives
+    # between 0.05% and 0.10%, so being able to run the entire study at a
+    # pessimistic cost is the point.
+    op.SLIP_PCT = float(args.slippage)
+    if args.stops:
+        FRACS[:] = [float(x) for x in args.stops.split(",") if x.strip()]
+    log.info("Slippage %.2f%% each way · stops tested: %s",
+             op.SLIP_PCT, FRACS)
     symbols = ([s.strip().upper() for s in args.symbols.split(",") if s.strip()]
                or UNIVERSES.get(args.universe) or UNIVERSES["wide"])
     try:
