@@ -1959,3 +1959,24 @@ def test_live_drops_the_bar_that_is_still_forming():
     src = inspect.getsource(L.scan)
     assert "df.iloc[:-1]" in src
     assert "still forming" in src or "has not happened" in src
+
+
+def test_live_seen_file_survives_a_foreign_or_broken_file(tmp_path, monkeypatch):
+    """src/paper.py --live already owned state/live_seen.json with a different
+    shape. Sharing it meant the file loaded and then failed on a missing key,
+    which is what broke the first deploy."""
+    import json
+    import src.live_bot as L
+    monkeypatch.setattr(L, "STATE", tmp_path)
+    (tmp_path / L.SEEN_FILE).write_text(json.dumps(
+        {"date": "2026-09-28", "seen": {"NVDA": "triggering"}}))
+    s = L.load_seen("2026-09-28")
+    assert s["entries"] == [] and s["exits"] == [] and s["summary"] is False
+    (tmp_path / L.SEEN_FILE).write_text("{ not json")
+    assert L.load_seen("2026-09-28")["entries"] == []
+    # a real file from this bot round-trips
+    (tmp_path / L.SEEN_FILE).write_text(json.dumps(
+        {"date": "2026-09-28", "entries": ["a"], "exits": [], "summary": True}))
+    s = L.load_seen("2026-09-28")
+    assert s["entries"] == ["a"] and s["summary"] is True
+    assert L.load_seen("2026-09-29")["entries"] == []     # new day, fresh
