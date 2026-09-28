@@ -310,6 +310,8 @@ def main(argv=None) -> int:
     ap.add_argument("--end", default=None)
     ap.add_argument("--minutes", type=int, default=5)
     ap.add_argument("--universe", default="movers", choices=list(UNIVERSES))
+    ap.add_argument("--symbols", default=None,
+                    help="comma-separated, overrides --universe")
     ap.add_argument("--replay", action="store_true",
                     help="run the live rule over today only and send what it "
                          "would have fired to Discord")
@@ -321,7 +323,8 @@ def main(argv=None) -> int:
                "wait": w, "depth": d, "confirm": c}
               for w, d, c in product((3, 6, 12), (0.0, 0.25, 0.5),
                                      (False, True))]
-    syms = UNIVERSES[args.universe]
+    syms = ([x.strip().upper() for x in args.symbols.split(",")]
+            if args.symbols else UNIVERSES[args.universe])
     start = args.start or (pd.Timestamp.now(tz=EASTERN)
                            - pd.Timedelta(days=60)).date().isoformat()
     try:
