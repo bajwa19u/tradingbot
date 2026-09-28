@@ -1681,3 +1681,24 @@ def test_autopsy_says_nothing_separates_them_when_nothing_does():
     assert "Nothing separates them" in text
     assert "no edge to find" in text
     assert "Worth acting on" not in text
+
+
+def test_htf_context_cannot_see_the_unclosed_hour():
+    """Without the shift, a 10:05 bar reads the 10:00-11:00 hourly candle that
+    has not closed. That look-ahead would make any finding from this feature
+    fiction - the same bug was found and fixed in the daily engine."""
+    import numpy as np
+    import pandas as pd
+    from src.sq_autopsy import htf_context
+    idx = pd.date_range("2026-09-01 13:30", periods=60 * 12, freq="5min",
+                        tz="UTC")
+    px = np.concatenate([np.full(len(idx) // 2, 100.0),
+                         np.full(len(idx) - len(idx) // 2, 200.0)])
+    df = pd.DataFrame({"open": px, "high": px, "low": px, "close": px},
+                      index=idx)
+    t = htf_context(df, span=5)
+    jump = len(idx) // 2
+    # the bar at the jump must not already know the hour turned up
+    window = t.iloc[jump:jump + 6].dropna()
+    assert (window == 0.0).any() or window.empty, \
+        "the trend flag reacted before the hour it depends on had closed"
