@@ -13,9 +13,13 @@ on:
   workflow_dispatch:
     inputs:
       universe:
-        description: "movers | fresh | wide"
+        description: "fresh | movers | tech10 | wide"
         required: false
         default: "fresh"
+      symbols:
+        description: "Comma-separated symbols (overrides universe)"
+        required: false
+        default: ""
       dry_run:
         description: "Print it instead of sending"
         type: boolean
@@ -44,11 +48,13 @@ jobs:
           ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           IN_UNI: ${{ inputs.universe }}
+          IN_SYM: ${{ inputs.symbols }}
           IN_DRY: ${{ inputs.dry_run }}
         run: |
           set -uo pipefail
           mkdir -p reports
           ARGS=(--replay --minutes 5 --universe "${IN_UNI:-fresh}")
+          [ -n "${IN_SYM:-}" ] && ARGS+=(--symbols "${IN_SYM}") || true
           if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--no-notify); fi
           set +e
           python -m src.retest "${ARGS[@]}" 2>&1 | tee reports/replay_run.log
