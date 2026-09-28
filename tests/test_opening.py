@@ -29,7 +29,7 @@ def frame(day: str, rows: list[tuple[str, float, float, float, float, float]]
     return pd.DataFrame(data, index=pd.DatetimeIndex(idx))
 
 
-def minutes(day, start, n, o, step, rng=0.5, vol=1000):
+def minutes(day, start, n, o, step, rng=0.5, vol=1000):  # noqa: PLR0913
     """n one-minute bars walking by `step` a bar."""
     hh, mm = map(int, start.split(":"))
     rows, px = [], o
@@ -57,10 +57,47 @@ def prior():
 
 # --- levels ------------------------------------------------------------------
 def test_levels_are_the_prior_session_and_the_premarket(prior):
-    pre = frame("2026-09-25", [("08:00", 101.0, 102.0, 100.0, 101.0, 500)])
+    pre = minutes("2026-09-25", "08:00", 40, 101.0, 0.0, rng=1.0)
     lv = op.session_levels(prior, pre)
     assert lv == {"pdh": 105.0, "pdl": 95.0, "pdc": 100.0,
                   "pmh": 102.0, "pml": 100.0}
+
+
+def test_a_one_bar_premarket_is_not_a_premarket(prior):
+    """The free IEX feed gave AMD a single premarket bar on 28 September, so
+    its high and its low were the same number. A level built from that is not
+    a level, and using it puts three copies of one trade on the book."""
+    pre = frame("2026-09-25", [("08:00", 101.0, 102.0, 100.0, 101.0, 500)])
+    assert set(op.session_levels(prior, pre)) == {"pdh", "pdl", "pdc"}
+
+
+def test_premarket_can_be_switched_off_entirely(prior):
+    pre = minutes("2026-09-25", "08:00", 40, 101.0, 0.0, rng=1.0)
+    assert set(op.session_levels(prior, pre, use_premarket=False)) == {
+        "pdh", "pdl", "pdc"}
+
+
+def test_only_one_trade_per_symbol_per_day(prior):
+    """Yesterday's low and the premarket low sit a few cents apart. Taking
+    both is one idea at twice the risk."""
+    day = minutes("2026-09-25", "09:30", 15, 99.0, -0.6)
+    p = {**op.BASE, "side": "short", "max_per_symbol": 1}
+    assert len(op.day_trades(day, prior, p)) == 1
+    assert len(op.day_trades(day, prior, {**p, "max_per_symbol": 3})) >= 1
+
+
+def test_the_session_stop_sits_above_a_spike_the_bar_stop_misses():
+    """The AMD failure in one test: break, then a spike to a new session
+    high, then the real move. A stop on the level dies in the spike."""
+    day = frame("2026-09-25", [
+        ("09:30", 100.0, 106.0, 99.0, 99.0, 1000),   # session high 106
+        ("09:31", 99.0, 99.5, 98.0, 98.0, 1000)])    # break bar, high 99.5
+    bar = op.simulate(day, 1, 1, "short", 100.0, 1.0,
+                      {**op.BASE, "stop_mode": "bar"})
+    ses = op.simulate(day, 1, 1, "short", 100.0, 1.0,
+                      {**op.BASE, "stop_mode": "session"})
+    assert ses["stop"] > bar["stop"]
+    assert ses["stop"] > 106.0
 
 
 def test_levels_survive_a_missing_premarket(prior):
@@ -234,8 +271,8 @@ def test_noise_floor_shrinks_with_more_trades():
 
 def test_grid_is_small_enough_to_interpret():
     g = op.grid()
-    assert len(g) == 24
-    assert len({c["name"] for c in g}) == 24
+    assert len(g) == 36
+    assert len({c["name"] for c in g}) == 36
 
 
 def test_reports_never_mention_r_multiples():
