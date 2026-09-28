@@ -72,12 +72,13 @@ MAX_HOLD_MIN = 120                      # then out, whatever it is doing
 FORCE_EXIT = "15:55"
 SLIP_PCT = 0.05
 MIN_SCALE_PCT = 0.01                    # a scale below this is a dead symbol
+MIN_PRE_BARS = 30                       # fewer than this is not a premarket
 RETEST_EXTEND = 1.0                     # how far a break must run before a
 #                                         pullback counts as a retest at all
 
 BASE = {
     "entry_mode": "drive",   # drive | retest
-    "stop_mode": "level",    # level | bar
+    "stop_mode": "level",    # level | bar | session
     "stop_mult": 1.0,        # scales the stop when stop_mode == "level"
     "target_r": 2.0,
     "pen": 0.0,              # how far through the level the close must be
@@ -85,13 +86,16 @@ BASE = {
     "retest_depth": 0.5,     # how close to the level counts as a retest
     "side": "both",
     "risk_pct": 1.0,
+    "use_premarket": True,   # turned off automatically when the feed is thin
+    "max_per_symbol": 1,     # one idea per symbol per day, not one per level
 }
 
 LEVEL_NAMES = ("pmh", "pml", "pdh", "pdl", "pdc")
 
 
 # --- levels ------------------------------------------------------------------
-def session_levels(prior: pd.DataFrame, pre: pd.DataFrame) -> dict[str, float]:
+def session_levels(prior: pd.DataFrame, pre: pd.DataFrame,
+                   use_premarket: bool = True) -> dict[str, float]:
     """Every price that matters at 09:30, all of it known before 09:30.
 
     `prior` is the previous session's regular-hours bars; `pre` is today's
@@ -103,7 +107,7 @@ def session_levels(prior: pd.DataFrame, pre: pd.DataFrame) -> dict[str, float]:
         out["pdh"] = float(prior["high"].max())
         out["pdl"] = float(prior["low"].min())
         out["pdc"] = float(prior["close"].iloc[-1])
-    if len(pre):
+    if use_premarket and len(pre) >= MIN_PRE_BARS:
         out["pmh"] = float(pre["high"].max())
         out["pml"] = float(pre["low"].min())
     return {k: v for k, v in out.items() if np.isfinite(v) and v > 0}
@@ -214,9 +218,14 @@ def simulate(rth: pd.DataFrame, i: int, j: int, side: str, level: float,
     raw = float(rth["close"].iloc[j])
     entry = raw * (1 - slip) if side == "short" else raw * (1 + slip)
 
-    if p["stop_mode"] == "bar":
-        edge = (float(rth["high"].iloc[i:j + 1].max()) if side == "short"
-                else float(rth["low"].iloc[i:j + 1].min()))
+    if p["stop_mode"] in ("bar", "session"):
+        # "bar" stops just past the break itself. "session" stops past the
+        # high of the whole session so far, which is what the AMD audit said
+        # was missing: price spiked to the session high AFTER the break and
+        # took out a stop sitting on the level, then fell thirty dollars.
+        lo_i = 0 if p["stop_mode"] == "session" else i
+        edge = (float(rth["high"].iloc[lo_i:j + 1].max()) if side == "short"
+                else float(rth["low"].iloc[lo_i:j + 1].min()))
         stop = edge + 0.1 * scale if side == "short" else edge - 0.1 * scale
     else:
         stop = (level + p["stop_mult"] * scale if side == "short"
@@ -248,7 +257,11 @@ def simulate(rth: pd.DataFrame, i: int, j: int, side: str, level: float,
         if px is not None:
             break
     if px is None:
-        px, why = float(rth["close"].iloc[-1]), "time"
+        # Neither side was hit and neither deadline has passed, so the trade
+        # is simply still running. Backtests almost never land here; the live
+        # bot lands here constantly, and calling it a closed trade would post
+        # a result for a position that has not finished.
+        px, why = float(rth["close"].iloc[-1]), "open"
 
     exit_px = px * (1 + slip) if side == "short" else px * (1 - slip)
     gain = (entry - exit_px) if side == "short" else (exit_px - entry)
@@ -272,9 +285,14 @@ def day_trades(day_ext: pd.DataFrame, prior_rth: pd.DataFrame,
     ref = float(rth["open"].iloc[0])
     if scale <= 0 or scale / ref * 100 < MIN_SCALE_PCT:
         return []
-    lv = session_levels(prior_rth, pre)
+    lv = session_levels(prior_rth, pre, p.get("use_premarket", True))
     out = []
     for i, side, level, name in opening_breaks(rth, lv, scale, p):
+        # Yesterday's low and the premarket low are usually the same idea a
+        # few cents apart. Taking both is not diversification, it is the same
+        # trade at two or three times the intended risk.
+        if len(out) >= p.get("max_per_symbol", 1):
+            break
         j = entry_index(rth, i, side, level, scale, p)
         if j is None:
             continue
@@ -313,6 +331,9 @@ def run_combo(data: dict[str, pd.DataFrame], p: dict,
 
 
 def tally(trades: list[dict], p: dict) -> dict:
+    # A trade that has not finished is not a result. Filing unfinished trades
+    # with the real ones is how a win rate quietly drifts away from the truth.
+    trades = [t for t in trades if t.get("reason") != "open"]
     n = len(trades)
     won = sum(1 for t in trades if t["pct"] > 0)
     pct = sum(t["pct"] for t in trades)
@@ -348,7 +369,8 @@ def grid() -> list[dict]:
     """Deliberately small. Every extra knob raises the bar a result must clear."""
     out = []
     for mode, stop_mode, tr, pen in product(
-            ("drive", "retest"), ("level", "bar"), (1.5, 2.0, 3.0), (0.0, 0.5)):
+            ("drive", "retest"), ("level", "bar", "session"),
+            (1.5, 2.0, 3.0), (0.0, 0.5)):
         out.append({**BASE, "entry_mode": mode, "stop_mode": stop_mode,
                     "target_r": tr, "pen": pen,
                     "name": f"{mode}/{stop_mode}/{tr}R/pen{pen}"})
@@ -525,13 +547,18 @@ def audit_day(data: dict[str, pd.DataFrame], symbol: str, date: str,
     _, prior = split_session(days[idx - 1][1])
     pre, rth = split_session(days[idx][1])
     scale = minute_scale(prior)
-    lv = session_levels(prior, pre)
+    lv = session_levels(prior, pre, p.get("use_premarket", True))
     L = [f"# {symbol} · {date}", "",
          f"- 09:30 open: **{float(rth['open'].iloc[0]):.2f}**",
          f"- premarket bars: {len(pre)}",
          f"- minute scale (prior day): **{scale:.3f}**", "", "Levels:"]
     for k, v in sorted(lv.items()):
         L.append(f"  - {k} = {v:.2f}")
+    L += ["", "First ten minutes, one-minute bars:", "",
+          "| time | open | high | low | close |", "|---|---|---|---|---|"]
+    for ts, b in rth.head(10).iterrows():
+        L.append(f"| {str(ts.tz_convert(EASTERN))[11:16]} | {b['open']:.2f} | "
+                 f"{b['high']:.2f} | {b['low']:.2f} | {b['close']:.2f} |")
     L += ["", "Breaks in the window:"]
     brk = opening_breaks(rth, lv, scale, p)
     if not brk:
