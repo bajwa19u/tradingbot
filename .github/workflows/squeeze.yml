@@ -33,6 +33,10 @@ on:
         description: "both | long | short"
         required: false
         default: "both"
+      sweep:
+        description: "Test stop width, hold length and re-entry, then run the best on unseen names"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -63,6 +67,7 @@ jobs:
           IN_UNI: ${{ inputs.universe }}
           IN_SYM: ${{ inputs.symbols }}
           IN_SIDE: ${{ inputs.side }}
+          IN_SWEEP: ${{ inputs.sweep }}
         run: |
           set -uo pipefail
           mkdir -p reports
@@ -71,6 +76,7 @@ jobs:
           [ -n "${IN_START:-}" ] && ARGS+=(--start "${IN_START}") || true
           [ -n "${IN_END:-}" ] && ARGS+=(--end "${IN_END}") || true
           [ -n "${IN_SYM:-}" ] && ARGS+=(--symbols "${IN_SYM}") || true
+          [ "${IN_SWEEP:-false}" = "true" ] && ARGS+=(--sweep) || true
           set +e
           python -m src.squeeze "${ARGS[@]}" 2>&1 | tee reports/squeeze_run.log
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
@@ -89,8 +95,12 @@ jobs:
 
       - name: Summary
         if: always()
+        env:
+          IN_SWEEP: ${{ inputs.sweep }}
         run: |
-          if [ -f reports/squeeze.md ]; then
+          if [ -f reports/squeeze_sweep.md ] && [ "${IN_SWEEP:-false}" = "true" ]; then
+            cat reports/squeeze_sweep.md >> "$GITHUB_STEP_SUMMARY"
+          elif [ -f reports/squeeze.md ]; then
             cat reports/squeeze.md >> "$GITHUB_STEP_SUMMARY"
           else
             { echo '```'; tail -n 40 reports/squeeze_run.log; echo '```'; } \
