@@ -416,12 +416,16 @@ def sensitivity(data, dailies, cfg: dict, dates: set) -> str:
     return "\n".join(L) + "\n"
 
 
-def main(argv=None) -> int:
+def parse_args(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--days", type=int, default=60)
     ap.add_argument("--universe", default="wide")
     ap.add_argument("--symbols", default="")
+    return ap.parse_args(argv)
 
+
+def main(argv=None) -> int:
+    args = parse_args(argv)
     symbols = ([s.strip().upper() for s in args.symbols.split(",") if s.strip()]
                or UNIVERSES.get(args.universe) or UNIVERSES["wide"])
     try:
