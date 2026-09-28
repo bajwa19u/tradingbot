@@ -1,10 +1,118 @@
-Traceback (most recent call last):
-  File "<frozen runpy>", line 198, in _run_module_as_main
-  File "<frozen runpy>", line 88, in _run_code
-  File "/home/runner/work/tradingbot/tradingbot/src/inplay.py", line 452, in <module>
-    raise SystemExit(main())
-                     ^^^^^^
-  File "/home/runner/work/tradingbot/tradingbot/src/inplay.py", line 425, in main
-    symbols = ([s.strip().upper() for s in args.symbols.split(",") if s.strip()]
-                                           ^^^^
-NameError: name 'args' is not defined. Did you mean: 'argv'?
+2026-09-28 23:31:58,424 INFO Fetching 1-minute extended-hours bars from 2026-06-25 for 103 symbols
+2026-09-28 23:32:47,242 INFO Usable: 103 symbols, 2047344 bars total
+2026-09-28 23:32:50,370 INFO 103 symbols with enough history to rank
+2026-09-28 23:32:50,371 INFO Explore 34 days, holdout 18 days
+2026-09-28 23:32:59,858 INFO topALL/atr0.05/both      n=2698  win=9.2% profit=-748.1%
+2026-09-28 23:33:07,958 INFO topALL/atr0.05/short     n=1437  win=8.6% profit=-597.9%
+2026-09-28 23:33:19,667 INFO topALL/atr0.1/both       n=2698  win=16.5% profit=-598.7%
+2026-09-28 23:33:28,950 INFO topALL/atr0.1/short      n=1437  win=16.4% profit=-400.7%
+2026-09-28 23:33:44,383 INFO topALL/atr0.2/both       n=2698  win=29.5% profit=-359.7%
+2026-09-28 23:33:56,021 INFO topALL/atr0.2/short      n=1437  win=31.5% profit=-155.7%
+2026-09-28 23:34:00,905 INFO top20/atr0.05/both       n=538   win=9.5% profit=+21.7%
+2026-09-28 23:34:05,444 INFO top20/atr0.05/short      n=254   win=7.5% profit=-105.8%
+2026-09-28 23:34:10,704 INFO top20/atr0.1/both        n=538   win=16.4% profit=+0.1%
+2026-09-28 23:34:15,594 INFO top20/atr0.1/short       n=254   win=16.9% profit=-29.7%
+2026-09-28 23:34:21,682 INFO top20/atr0.2/both        n=538   win=28.3% profit=-6.0%
+2026-09-28 23:34:26,856 INFO top20/atr0.2/short       n=254   win=29.9% profit=-15.1%
+2026-09-28 23:34:31,227 INFO top10/atr0.05/both       n=257   win=8.6% profit=-11.7%
+2026-09-28 23:34:35,268 INFO top10/atr0.05/short      n=120   win=4.2% profit=-109.5%
+2026-09-28 23:34:39,651 INFO top10/atr0.1/both        n=257   win=14.8% profit=-17.4%
+2026-09-28 23:34:43,772 INFO top10/atr0.1/short       n=120   win=11.7% profit=-69.1%
+2026-09-28 23:34:48,516 INFO top10/atr0.2/both        n=257   win=25.7% profit=-18.1%
+2026-09-28 23:34:52,880 INFO top10/atr0.2/short       n=120   win=26.7% profit=-27.3%
+2026-09-28 23:34:56,994 INFO top5/atr0.05/both        n=123   win=8.9% profit=+66.1%
+2026-09-28 23:35:00,904 INFO top5/atr0.05/short       n=56    win=5.4% profit=-38.6%
+2026-09-28 23:35:05,041 INFO top5/atr0.1/both         n=123   win=14.6% profit=+29.4%
+2026-09-28 23:35:08,937 INFO top5/atr0.1/short        n=56    win=14.3% profit=-18.3%
+2026-09-28 23:35:13,087 INFO top5/atr0.2/both         n=123   win=26.0% profit=+20.6%
+2026-09-28 23:35:17,081 INFO top5/atr0.2/short        n=56    win=30.4% profit=+0.5%
+2026-09-28 23:35:25,081 INFO slip 0.00%: n=196 win=11.2% profit=+244.9%
+2026-09-28 23:35:30,056 INFO slip 0.05%: n=196 win=9.2% profit=+98.9%
+2026-09-28 23:35:34,977 INFO slip 0.10%: n=196 win=7.7% profit=-53.1%
+2026-09-28 23:35:39,807 INFO slip 0.15%: n=196 win=4.6% profit=-225.2%
+2026-09-28 23:35:44,616 INFO slip 0.25%: n=196 win=2.6% profit=-452.0%
+2026-09-28 23:35:49,511 INFO slip 0.50%: n=196 win=1.5% profit=-847.2%
+# Stocks in play — wide
+
+1-minute bars · 52 trading days (2026-07-16 to 2026-09-28) · 103 symbols ranked
+
+Opening-range break on the names with the most abnormal opening volume. No profit target — out at the stop or at the bell. Stop is a fraction of the 14-day ATR. Slippage 0.05% each way, no leverage.
+
+## Does choosing what to trade change anything?
+
+| rule | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| top5/atr0.05/both | 123 | 8.9% | 11 | 112 | +66.1% | +0.538% |
+| top5/atr0.1/both | 123 | 14.6% | 18 | 105 | +29.4% | +0.239% |
+| top20/atr0.05/both | 538 | 9.5% | 51 | 487 | +21.7% | +0.040% |
+| top5/atr0.2/both | 123 | 26.0% | 32 | 91 | +20.6% | +0.167% |
+| top5/atr0.2/short | 56 | 30.4% | 17 | 39 | +0.5% | +0.008% |
+| top20/atr0.1/both | 538 | 16.4% | 88 | 450 | +0.1% | +0.000% |
+| top20/atr0.2/both | 538 | 28.3% | 152 | 386 | -6.0% | -0.011% |
+| top10/atr0.05/both | 257 | 8.6% | 22 | 235 | -11.7% | -0.045% |
+| top20/atr0.2/short | 254 | 29.9% | 76 | 178 | -15.1% | -0.059% |
+| top10/atr0.1/both | 257 | 14.8% | 38 | 219 | -17.4% | -0.068% |
+| top10/atr0.2/both | 257 | 25.7% | 66 | 191 | -18.1% | -0.070% |
+| top5/atr0.1/short | 56 | 14.3% | 8 | 48 | -18.3% | -0.327% |
+| top10/atr0.2/short | 120 | 26.7% | 32 | 88 | -27.3% | -0.228% |
+| top20/atr0.1/short | 254 | 16.9% | 43 | 211 | -29.7% | -0.117% |
+| top5/atr0.05/short | 56 | 5.4% | 3 | 53 | -38.6% | -0.690% |
+| top10/atr0.1/short | 120 | 11.7% | 14 | 106 | -69.1% | -0.576% |
+| top20/atr0.05/short | 254 | 7.5% | 19 | 235 | -105.8% | -0.417% |
+| top10/atr0.05/short | 120 | 4.2% | 5 | 115 | -109.5% | -0.913% |
+| topALL/atr0.2/short | 1437 | 31.5% | 453 | 984 | -155.7% | -0.108% |
+| topALL/atr0.2/both | 2698 | 29.5% | 795 | 1903 | -359.7% | -0.133% |
+| topALL/atr0.1/short | 1437 | 16.4% | 235 | 1202 | -400.7% | -0.279% |
+| topALL/atr0.05/short | 1437 | 8.6% | 123 | 1314 | -597.9% | -0.416% |
+| topALL/atr0.1/both | 2698 | 16.5% | 445 | 2253 | -598.7% | -0.222% |
+| topALL/atr0.05/both | 2698 | 9.2% | 248 | 2450 | -748.1% | -0.277% |
+
+## The best one, then the same rule on dates it never saw
+
+**top5/atr0.05/both**
+
+| rule | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| explore | 123 | 8.9% | 11 | 112 | +66.1% | +0.538% |
+| holdout (unseen) | 73 | 9.6% | 7 | 66 | +32.8% | +0.449% |
+
+Against the same rule with NO selection, on the explore split:
+
+| rule | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| topALL/atr0.05/both | 2698 | 9.2% | 248 | 2450 | -748.1% | -0.277% |
+| top5/atr0.05/both | 123 | 8.9% | 11 | 112 | +66.1% | +0.538% |
+
+## Verdict
+
+- **Holds up on dates it never saw.** First time in this project. It still needs a forward record before it sizes a position.
+
+## By side
+
+| rule | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| short | 100 | 7.0% | 7 | 93 | -19.3% | -0.193% |
+| long | 96 | 11.5% | 11 | 85 | +118.2% | +1.232% |
+
+## How trades ended
+
+| rule | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| stop | 178 | 0.0% | 0 | 178 | -241.3% | -1.356% |
+| close | 18 | 100.0% | 18 | 0 | +340.2% | +18.900% |
+
+## How much cost does it survive?
+
+`` over every date, costs varied:
+
+| rule | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| slippage 0.00% each way | 196 | 11.2% | 22 | 174 | +244.9% | +1.249% |
+| slippage 0.05% each way | 196 | 9.2% | 18 | 178 | +98.9% | +0.505% |
+| slippage 0.10% each way | 196 | 7.7% | 15 | 181 | -53.1% | -0.271% |
+| slippage 0.15% each way | 196 | 4.6% | 9 | 187 | -225.2% | -1.149% |
+| slippage 0.25% each way | 196 | 2.6% | 5 | 191 | -452.0% | -2.306% |
+| slippage 0.50% each way | 196 | 1.5% | 3 | 193 | -847.2% | -4.322% |
+
+- **It stops making money at slippage 0.10% each way.** Our backtest assumes 0.05%. The gap between those two numbers is the entire result.
+

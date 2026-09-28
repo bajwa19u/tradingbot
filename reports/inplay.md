@@ -66,3 +66,18 @@ Against the same rule with NO selection, on the explore split:
 |---|---|---|---|---|---|---|
 | stop | 178 | 0.0% | 0 | 178 | -241.3% | -1.356% |
 | close | 18 | 100.0% | 18 | 0 | +340.2% | +18.900% |
+
+## How much cost does it survive?
+
+`` over every date, costs varied:
+
+| rule | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| slippage 0.00% each way | 196 | 11.2% | 22 | 174 | +244.9% | +1.249% |
+| slippage 0.05% each way | 196 | 9.2% | 18 | 178 | +98.9% | +0.505% |
+| slippage 0.10% each way | 196 | 7.7% | 15 | 181 | -53.1% | -0.271% |
+| slippage 0.15% each way | 196 | 4.6% | 9 | 187 | -225.2% | -1.149% |
+| slippage 0.25% each way | 196 | 2.6% | 5 | 191 | -452.0% | -2.306% |
+| slippage 0.50% each way | 196 | 1.5% | 3 | 193 | -847.2% | -4.322% |
+
+- **It stops making money at slippage 0.10% each way.** Our backtest assumes 0.05%. The gap between those two numbers is the entire result.
