@@ -1,0 +1,27 @@
+# Why the breaks fail
+
+**3957 breaks · 36 symbols · from 2026-07-01 · 2026-09-28 17:52**
+
+Base rate: **1829 of 3957 reached 2R before -1R (46.2%).** Every break in the window is labelled, not only the ones a portfolio had room for.
+
+| Condition | Winners | Losers | Separation |
+|---|---|---|---|
+| coil_tight_atr | 2.4 | 2.38 | **+0.05 SD** |
+| break_size_atr | 0.63 | 0.66 | **-0.05 SD** |
+| atr_pct | 0.31 | 0.31 | **+0.04 SD** |
+| range_used_atr | 14.45 | 14.19 | **+0.04 SD** |
+| day_move_atr | 2.23 | 2.54 | **-0.03 SD** |
+| minutes_in | 249.89 | 251.26 | **-0.02 SD** |
+| rvol | 2.25 | 2.3 | **-0.01 SD** |
+| vwap_dist_atr | 1.97 | 2.01 | **-0.01 SD** |
+| body_frac | 0.74 | 0.74 | **+0.01 SD** |
+
+_Separation is how far apart the two groups sit in pooled standard deviations. Below about 0.30 SD a condition cannot sort anything usefully, whatever its p-value._
+
+### Nothing separates them
+
+No condition reaches 0.30 SD. On this evidence the winners and losers look the same at the moment of entry, which means no filter built from these features will help - and the honest conclusion is that this entry has no edge to find, rather than one that needs better tuning.
+
+_long: 880/2061 = 42.7% hit 2R first._
+
+_short: 949/1896 = 50.1% hit 2R first._
