@@ -193,3 +193,13 @@ def test_sensitivity_reports_the_cost_level_that_kills_it(monkeypatch):
     monkeypatch.setattr(ip, "run", lambda *a, **k: next(seq))
     out = ip.sensitivity({}, {}, dict(ip.BASE), set())
     assert "stops making money at slippage 0.15%" in out
+
+
+def test_the_command_line_actually_parses():
+    """A missing parse_args call cost a nine-minute run and produced a
+    NameError after every bar had already been downloaded."""
+    a = ip.parse_args([])
+    assert (a.days, a.universe, a.symbols) == (60, "wide", "")
+    a = ip.parse_args(["--days", "30", "--universe", "core",
+                       "--symbols", "amd,nvda"])
+    assert a.days == 30 and a.universe == "core" and a.symbols == "amd,nvda"
