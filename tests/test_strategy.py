@@ -1392,3 +1392,30 @@ def test_entry_slippage_is_a_real_dial_and_always_costs():
 def test_entry_slippage_defaults_to_the_documented_value():
     from src.breakout import BASE_BO
     assert BASE_BO["entry_slippage_pct"] == 0.05
+
+
+def test_nothing_passed_does_not_call_a_profitable_setting_unprofitable():
+    """A 90-day run returned +10.3% and the report said a search 'could not
+    find a profitable one even by accident'. It failed the trade-count gate,
+    not the profit one, and saying so is the difference between a useful
+    report and a misleading one."""
+    from src.breakout import render
+    w = {"name": "x", "n": 18, "expectancy_R": 0.03, "total_R": 0.5,
+         "periods_positive": 0, "periods_scored": 0, "worst_period_R": 0.0,
+         "max_dd_pct": -5.0, "wins": 13, "losses": 5, "win_rate_pct": 72.2,
+         "return_pct": 10.3}
+    text = render({"universe": "movers", "symbols": 33, "start": "2026-06-29",
+                   "tried": 1, "survivors": 0, "noise_floor": 0.4,
+                   "results": [w], "winner": None, "holdout": None,
+                   "holdout_size": 0})
+    assert "not rejected for losing money" in text
+    assert "only 18 trades" in text
+    assert "could not find a profitable one" not in text
+    assert "0 of 0 periods" not in text
+    # and a genuinely unprofitable one still gets told plainly
+    loser = dict(w, return_pct=-6.0)
+    text2 = render({"universe": "movers", "symbols": 33, "start": "2026-01-01",
+                    "tried": 40, "survivors": 0, "noise_floor": 0.4,
+                    "results": [loser], "winner": None, "holdout": None,
+                    "holdout_size": 0})
+    assert "could not find a profitable one" in text2
