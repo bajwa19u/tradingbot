@@ -13,9 +13,9 @@ on:
   workflow_dispatch:
     inputs:
       universe:
-        description: "fresh | movers | tech10 | wide"
+        description: "core | fresh | movers | wide"
         required: false
-        default: "fresh"
+        default: "core"
       symbols:
         description: "Comma-separated symbols (overrides universe)"
         required: false
@@ -53,7 +53,7 @@ jobs:
         run: |
           set -uo pipefail
           mkdir -p reports state
-          ARGS=(--replay --minutes 5 --universe "${IN_UNI:-fresh}")
+          ARGS=(--replay --minutes 5 --universe "${IN_UNI:-core}")
           [ -n "${IN_SYM:-}" ] && ARGS+=(--symbols "${IN_SYM}") || true
           if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--no-notify); fi
           set +e
