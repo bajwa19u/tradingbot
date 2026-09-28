@@ -15,6 +15,7 @@
       "day_move_atr": -1.36,
       "range_used_atr": 12.8,
       "body_frac": 0.88,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.11,
       "mfe": 0.31
@@ -32,6 +33,7 @@
       "day_move_atr": -0.57,
       "range_used_atr": 14.29,
       "body_frac": 0.67,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.06
@@ -49,6 +51,7 @@
       "day_move_atr": 2.98,
       "range_used_atr": 14.13,
       "body_frac": 0.23,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.29,
       "mfe": 0.22
@@ -66,6 +69,7 @@
       "day_move_atr": -25.71,
       "range_used_atr": 30.43,
       "body_frac": 0.85,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.06,
       "mfe": 0.45
@@ -83,6 +87,7 @@
       "day_move_atr": -24.18,
       "range_used_atr": 29.92,
       "body_frac": 0.95,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.24,
       "mfe": 0.05
@@ -100,6 +105,7 @@
       "day_move_atr": 33.68,
       "range_used_atr": 37.86,
       "body_frac": 0.73,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.45,
       "mfe": 0.29
@@ -117,6 +123,7 @@
       "day_move_atr": 11.02,
       "range_used_atr": 15.81,
       "body_frac": 0.8,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.79,
       "mfe": 1.08
@@ -134,6 +141,7 @@
       "day_move_atr": -5.14,
       "range_used_atr": 9.84,
       "body_frac": 0.26,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.08
@@ -151,6 +159,7 @@
       "day_move_atr": 7.46,
       "range_used_atr": 9.37,
       "body_frac": 0.52,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.32,
       "mfe": 0.61
@@ -168,6 +177,7 @@
       "day_move_atr": 4.49,
       "range_used_atr": 6.81,
       "body_frac": 0.89,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.97,
       "mfe": 1.16
@@ -185,6 +195,7 @@
       "day_move_atr": 11.62,
       "range_used_atr": 14.32,
       "body_frac": 1.0,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.12,
       "mfe": 0.44
@@ -202,6 +213,7 @@
       "day_move_atr": -14.12,
       "range_used_atr": 19.82,
       "body_frac": 0.52,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.25,
       "mfe": 0.67
@@ -219,6 +231,7 @@
       "day_move_atr": 0.86,
       "range_used_atr": 7.3,
       "body_frac": 0.45,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.84,
       "mfe": 0.02
@@ -236,6 +249,7 @@
       "day_move_atr": 1.8,
       "range_used_atr": 7.24,
       "body_frac": 0.67,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.22,
       "mfe": 0.31
@@ -253,6 +267,7 @@
       "day_move_atr": 3.13,
       "range_used_atr": 9.87,
       "body_frac": 0.6,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.13,
       "mfe": 0.26
@@ -270,6 +285,7 @@
       "day_move_atr": 5.97,
       "range_used_atr": 8.03,
       "body_frac": 0.93,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.21,
       "mfe": 0.92
@@ -287,6 +303,7 @@
       "day_move_atr": 6.33,
       "range_used_atr": 8.16,
       "body_frac": 0.38,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.13,
       "mfe": 0.79
@@ -304,6 +321,7 @@
       "day_move_atr": 16.58,
       "range_used_atr": 16.58,
       "body_frac": 0.8,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.28
@@ -321,6 +339,7 @@
       "day_move_atr": 3.56,
       "range_used_atr": 6.95,
       "body_frac": 0.78,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.18,
       "mfe": 0.19
@@ -338,6 +357,7 @@
       "day_move_atr": -3.46,
       "range_used_atr": 9.64,
       "body_frac": 0.51,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.11,
       "mfe": 0.37
@@ -355,6 +375,7 @@
       "day_move_atr": 4.55,
       "range_used_atr": 10.07,
       "body_frac": 0.54,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.84
@@ -372,6 +393,7 @@
       "day_move_atr": 1.04,
       "range_used_atr": 6.81,
       "body_frac": 0.96,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.14,
       "mfe": 0.58
@@ -389,6 +411,7 @@
       "day_move_atr": 3.87,
       "range_used_atr": 9.15,
       "body_frac": 0.81,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.19
@@ -406,6 +429,7 @@
       "day_move_atr": 4.59,
       "range_used_atr": 10.01,
       "body_frac": 0.33,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.03
@@ -423,6 +447,7 @@
       "day_move_atr": -1.94,
       "range_used_atr": 10.14,
       "body_frac": 0.92,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.3,
       "mfe": 0.49
@@ -440,6 +465,7 @@
       "day_move_atr": 0.1,
       "range_used_atr": 3.97,
       "body_frac": 0.73,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.19,
       "mfe": 0.89
@@ -457,6 +483,7 @@
       "day_move_atr": 0.56,
       "range_used_atr": 4.04,
       "body_frac": 0.54,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.3,
       "mfe": 0.65
@@ -474,6 +501,7 @@
       "day_move_atr": 1.06,
       "range_used_atr": 4.12,
       "body_frac": 0.93,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.39,
       "mfe": 0.45
@@ -491,6 +519,7 @@
       "day_move_atr": 1.18,
       "range_used_atr": 11.17,
       "body_frac": 0.77,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.6,
       "mfe": 0.27
@@ -508,6 +537,7 @@
       "day_move_atr": 12.56,
       "range_used_atr": 12.91,
       "body_frac": 0.39,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.15
@@ -525,6 +555,7 @@
       "day_move_atr": 13.46,
       "range_used_atr": 13.5,
       "body_frac": 0.86,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.04
@@ -542,6 +573,7 @@
       "day_move_atr": -10.71,
       "range_used_atr": 15.58,
       "body_frac": 0.56,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.69,
       "mfe": 1.54
@@ -559,6 +591,7 @@
       "day_move_atr": -10.94,
       "range_used_atr": 17.76,
       "body_frac": 0.86,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.24,
       "mfe": 0.93
@@ -576,6 +609,7 @@
       "day_move_atr": -11.42,
       "range_used_atr": 22.1,
       "body_frac": 0.72,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.21,
       "mfe": 0.52
@@ -593,6 +627,7 @@
       "day_move_atr": -1.66,
       "range_used_atr": 7.8,
       "body_frac": 0.68,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 1.05,
       "mfe": 1.57
@@ -610,6 +645,7 @@
       "day_move_atr": -0.97,
       "range_used_atr": 7.61,
       "body_frac": 0.95,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.71,
       "mfe": 1.15
@@ -627,6 +663,7 @@
       "day_move_atr": 1.86,
       "range_used_atr": 9.05,
       "body_frac": 0.91,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.05,
       "mfe": 0.49
@@ -644,6 +681,7 @@
       "day_move_atr": 1.91,
       "range_used_atr": 9.8,
       "body_frac": 0.07,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.03,
       "mfe": 0.53
@@ -661,6 +699,7 @@
       "day_move_atr": -8.11,
       "range_used_atr": 11.74,
       "body_frac": 0.9,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.21
@@ -678,6 +717,7 @@
       "day_move_atr": 14.65,
       "range_used_atr": 17.02,
       "body_frac": 0.97,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.2,
       "mfe": 0.89
@@ -695,6 +735,7 @@
       "day_move_atr": 21.25,
       "range_used_atr": 23.68,
       "body_frac": 0.41,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 1.22
@@ -712,6 +753,7 @@
       "day_move_atr": 21.38,
       "range_used_atr": 23.1,
       "body_frac": 0.4,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.85
@@ -729,6 +771,7 @@
       "day_move_atr": 9.27,
       "range_used_atr": 11.61,
       "body_frac": 0.73,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.93,
       "mfe": 0.69
@@ -746,6 +789,7 @@
       "day_move_atr": 9.96,
       "range_used_atr": 11.89,
       "body_frac": 0.55,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.95,
       "mfe": 0.48
@@ -763,6 +807,7 @@
       "day_move_atr": 10.39,
       "range_used_atr": 12.26,
       "body_frac": 0.31,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.4
@@ -780,6 +825,7 @@
       "day_move_atr": 15.29,
       "range_used_atr": 17.58,
       "body_frac": 0.99,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.22
@@ -797,6 +843,7 @@
       "day_move_atr": 8.46,
       "range_used_atr": 13.96,
       "body_frac": 0.94,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.9,
       "mfe": 0.12
@@ -814,6 +861,7 @@
       "day_move_atr": 0.27,
       "range_used_atr": 13.91,
       "body_frac": 0.82,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.62,
       "mfe": 0.26
@@ -831,6 +879,7 @@
       "day_move_atr": 5.44,
       "range_used_atr": 7.2,
       "body_frac": 0.87,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.44
@@ -848,6 +897,7 @@
       "day_move_atr": -4.98,
       "range_used_atr": 10.57,
       "body_frac": 0.54,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 1.38
@@ -865,6 +915,7 @@
       "day_move_atr": 3.07,
       "range_used_atr": 5.68,
       "body_frac": 0.79,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.45,
       "mfe": 0.96
@@ -882,6 +933,7 @@
       "day_move_atr": -2.15,
       "range_used_atr": 6.71,
       "body_frac": 0.73,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.06
@@ -899,6 +951,7 @@
       "day_move_atr": 9.14,
       "range_used_atr": 11.41,
       "body_frac": 0.69,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.01,
       "mfe": 0.95
@@ -916,6 +969,7 @@
       "day_move_atr": 10.04,
       "range_used_atr": 11.62,
       "body_frac": 0.81,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.28,
       "mfe": 0.38
@@ -933,6 +987,7 @@
       "day_move_atr": 0.92,
       "range_used_atr": 11.8,
       "body_frac": 0.66,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.1,
       "mfe": 0.53
@@ -950,6 +1005,7 @@
       "day_move_atr": 2.89,
       "range_used_atr": 17.5,
       "body_frac": 0.23,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.25,
       "mfe": 0.43
@@ -967,6 +1023,7 @@
       "day_move_atr": -16.52,
       "range_used_atr": 21.26,
       "body_frac": 0.79,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.17
@@ -984,6 +1041,7 @@
       "day_move_atr": 18.61,
       "range_used_atr": 20.27,
       "body_frac": 0.66,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.43,
       "mfe": 0.43
@@ -1001,6 +1059,7 @@
       "day_move_atr": 1.6,
       "range_used_atr": 6.2,
       "body_frac": 0.98,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.48,
       "mfe": 1.06
@@ -1018,6 +1077,7 @@
       "day_move_atr": 3.01,
       "range_used_atr": 8.47,
       "body_frac": 0.61,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.47,
       "mfe": 1.32
@@ -1035,6 +1095,7 @@
       "day_move_atr": 4.54,
       "range_used_atr": 8.81,
       "body_frac": 0.98,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.02,
       "mfe": 0.55
@@ -1052,6 +1113,7 @@
       "day_move_atr": 2.1,
       "range_used_atr": 8.84,
       "body_frac": 0.98,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.21,
       "mfe": 0.59
@@ -1069,6 +1131,7 @@
       "day_move_atr": 3.76,
       "range_used_atr": 10.22,
       "body_frac": 0.68,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.07,
       "mfe": 0.31
@@ -1086,6 +1149,7 @@
       "day_move_atr": -1.65,
       "range_used_atr": 10.21,
       "body_frac": 0.8,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.76,
       "mfe": 0.22
@@ -1103,6 +1167,7 @@
       "day_move_atr": -1.22,
       "range_used_atr": 11.66,
       "body_frac": 0.59,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.0
@@ -1120,6 +1185,7 @@
       "day_move_atr": 3.64,
       "range_used_atr": 12.66,
       "body_frac": 0.36,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.41,
       "mfe": 0.68
@@ -1137,6 +1203,7 @@
       "day_move_atr": 5.49,
       "range_used_atr": 14.72,
       "body_frac": 0.98,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.1,
       "mfe": 0.37
@@ -1154,6 +1221,7 @@
       "day_move_atr": 6.27,
       "range_used_atr": 14.71,
       "body_frac": 0.61,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.09,
       "mfe": 0.16
@@ -1171,6 +1239,7 @@
       "day_move_atr": 7.76,
       "range_used_atr": 16.77,
       "body_frac": 0.37,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.21,
       "mfe": 0.54
@@ -1188,6 +1257,7 @@
       "day_move_atr": 10.58,
       "range_used_atr": 19.61,
       "body_frac": 0.87,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.17,
       "mfe": 0.08
@@ -1205,6 +1275,7 @@
       "day_move_atr": 4.5,
       "range_used_atr": 5.69,
       "body_frac": 0.7,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.08,
       "mfe": 0.15
@@ -1222,6 +1293,7 @@
       "day_move_atr": 1.19,
       "range_used_atr": 7.67,
       "body_frac": 0.34,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.36,
       "mfe": 0.54
@@ -1239,6 +1311,7 @@
       "day_move_atr": 1.64,
       "range_used_atr": 7.84,
       "body_frac": 0.55,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.44,
       "mfe": 0.36
@@ -1256,6 +1329,7 @@
       "day_move_atr": 4.31,
       "range_used_atr": 11.75,
       "body_frac": 1.0,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.89,
       "mfe": 0.0
@@ -1273,6 +1347,7 @@
       "day_move_atr": -10.25,
       "range_used_atr": 14.13,
       "body_frac": 0.82,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.21,
       "mfe": 0.34
@@ -1290,6 +1365,7 @@
       "day_move_atr": 17.61,
       "range_used_atr": 22.26,
       "body_frac": 0.74,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.16
@@ -1307,6 +1383,7 @@
       "day_move_atr": 17.91,
       "range_used_atr": 22.33,
       "body_frac": 0.21,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.04
@@ -1324,6 +1401,7 @@
       "day_move_atr": -16.7,
       "range_used_atr": 23.53,
       "body_frac": 0.38,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.35,
       "mfe": 0.63
@@ -1341,6 +1419,7 @@
       "day_move_atr": 8.72,
       "range_used_atr": 12.26,
       "body_frac": 0.42,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 2.0,
       "mfe": 2.31
@@ -1358,6 +1437,7 @@
       "day_move_atr": 10.48,
       "range_used_atr": 13.71,
       "body_frac": 0.88,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 1.2,
       "mfe": 1.65
@@ -1375,6 +1455,7 @@
       "day_move_atr": 15.06,
       "range_used_atr": 18.73,
       "body_frac": 0.89,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.78,
       "mfe": 1.33
@@ -1392,6 +1473,7 @@
       "day_move_atr": -1.3,
       "range_used_atr": 16.7,
       "body_frac": 0.78,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.35,
       "mfe": 0.61
@@ -1409,6 +1491,7 @@
       "day_move_atr": 2.29,
       "range_used_atr": 24.28,
       "body_frac": 0.87,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.0
@@ -1426,6 +1509,7 @@
       "day_move_atr": 2.39,
       "range_used_atr": 8.79,
       "body_frac": 0.71,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.08
@@ -1443,6 +1527,7 @@
       "day_move_atr": -0.19,
       "range_used_atr": 11.14,
       "body_frac": 0.36,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 2.0,
       "mfe": 2.57
@@ -1460,6 +1545,7 @@
       "day_move_atr": 4.5,
       "range_used_atr": 7.71,
       "body_frac": 0.25,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.37,
       "mfe": 0.31
@@ -1477,6 +1563,7 @@
       "day_move_atr": -3.25,
       "range_used_atr": 9.82,
       "body_frac": 0.83,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.12,
       "mfe": 0.25
@@ -1494,6 +1581,7 @@
       "day_move_atr": -3.53,
       "range_used_atr": 12.9,
       "body_frac": 0.67,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.43,
       "mfe": 0.23
@@ -1511,6 +1599,7 @@
       "day_move_atr": -3.07,
       "range_used_atr": 13.27,
       "body_frac": 0.72,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.53,
       "mfe": 0.06
@@ -1528,6 +1617,7 @@
       "day_move_atr": 6.59,
       "range_used_atr": 16.56,
       "body_frac": 0.64,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.03,
       "mfe": 0.19
@@ -1545,6 +1635,7 @@
       "day_move_atr": 7.76,
       "range_used_atr": 10.36,
       "body_frac": 1.0,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.73,
       "mfe": 0.85
@@ -1562,6 +1653,7 @@
       "day_move_atr": 11.93,
       "range_used_atr": 17.93,
       "body_frac": 0.79,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 1.33,
       "mfe": 1.51
@@ -1579,6 +1671,7 @@
       "day_move_atr": 12.77,
       "range_used_atr": 17.76,
       "body_frac": 0.7,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.81,
       "mfe": 0.95
@@ -1596,6 +1689,7 @@
       "day_move_atr": 18.14,
       "range_used_atr": 21.76,
       "body_frac": 0.5,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.68,
       "mfe": 0.41
@@ -1613,6 +1707,7 @@
       "day_move_atr": 17.65,
       "range_used_atr": 20.75,
       "body_frac": 0.97,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.15
@@ -1630,6 +1725,7 @@
       "day_move_atr": 7.65,
       "range_used_atr": 11.63,
       "body_frac": 0.86,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 1.69,
       "mfe": 1.85
@@ -1647,6 +1743,7 @@
       "day_move_atr": 10.41,
       "range_used_atr": 13.26,
       "body_frac": 0.96,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 1.32,
       "mfe": 1.49
@@ -1664,6 +1761,7 @@
       "day_move_atr": -3.28,
       "range_used_atr": 10.0,
       "body_frac": 0.87,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.76,
       "mfe": 0.88
@@ -1681,6 +1779,7 @@
       "day_move_atr": 13.08,
       "range_used_atr": 14.1,
       "body_frac": 0.58,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.08,
       "mfe": 0.4
@@ -1698,6 +1797,7 @@
       "day_move_atr": 11.26,
       "range_used_atr": 13.47,
       "body_frac": 0.47,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.66,
       "mfe": 0.38
@@ -1715,6 +1815,7 @@
       "day_move_atr": 17.68,
       "range_used_atr": 20.26,
       "body_frac": 0.89,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.25
@@ -1732,6 +1833,7 @@
       "day_move_atr": 18.5,
       "range_used_atr": 21.17,
       "body_frac": 0.69,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.09
@@ -1749,6 +1851,7 @@
       "day_move_atr": 18.94,
       "range_used_atr": 21.55,
       "body_frac": 0.08,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.03
@@ -1766,6 +1869,7 @@
       "day_move_atr": -16.16,
       "range_used_atr": 21.62,
       "body_frac": 0.33,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.7,
       "mfe": 1.12
@@ -1783,6 +1887,7 @@
       "day_move_atr": 12.51,
       "range_used_atr": 12.81,
       "body_frac": 0.96,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.13,
       "mfe": 0.27
@@ -1800,6 +1905,7 @@
       "day_move_atr": 18.36,
       "range_used_atr": 18.81,
       "body_frac": 0.62,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.15,
       "mfe": 0.38
@@ -1817,6 +1923,7 @@
       "day_move_atr": 19.48,
       "range_used_atr": 19.98,
       "body_frac": 0.79,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.07,
       "mfe": 0.3
@@ -1834,6 +1941,7 @@
       "day_move_atr": 20.12,
       "range_used_atr": 20.75,
       "body_frac": 0.66,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.07,
       "mfe": 0.15
@@ -1851,6 +1959,7 @@
       "day_move_atr": -19.09,
       "range_used_atr": 22.67,
       "body_frac": 0.86,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.61,
       "mfe": 0.08
@@ -1868,6 +1977,7 @@
       "day_move_atr": 23.96,
       "range_used_atr": 25.77,
       "body_frac": 0.82,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.17,
       "mfe": 0.49
@@ -1885,6 +1995,7 @@
       "day_move_atr": 4.17,
       "range_used_atr": 9.88,
       "body_frac": 0.91,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.17,
       "mfe": 0.87
@@ -1902,6 +2013,7 @@
       "day_move_atr": 7.15,
       "range_used_atr": 13.88,
       "body_frac": 0.61,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.05,
       "mfe": 1.34
@@ -1919,6 +2031,7 @@
       "day_move_atr": 9.18,
       "range_used_atr": 9.24,
       "body_frac": 0.94,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.12
@@ -1936,6 +2049,7 @@
       "day_move_atr": -19.24,
       "range_used_atr": 22.7,
       "body_frac": 0.89,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 1.77,
       "mfe": 1.88
@@ -1953,6 +2067,7 @@
       "day_move_atr": -13.76,
       "range_used_atr": 20.16,
       "body_frac": 0.96,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.4,
       "mfe": 1.15
@@ -1970,6 +2085,7 @@
       "day_move_atr": -12.08,
       "range_used_atr": 19.19,
       "body_frac": 0.57,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.06,
       "mfe": 0.63
@@ -1987,6 +2103,7 @@
       "day_move_atr": -11.91,
       "range_used_atr": 21.46,
       "body_frac": 0.11,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.35,
       "mfe": 0.35
@@ -2004,6 +2121,7 @@
       "day_move_atr": -9.57,
       "range_used_atr": 14.69,
       "body_frac": 0.91,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.37,
       "mfe": 0.39
@@ -2021,6 +2139,7 @@
       "day_move_atr": 0.19,
       "range_used_atr": 10.96,
       "body_frac": 0.77,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.67,
       "mfe": 0.34
@@ -2038,6 +2157,7 @@
       "day_move_atr": 0.84,
       "range_used_atr": 11.17,
       "body_frac": 0.86,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.76,
       "mfe": 0.11
@@ -2055,6 +2175,7 @@
       "day_move_atr": -6.08,
       "range_used_atr": 14.16,
       "body_frac": 0.17,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.56,
       "mfe": 0.82
@@ -2072,6 +2193,7 @@
       "day_move_atr": 9.56,
       "range_used_atr": 18.01,
       "body_frac": 0.96,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.0
@@ -2089,6 +2211,7 @@
       "day_move_atr": -6.2,
       "range_used_atr": 16.52,
       "body_frac": 0.85,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.47,
       "mfe": 0.79
@@ -2106,6 +2229,7 @@
       "day_move_atr": -4.8,
       "range_used_atr": 15.32,
       "body_frac": 0.41,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.14,
       "mfe": 0.39
@@ -2123,6 +2247,7 @@
       "day_move_atr": 2.55,
       "range_used_atr": 8.76,
       "body_frac": 0.26,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.27,
       "mfe": 0.15
@@ -2140,6 +2265,7 @@
       "day_move_atr": -0.35,
       "range_used_atr": 12.56,
       "body_frac": 0.1,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.12
@@ -2157,6 +2283,7 @@
       "day_move_atr": -2.71,
       "range_used_atr": 11.08,
       "body_frac": 0.58,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 1.17,
       "mfe": 1.32
@@ -2174,6 +2301,7 @@
       "day_move_atr": -3.11,
       "range_used_atr": 15.58,
       "body_frac": 0.56,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 1.42,
       "mfe": 1.63
@@ -2191,6 +2319,7 @@
       "day_move_atr": -2.93,
       "range_used_atr": 16.11,
       "body_frac": 0.43,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 1.23,
       "mfe": 1.43
@@ -2208,6 +2337,7 @@
       "day_move_atr": -2.59,
       "range_used_atr": 16.58,
       "body_frac": 0.79,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.99,
       "mfe": 1.16
@@ -2225,6 +2355,7 @@
       "day_move_atr": -0.62,
       "range_used_atr": 21.21,
       "body_frac": 0.74,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.48,
       "mfe": 0.67
@@ -2242,6 +2373,7 @@
       "day_move_atr": -0.08,
       "range_used_atr": 6.28,
       "body_frac": 0.97,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.5,
       "mfe": 1.1
@@ -2259,6 +2391,7 @@
       "day_move_atr": 1.58,
       "range_used_atr": 6.28,
       "body_frac": 0.75,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.02,
       "mfe": 0.45
@@ -2276,6 +2409,7 @@
       "day_move_atr": 2.93,
       "range_used_atr": 9.13,
       "body_frac": 0.68,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.15,
       "mfe": 0.82
@@ -2293,6 +2427,7 @@
       "day_move_atr": 3.48,
       "range_used_atr": 9.29,
       "body_frac": 0.7,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.27,
       "mfe": 0.6
@@ -2310,6 +2445,7 @@
       "day_move_atr": -3.77,
       "range_used_atr": 8.94,
       "body_frac": 0.23,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.84,
       "mfe": 1.55
@@ -2327,6 +2463,7 @@
       "day_move_atr": 1.52,
       "range_used_atr": 11.7,
       "body_frac": 0.78,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.78,
       "mfe": 0.01
@@ -2344,6 +2481,7 @@
       "day_move_atr": 1.92,
       "range_used_atr": 14.6,
       "body_frac": 0.86,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.01,
       "mfe": 0.08
@@ -2361,6 +2499,7 @@
       "day_move_atr": -8.67,
       "range_used_atr": 14.9,
       "body_frac": 0.91,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.37,
       "mfe": 1.1
@@ -2378,6 +2517,7 @@
       "day_move_atr": -8.63,
       "range_used_atr": 15.3,
       "body_frac": 0.2,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.26,
       "mfe": 0.93
@@ -2395,6 +2535,7 @@
       "day_move_atr": -8.19,
       "range_used_atr": 15.17,
       "body_frac": 0.8,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.13,
       "mfe": 0.77
@@ -2412,6 +2553,7 @@
       "day_move_atr": -8.44,
       "range_used_atr": 16.95,
       "body_frac": 0.71,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.2
@@ -2429,6 +2571,7 @@
       "day_move_atr": -2.33,
       "range_used_atr": 7.55,
       "body_frac": 0.25,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.54
@@ -2446,6 +2589,7 @@
       "day_move_atr": -1.42,
       "range_used_atr": 8.53,
       "body_frac": 0.64,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.11
@@ -2463,6 +2607,7 @@
       "day_move_atr": 3.88,
       "range_used_atr": 10.13,
       "body_frac": 0.35,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.28,
       "mfe": 0.82
@@ -2480,6 +2625,7 @@
       "day_move_atr": 5.82,
       "range_used_atr": 11.04,
       "body_frac": 0.68,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.1,
       "mfe": 0.38
@@ -2497,6 +2643,7 @@
       "day_move_atr": -1.73,
       "range_used_atr": 8.31,
       "body_frac": 0.62,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.38,
       "mfe": 0.89
@@ -2514,6 +2661,7 @@
       "day_move_atr": 2.16,
       "range_used_atr": 10.1,
       "body_frac": 0.89,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.52,
       "mfe": 0.32
@@ -2531,6 +2679,7 @@
       "day_move_atr": 3.22,
       "range_used_atr": 11.32,
       "body_frac": 0.71,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.65,
       "mfe": 0.0
@@ -2548,6 +2697,7 @@
       "day_move_atr": -0.74,
       "range_used_atr": 11.66,
       "body_frac": 0.55,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.16,
       "mfe": 0.22
@@ -2565,6 +2715,7 @@
       "day_move_atr": 1.91,
       "range_used_atr": 5.59,
       "body_frac": 0.57,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.0
@@ -2582,6 +2733,7 @@
       "day_move_atr": 1.44,
       "range_used_atr": 4.36,
       "body_frac": 0.73,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.17,
       "mfe": 1.2
@@ -2599,6 +2751,7 @@
       "day_move_atr": -1.47,
       "range_used_atr": 10.27,
       "body_frac": 0.55,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.16,
       "mfe": 0.27
@@ -2616,6 +2769,7 @@
       "day_move_atr": -13.46,
       "range_used_atr": 22.61,
       "body_frac": 0.13,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.49,
       "mfe": 0.38
@@ -2633,6 +2787,7 @@
       "day_move_atr": 16.31,
       "range_used_atr": 24.61,
       "body_frac": 0.41,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.0,
       "mfe": 0.34
@@ -2650,8 +2805,9 @@
       "day_move_atr": -7.0,
       "range_used_atr": 12.39,
       "body_frac": 0.73,
+      "htf_aligned": 0.0,
       "won": 0,
-      "r": -0.84,
+      "r": -0.83,
       "mfe": 0.04
     },
     {
@@ -2667,6 +2823,7 @@
       "day_move_atr": 2.23,
       "range_used_atr": 6.52,
       "body_frac": 0.94,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.09,
       "mfe": 1.68
@@ -2684,6 +2841,7 @@
       "day_move_atr": 3.11,
       "range_used_atr": 8.13,
       "body_frac": 0.75,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.1,
       "mfe": 1.29
@@ -2701,6 +2859,7 @@
       "day_move_atr": 4.16,
       "range_used_atr": 9.29,
       "body_frac": 0.51,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.33,
       "mfe": 0.87
@@ -2718,6 +2877,7 @@
       "day_move_atr": 4.28,
       "range_used_atr": 9.98,
       "body_frac": 0.05,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.37,
       "mfe": 0.93
@@ -2735,6 +2895,7 @@
       "day_move_atr": 7.21,
       "range_used_atr": 13.45,
       "body_frac": 0.93,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.43
@@ -2752,6 +2913,7 @@
       "day_move_atr": 4.47,
       "range_used_atr": 8.78,
       "body_frac": 0.44,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.22,
       "mfe": 0.53
@@ -2769,6 +2931,7 @@
       "day_move_atr": -6.05,
       "range_used_atr": 13.83,
       "body_frac": 0.81,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.38,
       "mfe": 0.63
@@ -2786,6 +2949,7 @@
       "day_move_atr": 8.39,
       "range_used_atr": 11.97,
       "body_frac": 0.55,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.26
@@ -2803,6 +2967,7 @@
       "day_move_atr": -10.66,
       "range_used_atr": 15.9,
       "body_frac": 0.73,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.08,
       "mfe": 1.02
@@ -2820,6 +2985,7 @@
       "day_move_atr": -9.74,
       "range_used_atr": 15.66,
       "body_frac": 0.69,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.12,
       "mfe": 0.7
@@ -2837,6 +3003,7 @@
       "day_move_atr": 4.68,
       "range_used_atr": 6.28,
       "body_frac": 1.0,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 2.0,
       "mfe": 2.02
@@ -2854,6 +3021,7 @@
       "day_move_atr": 14.03,
       "range_used_atr": 14.28,
       "body_frac": 0.88,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.23,
       "mfe": 0.71
@@ -2871,6 +3039,7 @@
       "day_move_atr": 14.35,
       "range_used_atr": 14.49,
       "body_frac": 0.57,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.01,
       "mfe": 0.36
@@ -2888,6 +3057,7 @@
       "day_move_atr": -3.36,
       "range_used_atr": 11.22,
       "body_frac": 0.64,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.07,
       "mfe": 1.05
@@ -2905,6 +3075,7 @@
       "day_move_atr": -1.69,
       "range_used_atr": 13.58,
       "body_frac": 0.48,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.78,
       "mfe": 0.58
@@ -2922,6 +3093,7 @@
       "day_move_atr": 10.82,
       "range_used_atr": 10.91,
       "body_frac": 0.88,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.13,
       "mfe": 0.13
@@ -2939,6 +3111,7 @@
       "day_move_atr": 15.6,
       "range_used_atr": 15.99,
       "body_frac": 0.47,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.28,
       "mfe": 0.28
@@ -2956,6 +3129,7 @@
       "day_move_atr": 16.54,
       "range_used_atr": 16.69,
       "body_frac": 0.73,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.13,
       "mfe": 0.13
@@ -2973,6 +3147,7 @@
       "day_move_atr": 3.87,
       "range_used_atr": 7.19,
       "body_frac": 0.75,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 1.1,
       "mfe": 1.15
@@ -2990,6 +3165,7 @@
       "day_move_atr": 2.99,
       "range_used_atr": 10.43,
       "body_frac": 0.61,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.72,
       "mfe": 1.04
@@ -3007,6 +3183,7 @@
       "day_move_atr": 8.0,
       "range_used_atr": 17.81,
       "body_frac": 0.61,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.07,
       "mfe": 0.34
@@ -3024,6 +3201,7 @@
       "day_move_atr": 5.73,
       "range_used_atr": 8.41,
       "body_frac": 0.75,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.56
@@ -3041,6 +3219,7 @@
       "day_move_atr": -1.1,
       "range_used_atr": 14.46,
       "body_frac": 0.85,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.49,
       "mfe": 0.52
@@ -3058,6 +3237,7 @@
       "day_move_atr": -0.64,
       "range_used_atr": 14.2,
       "body_frac": 0.31,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.39,
       "mfe": 0.42
@@ -3075,6 +3255,7 @@
       "day_move_atr": 7.34,
       "range_used_atr": 9.33,
       "body_frac": 0.77,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.62,
       "mfe": 0.15
@@ -3092,6 +3273,7 @@
       "day_move_atr": -5.81,
       "range_used_atr": 11.14,
       "body_frac": 0.88,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.06,
       "mfe": 0.04
@@ -3109,6 +3291,7 @@
       "day_move_atr": 2.59,
       "range_used_atr": 8.91,
       "body_frac": 0.27,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.64,
       "mfe": 0.41
@@ -3126,6 +3309,7 @@
       "day_move_atr": 4.37,
       "range_used_atr": 10.88,
       "body_frac": 0.4,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.22
@@ -3143,6 +3327,7 @@
       "day_move_atr": -3.78,
       "range_used_atr": 14.53,
       "body_frac": 0.7,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.98,
       "mfe": 1.5
@@ -3160,6 +3345,7 @@
       "day_move_atr": 0.02,
       "range_used_atr": 16.81,
       "body_frac": 0.74,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.03,
       "mfe": 0.51
@@ -3177,6 +3363,7 @@
       "day_move_atr": 0.9,
       "range_used_atr": 16.49,
       "body_frac": 0.72,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.24,
       "mfe": 0.28
@@ -3194,6 +3381,7 @@
       "day_move_atr": 2.18,
       "range_used_atr": 5.75,
       "body_frac": 0.92,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.37,
       "mfe": 0.77
@@ -3211,6 +3399,7 @@
       "day_move_atr": 4.73,
       "range_used_atr": 11.08,
       "body_frac": 0.69,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.17,
       "mfe": 0.75
@@ -3228,6 +3417,7 @@
       "day_move_atr": 3.54,
       "range_used_atr": 7.96,
       "body_frac": 0.6,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.32
@@ -3245,6 +3435,7 @@
       "day_move_atr": 4.2,
       "range_used_atr": 8.0,
       "body_frac": 0.64,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.11
@@ -3262,6 +3453,7 @@
       "day_move_atr": -2.35,
       "range_used_atr": 9.45,
       "body_frac": 1.0,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.44,
       "mfe": 0.73
@@ -3279,6 +3471,7 @@
       "day_move_atr": 10.56,
       "range_used_atr": 12.07,
       "body_frac": 0.64,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.66,
       "mfe": 0.15
@@ -3296,6 +3489,7 @@
       "day_move_atr": -12.79,
       "range_used_atr": 16.16,
       "body_frac": 0.8,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.74,
       "mfe": 0.93
@@ -3313,6 +3507,7 @@
       "day_move_atr": -19.57,
       "range_used_atr": 24.64,
       "body_frac": 0.86,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 1.0,
       "mfe": 1.26
@@ -3330,6 +3525,7 @@
       "day_move_atr": 0.64,
       "range_used_atr": 9.0,
       "body_frac": 0.71,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.17,
       "mfe": 1.16
@@ -3347,6 +3543,7 @@
       "day_move_atr": 1.19,
       "range_used_atr": 9.13,
       "body_frac": 0.61,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.01,
       "mfe": 0.87
@@ -3364,6 +3561,7 @@
       "day_move_atr": 4.14,
       "range_used_atr": 6.36,
       "body_frac": 0.82,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.34
@@ -3381,6 +3579,7 @@
       "day_move_atr": 4.89,
       "range_used_atr": 7.22,
       "body_frac": 0.84,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.12
@@ -3398,6 +3597,7 @@
       "day_move_atr": -4.16,
       "range_used_atr": 12.59,
       "body_frac": 0.25,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 2.0,
       "mfe": 2.27
@@ -3415,6 +3615,7 @@
       "day_move_atr": -3.61,
       "range_used_atr": 12.5,
       "body_frac": 0.49,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 2.0,
       "mfe": 2.01
@@ -3432,6 +3633,7 @@
       "day_move_atr": -21.51,
       "range_used_atr": 26.09,
       "body_frac": 0.8,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.42,
       "mfe": 0.43
@@ -3449,6 +3651,7 @@
       "day_move_atr": -21.06,
       "range_used_atr": 25.93,
       "body_frac": 0.11,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.47,
       "mfe": 0.31
@@ -3466,6 +3669,7 @@
       "day_move_atr": 5.46,
       "range_used_atr": 12.32,
       "body_frac": 0.88,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.35,
       "mfe": 0.34
@@ -3483,6 +3687,7 @@
       "day_move_atr": 6.2,
       "range_used_atr": 12.42,
       "body_frac": 0.45,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.47,
       "mfe": 0.1
@@ -3500,6 +3705,7 @@
       "day_move_atr": 6.53,
       "range_used_atr": 8.74,
       "body_frac": 0.69,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.22
@@ -3517,6 +3723,7 @@
       "day_move_atr": 6.84,
       "range_used_atr": 9.13,
       "body_frac": 0.3,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.17
@@ -3534,6 +3741,7 @@
       "day_move_atr": 2.46,
       "range_used_atr": 13.67,
       "body_frac": 0.82,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.38,
       "mfe": 0.55
@@ -3551,6 +3759,7 @@
       "day_move_atr": 3.8,
       "range_used_atr": 10.63,
       "body_frac": 0.98,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.09,
       "mfe": 0.53
@@ -3568,6 +3777,7 @@
       "day_move_atr": 20.92,
       "range_used_atr": 22.66,
       "body_frac": 0.82,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.91
@@ -3585,6 +3795,7 @@
       "day_move_atr": 21.56,
       "range_used_atr": 23.16,
       "body_frac": 0.71,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.53
@@ -3602,6 +3813,7 @@
       "day_move_atr": 21.94,
       "range_used_atr": 23.58,
       "body_frac": 0.71,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.21
@@ -3619,6 +3831,7 @@
       "day_move_atr": -0.99,
       "range_used_atr": 7.21,
       "body_frac": 0.96,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.59,
       "mfe": 1.32
@@ -3636,6 +3849,7 @@
       "day_move_atr": -0.58,
       "range_used_atr": 7.35,
       "body_frac": 0.55,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.42,
       "mfe": 1.08
@@ -3653,6 +3867,7 @@
       "day_move_atr": 1.76,
       "range_used_atr": 8.2,
       "body_frac": 0.85,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.13,
       "mfe": 0.6
@@ -3670,6 +3885,7 @@
       "day_move_atr": 2.65,
       "range_used_atr": 9.21,
       "body_frac": 0.74,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.3,
       "mfe": 0.29
@@ -3687,6 +3903,7 @@
       "day_move_atr": 5.12,
       "range_used_atr": 6.91,
       "body_frac": 0.66,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.56,
       "mfe": 0.3
@@ -3704,6 +3921,7 @@
       "day_move_atr": 10.67,
       "range_used_atr": 12.78,
       "body_frac": 0.36,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.32
@@ -3721,6 +3939,7 @@
       "day_move_atr": -10.08,
       "range_used_atr": 14.03,
       "body_frac": 0.97,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 1.17,
       "mfe": 1.29
@@ -3738,6 +3957,7 @@
       "day_move_atr": -3.73,
       "range_used_atr": 13.25,
       "body_frac": 0.52,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.59,
       "mfe": 0.52
@@ -3755,6 +3975,7 @@
       "day_move_atr": -3.3,
       "range_used_atr": 13.35,
       "body_frac": 0.68,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.64,
       "mfe": 0.35
@@ -3772,6 +3993,7 @@
       "day_move_atr": -2.27,
       "range_used_atr": 11.97,
       "body_frac": 0.3,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.68,
       "mfe": 0.13
@@ -3789,6 +4011,7 @@
       "day_move_atr": -1.99,
       "range_used_atr": 6.84,
       "body_frac": 0.78,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.45,
       "mfe": 0.47
@@ -3806,6 +4029,7 @@
       "day_move_atr": 3.73,
       "range_used_atr": 12.01,
       "body_frac": 0.62,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.76,
       "mfe": 0.96
@@ -3823,6 +4047,7 @@
       "day_move_atr": 7.82,
       "range_used_atr": 8.89,
       "body_frac": 0.68,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.33,
       "mfe": 0.6
@@ -3840,6 +4065,7 @@
       "day_move_atr": -11.57,
       "range_used_atr": 19.31,
       "body_frac": 0.64,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.37
@@ -3857,6 +4083,7 @@
       "day_move_atr": -11.38,
       "range_used_atr": 19.51,
       "body_frac": 0.37,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.27
@@ -3874,6 +4101,7 @@
       "day_move_atr": 8.93,
       "range_used_atr": 9.0,
       "body_frac": 0.95,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.4,
       "mfe": 1.09
@@ -3891,6 +4119,7 @@
       "day_move_atr": 9.55,
       "range_used_atr": 9.63,
       "body_frac": 0.64,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.22,
       "mfe": 0.82
@@ -3908,6 +4137,7 @@
       "day_move_atr": 14.58,
       "range_used_atr": 15.04,
       "body_frac": 0.4,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.47,
       "mfe": 0.32
@@ -3925,6 +4155,7 @@
       "day_move_atr": -6.25,
       "range_used_atr": 12.8,
       "body_frac": 0.56,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.58,
       "mfe": 0.86
@@ -3942,6 +4173,7 @@
       "day_move_atr": 0.35,
       "range_used_atr": 6.84,
       "body_frac": 0.76,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.05,
       "mfe": 0.48
@@ -3959,6 +4191,7 @@
       "day_move_atr": 1.48,
       "range_used_atr": 8.76,
       "body_frac": 0.52,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.21,
       "mfe": 0.41
@@ -3976,6 +4209,7 @@
       "day_move_atr": 2.01,
       "range_used_atr": 8.98,
       "body_frac": 0.69,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.31,
       "mfe": 0.24
@@ -3993,6 +4227,7 @@
       "day_move_atr": 2.21,
       "range_used_atr": 10.67,
       "body_frac": 0.39,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.4,
       "mfe": 0.41
@@ -4010,6 +4245,7 @@
       "day_move_atr": 7.35,
       "range_used_atr": 10.65,
       "body_frac": 0.45,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.14
@@ -4027,6 +4263,7 @@
       "day_move_atr": -0.28,
       "range_used_atr": 5.2,
       "body_frac": 0.44,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.21,
       "mfe": 0.17
@@ -4044,6 +4281,7 @@
       "day_move_atr": 0.17,
       "range_used_atr": 6.37,
       "body_frac": 0.46,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.08
@@ -4061,6 +4299,7 @@
       "day_move_atr": 3.21,
       "range_used_atr": 9.44,
       "body_frac": 0.71,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.32,
       "mfe": 0.31
@@ -4078,6 +4317,7 @@
       "day_move_atr": -1.86,
       "range_used_atr": 9.9,
       "body_frac": 0.63,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.02
@@ -4095,6 +4335,7 @@
       "day_move_atr": -5.66,
       "range_used_atr": 15.25,
       "body_frac": 0.44,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.45
@@ -4112,6 +4353,7 @@
       "day_move_atr": -1.76,
       "range_used_atr": 9.44,
       "body_frac": 0.73,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.42,
       "mfe": 0.05
@@ -4129,6 +4371,7 @@
       "day_move_atr": -4.8,
       "range_used_atr": 14.46,
       "body_frac": 0.74,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.3,
       "mfe": 0.24
@@ -4146,6 +4389,7 @@
       "day_move_atr": -4.03,
       "range_used_atr": 14.61,
       "body_frac": 0.95,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.44,
       "mfe": 0.0
@@ -4163,6 +4407,7 @@
       "day_move_atr": 9.74,
       "range_used_atr": 11.38,
       "body_frac": 0.85,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.05,
       "mfe": 0.17
@@ -4180,6 +4425,7 @@
       "day_move_atr": -16.92,
       "range_used_atr": 22.02,
       "body_frac": 0.86,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.21
@@ -4197,6 +4443,7 @@
       "day_move_atr": 5.89,
       "range_used_atr": 15.35,
       "body_frac": 0.9,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.18,
       "mfe": 0.58
@@ -4214,6 +4461,7 @@
       "day_move_atr": 5.03,
       "range_used_atr": 8.34,
       "body_frac": 0.61,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.34,
       "mfe": 0.67
@@ -4231,6 +4479,7 @@
       "day_move_atr": -6.1,
       "range_used_atr": 12.88,
       "body_frac": 0.78,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.54,
       "mfe": 0.63
@@ -4248,6 +4497,7 @@
       "day_move_atr": -3.95,
       "range_used_atr": 12.41,
       "body_frac": 1.0,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.16
@@ -4265,6 +4515,7 @@
       "day_move_atr": -3.55,
       "range_used_atr": 12.53,
       "body_frac": 0.53,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.04
@@ -4282,6 +4533,7 @@
       "day_move_atr": 4.45,
       "range_used_atr": 6.12,
       "body_frac": 0.74,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.19,
       "mfe": 0.81
@@ -4299,6 +4551,7 @@
       "day_move_atr": 5.16,
       "range_used_atr": 6.99,
       "body_frac": 0.69,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.08,
       "mfe": 0.66
@@ -4316,6 +4569,7 @@
       "day_move_atr": -9.19,
       "range_used_atr": 14.42,
       "body_frac": 0.43,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.27,
       "mfe": 1.47
@@ -4333,6 +4587,7 @@
       "day_move_atr": 7.45,
       "range_used_atr": 13.0,
       "body_frac": 0.87,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.01,
       "mfe": 0.22
@@ -4350,6 +4605,7 @@
       "day_move_atr": 11.47,
       "range_used_atr": 14.12,
       "body_frac": 0.95,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.35,
       "mfe": 0.57
@@ -4367,6 +4623,7 @@
       "day_move_atr": -1.71,
       "range_used_atr": 11.98,
       "body_frac": 0.91,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 1.26
@@ -4384,6 +4641,7 @@
       "day_move_atr": -1.43,
       "range_used_atr": 12.21,
       "body_frac": 0.43,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 1.09
@@ -4401,6 +4659,7 @@
       "day_move_atr": -0.7,
       "range_used_atr": 13.26,
       "body_frac": 0.93,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.9
@@ -4418,6 +4677,7 @@
       "day_move_atr": -4.3,
       "range_used_atr": 10.67,
       "body_frac": 1.0,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.71,
       "mfe": 1.3
@@ -4435,6 +4695,7 @@
       "day_move_atr": -3.72,
       "range_used_atr": 10.72,
       "body_frac": 0.58,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.55,
       "mfe": 1.14
@@ -4452,6 +4713,7 @@
       "day_move_atr": -11.88,
       "range_used_atr": 20.26,
       "body_frac": 0.96,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.08,
       "mfe": 0.38
@@ -4469,6 +4731,7 @@
       "day_move_atr": 4.72,
       "range_used_atr": 9.48,
       "body_frac": 0.86,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.32,
       "mfe": 1.56
@@ -4486,6 +4749,7 @@
       "day_move_atr": 5.96,
       "range_used_atr": 8.91,
       "body_frac": 0.88,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.12,
       "mfe": 0.72
@@ -4503,6 +4767,7 @@
       "day_move_atr": 1.99,
       "range_used_atr": 9.27,
       "body_frac": 0.91,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.03
@@ -4520,6 +4785,7 @@
       "day_move_atr": -1.98,
       "range_used_atr": 16.06,
       "body_frac": 0.83,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.35,
       "mfe": 0.6
@@ -4537,6 +4803,7 @@
       "day_move_atr": 15.15,
       "range_used_atr": 16.36,
       "body_frac": 0.58,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.08,
       "mfe": 0.41
@@ -4554,6 +4821,7 @@
       "day_move_atr": 20.56,
       "range_used_atr": 22.68,
       "body_frac": 0.61,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.2,
       "mfe": 0.62
@@ -4571,6 +4839,7 @@
       "day_move_atr": -2.29,
       "range_used_atr": 7.45,
       "body_frac": 0.73,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.61,
       "mfe": 0.0
@@ -4588,6 +4857,7 @@
       "day_move_atr": 5.11,
       "range_used_atr": 10.37,
       "body_frac": 0.79,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.24,
       "mfe": 0.67
@@ -4605,6 +4875,7 @@
       "day_move_atr": 5.9,
       "range_used_atr": 11.45,
       "body_frac": 0.97,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.15,
       "mfe": 0.58
@@ -4622,6 +4893,7 @@
       "day_move_atr": 6.44,
       "range_used_atr": 11.57,
       "body_frac": 0.66,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.01,
       "mfe": 0.38
@@ -4639,6 +4911,7 @@
       "day_move_atr": 5.77,
       "range_used_atr": 7.83,
       "body_frac": 0.66,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.32,
       "mfe": 0.05
@@ -4656,6 +4929,7 @@
       "day_move_atr": 9.1,
       "range_used_atr": 13.09,
       "body_frac": 0.46,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.44,
       "mfe": 0.2
@@ -4673,6 +4947,7 @@
       "day_move_atr": -7.26,
       "range_used_atr": 13.58,
       "body_frac": 0.47,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.13,
       "mfe": 0.34
@@ -4690,6 +4965,7 @@
       "day_move_atr": -6.89,
       "range_used_atr": 13.35,
       "body_frac": 0.68,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.67
@@ -4707,6 +4983,7 @@
       "day_move_atr": -4.93,
       "range_used_atr": 12.7,
       "body_frac": 0.7,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.06
@@ -4724,6 +5001,7 @@
       "day_move_atr": -2.39,
       "range_used_atr": 15.01,
       "body_frac": 0.65,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.76,
       "mfe": 0.96
@@ -4741,6 +5019,7 @@
       "day_move_atr": 5.56,
       "range_used_atr": 7.87,
       "body_frac": 0.69,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.58,
       "mfe": 0.3
@@ -4758,6 +5037,7 @@
       "day_move_atr": -4.47,
       "range_used_atr": 9.88,
       "body_frac": 0.39,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.12,
       "mfe": 0.25
@@ -4775,6 +5055,7 @@
       "day_move_atr": -3.94,
       "range_used_atr": 12.24,
       "body_frac": 0.86,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 2.0,
       "mfe": 2.1
@@ -4792,6 +5073,7 @@
       "day_move_atr": 3.77,
       "range_used_atr": 9.77,
       "body_frac": 0.66,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.17,
       "mfe": 0.68
@@ -4809,6 +5091,7 @@
       "day_move_atr": 3.36,
       "range_used_atr": 9.45,
       "body_frac": 0.36,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 2.0,
       "mfe": 2.19
@@ -4826,6 +5109,7 @@
       "day_move_atr": 3.76,
       "range_used_atr": 12.5,
       "body_frac": 0.85,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 2.0,
       "mfe": 3.21
@@ -4843,6 +5127,7 @@
       "day_move_atr": 7.14,
       "range_used_atr": 11.29,
       "body_frac": 0.33,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 2.0,
       "mfe": 2.32
@@ -4860,6 +5145,7 @@
       "day_move_atr": 8.02,
       "range_used_atr": 11.99,
       "body_frac": 0.69,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.57,
       "mfe": 1.23
@@ -4877,6 +5163,7 @@
       "day_move_atr": 15.17,
       "range_used_atr": 19.39,
       "body_frac": 0.38,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.48,
       "mfe": 0.58
@@ -4894,6 +5181,7 @@
       "day_move_atr": 15.78,
       "range_used_atr": 19.92,
       "body_frac": 0.85,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.64,
       "mfe": 0.01
@@ -4911,6 +5199,7 @@
       "day_move_atr": 6.18,
       "range_used_atr": 8.39,
       "body_frac": 0.86,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.25,
       "mfe": 0.63
@@ -4928,6 +5217,7 @@
       "day_move_atr": 6.95,
       "range_used_atr": 8.64,
       "body_frac": 0.9,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.36,
       "mfe": 0.41
@@ -4945,6 +5235,7 @@
       "day_move_atr": 7.72,
       "range_used_atr": 9.15,
       "body_frac": 0.72,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.5,
       "mfe": 0.16
@@ -4962,6 +5253,7 @@
       "day_move_atr": 10.81,
       "range_used_atr": 13.94,
       "body_frac": 0.89,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.39
@@ -4979,6 +5271,7 @@
       "day_move_atr": 11.6,
       "range_used_atr": 14.18,
       "body_frac": 0.76,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.02
@@ -4996,6 +5289,7 @@
       "day_move_atr": -7.96,
       "range_used_atr": 13.48,
       "body_frac": 0.89,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.3,
       "mfe": 0.41
@@ -5013,6 +5307,7 @@
       "day_move_atr": 11.37,
       "range_used_atr": 18.65,
       "body_frac": 0.77,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.67,
       "mfe": 0.44
@@ -5030,6 +5325,7 @@
       "day_move_atr": 2.88,
       "range_used_atr": 5.8,
       "body_frac": 0.68,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.48,
       "mfe": 0.6
@@ -5047,6 +5343,7 @@
       "day_move_atr": -3.8,
       "range_used_atr": 8.39,
       "body_frac": 0.49,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.69,
       "mfe": 0.22
@@ -5064,6 +5361,7 @@
       "day_move_atr": -4.97,
       "range_used_atr": 10.86,
       "body_frac": 0.42,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.19
@@ -5081,6 +5379,7 @@
       "day_move_atr": -0.09,
       "range_used_atr": 6.47,
       "body_frac": 0.91,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.04,
       "mfe": 0.3
@@ -5098,6 +5397,7 @@
       "day_move_atr": 2.65,
       "range_used_atr": 11.73,
       "body_frac": 0.96,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.69
@@ -5115,6 +5415,7 @@
       "day_move_atr": 2.81,
       "range_used_atr": 11.31,
       "body_frac": 0.49,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.57
@@ -5132,8 +5433,9 @@
       "day_move_atr": 2.62,
       "range_used_atr": 7.66,
       "body_frac": 0.91,
+      "htf_aligned": 1.0,
       "won": 0,
-      "r": -0.39,
+      "r": -0.43,
       "mfe": 0.55
     },
     {
@@ -5149,8 +5451,9 @@
       "day_move_atr": 3.2,
       "range_used_atr": 7.56,
       "body_frac": 0.55,
+      "htf_aligned": 1.0,
       "won": 0,
-      "r": -0.48,
+      "r": -0.51,
       "mfe": 0.32
     },
     {
@@ -5166,6 +5469,7 @@
       "day_move_atr": -1.13,
       "range_used_atr": 6.42,
       "body_frac": 0.52,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.04
@@ -5183,6 +5487,7 @@
       "day_move_atr": 3.96,
       "range_used_atr": 7.82,
       "body_frac": 0.2,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 1.02,
       "mfe": 1.28
@@ -5200,6 +5505,7 @@
       "day_move_atr": 10.71,
       "range_used_atr": 13.88,
       "body_frac": 0.91,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.93,
       "mfe": 0.32
@@ -5217,6 +5523,7 @@
       "day_move_atr": 11.28,
       "range_used_atr": 14.62,
       "body_frac": 0.8,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.85,
       "mfe": 0.17
@@ -5234,6 +5541,7 @@
       "day_move_atr": -9.07,
       "range_used_atr": 16.58,
       "body_frac": 0.63,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.62,
       "mfe": 0.69
@@ -5251,6 +5559,7 @@
       "day_move_atr": -0.46,
       "range_used_atr": 10.73,
       "body_frac": 0.87,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.12,
       "mfe": 1.06
@@ -5268,6 +5577,7 @@
       "day_move_atr": -5.66,
       "range_used_atr": 13.33,
       "body_frac": 0.83,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.11,
       "mfe": 0.77
@@ -5285,6 +5595,7 @@
       "day_move_atr": -4.16,
       "range_used_atr": 13.99,
       "body_frac": 0.95,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.34,
       "mfe": 0.45
@@ -5302,6 +5613,7 @@
       "day_move_atr": -2.95,
       "range_used_atr": 14.37,
       "body_frac": 0.28,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.56,
       "mfe": 0.03
@@ -5319,6 +5631,7 @@
       "day_move_atr": 7.42,
       "range_used_atr": 8.95,
       "body_frac": 1.0,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.26,
       "mfe": 0.63
@@ -5336,6 +5649,7 @@
       "day_move_atr": 8.56,
       "range_used_atr": 10.09,
       "body_frac": 0.96,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.11,
       "mfe": 0.15
@@ -5353,6 +5667,7 @@
       "day_move_atr": -8.65,
       "range_used_atr": 15.09,
       "body_frac": 0.81,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.71,
       "mfe": 0.49
@@ -5370,6 +5685,7 @@
       "day_move_atr": -7.68,
       "range_used_atr": 15.06,
       "body_frac": 0.9,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.22
@@ -5387,6 +5703,7 @@
       "day_move_atr": -7.65,
       "range_used_atr": 15.22,
       "body_frac": 0.25,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.2
@@ -5404,6 +5721,7 @@
       "day_move_atr": 1.39,
       "range_used_atr": 13.55,
       "body_frac": 0.83,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.21,
       "mfe": 0.42
@@ -5421,6 +5739,7 @@
       "day_move_atr": 2.76,
       "range_used_atr": 14.25,
       "body_frac": 0.9,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.14,
       "mfe": 0.04
@@ -5438,6 +5757,7 @@
       "day_move_atr": -5.18,
       "range_used_atr": 13.08,
       "body_frac": 0.45,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.0
@@ -5455,6 +5775,7 @@
       "day_move_atr": 10.34,
       "range_used_atr": 18.4,
       "body_frac": 0.64,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.99,
       "mfe": 1.2
@@ -5472,6 +5793,7 @@
       "day_move_atr": 15.1,
       "range_used_atr": 15.71,
       "body_frac": 0.69,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.12
@@ -5489,6 +5811,7 @@
       "day_move_atr": 14.93,
       "range_used_atr": 24.23,
       "body_frac": 0.44,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.24,
       "mfe": 0.36
@@ -5506,6 +5829,7 @@
       "day_move_atr": 1.69,
       "range_used_atr": 4.9,
       "body_frac": 0.76,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.28,
       "mfe": 1.17
@@ -5523,6 +5847,7 @@
       "day_move_atr": 2.69,
       "range_used_atr": 5.98,
       "body_frac": 1.0,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.03,
       "mfe": 0.85
@@ -5540,6 +5865,7 @@
       "day_move_atr": -9.71,
       "range_used_atr": 18.95,
       "body_frac": 0.81,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.55,
       "mfe": 0.92
@@ -5557,6 +5883,7 @@
       "day_move_atr": -8.03,
       "range_used_atr": 22.23,
       "body_frac": 0.84,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.11
@@ -5574,6 +5901,7 @@
       "day_move_atr": -1.99,
       "range_used_atr": 8.55,
       "body_frac": 0.67,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.6
@@ -5591,6 +5919,7 @@
       "day_move_atr": -1.67,
       "range_used_atr": 8.64,
       "body_frac": 0.22,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.46
@@ -5608,6 +5937,7 @@
       "day_move_atr": 5.22,
       "range_used_atr": 6.98,
       "body_frac": 0.73,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.7,
       "mfe": 0.98
@@ -5625,6 +5955,7 @@
       "day_move_atr": 12.87,
       "range_used_atr": 15.34,
       "body_frac": 0.74,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.2,
       "mfe": 0.22
@@ -5642,6 +5973,7 @@
       "day_move_atr": 0.82,
       "range_used_atr": 7.52,
       "body_frac": 0.56,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.0
@@ -5659,6 +5991,7 @@
       "day_move_atr": -1.96,
       "range_used_atr": 13.02,
       "body_frac": 1.0,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.15,
       "mfe": 0.07
@@ -5676,6 +6009,7 @@
       "day_move_atr": -1.74,
       "range_used_atr": 8.22,
       "body_frac": 0.56,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.07
@@ -5693,6 +6027,7 @@
       "day_move_atr": 7.25,
       "range_used_atr": 14.52,
       "body_frac": 0.83,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 1.03,
       "mfe": 1.46
@@ -5710,6 +6045,7 @@
       "day_move_atr": 15.72,
       "range_used_atr": 16.66,
       "body_frac": 0.95,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.09
@@ -5727,6 +6063,7 @@
       "day_move_atr": -20.21,
       "range_used_atr": 24.95,
       "body_frac": 0.84,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 1.02,
       "mfe": 1.17
@@ -5744,6 +6081,7 @@
       "day_move_atr": -18.82,
       "range_used_atr": 24.65,
       "body_frac": 0.68,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.62,
       "mfe": 0.75
@@ -5761,6 +6099,7 @@
       "day_move_atr": 5.59,
       "range_used_atr": 15.32,
       "body_frac": 0.84,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.1
@@ -5778,6 +6117,7 @@
       "day_move_atr": -3.3,
       "range_used_atr": 16.9,
       "body_frac": 0.95,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.68
@@ -5795,6 +6135,7 @@
       "day_move_atr": -1.08,
       "range_used_atr": 15.55,
       "body_frac": 0.9,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.12
@@ -5812,6 +6153,7 @@
       "day_move_atr": -1.69,
       "range_used_atr": 11.03,
       "body_frac": 0.84,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.36
@@ -5829,6 +6171,7 @@
       "day_move_atr": 12.9,
       "range_used_atr": 17.81,
       "body_frac": 0.46,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.37,
       "mfe": 0.4
@@ -5846,6 +6189,7 @@
       "day_move_atr": 18.36,
       "range_used_atr": 24.3,
       "body_frac": 0.79,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.76,
       "mfe": 0.38
@@ -5863,6 +6207,7 @@
       "day_move_atr": 18.39,
       "range_used_atr": 23.68,
       "body_frac": 0.36,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.79,
       "mfe": 0.09
@@ -5880,6 +6225,7 @@
       "day_move_atr": -5.48,
       "range_used_atr": 10.24,
       "body_frac": 0.13,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.13
@@ -5897,6 +6243,7 @@
       "day_move_atr": 11.29,
       "range_used_atr": 16.01,
       "body_frac": 0.78,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 1.18,
       "mfe": 1.2
@@ -5914,6 +6261,7 @@
       "day_move_atr": 13.74,
       "range_used_atr": 19.04,
       "body_frac": 0.97,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.11,
       "mfe": 0.84
@@ -5931,6 +6279,7 @@
       "day_move_atr": 15.35,
       "range_used_atr": 17.12,
       "body_frac": 0.68,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.37
@@ -5948,6 +6297,7 @@
       "day_move_atr": 15.72,
       "range_used_atr": 17.67,
       "body_frac": 0.56,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.12
@@ -5965,6 +6315,7 @@
       "day_move_atr": 2.53,
       "range_used_atr": 7.88,
       "body_frac": 0.95,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.8,
       "mfe": 0.0
@@ -5982,6 +6333,7 @@
       "day_move_atr": -0.93,
       "range_used_atr": 16.68,
       "body_frac": 0.81,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.76,
       "mfe": 0.81
@@ -5999,6 +6351,7 @@
       "day_move_atr": -0.15,
       "range_used_atr": 16.08,
       "body_frac": 0.55,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.45,
       "mfe": 0.49
@@ -6016,6 +6369,7 @@
       "day_move_atr": -11.14,
       "range_used_atr": 14.77,
       "body_frac": 0.82,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.2,
       "mfe": 0.26
@@ -6033,6 +6387,7 @@
       "day_move_atr": -5.4,
       "range_used_atr": 8.72,
       "body_frac": 0.51,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.01
@@ -6050,6 +6405,7 @@
       "day_move_atr": 9.77,
       "range_used_atr": 11.89,
       "body_frac": 0.57,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.03
@@ -6067,6 +6423,7 @@
       "day_move_atr": -6.89,
       "range_used_atr": 12.02,
       "body_frac": 0.93,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 1.49,
       "mfe": 1.97
@@ -6084,6 +6441,7 @@
       "day_move_atr": 2.11,
       "range_used_atr": 11.31,
       "body_frac": 0.93,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.36
@@ -6101,6 +6459,7 @@
       "day_move_atr": 9.87,
       "range_used_atr": 13.26,
       "body_frac": 0.76,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.0
@@ -6118,6 +6477,7 @@
       "day_move_atr": -5.19,
       "range_used_atr": 17.22,
       "body_frac": 1.0,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 1.08,
       "mfe": 1.25
@@ -6135,6 +6495,7 @@
       "day_move_atr": 8.5,
       "range_used_atr": 15.78,
       "body_frac": 0.91,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 1.64,
       "mfe": 1.66
@@ -6152,6 +6513,7 @@
       "day_move_atr": 9.25,
       "range_used_atr": 16.18,
       "body_frac": 0.8,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 1.42,
       "mfe": 1.44
@@ -6169,6 +6531,7 @@
       "day_move_atr": 12.86,
       "range_used_atr": 18.81,
       "body_frac": 0.92,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 1.13,
       "mfe": 1.16
@@ -6186,6 +6549,7 @@
       "day_move_atr": 21.57,
       "range_used_atr": 27.99,
       "body_frac": 0.82,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 1.79,
       "mfe": 1.86
@@ -6203,6 +6567,7 @@
       "day_move_atr": 6.4,
       "range_used_atr": 11.63,
       "body_frac": 0.78,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.69,
       "mfe": 1.11
@@ -6220,6 +6585,7 @@
       "day_move_atr": 8.24,
       "range_used_atr": 13.51,
       "body_frac": 0.55,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.68
@@ -6237,6 +6603,7 @@
       "day_move_atr": 9.17,
       "range_used_atr": 13.31,
       "body_frac": 0.88,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.25
@@ -6254,6 +6621,7 @@
       "day_move_atr": -7.72,
       "range_used_atr": 11.11,
       "body_frac": 0.67,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.26,
       "mfe": 0.17
@@ -6271,6 +6639,7 @@
       "day_move_atr": -7.36,
       "range_used_atr": 11.26,
       "body_frac": 0.44,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.35,
       "mfe": 0.0
@@ -6288,6 +6657,7 @@
       "day_move_atr": 18.45,
       "range_used_atr": 21.54,
       "body_frac": 0.81,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.14
@@ -6305,6 +6675,7 @@
       "day_move_atr": -15.22,
       "range_used_atr": 20.88,
       "body_frac": 0.99,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.23,
       "mfe": 0.32
@@ -6322,6 +6693,7 @@
       "day_move_atr": -15.55,
       "range_used_atr": 22.39,
       "body_frac": 0.47,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.4,
       "mfe": 0.15
@@ -6339,6 +6711,7 @@
       "day_move_atr": -3.78,
       "range_used_atr": 17.25,
       "body_frac": 0.75,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.52,
       "mfe": 0.75
@@ -6356,6 +6729,7 @@
       "day_move_atr": 8.11,
       "range_used_atr": 16.08,
       "body_frac": 0.42,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.56,
       "mfe": 0.95
@@ -6373,6 +6747,7 @@
       "day_move_atr": 9.4,
       "range_used_atr": 16.66,
       "body_frac": 1.0,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.26,
       "mfe": 0.61
@@ -6390,6 +6765,7 @@
       "day_move_atr": 12.59,
       "range_used_atr": 20.75,
       "body_frac": 0.78,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.12,
       "mfe": 0.58
@@ -6407,6 +6783,7 @@
       "day_move_atr": 3.07,
       "range_used_atr": 11.6,
       "body_frac": 0.19,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.56,
       "mfe": 1.42
@@ -6424,6 +6801,7 @@
       "day_move_atr": 3.57,
       "range_used_atr": 11.6,
       "body_frac": 0.54,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.32,
       "mfe": 1.04
@@ -6441,6 +6819,7 @@
       "day_move_atr": 4.39,
       "range_used_atr": 12.17,
       "body_frac": 0.5,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.12,
       "mfe": 0.79
@@ -6458,6 +6837,7 @@
       "day_move_atr": 10.13,
       "range_used_atr": 20.08,
       "body_frac": 0.81,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.29
@@ -6475,6 +6855,7 @@
       "day_move_atr": 4.52,
       "range_used_atr": 5.23,
       "body_frac": 0.86,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.42,
       "mfe": 0.36
@@ -6492,6 +6873,7 @@
       "day_move_atr": 8.76,
       "range_used_atr": 11.0,
       "body_frac": 0.73,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.88,
       "mfe": 0.66
@@ -6509,6 +6891,7 @@
       "day_move_atr": -8.04,
       "range_used_atr": 12.37,
       "body_frac": 0.86,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 0.6,
       "mfe": 0.66
@@ -6526,6 +6909,7 @@
       "day_move_atr": -0.68,
       "range_used_atr": 7.54,
       "body_frac": 0.45,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.8,
       "mfe": 0.27
@@ -6543,6 +6927,7 @@
       "day_move_atr": 3.71,
       "range_used_atr": 11.98,
       "body_frac": 0.41,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.71,
       "mfe": 0.79
@@ -6560,6 +6945,7 @@
       "day_move_atr": -3.24,
       "range_used_atr": 18.0,
       "body_frac": 0.08,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.12
@@ -6577,6 +6963,7 @@
       "day_move_atr": -1.73,
       "range_used_atr": 11.25,
       "body_frac": 0.75,
+      "htf_aligned": 0.0,
       "won": 1,
       "r": 1.07,
       "mfe": 1.3
@@ -6594,6 +6981,7 @@
       "day_move_atr": 1.52,
       "range_used_atr": 8.42,
       "body_frac": 1.0,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.21,
       "mfe": 0.49
@@ -6611,6 +6999,7 @@
       "day_move_atr": 1.71,
       "range_used_atr": 9.13,
       "body_frac": 0.61,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.2,
       "mfe": 0.48
@@ -6628,6 +7017,7 @@
       "day_move_atr": 2.37,
       "range_used_atr": 9.4,
       "body_frac": 0.72,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.02,
       "mfe": 0.29
@@ -6645,6 +7035,7 @@
       "day_move_atr": 3.6,
       "range_used_atr": 13.08,
       "body_frac": 1.0,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.05,
       "mfe": 0.34
@@ -6662,6 +7053,7 @@
       "day_move_atr": 3.99,
       "range_used_atr": 12.07,
       "body_frac": 0.52,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -0.21,
       "mfe": 0.11
@@ -6679,6 +7071,7 @@
       "day_move_atr": 3.99,
       "range_used_atr": 13.64,
       "body_frac": 0.84,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.4,
       "mfe": 0.35
@@ -6696,6 +7089,7 @@
       "day_move_atr": 5.3,
       "range_used_atr": 15.06,
       "body_frac": 0.94,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -0.55,
       "mfe": 0.0
@@ -6713,6 +7107,7 @@
       "day_move_atr": 7.92,
       "range_used_atr": 26.04,
       "body_frac": 0.92,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.06
@@ -6730,6 +7125,7 @@
       "day_move_atr": -5.52,
       "range_used_atr": 25.69,
       "body_frac": 0.73,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.33,
       "mfe": 0.96
@@ -6747,6 +7143,7 @@
       "day_move_atr": 9.06,
       "range_used_atr": 10.58,
       "body_frac": 0.91,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 0.51,
       "mfe": 0.71
@@ -6764,6 +7161,7 @@
       "day_move_atr": -15.92,
       "range_used_atr": 28.45,
       "body_frac": 1.0,
+      "htf_aligned": 0.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.0
@@ -6781,6 +7179,7 @@
       "day_move_atr": 17.74,
       "range_used_atr": 26.82,
       "body_frac": 0.82,
+      "htf_aligned": 1.0,
       "won": 1,
       "r": 2.0,
       "mfe": 2.24
@@ -6798,6 +7197,7 @@
       "day_move_atr": 14.8,
       "range_used_atr": 15.36,
       "body_frac": 0.99,
+      "htf_aligned": 1.0,
       "won": 0,
       "r": -1.0,
       "mfe": 0.21
@@ -6825,19 +7225,25 @@
     {
       "feature": "range_used_atr",
       "winners": 14.45,
-      "losers": 14.19,
+      "losers": 14.2,
       "separation_sd": 0.04
     },
     {
       "feature": "day_move_atr",
-      "winners": 2.23,
-      "losers": 2.54,
+      "winners": 2.22,
+      "losers": 2.55,
       "separation_sd": -0.03
     },
     {
       "feature": "minutes_in",
-      "winners": 249.89,
-      "losers": 251.26,
+      "winners": 249.88,
+      "losers": 251.27,
+      "separation_sd": -0.02
+    },
+    {
+      "feature": "htf_aligned",
+      "winners": 0.52,
+      "losers": 0.53,
       "separation_sd": -0.02
     },
     {
@@ -6859,5 +7265,5 @@
       "separation_sd": 0.01
     }
   ],
-  "generated": "2026-09-28 17:52"
+  "generated": "2026-09-28 17:59"
 }
