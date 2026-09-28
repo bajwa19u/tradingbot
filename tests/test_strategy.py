@@ -1806,3 +1806,14 @@ def test_replay_only_takes_shorts():
     from src.retest import LIVE
     assert LIVE["side"] == "short"
     assert LIVE["confirm"] is False
+
+
+def test_tech10_is_marked_as_not_a_holdout():
+    """NVDA, TSLA, AMD and MU are all in lists this project has already used.
+    Results on them are in-sample and confirm nothing - if that is ever
+    forgotten, the familiar names become the most misleading ones."""
+    from src.forensics import MOVERS, TECH10
+    from src.swing import HOLDOUT, RESEARCH
+    used = set(RESEARCH) | set(HOLDOUT) | set(MOVERS)
+    assert set(TECH10) & used, "if this ever stops overlapping, re-read why"
+    assert len(TECH10) == 10
