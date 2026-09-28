@@ -1,0 +1,78 @@
+name: Replay today
+
+# Runs the live rule over TODAY only and posts what it would have fired, at
+# the times it would have fired, to Discord.
+#
+# The rule, fixed before the holdout was run: retest entry, shorts only, no
+# confirmation candle, 12-bar wait, 0.25 ATR depth. On 50 fresh symbols it had
+# never seen: 40.4% of shorts against a 33.3% break-even.
+#
+# Every message says twice that it is a replay of a closed session. A replay
+# landing in the same channel as live alerts is dangerous otherwise.
+on:
+  workflow_dispatch:
+    inputs:
+      universe:
+        description: "movers | fresh | wide"
+        required: false
+        default: "fresh"
+      dry_run:
+        description: "Print it instead of sending"
+        type: boolean
+        default: false
+  schedule:
+    - cron: "10 21 * * 1-5"
+
+permissions:
+  contents: write
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Replay today
+        id: run
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          IN_UNI: ${{ inputs.universe }}
+          IN_DRY: ${{ inputs.dry_run }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports
+          ARGS=(--replay --minutes 5 --universe "${IN_UNI:-fresh}")
+          if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--no-notify); fi
+          set +e
+          python -m src.retest "${ARGS[@]}" 2>&1 | tee reports/replay_run.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports
+          if ! git diff --cached --quiet; then
+            git commit -m "replay: today [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed"
+          fi
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/replay.md ]; then
+            cat reports/replay.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            { echo '```'; tail -n 30 reports/replay_run.log; echo '```'; } \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Fail if the run failed
+        if: always() && steps.run.outputs.code != '0'
+        run: exit 1
