@@ -1702,3 +1702,80 @@ def test_htf_context_cannot_see_the_unclosed_hour():
     window = t.iloc[jump:jump + 6].dropna()
     assert (window == 0.0).any() or window.empty, \
         "the trend flag reacted before the hour it depends on had closed"
+
+
+def _retest_day(side="long", comes_back=True, holds=True):
+    import numpy as np
+    import pandas as pd
+    idx = pd.date_range("2026-09-24 09:30", periods=60, freq="5min",
+                        tz="America/New_York").tz_convert("UTC")
+    px = np.empty(60)
+    px[:20] = 100.0
+    if side == "long":
+        px[20:23] = [101.0, 101.2, 101.1]                 # break up
+        px[23:26] = ([100.3, 100.2, 100.5] if comes_back   # retest
+                     else [102.0, 102.4, 102.8])
+        if comes_back and not holds:
+            px[23:26] = [99.0, 98.5, 98.2]                 # level fails
+        px[26:] = np.linspace(px[25], px[25] + 8, 34)
+    else:
+        px[20:23] = [99.0, 98.8, 98.9]
+        px[23:26] = ([99.7, 99.8, 99.5] if comes_back
+                     else [98.0, 97.6, 97.2])
+        px[26:] = np.linspace(px[25], px[25] - 8, 34)
+    o = np.concatenate([[px[0]], px[:-1]])
+    return pd.DataFrame({"open": o, "high": np.maximum(o, px) + 0.05,
+                         "low": np.minimum(o, px) - 0.05, "close": px,
+                         "volume": np.concatenate([np.full(20, 1e5),
+                                                   np.full(40, 5e5)])},
+                        index=idx)
+
+
+def test_retest_requires_price_to_come_back():
+    """A break that runs away is NOT a trade. Counting those as winners
+    because the price went the right way is the easiest way to fake a good
+    result here."""
+    from src.retest import SCAN, find_retest
+    from src.squeeze import prepare_sq
+    p = {**SCAN, "base_len": 12, "atr_len": 5}
+    ran = prepare_sq(_retest_day(comes_back=False), p)
+    assert find_retest(ran, 20, "long", 100.1, 6, 0.25, False) is None
+    came = prepare_sq(_retest_day(comes_back=True), p)
+    assert find_retest(came, 20, "long", 100.1, 6, 0.25, False) is not None
+
+
+def test_retest_rejected_when_the_level_fails():
+    """The level holding is the whole premise. If price closes back through
+    it, the setup is dead, not pending."""
+    from src.retest import SCAN, find_retest
+    from src.squeeze import prepare_sq
+    p = {**SCAN, "base_len": 12, "atr_len": 5}
+    d = prepare_sq(_retest_day(comes_back=True, holds=False), p)
+    assert find_retest(d, 20, "long", 100.1, 6, 0.25, False) is None
+
+
+def test_retest_breakeven_bar_is_stated_and_honest():
+    """A 2:1 payoff needs 33.3% to break even. A 40% win rate looks poor next
+    to a coin flip and is actually profitable - the report has to compare
+    against the right number, not against 50%."""
+    from src.retest import breakeven_rate, render
+    assert abs(breakeven_rate() - 33.333) < 0.01
+    rows = [{"name": "x", "wait": 6, "depth": 0.25, "confirm": True,
+             "n": 200, "won": 80, "lost": 120, "win_rate_pct": 40.0,
+             "avg_r": 0.20, "long_pct": 38.0, "short_pct": 42.0}]
+    text = render({"symbols": 36, "start": "2026-07-01", "breaks": 3000,
+                   "rows": rows, "generated": "now"})
+    assert "Break-even needs 33.3%" in text
+    assert "✅" in text
+    assert "not as a result" in text
+
+
+def test_retest_says_so_when_nothing_clears_breakeven():
+    from src.retest import render
+    rows = [{"name": "x", "wait": 6, "depth": 0.25, "confirm": True,
+             "n": 200, "won": 50, "lost": 150, "win_rate_pct": 25.0,
+             "avg_r": -0.25, "long_pct": 24.0, "short_pct": 26.0}]
+    text = render({"symbols": 36, "start": "2026-07-01", "breaks": 3000,
+                   "rows": rows, "generated": "now"})
+    assert "Nothing clears break-even" in text
+    assert "✅" not in text
