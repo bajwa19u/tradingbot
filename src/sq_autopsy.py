@@ -46,6 +46,26 @@ log = logging.getLogger("sq_autopsy")
 SCAN = {**BASE_SQ, "squeeze_atr": 3.0, "vol_mult": 1.0}
 
 
+def htf_context(df: pd.DataFrame, span: int = 20) -> pd.Series:
+    """1-hour trend, mapped back onto the 5-minute bars.
+
+    The one piece of the owner's own method the bot has never had: he reads
+    the hour for context and the five for entry.
+
+    The shift is load-bearing. Without it the 5-minute bar at 10:05 would see
+    the 10:00-11:00 hourly candle that has not closed yet - a look-ahead that
+    would make any result from this feature fiction. The same bug was found
+    and fixed in the daily engine earlier.
+    """
+    h = df.resample("1h").agg({"open": "first", "high": "max", "low": "min",
+                               "close": "last"}).dropna()
+    if len(h) < span + 2:
+        return pd.Series(np.nan, index=df.index)
+    ema = h["close"].ewm(span=span, adjust=False).mean()
+    trend = (h["close"] > ema).astype(float).shift(1)
+    return trend.reindex(df.index, method="ffill")
+
+
 def features_at(day: pd.DataFrame, i: int, side: str) -> dict:
     """Conditions on the break bar. Backward-looking only."""
     bar = day.iloc[i]
@@ -73,6 +93,10 @@ def features_at(day: pd.DataFrame, i: int, side: str) -> dict:
         if a else 0.0,
         "body_frac": round(abs(close - float(bar["open"]))
                            / max(float(bar["high"]) - float(bar["low"]), 1e-9), 2),
+        # 1 when the hourly trend agrees with the break's direction
+        "htf_aligned": (float(bar["htf_up"]) if side == "long"
+                        else 1.0 - float(bar["htf_up"]))
+        if bar["htf_up"] == bar["htf_up"] else 0.5,
     }
 
 
@@ -112,6 +136,7 @@ def collect(data: dict, p: dict) -> list[dict]:
         if df.empty:
             continue
         d = prepare_sq(df, p)
+        d["htf_up"] = htf_context(df)
         for _, day in d.groupby(d.index.tz_convert(EASTERN).date):
             if len(day) < p["base_len"] + p["atr_len"] + 5:
                 continue
@@ -231,7 +256,7 @@ def main(argv=None) -> int:
     log.info("%d breaks labelled", len(rows))
     keys = ["minutes_in", "coil_tight_atr", "rvol", "atr_pct",
             "break_size_atr", "vwap_dist_atr", "day_move_atr",
-            "range_used_atr", "body_frac"]
+            "range_used_atr", "body_frac", "htf_aligned"]
     payload = {"symbols": len(data), "start": start, "rows": rows,
                "separation": separation(rows, keys),
                "generated": datetime.now().strftime("%Y-%m-%d %H:%M")}
