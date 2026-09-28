@@ -1,43 +1,3 @@
-2026-09-28 22:08:10,518 INFO Fetching 1-minute extended-hours bars from 2026-06-25 for 12 symbols
-2026-09-28 22:08:17,044 INFO Usable: 12 symbols, 309192 bars total
-2026-09-28 22:08:17,113 INFO Explore 44 days (2026-06-25..2026-08-26), holdout 22 days (2026-08-27..2026-09-28)
-2026-09-28 22:08:17,870 INFO Premarket health: {'days': 792, 'median_pre_bars': 2, 'days_with_no_premarket': 222, 'days_under_30_bars': 783, 'pct_usable': 1.1}
-2026-09-28 22:08:19,964 INFO drive/level/1.5R/pen0.0      n=345   win=37.7% profit=-61.0%
-2026-09-28 22:08:22,294 INFO drive/level/1.5R/pen0.5      n=303   win=39.9% profit=-35.1%
-2026-09-28 22:08:24,499 INFO drive/level/2.0R/pen0.0      n=345   win=34.5% profit=-39.2%
-2026-09-28 22:08:26,955 INFO drive/level/2.0R/pen0.5      n=303   win=38.0% profit=-13.5%
-2026-09-28 22:08:29,511 INFO drive/level/3.0R/pen0.0      n=345   win=30.1% profit=-34.1%
-2026-09-28 22:08:32,259 INFO drive/level/3.0R/pen0.5      n=303   win=35.6% profit=+4.4%
-2026-09-28 22:08:34,402 INFO drive/bar/1.5R/pen0.0        n=345   win=35.7% profit=-86.3%
-2026-09-28 22:08:36,460 INFO drive/bar/1.5R/pen0.5        n=303   win=34.7% profit=-83.9%
-2026-09-28 22:08:38,840 INFO drive/bar/2.0R/pen0.0        n=345   win=31.9% profit=-89.0%
-2026-09-28 22:08:41,103 INFO drive/bar/2.0R/pen0.5        n=303   win=29.4% profit=-100.9%
-2026-09-28 22:08:43,754 INFO drive/bar/3.0R/pen0.0        n=345   win=30.1% profit=-56.4%
-2026-09-28 22:08:46,206 INFO drive/bar/3.0R/pen0.5        n=303   win=27.7% profit=-79.2%
-2026-09-28 22:08:49,701 INFO drive/session/1.5R/pen0.0    n=345   win=42.9% profit=-30.4%
-2026-09-28 22:08:53,070 INFO drive/session/1.5R/pen0.5    n=303   win=43.9% profit=-27.3%
-2026-09-28 22:08:56,869 INFO drive/session/2.0R/pen0.0    n=345   win=42.0% profit=-22.6%
-2026-09-28 22:09:00,516 INFO drive/session/2.0R/pen0.5    n=303   win=43.2% profit=-21.1%
-2026-09-28 22:09:04,380 INFO drive/session/3.0R/pen0.0    n=345   win=40.6% profit=-12.0%
-2026-09-28 22:09:07,998 INFO drive/session/3.0R/pen0.5    n=303   win=42.2% profit=-11.7%
-2026-09-28 22:09:09,797 INFO retest/level/1.5R/pen0.0     n=182   win=42.9% profit=-7.0%
-2026-09-28 22:09:11,554 INFO retest/level/1.5R/pen0.5     n=182   win=45.1% profit=+3.0%
-2026-09-28 22:09:13,454 INFO retest/level/2.0R/pen0.0     n=182   win=39.0% profit=+2.4%
-2026-09-28 22:09:15,365 INFO retest/level/2.0R/pen0.5     n=182   win=39.6% profit=+7.7%
-2026-09-28 22:09:17,456 INFO retest/level/3.0R/pen0.0     n=182   win=33.5% profit=+8.6%
-2026-09-28 22:09:19,539 INFO retest/level/3.0R/pen0.5     n=182   win=34.1% profit=+12.5%
-2026-09-28 22:09:21,352 INFO retest/bar/1.5R/pen0.0       n=182   win=37.4% profit=-34.2%
-2026-09-28 22:09:23,110 INFO retest/bar/1.5R/pen0.5       n=182   win=37.9% profit=-42.2%
-2026-09-28 22:09:25,051 INFO retest/bar/2.0R/pen0.0       n=182   win=34.1% profit=-28.3%
-2026-09-28 22:09:26,848 INFO retest/bar/2.0R/pen0.5       n=182   win=35.2% profit=-28.6%
-2026-09-28 22:09:28,922 INFO retest/bar/3.0R/pen0.0       n=182   win=32.4% profit=-4.0%
-2026-09-28 22:09:30,842 INFO retest/bar/3.0R/pen0.5       n=182   win=31.3% profit=-13.8%
-2026-09-28 22:09:33,396 INFO retest/session/1.5R/pen0.0   n=182   win=42.9% profit=-15.1%
-2026-09-28 22:09:35,996 INFO retest/session/1.5R/pen0.5   n=182   win=45.1% profit=-7.0%
-2026-09-28 22:09:38,620 INFO retest/session/2.0R/pen0.0   n=182   win=41.8% profit=-10.3%
-2026-09-28 22:09:41,268 INFO retest/session/2.0R/pen0.5   n=182   win=44.0% profit=-1.1%
-2026-09-28 22:09:43,994 INFO retest/session/3.0R/pen0.0   n=182   win=41.2% profit=-2.5%
-2026-09-28 22:09:46,747 INFO retest/session/3.0R/pen0.5   n=182   win=42.9% profit=+3.0%
 # Opening drive — core
 
 1-minute bars · 66 trading days (2026-06-25 to 2026-09-28) · 12 symbols
@@ -124,4 +84,3 @@ Window 09:30–10:00 ET · levels: prior-day high/low/close and premarket high/l
 |---|---|---|---|---|---|---|
 | short | 141 | 29.8% | 42 | 99 | -5.8% | -0.041% |
 | long | 128 | 33.6% | 43 | 85 | +0.1% | +0.001% |
-
