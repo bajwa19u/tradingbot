@@ -241,3 +241,30 @@ def test_a_trade_not_marked_for_posting_never_reaches_the_feed(monkeypatch,
     entries = [m for m in sent if "WATCHING" in m]
     assert len(entries) == 1
     assert "LONG" not in " ".join(entries)
+
+
+def test_the_cash_total_sits_on_the_totals_line():
+    """It once landed on the last trade's line, which read as though that
+    one losing trade had made $146."""
+    ts = [trade(id="a", exit=1.0, pct=2.0, cash=40.0, exit_time="10:00",
+                reason="target"),
+          trade(id="b", exit=1.0, pct=-1.0, cash=-20.0, exit_time="10:10",
+                reason="stop")]
+    m = lb.summary_msg(ts, "Tuesday 29 September")
+    lines = m.splitlines()
+    total = next(l for l in lines if l.startswith("**+1.00%"))
+    assert "+$20.00" in total
+    assert not any("+$20.00" in l for l in lines if l.startswith(("✅", "❌")))
+
+
+def test_two_breaks_on_the_same_bar_get_different_ids():
+    """A collision here is invisible: the recap counts both trades and
+    Discord only ever shows one of them."""
+    import pandas as pd
+    from src import live_bot as m
+    day = pd.DataFrame(
+        {"open": [10.0], "high": [10.0], "low": [10.0], "close": [10.0],
+         "atr": [1.0]},
+        index=pd.DatetimeIndex([pd.Timestamp("2026-09-29 09:50", tz=m.EASTERN)]))
+    ids = {f"AMZN-{str(day.index[0])[:16]}-{lvl:.2f}" for lvl in (246.86, 247.15)}
+    assert len(ids) == 2
