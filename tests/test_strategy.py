@@ -1230,3 +1230,57 @@ def test_watchlist_render_never_calls_anything_a_signal():
     empty = render_watchlist(dict(w, rows=[]))
     assert "Nothing is coiled" in empty
     assert "normal" in empty
+
+
+def _live_row(**kw):
+    r = {"symbol": "SMCI", "status": "triggering", "price": 44.10,
+         "level": 43.76, "gap_pct": 0.78, "volume_pct_of_needed": 130,
+         "stop": 39.80, "target": 51.00, "shares": 4}
+    r.update(kw)
+    return r
+
+
+def test_live_message_never_calls_an_intraday_break_a_trade():
+    """The tested rule enters at the CLOSING price. A name above its level at
+    11am has not triggered, and acting on it is a different strategy from the
+    one that was measured."""
+    from src.paper import render_live
+    text = render_live({"at": "2026-09-28 11:04 ET", "minutes_to_close": 296,
+                        "no_bar_yet": 0, "rows": [_live_row()],
+                        "settings": {"equity": 2000.0, "risk_pct": 1.0}})
+    assert "Not a trade yet" in text
+    assert "CLOSING price" in text
+    assert "SMCI" in text and "43.76" in text
+
+
+def test_live_alerts_once_per_name_per_day():
+    """Fifteen scans a day must not send fifteen near-identical messages, or
+    the channel is muted by Wednesday and the one that matters goes unread."""
+    from src.paper import live_changes
+    now = {"at": "2026-09-28 11:04 ET", "minutes_to_close": 296,
+           "rows": [_live_row()]}
+    first = live_changes(now, {"date": "2026-09-28", "seen": {}})
+    assert first and "SMCI" in first and "Not a trade yet" in first
+    again = live_changes(now, {"date": "2026-09-28",
+                               "seen": {"SMCI": "triggering"}})
+    assert again is None
+    # a name that was only near the level yesterday still alerts when it fires
+    promoted = live_changes(now, {"date": "2026-09-28",
+                                  "seen": {"SMCI": "at_the_level"}})
+    assert promoted and "SMCI" in promoted
+
+
+def test_live_ignores_names_that_are_merely_close_without_volume():
+    """Only a break WITH volume is worth interrupting someone's day for."""
+    from src.paper import live_changes
+    for status in ("above_light_volume", "at_the_level"):
+        now = {"at": "x", "minutes_to_close": 100,
+               "rows": [_live_row(status=status)]}
+        assert live_changes(now, {"date": "d", "seen": {}}) is None
+
+
+def test_live_quiet_message_says_how_long_is_left():
+    from src.paper import render_live
+    text = render_live({"at": "2026-09-28 11:04 ET", "minutes_to_close": 296,
+                        "no_bar_yet": 0, "rows": [], "settings": {}})
+    assert "nothing at its level" in text and "296 min" in text
