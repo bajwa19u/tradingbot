@@ -67,6 +67,9 @@ BASE_SQ = {
     "risk_pct": 1.0,
     "slippage_pct": 0.05,
     "max_open": 3,
+    "max_entries": 1,        # attempts per symbol per session
+    "reenter": False,        # after a stop, take the level again if it breaks
+                             # a second time in the same direction
 }
 
 
@@ -136,6 +139,13 @@ def run_day(df: pd.DataFrame, symbol: str, p: dict) -> list[IntradayTrade]:
     slip = p["slippage_pct"] / 100.0
     trades: list[IntradayTrade] = []
     pos = None
+    attempts = 0
+    # After a stop the coil is gone - the range has widened, so `tight` can
+    # never be true again and the symbol is finished for the day. That is what
+    # happened on AMD: stopped at 12:15, then the real move ran without it.
+    # Re-entry keeps the broken level and takes it again if price closes back
+    # through it in the same direction.
+    armed: tuple[float, str] | None = None
 
     for i in range(len(df)):
         bar = df.iloc[i]
@@ -169,7 +179,32 @@ def run_day(df: pd.DataFrame, symbol: str, p: dict) -> list[IntradayTrade]:
                     pos["bars"], round(move, 2)))
                 pos = None
 
-        if pos is None and i in breaks and times[i] < flat:
+        # re-entry on the remembered level
+        if (pos is None and armed is not None and p.get("reenter")
+                and attempts < p["max_entries"] + 1 and times[i] < flat
+                and times[i] >= pd.Timestamp(p["no_entry_before"]).time()
+                and times[i] <= pd.Timestamp(p["no_entry_after"]).time()):
+            lvl, side_a = armed
+            again = (close > lvl if side_a == "long" else close < lvl)
+            if again and i not in breaks:
+                a = float(bar["atr"]) if bar["atr"] == bar["atr"] else 0.0
+                if a > 0:
+                    entry = (close * (1 + slip) if side_a == "long"
+                             else close * (1 - slip))
+                    stop = (lvl - a * p["stop_atr"] if side_a == "long"
+                            else lvl + a * p["stop_atr"])
+                    rps = abs(entry - stop)
+                    if 0 < rps / entry <= 0.10:
+                        target = (entry + p["target_r"] * rps if side_a == "long"
+                                  else entry - p["target_r"] * rps)
+                        pos = {"dir": side_a, "entry": entry, "stop": stop,
+                               "rps": rps, "target": target, "bars": 0,
+                               "time": str(df.index[i])}
+                        attempts += 1
+                        armed = None
+
+        if pos is None and i in breaks and times[i] < flat \
+                and attempts <= p["max_entries"]:
             side = breaks[i]
             a = float(bar["atr"])
             ch, cl = float(bar["coil_high"]), float(bar["coil_low"])
@@ -183,6 +218,8 @@ def run_day(df: pd.DataFrame, symbol: str, p: dict) -> list[IntradayTrade]:
                       else entry - p["target_r"] * rps)
             pos = {"dir": side, "entry": entry, "stop": stop, "rps": rps,
                    "target": target, "bars": 0, "time": str(df.index[i])}
+            attempts += 1
+            armed = (ch if side == "long" else cl, side)
 
     # A position still open when the session's bars run out must be closed at
     # the last price, not discarded. Dropping it deletes the trade from the
@@ -308,6 +345,92 @@ def render_sq(p: dict) -> str:
     return "\n".join(out)
 
 
+def grid_sq() -> list[tuple[str, dict]]:
+    """The three things the AMD post-mortem pointed at, and nothing else.
+
+    Stop width, how long to hold, and whether to take the level a second time.
+    Kept deliberately small: this project's single clearest finding is that
+    searching configurations does not generalise here - 33 monthly refits fit
+    at +0.4R and forward-tested at -1.0R. Every extra knob makes the best
+    result look better without making it any more real.
+    """
+    out = []
+    for stop_atr in (0.5, 1.0, 1.5, 2.0):
+        for max_bars in (24, 48, 78):
+            for reenter in (False, True):
+                name = (f"stop{stop_atr}_hold{max_bars}"
+                        f"{'_re' if reenter else ''}")
+                out.append((name, {**BASE_SQ, "stop_atr": stop_atr,
+                                   "max_bars": max_bars, "reenter": reenter,
+                                   "max_entries": 2 if reenter else 1}))
+    return out
+
+
+def noise_floor(n_trades: int, n_configs: int) -> float:
+    """What the BEST of n_configs returns on luck alone, as a percentage.
+
+    Try enough settings and one of them looks good for free. This is the bar
+    any winner has to clear before it means anything.
+    """
+    if n_trades <= 1 or n_configs < 1:
+        return 0.0
+    # per-trade SD of ~1R at 1% risk, scaled by the multiple-testing factor
+    se = 100 * 0.01 * np.sqrt(n_trades)
+    return round(float(se * np.sqrt(2 * np.log(max(n_configs, 2)))), 1)
+
+
+def render_sweep(p: dict) -> str:
+    rows, hold = p["rows"], p.get("holdout")
+    out = [f"# Squeeze sweep — {p['config']['minutes']}-minute bars", "",
+           f"**{p['symbols']} symbols · from {p['start']} · "
+           f"{p['generated']}**", "",
+           f"**{len(rows)} settings tried.** Testing this many, the best one "
+           f"returns about **{p['noise_floor']:+.1f}%** on luck alone. "
+           "Anything near that is nothing.", "",
+           "| Settings | Trades | Won | Lost | Win % | Profit | Worst drop |",
+           "|---|---|---|---|---|---|---|"]
+    for r in rows[:14]:
+        warn = "" if r["n"] >= 30 else " ⚠"
+        out.append(f"| `{r['name']}` | {r['n']}{warn} | {r['wins']} | "
+                   f"{r['losses']} | {r['win_rate_pct']}% | "
+                   f"**{r['return_pct']:+.1f}%** | {r['max_dd_pct']}% |")
+    out.append("")
+    best = rows[0] if rows else None
+    if not best or best["return_pct"] <= 0:
+        out.append("**Nothing made money.** Widening the stop and holding "
+                   "longer did not fix it, so the entry is what is wrong, not "
+                   "the management.")
+        return "\n".join(out)
+
+    if best["return_pct"] < p["noise_floor"]:
+        out += [f"**The best setting, `{best['name']}` at "
+                f"{best['return_pct']:+.1f}%, does not clear the "
+                f"{p['noise_floor']:+.1f}% noise floor.** With "
+                f"{len(rows)} settings tried, a result this size is what "
+                "chance produces. Not a finding."]
+        return "\n".join(out)
+
+    out += [f"### `{best['name']}` on stocks it has never seen", ""]
+    if not hold or not hold.get("n"):
+        out.append("_The holdout run produced no trades, so nothing is "
+                   "confirmed._")
+        return "\n".join(out)
+    out += ["| | Tuned on | **Never seen** |", "|---|---|---|",
+            f"| Trades | {best['n']} | **{hold['n']}** |",
+            f"| Won / lost | {best['wins']} / {best['losses']} | "
+            f"**{hold['wins']} / {hold['losses']}** |",
+            f"| Win rate | {best['win_rate_pct']}% | "
+            f"**{hold['win_rate_pct']}%** |",
+            f"| Profit | {best['return_pct']:+.1f}% | "
+            f"**{hold['return_pct']:+.1f}%** |",
+            f"| Worst drop | {best['max_dd_pct']}% | "
+            f"**{hold['max_dd_pct']}%** |", "",
+            ("**It held up on unseen names.**" if hold["return_pct"] > 0
+             else "**It did not survive unseen names.** The tuned number is "
+                  "the fitted one; this is the real one.")]
+    return "\n".join(out)
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--start", default=None,
@@ -319,6 +442,9 @@ def main(argv=None) -> int:
                     help="comma-separated, overrides --universe")
     ap.add_argument("--side", default="both",
                     choices=["both", "long", "short"])
+    ap.add_argument("--sweep", action="store_true",
+                    help="test stop width, hold length and re-entry, then "
+                         "run the best once on unseen symbols")
     args = ap.parse_args(argv)
 
     p = dict(BASE_SQ)
@@ -342,6 +468,50 @@ def main(argv=None) -> int:
     if not data:
         log.error("No data returned.")
         return 1
+
+    if args.sweep:
+        rows = []
+        for name, cfg in grid_sq():
+            cfg = {**cfg, "minutes": p["minutes"],
+                   "allow_long": p["allow_long"],
+                   "allow_short": p["allow_short"]}
+            st = backtest(data, cfg)
+            rows.append({"name": name, "params": cfg,
+                         **{k: st[k] for k in ("n", "wins", "losses",
+                                               "win_rate_pct", "return_pct",
+                                               "max_dd_pct", "expectancy_R")}})
+            log.info("  %-22s n=%-4d %+.1f%%  dd %.1f%%", name, st["n"],
+                     st["return_pct"], st["max_dd_pct"])
+        rows = [r for r in rows if r["n"] >= 15]
+        rows.sort(key=lambda r: -r["return_pct"])
+        floor = noise_floor(max((r["n"] for r in rows), default=0), len(rows))
+
+        hold = None
+        if rows and rows[0]["return_pct"] > floor:
+            unseen = [x for x in FRESH if x not in set(syms)]
+            log.info("Winner %s - one run on %d unseen symbols",
+                     rows[0]["name"], len(unseen))
+            try:
+                hd = md.intraday_bars(unseen, args.minutes, start=start,
+                                      end=args.end)
+                hd = {k: v for k, v in hd.items() if not v.empty}
+                if hd:
+                    hold = backtest(hd, rows[0]["params"])
+            except AlpacaError as exc:
+                log.warning("Holdout fetch failed: %s", exc)
+
+        payload = {"symbols": len(data), "start": start,
+                   "end": args.end or "now", "config": p,
+                   "generated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                   "rows": rows, "noise_floor": floor, "holdout": hold}
+        REPORTS.mkdir(exist_ok=True)
+        text = render_sweep(payload)
+        (REPORTS / "squeeze_sweep.md").write_text(text)
+        (REPORTS / "squeeze_sweep.json").write_text(json.dumps(
+            {**payload, "rows": [{k: v for k, v in r.items() if k != "params"}
+                                 for r in rows]}, indent=2, default=str))
+        print(text)
+        return 0
 
     stats = backtest(data, p)
     payload = {"symbols": len(data), "start": start,
