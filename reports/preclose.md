@@ -1,0 +1,1 @@
+**Live check 2026-09-28 15:56 ET** — nothing at its level. 3 min to the close.
