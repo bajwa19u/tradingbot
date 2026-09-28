@@ -18,7 +18,8 @@ def trade(**kw):
             "entry_time": "09:31", "entry": 622.21, "stop": 627.42,
             "target": 611.78, "shares": 3, "risk": 15.6, "level": 625.80,
             "level_name": "pdl", "exit": None, "exit_time": None,
-            "reason": None, "pct": None, "cash": None}
+            "reason": None, "pct": None, "cash": None,
+            "observe": False, "post": True}
     return {**base, **kw}
 
 
@@ -32,9 +33,9 @@ def test_entry_message_has_the_five_things_asked_for():
     assert "🔻" in m                      # an emoji for the name
 
 
-def test_entry_message_names_the_level_for_an_opening_trade():
-    m = lb.entry_msg(trade())
-    assert "yesterday's low" in m and "625.80" in m
+def test_entry_message_names_the_level_for_a_watched_trade():
+    m = lb.entry_msg(trade(observe=True, level_name="orl", shares=0))
+    assert "the opening-range low" in m and "625.80" in m
 
 
 def test_a_retest_trade_gets_no_opening_footnote():
@@ -131,12 +132,11 @@ def test_yesterdays_seen_file_is_ignored(tmp_path, monkeypatch):
 
 
 # --- the merge ---------------------------------------------------------------
-def test_opening_scan_is_off_until_it_has_been_measured():
-    """It stays off until the holdout run says it survives on unseen dates.
-    Flipping this is a decision, not a default."""
-    if not lb.OPENING["enabled"]:
-        assert lb.opening_scan({"equity": 2000.0, "risk_pct": 1.0},
-                               pd.Timestamp.now(tz=lb.EASTERN)) == []
+def test_the_opening_rule_is_in_observation_mode():
+    """Both holdout studies failed. It runs to gather a forward record; it
+    must not quietly become a trading rule without another study."""
+    assert lb.OPENING["enabled"] is True
+    assert lb.OPENING["observe"] is True
 
 
 def test_a_broken_rule_does_not_silence_the_other(monkeypatch):
@@ -183,3 +183,61 @@ def test_the_day_is_done_after_the_bell(monkeypatch):
 def test_the_opening_rule_moves_the_start_of_the_day_to_the_bell():
     assert lb.BELL == "09:30"
     assert lb.OPEN_T == "09:45", "the retest rule keeps its own window"
+
+
+# --- observation mode --------------------------------------------------------
+def test_a_watched_entry_is_not_shaped_like_a_signal():
+    """If it reads like the traded alerts it will be taken like them."""
+    m = lb.entry_msg(trade(observe=True, shares=0, level_name="orl"))
+    assert "👀" in m and "WATCHING" in m
+    assert "tracking only" in m and "no position" in m
+    assert "risking" not in m and "shares" not in m
+
+
+def test_a_watched_entry_still_carries_the_prices():
+    m = lb.entry_msg(trade(observe=True, shares=0, level_name="orl"))
+    assert "622.21" in m and "627.42" in m and "611.78" in m
+
+
+def test_a_watched_close_says_no_position_was_taken():
+    m = lb.close_msg(trade(observe=True, shares=0, exit=611.78,
+                           exit_time="10:40", reason="target", pct=2.0,
+                           cash=0.0))
+    assert "WATCHED" in m and "no position was taken" in m
+    assert "✅" not in m, "the traded tick is reserved for traded results"
+
+
+def test_watched_results_are_kept_out_of_the_accounts_total():
+    ts = [trade(id="r", exit=1.0, pct=2.0, cash=30.0, exit_time="10:00",
+                reason="target"),
+          trade(id="w", observe=True, shares=0, exit=1.0, pct=-1.0, cash=0.0,
+                exit_time="10:20", reason="stop")]
+    m = lb.summary_msg(ts, "Tuesday 29 September")
+    traded, watched = m.split("**Watched**")
+    assert "+2.00%" in traded and "1 trade · 1 won, 0 lost" in traded
+    assert "-1.00%" in watched
+
+
+def test_summary_says_so_when_only_the_watched_rule_fired():
+    ts = [trade(id="w", observe=True, shares=0, exit=1.0, pct=2.0, cash=0.0,
+                exit_time="10:20", reason="target")]
+    m = lb.summary_msg(ts, "Tuesday 29 September")
+    assert "nothing fired today" in m and "Watched" in m
+
+
+def test_a_trade_not_marked_for_posting_never_reaches_the_feed(monkeypatch,
+                                                               tmp_path):
+    """Longs off the opening range are recorded for the study and kept out
+    of the feed. A bug here is a wall of Discord messages."""
+    monkeypatch.setattr(lb, "STATE", tmp_path)
+    monkeypatch.setattr(lb, "REPORTS", tmp_path)
+    monkeypatch.setattr(lb, "scan", lambda cfg: ([], "09:31", False))
+    monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: [
+        trade(id="keep", observe=True, shares=0, post=True),
+        trade(id="drop", observe=True, shares=0, post=False, side="long")])
+    sent = []
+    monkeypatch.setattr(lb, "notify", sent.append)
+    lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
+    entries = [m for m in sent if "WATCHING" in m]
+    assert len(entries) == 1
+    assert "LONG" not in " ".join(entries)
