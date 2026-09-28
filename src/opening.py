@@ -88,9 +88,11 @@ BASE = {
     "risk_pct": 1.0,
     "use_premarket": True,   # turned off automatically when the feed is thin
     "max_per_symbol": 1,     # one idea per symbol per day, not one per level
+    "levels": "prior",       # prior | or | both
+    "or_minutes": 5,         # the opening range, when levels includes "or"
 }
 
-LEVEL_NAMES = ("pmh", "pml", "pdh", "pdl", "pdc")
+LEVEL_NAMES = ("pmh", "pml", "pdh", "pdl", "pdc", "orh", "orl")
 
 
 # --- levels ------------------------------------------------------------------
@@ -130,6 +132,24 @@ def minute_scale(prior: pd.DataFrame) -> float:
     return float(tr.mean()) if len(tr) else 0.0
 
 
+def opening_range(rth: pd.DataFrame, minutes: int
+                  ) -> tuple[dict[str, float], int]:
+    """The first `minutes` of the session, and the bar the range completes on.
+
+    This is the level set that owes nothing to the previous day and nothing
+    to a premarket the free feed does not really have. It is also the shape
+    the AMD tape actually had: a range in the first five minutes, then a
+    close outside it.
+
+    The second return value is what keeps it honest - no break of this range
+    can be taken until the bar on which the range is finished.
+    """
+    if minutes <= 0 or len(rth) < minutes + 1:
+        return {}, 0
+    w = rth.iloc[:minutes]
+    return {"orh": float(w["high"].max()), "orl": float(w["low"].min())}, minutes
+
+
 def split_session(day_ext: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     """(premarket, regular hours) for one day of extended-hours bars."""
     return (day_ext.between_time(PRE_START, PRE_END),
@@ -138,7 +158,8 @@ def split_session(day_ext: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
 
 # --- the rule ----------------------------------------------------------------
 def opening_breaks(rth: pd.DataFrame, levels: dict[str, float], scale: float,
-                   p: dict) -> list[tuple[int, str, float, str]]:
+                   p: dict, ready: dict[str, int] | None = None
+                   ) -> list[tuple[int, str, float, str]]:
     """(bar index, side, level, level name) for breaks inside the window.
 
     Which side of a level we are on is decided by the 09:30 OPEN, before a
@@ -155,6 +176,7 @@ def opening_breaks(rth: pd.DataFrame, levels: dict[str, float], scale: float,
     pen = p["pen"] * scale
     want = p.get("side", "both")
 
+    ready = ready or {}
     out: list[tuple[int, str, float, str]] = []
     for name, lvl in sorted(levels.items(), key=lambda kv: kv[0]):
         if lvl == ref:
@@ -162,7 +184,7 @@ def opening_breaks(rth: pd.DataFrame, levels: dict[str, float], scale: float,
         side = "short" if lvl < ref else "long"
         if want != "both" and side != want:
             continue
-        for i in range(len(rth)):
+        for i in range(ready.get(name, 0), len(rth)):
             if not (lo_t <= times[i] <= hi_t):
                 continue
             # Only the FIRST break of a level counts. A level that breaks,
@@ -285,9 +307,16 @@ def day_trades(day_ext: pd.DataFrame, prior_rth: pd.DataFrame,
     ref = float(rth["open"].iloc[0])
     if scale <= 0 or scale / ref * 100 < MIN_SCALE_PCT:
         return []
-    lv = session_levels(prior_rth, pre, p.get("use_premarket", True))
+    which = p.get("levels", "prior")
+    lv, ready = {}, {}
+    if which in ("prior", "both"):
+        lv.update(session_levels(prior_rth, pre, p.get("use_premarket", True)))
+    if which in ("or", "both"):
+        orl, first = opening_range(rth, p.get("or_minutes", 5))
+        lv.update(orl)
+        ready.update({k: first for k in orl})
     out = []
-    for i, side, level, name in opening_breaks(rth, lv, scale, p):
+    for i, side, level, name in opening_breaks(rth, lv, scale, p, ready):
         # Yesterday's low and the premarket low are usually the same idea a
         # few cents apart. Taking both is not diversification, it is the same
         # trade at two or three times the intended risk.
@@ -377,6 +406,24 @@ def grid() -> list[dict]:
     return out
 
 
+def or_grid() -> list[dict]:
+    """A separate, pre-specified hypothesis with its own small grid.
+
+    The first study tested breaks of yesterday's levels. This tests breaks of
+    the range the session makes in its own first minutes, which is a
+    different claim and gets its own holdout rather than being folded into
+    the earlier search as more configurations.
+    """
+    out = []
+    for mode, stop_mode, tr, mins in product(
+            ("drive", "retest"), ("level", "session"), (1.5, 2.0, 3.0), (5, 15)):
+        out.append({**BASE, "levels": "or", "entry_mode": mode,
+                    "stop_mode": stop_mode, "target_r": tr, "or_minutes": mins,
+                    "pen": 0.0,
+                    "name": f"{mode}/{stop_mode}/{tr}R/OR{mins}m"})
+    return out
+
+
 def fetch(md: MarketData, symbols: list[str], days: int
           ) -> dict[str, pd.DataFrame]:
     start = (pd.Timestamp.now(tz=EASTERN)
@@ -427,6 +474,9 @@ HEAD = ("| rule | trades | win % | won | lost | profit % | avg/trade |\n"
         "|---|---|---|---|---|---|---|")
 
 
+MODE = {"levels": "prior"}
+
+
 def research(data: dict[str, pd.DataFrame], universe: str) -> str:
     """Explore on the older dates, confirm the winner on dates never seen."""
     all_dates = sorted({d for df in data.values()
@@ -442,7 +492,7 @@ def research(data: dict[str, pd.DataFrame], universe: str) -> str:
     health = premarket_health(data)
     log.info("Premarket health: %s", health)
 
-    combos = grid()
+    combos = or_grid() if MODE["levels"] == "or" else grid()
     results = []
     for c in combos:
         r = run_combo(data, c, dates=explore)
@@ -460,11 +510,16 @@ def research(data: dict[str, pd.DataFrame], universe: str) -> str:
     floor = noise_floor(best["n"], len(combos), best["cfg"]["target_r"])
     conf = run_combo(data, best["cfg"], dates=holdout)
 
-    L = [f"# Opening drive — {universe}", "",
+    title = ("Opening range breakout" if MODE["levels"] == "or"
+             else "Opening drive")
+    L = [f"# {title} — {universe}", "",
          f"1-minute bars · {len(all_dates)} trading days "
          f"({all_dates[0]} to {all_dates[-1]}) · {len(data)} symbols",
-         f"Window {WIN_START}–{WIN_END} ET · levels: prior-day high/low/close "
-         f"and premarket high/low · hold limit {MAX_HOLD_MIN} min "
+         f"Window {WIN_START}–{WIN_END} ET · levels: "
+         + ("the session's own opening range"
+            if MODE["levels"] == "or"
+            else "prior-day high/low/close and premarket high/low")
+         + f" · hold limit {MAX_HOLD_MIN} min "
          f"· slippage {SLIP_PCT}% each way", "",
          "## Does the free feed have a usable premarket?", ""]
     if health.get("days"):
@@ -548,6 +603,8 @@ def audit_day(data: dict[str, pd.DataFrame], symbol: str, date: str,
     pre, rth = split_session(days[idx][1])
     scale = minute_scale(prior)
     lv = session_levels(prior, pre, p.get("use_premarket", True))
+    if p.get("levels") in ("or", "both"):
+        lv.update(opening_range(rth, p.get("or_minutes", 5))[0])
     L = [f"# {symbol} · {date}", "",
          f"- 09:30 open: **{float(rth['open'].iloc[0]):.2f}**",
          f"- premarket bars: {len(pre)}",
@@ -587,8 +644,12 @@ def main(argv=None) -> int:
     ap.add_argument("--universe", default="core")
     ap.add_argument("--symbols", default="")
     ap.add_argument("--audit", default="", help="SYMBOL:YYYY-MM-DD")
+    ap.add_argument("--levels", default="prior", choices=("prior", "or", "both"),
+                    help="yesterday's levels, the opening range, or both")
     args = ap.parse_args(argv)
 
+    MODE["levels"] = args.levels
+    BASE["levels"] = args.levels
     symbols = ([s.strip().upper() for s in args.symbols.split(",") if s.strip()]
                or UNIVERSES.get(args.universe, CORE))
     try:
