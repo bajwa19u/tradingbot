@@ -1629,3 +1629,55 @@ def test_squeeze_reentry_takes_the_level_a_second_time():
     twice = run_day(prepare_sq(df, p), "T", {**p, "reenter": True,
                                              "max_entries": 2})
     assert len(twice) >= len(once), "re-entry must not reduce the attempts"
+
+
+def test_autopsy_labels_a_break_that_ran_as_a_winner():
+    """The labelling is the whole experiment. If outcome() is wrong, every
+    conclusion drawn from it is wrong in the same direction."""
+    import numpy as np
+    import pandas as pd
+    from src.sq_autopsy import SCAN, outcome
+    from src.squeeze import prepare_sq
+    idx = pd.date_range("2026-09-24 09:30", periods=60, freq="5min",
+                        tz="America/New_York").tz_convert("UTC")
+    px = np.concatenate([np.full(20, 100.0) + np.random.default_rng(1).normal(0, 0.03, 20),
+                         np.linspace(100.4, 112.0, 40)])
+    o = np.concatenate([[px[0]], px[:-1]])
+    df = pd.DataFrame({"open": o, "high": np.maximum(o, px) + 0.05,
+                       "low": np.minimum(o, px) - 0.05, "close": px,
+                       "volume": np.full(60, 2e5)}, index=idx)
+    d = prepare_sq(df, {**SCAN, "base_len": 12, "atr_len": 5})
+    res = outcome(d, 21, "long", SCAN)
+    assert res is not None and res["won"] == 1 and res["r"] == 2.0
+
+
+def test_autopsy_labels_a_break_that_reversed_as_a_loser():
+    import numpy as np
+    import pandas as pd
+    from src.sq_autopsy import SCAN, outcome
+    from src.squeeze import prepare_sq
+    idx = pd.date_range("2026-09-24 09:30", periods=60, freq="5min",
+                        tz="America/New_York").tz_convert("UTC")
+    px = np.concatenate([np.full(20, 100.0), np.linspace(100.5, 88.0, 40)])
+    o = np.concatenate([[px[0]], px[:-1]])
+    df = pd.DataFrame({"open": o, "high": np.maximum(o, px) + 0.05,
+                       "low": np.minimum(o, px) - 0.05, "close": px,
+                       "volume": np.full(60, 2e5)}, index=idx)
+    d = prepare_sq(df, {**SCAN, "base_len": 12, "atr_len": 5})
+    res = outcome(d, 21, "long", SCAN)
+    assert res is not None and res["won"] == 0 and res["r"] == -1.0
+
+
+def test_autopsy_says_nothing_separates_them_when_nothing_does():
+    """The most likely outcome, and the one most easily dressed up. If no
+    condition sorts winners from losers, the report has to say the entry has
+    no edge rather than imply a filter would fix it."""
+    from src.sq_autopsy import render
+    rows = [{"won": i % 2, "side": "long"} for i in range(60)]
+    text = render({"symbols": 36, "start": "2026-08-01", "generated": "now",
+                   "rows": rows,
+                   "separation": [{"feature": "rvol", "winners": 1.4,
+                                   "losers": 1.38, "separation_sd": 0.04}]})
+    assert "Nothing separates them" in text
+    assert "no edge to find" in text
+    assert "Worth acting on" not in text
