@@ -1335,11 +1335,11 @@ def test_intraday_entry_buys_the_level_and_respects_a_gap():
     df.loc[i, "open"] = float(df.loc[i, "close"]) * 1.30
     df.loc[i, "high"] = float(df.loc[i, "open"]) * 1.02
     data = {"S1": df}
-    out = run_portfolio(prepare(data, p), p, equity=2000.0)
-    for pos in out["open"] + []:
-        pass
-    # any entry on a gapped bar must be at or above that bar's open
     prep = prepare(data, p)
+    # sigs MUST be passed: without it run_portfolio falls back to the swing
+    # signal function and the breakout rule is never exercised at all.
+    out = run_portfolio(prep, p, sigs=signal_times_bo(prep, p), equity=2000.0)
+    assert out["trades"] or out["open"], "no trades - the test proves nothing"
     d = prep["S1"]
     for t in out["trades"] + out["open"]:
         if t.get("entry_date") == str(i.date()):
@@ -1359,3 +1359,36 @@ def test_intraday_entry_takes_breaks_the_close_rule_rejects():
     n_close = len(find_signals_bo(df, {**base, "entry_style": "close"}))
     n_level = len(find_signals_bo(df, {**base, "entry_style": "level"}))
     assert n_level >= n_close
+
+
+def test_entry_slippage_is_a_real_dial_and_always_costs():
+    """A backtest that assumes a perfect fill on a breakout in a volatile name
+    is telling a story. Slippage has to be adjustable, and raising it must
+    always make entries worse - never better."""
+    import copy
+    from src.breakout import BASE_BO, prepare, signal_times_bo
+    from src.swing import run_portfolio
+    base = copy.deepcopy(BASE_BO)
+    base.update({"base_len": 15, "touch_window": 15, "squeeze_atr": 6.0,
+                 "vol_mult": 1.05, "min_atr_pct": 0.0, "risk_pct": 1.0,
+                 "entry_style": "level"})
+    data = {f"S{i}": _coil_then_break(n_coil=30 + i * 3, seed=i + 1)
+            for i in range(4)}
+    entries = {}
+    for slip in (0.05, 0.5):
+        p = {**base, "entry_slippage_pct": slip}
+        prep = prepare(data, p)
+        out = run_portfolio(prep, p, sigs=signal_times_bo(prep, p),
+                            equity=2000.0)
+        entries[slip] = {(t["symbol"], t["entry_date"]): t["entry"]
+                         for t in out["trades"] + out["open"]}
+    shared = set(entries[0.05]) & set(entries[0.5])
+    assert shared, "fixture produced no comparable trades"
+    for key in shared:
+        assert entries[0.5][key] > entries[0.05][key], \
+            f"{key}: more slippage must mean a worse entry"
+
+
+def test_entry_slippage_defaults_to_the_documented_value():
+    from src.breakout import BASE_BO
+    assert BASE_BO["entry_slippage_pct"] == 0.05
