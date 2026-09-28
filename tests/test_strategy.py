@@ -1779,3 +1779,30 @@ def test_retest_says_so_when_nothing_clears_breakeven():
                    "rows": rows, "generated": "now"})
     assert "Nothing clears break-even" in text
     assert "✅" not in text
+
+
+def test_replay_message_is_never_mistaken_for_a_live_signal():
+    """A replay of a closed session arriving in the same channel as live
+    alerts is dangerous unless it says what it is, twice."""
+    from src.retest import replay_message
+    sigs = [{"symbol": "AMD", "side": "short", "break_time": "11:55",
+             "entry_time": "12:20", "level": 610.62, "entry": 608.10,
+             "stop": 614.43, "target": 595.40, "shares": 3, "risk": 18.90,
+             "outcome": {"won": 1, "r": 2.0}}]
+    msg = replay_message(sigs, "2026-09-28 · 50 symbols")
+    assert "REPLAY" in msg
+    assert "not a live signal" in msg or "not actionable now" in msg \
+        or "none of this is actionable" in msg
+    assert "AMD" in msg and "608.10" in msg and "614.43" in msg
+    assert "12:20" in msg                       # the time it would have fired
+    assert "WON" in msg
+    empty = replay_message([], "2026-09-28 · 50 symbols")
+    assert "No setups today" in empty and "normal" in empty
+
+
+def test_replay_only_takes_shorts():
+    """The rule that survived the holdout is shorts only. A long slipping into
+    the replay would be a different strategy wearing its name."""
+    from src.retest import LIVE
+    assert LIVE["side"] == "short"
+    assert LIVE["confirm"] is False
