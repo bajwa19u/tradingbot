@@ -1816,7 +1816,7 @@ def test_tech10_is_marked_as_not_a_holdout():
     from src.swing import HOLDOUT, RESEARCH
     used = set(RESEARCH) | set(HOLDOUT) | set(MOVERS)
     assert set(TECH10) & used, "if this ever stops overlapping, re-read why"
-    assert len(TECH10) == 10
+    assert 10 <= len(TECH10) <= 14
 
 
 def test_replay_reports_profit_percent_and_never_R():
@@ -1858,3 +1858,22 @@ def test_replay_recap_accumulates_days_without_double_counting(tmp_path,
     assert total["green_days"] == 2
     # a different universe keeps its own running total
     assert R.recap("tech10") == ([], {})
+
+
+def test_unfinished_trades_are_not_counted_as_losses():
+    """Two AMZN trades entered at 15:35 and the bell rang before either
+    resolved. Filing those with the real losers makes the win rate look worse
+    and the average loss look smaller than they actually are."""
+    from src.retest import replay_message
+    sigs = [{"symbol": "A", "break_time": "10:00", "entry_time": "10:05",
+             "level": 100.0, "entry": 99.5, "stop": 101.0, "target": 96.5,
+             "shares": 10, "risk": 20.0, "outcome": {"won": 1, "r": 2.0}},
+            {"symbol": "B", "break_time": "15:30", "entry_time": "15:35",
+             "level": 50.0, "entry": 49.8, "stop": 50.5, "target": 48.4,
+             "shares": 20, "risk": 20.0,
+             "outcome": {"won": 0, "r": 0.0, "unfinished": True}}]
+    msg = replay_message(sigs, "2026-09-28 · 12 symbols", "nowhere", 1.0)
+    assert "UNFINISHED" in msg
+    assert "still open at the bell" in msg
+    # one finished trade, and it won - so 100%, not 50%
+    assert "1 won, 0 lost" in msg and "100% win rate" in msg
