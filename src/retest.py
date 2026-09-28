@@ -410,6 +410,9 @@ def main(argv=None) -> int:
     ap.add_argument("--universe", default="movers", choices=list(UNIVERSES))
     ap.add_argument("--symbols", default=None,
                     help="comma-separated, overrides --universe")
+    ap.add_argument("--chart", default=None,
+                    help="SYMBOL to export bars + the day's signals for, so "
+                         "the setup can be drawn and checked by eye")
     ap.add_argument("--replay", action="store_true",
                     help="run the live rule over today only and send what it "
                          "would have fired to Discord")
@@ -434,6 +437,39 @@ def main(argv=None) -> int:
         log.error("Fetch failed: %s", exc)
         return 1
     data = {s: d for s, d in data.items() if not d.empty}
+
+    if args.chart:
+        sym = args.chart.upper()
+        if sym not in data:
+            log.error("No data for %s. Have: %s", sym,
+                      ", ".join(sorted(data)[:12]))
+            return 1
+        today = pd.Timestamp.now(tz=EASTERN).date()
+        df = data[sym]
+        df = df[df.index.tz_convert(EASTERN).date == today]
+        if len(df) < 20:
+            log.error("Only %d bars for %s today", len(df), sym)
+            return 1
+        d = prepare_sq(df, p)
+        sigs = [x for x in signals_today({sym: df}, p)]
+        bars = [{"t": str(i.tz_convert(EASTERN))[11:16],
+                 "o": round(float(r["open"]), 2),
+                 "h": round(float(r["high"]), 2),
+                 "l": round(float(r["low"]), 2),
+                 "c": round(float(r["close"]), 2),
+                 "v": int(r["volume"]),
+                 # the coil the rule was watching, as it looked on that bar
+                 "ch": None if r["coil_high"] != r["coil_high"] else round(float(r["coil_high"]), 2),
+                 "cl": None if r["coil_low"] != r["coil_low"] else round(float(r["coil_low"]), 2)}
+                for i, r in d.iterrows()]
+        out = {"symbol": sym, "date": str(today), "bars": bars,
+               "signals": sigs}
+        REPORTS.mkdir(exist_ok=True)
+        (REPORTS / f"chart_{sym}.json").write_text(
+            json.dumps(out, indent=1, default=str))
+        log.info("Exported %d bars and %d signal(s) for %s",
+                 len(bars), len(sigs), sym)
+        return 0
 
     if args.replay:
         today = pd.Timestamp.now(tz=EASTERN).date()
