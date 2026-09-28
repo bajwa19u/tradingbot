@@ -65,17 +65,24 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add reports state
-          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
-          git commit -m "live: session state [skip ci]"
-          # A swallowed push is how a result silently disappears: the job goes
-          # green, the report never lands, and the run looks like it produced
-          # nothing. Retry the rebase, and fail loudly if it still will not go.
+          mkdir -p reports state
+          # Generated output always wins, source always matches the remote.
+          # A rebase is the wrong tool here: two runs touching the same log
+          # conflict, the rebase stops, and the results are lost. Take the
+          # remote as the base and lay this run's files on top instead.
+          rm -rf /tmp/out && mkdir -p /tmp/out
+          for d in reports state; do cp -a "$d" "/tmp/out/$d"; done
           for i in 1 2 3 4 5; do
-            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
-               && git push origin "HEAD:${GITHUB_REF_NAME}"; then
-              exit 0
+            git fetch origin "${GITHUB_REF_NAME}" || true
+            git reset --hard "origin/${GITHUB_REF_NAME}"
+            mkdir -p reports state
+            for d in reports state; do cp -a "/tmp/out/$d/." "$d/"; done
+            git add reports state
+            if git diff --cached --quiet; then
+              echo "nothing to commit"; exit 0
             fi
+            git commit -m "live: session state [skip ci]"
+            if git push origin "HEAD:${GITHUB_REF_NAME}"; then exit 0; fi
             echo "push attempt $i failed; retrying"
             sleep $((i * 5))
           done
