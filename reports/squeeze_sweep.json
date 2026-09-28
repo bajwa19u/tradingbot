@@ -1,0 +1,270 @@
+{
+  "symbols": 36,
+  "start": "2026-07-01",
+  "end": "now",
+  "config": {
+    "minutes": 5,
+    "base_len": 12,
+    "squeeze_atr": 1.5,
+    "vol_mult": 1.5,
+    "atr_len": 14,
+    "stop_atr": 0.5,
+    "target_r": 2.0,
+    "max_bars": 24,
+    "no_entry_before": "09:45",
+    "no_entry_after": "15:30",
+    "force_exit": "15:55",
+    "allow_long": true,
+    "allow_short": true,
+    "risk_pct": 1.0,
+    "slippage_pct": 0.05,
+    "max_open": 3,
+    "max_entries": 1,
+    "reenter": false
+  },
+  "generated": "2026-09-28 17:00",
+  "rows": [
+    {
+      "name": "stop1.5_hold78",
+      "n": 53,
+      "wins": 20,
+      "losses": 33,
+      "win_rate_pct": 37.7,
+      "return_pct": -13.5,
+      "max_dd_pct": -15.19,
+      "expectancy_R": -0.2701
+    },
+    {
+      "name": "stop1.5_hold48",
+      "n": 53,
+      "wins": 20,
+      "losses": 33,
+      "win_rate_pct": 37.7,
+      "return_pct": -13.7,
+      "max_dd_pct": -15.43,
+      "expectancy_R": -0.2755
+    },
+    {
+      "name": "stop1.0_hold24",
+      "n": 53,
+      "wins": 17,
+      "losses": 36,
+      "win_rate_pct": 32.1,
+      "return_pct": -13.8,
+      "max_dd_pct": -13.93,
+      "expectancy_R": -0.277
+    },
+    {
+      "name": "stop1.5_hold24",
+      "n": 53,
+      "wins": 17,
+      "losses": 36,
+      "win_rate_pct": 32.1,
+      "return_pct": -13.9,
+      "max_dd_pct": -14.01,
+      "expectancy_R": -0.2787
+    },
+    {
+      "name": "stop1.0_hold78",
+      "n": 53,
+      "wins": 18,
+      "losses": 35,
+      "win_rate_pct": 34.0,
+      "return_pct": -14.1,
+      "max_dd_pct": -14.53,
+      "expectancy_R": -0.2823
+    },
+    {
+      "name": "stop1.0_hold48",
+      "n": 53,
+      "wins": 18,
+      "losses": 35,
+      "win_rate_pct": 34.0,
+      "return_pct": -14.4,
+      "max_dd_pct": -14.83,
+      "expectancy_R": -0.289
+    },
+    {
+      "name": "stop2.0_hold24",
+      "n": 52,
+      "wins": 16,
+      "losses": 36,
+      "win_rate_pct": 30.8,
+      "return_pct": -14.7,
+      "max_dd_pct": -14.79,
+      "expectancy_R": -0.3034
+    },
+    {
+      "name": "stop0.5_hold24",
+      "n": 53,
+      "wins": 17,
+      "losses": 36,
+      "win_rate_pct": 32.1,
+      "return_pct": -14.8,
+      "max_dd_pct": -14.91,
+      "expectancy_R": -0.2974
+    },
+    {
+      "name": "stop0.5_hold48",
+      "n": 53,
+      "wins": 17,
+      "losses": 36,
+      "win_rate_pct": 32.1,
+      "return_pct": -14.8,
+      "max_dd_pct": -15.34,
+      "expectancy_R": -0.2978
+    },
+    {
+      "name": "stop0.5_hold78",
+      "n": 53,
+      "wins": 17,
+      "losses": 36,
+      "win_rate_pct": 32.1,
+      "return_pct": -14.8,
+      "max_dd_pct": -15.34,
+      "expectancy_R": -0.2978
+    },
+    {
+      "name": "stop2.0_hold78",
+      "n": 52,
+      "wins": 19,
+      "losses": 33,
+      "win_rate_pct": 36.5,
+      "return_pct": -14.8,
+      "max_dd_pct": -15.57,
+      "expectancy_R": -0.3051
+    },
+    {
+      "name": "stop2.0_hold48",
+      "n": 52,
+      "wins": 19,
+      "losses": 33,
+      "win_rate_pct": 36.5,
+      "return_pct": -15.0,
+      "max_dd_pct": -15.77,
+      "expectancy_R": -0.3099
+    },
+    {
+      "name": "stop1.5_hold78_re",
+      "n": 56,
+      "wins": 20,
+      "losses": 36,
+      "win_rate_pct": 35.7,
+      "return_pct": -16.3,
+      "max_dd_pct": -17.96,
+      "expectancy_R": -0.3144
+    },
+    {
+      "name": "stop1.0_hold78_re",
+      "n": 58,
+      "wins": 19,
+      "losses": 39,
+      "win_rate_pct": 32.8,
+      "return_pct": -16.4,
+      "max_dd_pct": -18.35,
+      "expectancy_R": -0.3043
+    },
+    {
+      "name": "stop1.5_hold48_re",
+      "n": 56,
+      "wins": 20,
+      "losses": 36,
+      "win_rate_pct": 35.7,
+      "return_pct": -16.6,
+      "max_dd_pct": -18.19,
+      "expectancy_R": -0.3195
+    },
+    {
+      "name": "stop2.0_hold78_re",
+      "n": 54,
+      "wins": 19,
+      "losses": 35,
+      "win_rate_pct": 35.2,
+      "return_pct": -16.6,
+      "max_dd_pct": -17.39,
+      "expectancy_R": -0.3341
+    },
+    {
+      "name": "stop1.0_hold48_re",
+      "n": 58,
+      "wins": 19,
+      "losses": 39,
+      "win_rate_pct": 32.8,
+      "return_pct": -16.7,
+      "max_dd_pct": -18.63,
+      "expectancy_R": -0.3104
+    },
+    {
+      "name": "stop2.0_hold48_re",
+      "n": 54,
+      "wins": 19,
+      "losses": 35,
+      "win_rate_pct": 35.2,
+      "return_pct": -16.8,
+      "max_dd_pct": -17.6,
+      "expectancy_R": -0.3387
+    },
+    {
+      "name": "stop2.0_hold24_re",
+      "n": 74,
+      "wins": 23,
+      "losses": 51,
+      "win_rate_pct": 31.1,
+      "return_pct": -19.0,
+      "max_dd_pct": -19.62,
+      "expectancy_R": -0.282
+    },
+    {
+      "name": "stop1.0_hold24_re",
+      "n": 76,
+      "wins": 23,
+      "losses": 53,
+      "win_rate_pct": 30.3,
+      "return_pct": -20.7,
+      "max_dd_pct": -22.82,
+      "expectancy_R": -0.3002
+    },
+    {
+      "name": "stop1.5_hold24_re",
+      "n": 76,
+      "wins": 23,
+      "losses": 53,
+      "win_rate_pct": 30.3,
+      "return_pct": -21.2,
+      "max_dd_pct": -22.75,
+      "expectancy_R": -0.3104
+    },
+    {
+      "name": "stop0.5_hold48_re",
+      "n": 64,
+      "wins": 18,
+      "losses": 46,
+      "win_rate_pct": 28.1,
+      "return_pct": -22.6,
+      "max_dd_pct": -23.01,
+      "expectancy_R": -0.3947
+    },
+    {
+      "name": "stop0.5_hold78_re",
+      "n": 64,
+      "wins": 18,
+      "losses": 46,
+      "win_rate_pct": 28.1,
+      "return_pct": -22.6,
+      "max_dd_pct": -23.01,
+      "expectancy_R": -0.3947
+    },
+    {
+      "name": "stop0.5_hold24_re",
+      "n": 78,
+      "wins": 21,
+      "losses": 57,
+      "win_rate_pct": 26.9,
+      "return_pct": -28.7,
+      "max_dd_pct": -28.83,
+      "expectancy_R": -0.4294
+    }
+  ],
+  "noise_floor": 22.3,
+  "holdout": null
+}

@@ -1,24 +1,49 @@
-2026-09-28 16:05:01,795 INFO Fetching 36 symbols, 5-minute bars from 2026-08-29
-# Intraday squeeze break — 5-minute bars
+2026-09-28 16:54:03,433 INFO Fetching 36 symbols, 5-minute bars from 2026-07-01
+2026-09-28 16:54:35,341 INFO   stop0.5_hold24         n=53   -14.8%  dd -14.9%
+2026-09-28 16:54:51,087 INFO   stop0.5_hold24_re      n=78   -28.7%  dd -28.8%
+2026-09-28 16:55:06,708 INFO   stop0.5_hold48         n=53   -14.8%  dd -15.3%
+2026-09-28 16:55:22,312 INFO   stop0.5_hold48_re      n=64   -22.6%  dd -23.0%
+2026-09-28 16:55:37,882 INFO   stop0.5_hold78         n=53   -14.8%  dd -15.3%
+2026-09-28 16:55:53,450 INFO   stop0.5_hold78_re      n=64   -22.6%  dd -23.0%
+2026-09-28 16:56:08,839 INFO   stop1.0_hold24         n=53   -13.8%  dd -13.9%
+2026-09-28 16:56:24,363 INFO   stop1.0_hold24_re      n=76   -20.7%  dd -22.8%
+2026-09-28 16:56:39,659 INFO   stop1.0_hold48         n=53   -14.4%  dd -14.8%
+2026-09-28 16:56:55,051 INFO   stop1.0_hold48_re      n=58   -16.7%  dd -18.6%
+2026-09-28 16:57:10,425 INFO   stop1.0_hold78         n=53   -14.1%  dd -14.5%
+2026-09-28 16:57:25,820 INFO   stop1.0_hold78_re      n=58   -16.4%  dd -18.4%
+2026-09-28 16:57:41,395 INFO   stop1.5_hold24         n=53   -13.9%  dd -14.0%
+2026-09-28 16:57:56,922 INFO   stop1.5_hold24_re      n=76   -21.2%  dd -22.8%
+2026-09-28 16:58:12,236 INFO   stop1.5_hold48         n=53   -13.7%  dd -15.4%
+2026-09-28 16:58:27,705 INFO   stop1.5_hold48_re      n=56   -16.6%  dd -18.2%
+2026-09-28 16:58:43,061 INFO   stop1.5_hold78         n=53   -13.5%  dd -15.2%
+2026-09-28 16:58:58,514 INFO   stop1.5_hold78_re      n=56   -16.3%  dd -18.0%
+2026-09-28 16:59:13,757 INFO   stop2.0_hold24         n=52   -14.7%  dd -14.8%
+2026-09-28 16:59:29,165 INFO   stop2.0_hold24_re      n=74   -19.0%  dd -19.6%
+2026-09-28 16:59:44,583 INFO   stop2.0_hold48         n=52   -15.0%  dd -15.8%
+2026-09-28 17:00:00,081 INFO   stop2.0_hold48_re      n=54   -16.8%  dd -17.6%
+2026-09-28 17:00:15,467 INFO   stop2.0_hold78         n=52   -14.8%  dd -15.6%
+2026-09-28 17:00:30,939 INFO   stop2.0_hold78_re      n=54   -16.6%  dd -17.4%
+# Squeeze sweep — 5-minute bars
 
-**36 symbols · 2026-08-29 to now · 2026-09-28 16:05**
+**36 symbols · from 2026-07-01 · 2026-09-28 17:00**
 
-Coil, then break, either direction. Built to read the setup the daily long-only rule could not see.
+**24 settings tried.** Testing this many, the best one returns about **+22.3%** on luck alone. Anything near that is nothing.
 
-| | Trades | Won | Lost | Win % | Profit |
-|---|---|---|---|---|---|
-| **Both sides** | 19 | 6 | 13 | 31.6% | **-7.9%** |
-| long | 11 | 2 | 9 | 18.2% | -7.9% |
-| short | 8 | 4 | 4 | 50.0% | +0.0% |
+| Settings | Trades | Won | Lost | Win % | Profit | Worst drop |
+|---|---|---|---|---|---|---|
+| `stop1.5_hold78` | 53 | 20 | 33 | 37.7% | **-13.5%** | -15.19% |
+| `stop1.5_hold48` | 53 | 20 | 33 | 37.7% | **-13.7%** | -15.43% |
+| `stop1.0_hold24` | 53 | 17 | 36 | 32.1% | **-13.8%** | -13.93% |
+| `stop1.5_hold24` | 53 | 17 | 36 | 32.1% | **-13.9%** | -14.01% |
+| `stop1.0_hold78` | 53 | 18 | 35 | 34.0% | **-14.1%** | -14.53% |
+| `stop1.0_hold48` | 53 | 18 | 35 | 34.0% | **-14.4%** | -14.83% |
+| `stop2.0_hold24` | 52 | 16 | 36 | 30.8% | **-14.7%** | -14.79% |
+| `stop0.5_hold24` | 53 | 17 | 36 | 32.1% | **-14.8%** | -14.91% |
+| `stop0.5_hold48` | 53 | 17 | 36 | 32.1% | **-14.8%** | -15.34% |
+| `stop0.5_hold78` | 53 | 17 | 36 | 32.1% | **-14.8%** | -15.34% |
+| `stop2.0_hold78` | 52 | 19 | 33 | 36.5% | **-14.8%** | -15.57% |
+| `stop2.0_hold48` | 52 | 19 | 33 | 36.5% | **-15.0%** | -15.77% |
+| `stop1.5_hold78_re` | 56 | 20 | 36 | 35.7% | **-16.3%** | -17.96% |
+| `stop1.0_hold78_re` | 58 | 19 | 39 | 32.8% | **-16.4%** | -18.35% |
 
-Worst drop **-8.0%**.
-
-**Long vs short:** 7.9% apart. The short side loses money here, so adding it did not buy what it was supposed to.
-
-### The biggest winner
-
-**NIO short** — in at `$3.60`, out at `$3.58` (target), held 23 bars
-+0.75% on the stock. An option on the same move can be worth many times that - and lose its whole premium on the trades that go the other way, which this backtest counts as -1R.
-
-_Shorting is assumed always available. On the names that move most it often is not, and that flatters the short side here._
-2026-09-28 16:05:17,991 INFO 19 trades, -7.9%, worst drop -8.0%
+**Nothing made money.** Widening the stop and holding longer did not fix it, so the entry is what is wrong, not the management.
