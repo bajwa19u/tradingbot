@@ -1,0 +1,91 @@
+name: Pre-close signals
+
+# THE ACTIONABLE RUN. 15:45 Eastern, fifteen minutes before the bell.
+#
+# This exists because the first version of this repo scored the day at 17:30,
+# ninety minutes AFTER the close - and the rule enters at the closing price.
+# That produced signals nobody could act on. A daily-bar system has to be
+# alerted just BEFORE the close or it cannot be traded at all.
+#
+# The cost is fifteen minutes of drift: the price here is not exactly the
+# closing price. The backtest charges 0.05% on entry, which covers a normal
+# last-quarter-hour move and not a violent one. That is the honest trade-off
+# for a signal that can actually be taken.
+#
+# Two crons because UTC has no daylight-saving awareness - 15:45 ET is 19:45
+# UTC in summer and 20:45 in winter. The script checks real Eastern time and
+# exits outside 15:30-16:05, so the wrong one is harmless.
+on:
+  schedule:
+    - cron: "45 19 * * 1-5"
+    - cron: "45 20 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Print the signals instead of sending them"
+        type: boolean
+        default: false
+
+concurrency:
+  group: preclose
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  signal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Signals for the close
+        id: run
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          IN_DRY: ${{ inputs.dry_run }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports state
+          ARGS=(--preclose)
+          if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
+          set +e
+          python -m src.paper "${ARGS[@]}" 2>&1 | tee reports/preclose_run.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit the signals
+        if: always() && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports state
+          if ! git diff --cached --quiet; then
+            git commit -m "preclose: signals [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/preclose.md ]; then
+            cat reports/preclose.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            { echo '```'; tail -n 30 reports/preclose_run.log; echo '```'; } \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Fail if the run failed
+        if: always() && steps.run.outputs.code != '0'
+        run: exit 1
