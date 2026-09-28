@@ -24,6 +24,10 @@ on:
         description: "Send one worked example of the alert and stop"
         type: boolean
         default: false
+      watchlist:
+        description: "Show which names are coiled near their breakout level"
+        type: boolean
+        default: false
 
 concurrency:
   group: paper
@@ -55,12 +59,14 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           IN_DRY: ${{ inputs.dry_run }}
           IN_SAMPLE: ${{ inputs.sample }}
+          IN_WATCH: ${{ inputs.watchlist }}
         run: |
           set -uo pipefail
           mkdir -p reports state
           ARGS=()
           if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
           if [ "${IN_SAMPLE:-false}" = "true" ]; then ARGS+=(--sample); fi
+          if [ "${IN_WATCH:-false}" = "true" ]; then ARGS+=(--watchlist); fi
           set +e
           python -m src.paper "${ARGS[@]}" 2>&1 | tee reports/paper_run.log
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
@@ -79,8 +85,12 @@ jobs:
 
       - name: Summary
         if: always()
+        env:
+          IN_WATCH: ${{ inputs.watchlist }}
         run: |
-          if [ -f reports/paper.md ]; then
+          if [ -f reports/watchlist.md ] && [ "${IN_WATCH:-false}" = "true" ]; then
+            cat reports/watchlist.md >> "$GITHUB_STEP_SUMMARY"
+          elif [ -f reports/paper.md ]; then
             cat reports/paper.md >> "$GITHUB_STEP_SUMMARY"
           else
             { echo '```'; tail -n 40 reports/paper_run.log; echo '```'; } \
