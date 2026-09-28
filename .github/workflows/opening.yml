@@ -1,0 +1,91 @@
+name: Opening drive
+
+# Measurement only. This is the rule built after the bot missed AMD's 2.5%
+# opening drop on 28 September: levels that exist before the bell, a window
+# that starts at the bell, and an entry that does not require a pullback.
+#
+# Nothing here alerts and nothing here is scheduled. It answers three
+# questions and then stops: is the free feed's premarket usable, does the
+# rule make money on dates it was not built on, and which levels matter.
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "Trading days of history"
+        required: false
+        default: "60"
+      universe:
+        description: "core | movers | research | holdout | fresh | wide"
+        required: false
+        default: "core"
+      symbols:
+        description: "Comma-separated symbols (overrides universe)"
+        required: false
+        default: ""
+      audit:
+        description: "One day under the microscope, as SYMBOL:YYYY-MM-DD"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: opening
+  cancel-in-progress: false
+
+jobs:
+  opening:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: Measure the opening drive
+        id: run
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          IN_DAYS: ${{ inputs.days }}
+          IN_UNI: ${{ inputs.universe }}
+          IN_SYM: ${{ inputs.symbols }}
+          IN_AUDIT: ${{ inputs.audit }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports
+          ARGS=(--days "${IN_DAYS:-60}" --universe "${IN_UNI:-core}")
+          [ -n "${IN_SYM:-}" ] && ARGS+=(--symbols "${IN_SYM}") || true
+          [ -n "${IN_AUDIT:-}" ] && ARGS+=(--audit "${IN_AUDIT}") || true
+          set +e
+          python -m src.opening "${ARGS[@]}" 2>&1 | tee reports/opening_run.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports
+          if ! git diff --cached --quiet; then
+            git commit -m "opening: results [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          for f in reports/opening_audit.md reports/opening.md; do
+            if [ -f "$f" ]; then cat "$f" >> "$GITHUB_STEP_SUMMARY"; exit 0; fi
+          done
+          { echo '```'; tail -n 40 reports/opening_run.log; echo '```'; } \
+            >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail if the run failed
+        if: always() && steps.run.outputs.code != '0'
+        run: exit 1
