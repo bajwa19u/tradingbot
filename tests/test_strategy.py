@@ -1566,3 +1566,66 @@ def test_squeeze_closes_a_position_when_the_bars_run_out():
     assert len(trades) == 1
     assert trades[0].reason == "close_of_day"
     assert trades[0].exit > 0
+
+
+def test_squeeze_sweep_reports_a_noise_floor_that_grows_with_configs():
+    """Try enough settings and one looks good for free. The bar has to rise
+    with the number tried - this project already proved that searching
+    configurations here does not generalise."""
+    from src.squeeze import grid_sq, noise_floor
+    assert len(grid_sq()) <= 30, "too many knobs; every extra one buys a lie"
+    assert noise_floor(40, 24) > noise_floor(40, 4)
+    assert noise_floor(40, 24) > noise_floor(20, 24)
+    assert noise_floor(0, 24) == 0.0
+
+
+def test_squeeze_sweep_refuses_a_winner_inside_the_noise():
+    """A result that a coin flip produces must not be reported as a finding."""
+    from src.squeeze import render_sweep
+    rows = [{"name": "stop2.0_hold78_re", "n": 40, "wins": 20, "losses": 20,
+             "win_rate_pct": 50.0, "return_pct": 6.0, "max_dd_pct": -9.0}]
+    text = render_sweep({"symbols": 36, "start": "2026-08-01",
+                         "generated": "now", "config": {"minutes": 5},
+                         "rows": rows, "noise_floor": 15.9, "holdout": None})
+    assert "does not clear" in text and "Not a finding" in text
+    assert "never seen" not in text
+
+
+def test_squeeze_sweep_says_the_entry_is_wrong_when_nothing_works():
+    """If widening the stop and holding longer cannot save it, the problem is
+    the entry, and saying so is more useful than another sweep."""
+    from src.squeeze import render_sweep
+    rows = [{"name": "stop2.0_hold78", "n": 40, "wins": 12, "losses": 28,
+             "win_rate_pct": 30.0, "return_pct": -11.0, "max_dd_pct": -14.0}]
+    text = render_sweep({"symbols": 36, "start": "2026-08-01",
+                         "generated": "now", "config": {"minutes": 5},
+                         "rows": rows, "noise_floor": 15.9, "holdout": None})
+    assert "Nothing made money" in text
+    assert "the entry is what is wrong" in text
+
+
+def test_squeeze_reentry_takes_the_level_a_second_time():
+    """AMD: stopped at 12:15, then the real move ran without it. Re-entry is
+    the mechanism that would have been back in."""
+    import numpy as np
+    import pandas as pd
+    from src.squeeze import BASE_SQ, prepare_sq, run_day
+    idx = pd.date_range("2026-09-24 09:30", periods=70, freq="5min",
+                        tz="America/New_York").tz_convert("UTC")
+    px = np.empty(70)
+    px[:20] = 100 + np.random.default_rng(3).normal(0, 0.04, 20)
+    px[20:24] = [99.4, 99.2, 100.3, 100.6]      # break down, then shake out
+    px[24:] = np.linspace(100.4, 94.0, 46)      # then the real move
+    o = np.concatenate([[px[0]], px[:-1]])
+    df = pd.DataFrame({"open": o, "high": np.maximum(o, px) + 0.05,
+                       "low": np.minimum(o, px) - 0.05, "close": px,
+                       "volume": np.concatenate([np.full(20, 1e5),
+                                                 np.full(50, 6e5)])},
+                      index=idx)
+    p = dict(BASE_SQ, base_len=12, atr_len=5, squeeze_atr=6.0, vol_mult=1.2,
+             stop_atr=0.3, max_bars=99, force_exit="23:59")
+    once = run_day(prepare_sq(df, p), "T", {**p, "reenter": False,
+                                            "max_entries": 1})
+    twice = run_day(prepare_sq(df, p), "T", {**p, "reenter": True,
+                                             "max_entries": 2})
+    assert len(twice) >= len(once), "re-entry must not reduce the attempts"
