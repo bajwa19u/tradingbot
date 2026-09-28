@@ -61,7 +61,7 @@ jobs:
           python -m src.live_bot "${ARGS[@]}" 2>&1 | tee reports/live_bot.log
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
       - name: Commit what was announced
-        if: always() && inputs.dry_run != true
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
