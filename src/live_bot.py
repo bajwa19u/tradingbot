@@ -62,11 +62,35 @@ OPEN_T, CLOSE_T = "09:45", "15:55"      # the retest rule's window
 BELL = "09:30"                          # the opening rule's window starts here
 OPENING_LAST_RUN = "10:05"              # after this the polling job stops
 
-# The opening rule's settings. `enabled` is a deliberate switch rather than a
-# default: this rule does not go live until the holdout run says it survives
-# on dates it was not built on, and that run writes reports/opening.json.
-OPENING = {"enabled": False, **op.BASE, "side": "short", "entry_mode": "drive",
-           "stop_mode": "level", "stop_mult": 1.0, "target_r": 2.0, "pen": 0.0}
+# The opening rule runs in OBSERVATION mode, and the distinction is the whole
+# point of this block.
+#
+# Two studies were run against it, each with its own holdout. Breaks of
+# yesterday's levels made +12.5% on the dates the settings came from and lost
+# 18.2% on dates they had never seen. Breaks of the session's own opening
+# range made +4.1% and then lost 30.4% the same way. Neither is an edge;
+# both are what searching a grid produces. So this rule does not size
+# positions and its results are reported apart from the validated one.
+#
+# It runs anyway, on purpose, for two reasons: it is the only thing on the
+# board that can see the first fifteen minutes at all, and a forward record
+# gathered live is the one kind of evidence this project does not yet have.
+#
+# The settings are chosen by MECHANISM, not by rank in the table. `drive`
+# because a move that never pulls back is exactly what the old rule could not
+# take. `session` because the AMD audit showed the level stop dying in the
+# opening spike at 09:32 before the real move began. A five-minute range
+# because that is the shape the AMD tape actually had.
+OPENING = {**op.BASE, "enabled": True, "observe": True,
+           "levels": "or", "or_minutes": 5, "entry_mode": "drive",
+           "stop_mode": "session", "target_r": 2.0, "pen": 0.0,
+           "side": "both", "max_per_symbol": 1,
+           # Both sides are recorded; only shorts are posted. Longs off the
+           # opening range lost 32.0% across both splits while shorts made
+           # 5.7%, and long/short asymmetry has now turned up in five
+           # separate studies here. That is not enough to trade on and it is
+           # more than enough to keep a Discord feed readable.
+           "post_sides": ("short",)}
 
 
 def simulate_day(day: pd.DataFrame, sym: str, p: dict, cfg: dict) -> list[dict]:
@@ -152,7 +176,8 @@ def money(x: float) -> str:
 
 LEVEL_LABEL = {"pmh": "premarket high", "pml": "premarket low",
                "pdh": "yesterday's high", "pdl": "yesterday's low",
-               "pdc": "yesterday's close"}
+               "pdc": "yesterday's close",
+               "orh": "the opening-range high", "orl": "the opening-range low"}
 
 
 def opening_scan(cfg: dict, now: pd.Timestamp) -> list[dict]:
@@ -180,37 +205,53 @@ def opening_scan(cfg: dict, now: pd.Timestamp) -> list[dict]:
         _, prior = op.split_session(days[-2][1])
         for t in op.day_trades(days[-1][1], prior, OPENING):
             rps, live = t["rps"], t["reason"] == "open"
-            n = shares(t["entry"], rps, cfg["equity"], cfg["risk_pct"])
+            # An unvalidated rule does not get a position size. Printing one
+            # invites the trade to be taken as though it had been proven.
+            n = (0 if OPENING.get("observe")
+                 else shares(t["entry"], rps, cfg["equity"], cfg["risk_pct"]))
             out.append({
                 "id": f"OPEN-{sym}-{t['level_name']}-{today}",
                 "rule": "opening", "symbol": sym, "side": t["side"],
                 "entry_time": t["entry_time"], "entry": round(t["entry"], 2),
                 "stop": round(t["stop"], 2), "target": round(t["target"], 2),
                 "shares": n, "risk": round(n * rps, 2),
+                "observe": bool(OPENING.get("observe")),
                 "level": t["level"], "level_name": t["level_name"],
                 "exit": None if live else round(t["exit"], 2),
                 "exit_time": None if live else t["exit_time"],
                 "reason": None if live else t["reason"],
                 "pct": None if live else round(t["pct"], 2),
                 "cash": None if live else round(n * rps * t["r"], 2)})
+    # Both sides are computed so the forward record is complete; only the
+    # posting sides reach the feed. Everything lands in the day file either
+    # way, which is what the later study will read.
+    posted = OPENING.get("post_sides", ("short", "long"))
+    for t in out:
+        t["post"] = (not OPENING.get("observe")) or t["side"] in posted
     return out
 
 
 def entry_msg(t: dict) -> str:
+    short = t.get("side", "short") == "short"
+    head = f"{'SHORT' if short else 'LONG'} {t['symbol']}"
+    body = (f"Entry `${t['entry']:,.2f}`\n"
+            f"🛑 SL `${t['stop']:,.2f}`\n"
+            f"🎯 TP `${t['target']:,.2f}`")
+
+    if t.get("observe"):
+        # Deliberately NOT shaped like a signal. No size, no dollars at risk,
+        # and the reason it is here stated on the line under it.
+        return (f"👀 **WATCHING · {head}**  ·  {t['entry_time']} ET\n"
+                f"{body}\n"
+                f"_broke {LEVEL_LABEL.get(t['level_name'], t['level_name'])} "
+                f"${t['level']:,.2f} · tracking only, this rule has not passed "
+                f"a holdout test — no position_")
+
     size = (f"{t['shares']} share{'s' if t['shares'] != 1 else ''}"
             if t["shares"] else "**0 — too small for the account**")
-    short = t.get("side", "short") == "short"
-    why = ""
-    if t.get("rule") == "opening":
-        why = (f"\n_opening drive · broke "
-               f"{LEVEL_LABEL.get(t['level_name'], t['level_name'])} "
-               f"${t['level']:,.2f}_")
-    return (f"{'🔻' if short else '🔺'} **{'SHORT' if short else 'LONG'} "
-            f"{t['symbol']}**  ·  {t['entry_time']} ET\n"
-            f"Entry `${t['entry']:,.2f}`\n"
-            f"🛑 SL `${t['stop']:,.2f}`\n"
-            f"🎯 TP `${t['target']:,.2f}`\n"
-            f"{size} · risking `${t['risk']:,.2f}`{why}")
+    return (f"{'🔻' if short else '🔺'} **{head}**  ·  {t['entry_time']} ET\n"
+            f"{body}\n"
+            f"{size} · risking `${t['risk']:,.2f}`")
 
 
 def close_msg(t: dict) -> str:
@@ -218,29 +259,56 @@ def close_msg(t: dict) -> str:
     why = {"target": "hit target", "stop": "hit stop",
            "bell": "closed at the bell",
            "time": "closed on the hold limit"}.get(t["reason"], t["reason"])
+    if t.get("observe"):
+        return (f"{'🟢' if won else '🔴'} **WATCHED {t['symbol']} closed**  ·  "
+                f"{t['exit_time']} ET\n"
+                f"Exit `${t['exit']:,.2f}` — {why}\n"
+                f"**{t['pct']:+.2f}%** _(tracking only — no position was taken)_")
     return (f"{'✅' if won else '❌'} **CLOSED {t['symbol']}**  ·  "
             f"{t['exit_time']} ET\n"
             f"Exit `${t['exit']:,.2f}` — {why}\n"
             f"**{t['pct']:+.2f}%**  ({money(t.get('cash') or 0)})")
 
 
-def summary_msg(trades: list[dict], date: str) -> str:
-    done = [t for t in trades if t["exit"] is not None]
-    if not done:
-        return (f"📊 **{date}** — no trades today.\n"
-                "_Quiet days are normal for this setup._")
+def block(done: list[dict], head: str, mark: tuple[str, str]) -> list[str]:
     won = sum(1 for t in done if (t["pct"] or 0) > 0)
     pct = sum(t["pct"] or 0 for t in done)
-    cash = sum((t.get("cash") or 0) for t in done)
-    lines = [f"📊 **{date}**", "",
+    lines = [head,
              f"**{len(done)} trade{'s' if len(done) != 1 else ''} · "
              f"{won} won, {len(done) - won} lost · "
              f"{100 * won / len(done):.0f}% win rate**",
-             f"**{pct:+.2f}%  ({money(cash)})**", ""]
+             f"**{pct:+.2f}%**"]
     for t in done:
-        lines.append(f"{'✅' if (t['pct'] or 0) > 0 else '❌'} {t['symbol']} "
-                     f"{t['entry_time']}→{t['exit_time']}  {t['pct']:+.2f}%")
-    lines.append("\n_Paper only. No orders were placed._")
+        lines.append(f"{mark[0] if (t['pct'] or 0) > 0 else mark[1]} "
+                     f"{t['symbol']} {t['entry_time']}→{t['exit_time']}  "
+                     f"{t['pct']:+.2f}%")
+    return lines + [""]
+
+
+def summary_msg(trades: list[dict], date: str) -> str:
+    """The day, with the traded rule and the watched rule kept apart.
+
+    Mixing them would put an unvalidated rule's results into the account's
+    running total, which is exactly how a number stops meaning anything.
+    """
+    done = [t for t in trades if t["exit"] is not None]
+    real = [t for t in done if not t.get("observe")]
+    watch = [t for t in done if t.get("observe") and t.get("post", True)]
+    if not real and not watch:
+        return (f"📊 **{date}** — no trades today.\n"
+                "_Quiet days are normal for this setup._")
+
+    lines = [f"📊 **{date}**", ""]
+    if real:
+        cash = sum((t.get("cash") or 0) for t in real)
+        lines += block(real, "**Traded**", ("✅", "❌"))
+        lines[-2] += f"  ({money(cash)})"
+    else:
+        lines += ["**Traded** — nothing fired today.", ""]
+    if watch:
+        lines += block(watch, "**Watched** _(opening range · no positions)_",
+                       ("🟢", "🔴"))
+    lines.append("_Paper only. No orders were placed._")
     return "\n".join(lines)
 
 
@@ -306,6 +374,8 @@ def tick(cfg: dict, dry_run: bool) -> int:
     seen = load_seen(date)
     msgs = []
     for t in trades:
+        if not t.get("post", True):
+            continue
         if t["id"] not in seen["entries"]:
             msgs.append(entry_msg(t)); seen["entries"].append(t["id"])
         if t["exit"] is not None and t["id"] not in seen["exits"]:
