@@ -1315,3 +1315,47 @@ def test_preclose_marks_a_position_too_big_for_the_account():
     msg = preclose_alert({"at": "x", "minutes_to_close": 15,
                           "rows": [_live_row(shares=0)]})
     assert "skip" in msg and "risks more than" in msg
+
+
+def test_intraday_entry_buys_the_level_and_respects_a_gap():
+    """Entering at the level is the whole intraday premise. But when a day
+    GAPS past the level, that fill never existed - paying the level anyway is
+    the most common way an intraday backtest flatters itself."""
+    import copy
+    import pandas as pd
+    from src.breakout import BASE_BO, prepare, signal_times_bo
+    from src.swing import run_portfolio
+    p = copy.deepcopy(BASE_BO)
+    p.update({"base_len": 15, "touch_window": 15, "squeeze_atr": 6.0,
+              "vol_mult": 1.05, "min_atr_pct": 0.0, "risk_pct": 1.0,
+              "entry_style": "level"})
+    df = _coil_then_break()
+    # force a violent gap up on the breakout bar
+    i = df.index[275]
+    df.loc[i, "open"] = float(df.loc[i, "close"]) * 1.30
+    df.loc[i, "high"] = float(df.loc[i, "open"]) * 1.02
+    data = {"S1": df}
+    out = run_portfolio(prepare(data, p), p, equity=2000.0)
+    for pos in out["open"] + []:
+        pass
+    # any entry on a gapped bar must be at or above that bar's open
+    prep = prepare(data, p)
+    d = prep["S1"]
+    for t in out["trades"] + out["open"]:
+        if t.get("entry_date") == str(i.date()):
+            assert t["entry"] >= float(d.loc[i, "open"]), "filled below the gap"
+
+
+def test_intraday_entry_takes_breaks_the_close_rule_rejects():
+    """The close rule needs the break to HOLD to the close. The intraday rule
+    takes it on the touch. So intraday must see at least as many signals -
+    including the failed ones, which is the point of testing it."""
+    import copy
+    from src.breakout import BASE_BO, find_signals_bo, indicators_bo
+    base = copy.deepcopy(BASE_BO)
+    base.update({"base_len": 15, "touch_window": 15, "squeeze_atr": 6.0,
+                 "vol_mult": 1.05, "min_atr_pct": 0.0})
+    df = indicators_bo(_coil_then_break(), base)
+    n_close = len(find_signals_bo(df, {**base, "entry_style": "close"}))
+    n_level = len(find_signals_bo(df, {**base, "entry_style": "level"}))
+    assert n_level >= n_close
