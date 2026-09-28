@@ -376,12 +376,51 @@ def research(data, dailies, universe: str) -> str:
     return "\n".join(L) + "\n"
 
 
+def sensitivity(data, dailies, cfg: dict, dates: set) -> str:
+    """What the result is worth at costs we have not proved we can achieve.
+
+    The winning configuration stops at five percent of the 14-day ATR. On a
+    $600 stock with a $15 ATR that is about seventy-five cents, and our
+    assumed slippage of 0.05% is already thirty cents of it each way. The
+    published work carries the same warning about its own tightest variant.
+
+    So the question is not whether the rule made money at the costs we
+    assumed. It is how much worse the costs have to get before it does not.
+    """
+    base = op.SLIP_PCT
+    rows = []
+    try:
+        for slip in (0.0, 0.05, 0.10, 0.15, 0.25, 0.50):
+            op.SLIP_PCT = slip
+            t = tally(run(data, dailies, cfg, dates), cfg)
+            t["name"] = f"slippage {slip:.2f}% each way"
+            rows.append(t)
+            log.info("slip %.2f%%: n=%d win=%.1f%% profit=%+.1f%%",
+                     slip, t["n"], t["win_pct"], t["profit_pct"])
+    finally:
+        op.SLIP_PCT = base
+
+    L = ["## How much cost does it survive?", "",
+         f"`{cfg.get('name', '')}` over every date, costs varied:", "", HEAD]
+    for t in rows:
+        L.append(row(t["name"], t))
+    dies = next((t for t in rows if t["profit_pct"] <= 0), None)
+    L.append("")
+    if dies:
+        L.append(f"- **It stops making money at {dies['name']}.** Our backtest "
+                 f"assumes 0.05%. The gap between those two numbers is the "
+                 f"entire result.")
+    else:
+        L.append("- Survives every cost level tested, including 0.50% each "
+                 "way, which is far worse than these names actually trade.")
+    return "\n".join(L) + "\n"
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--days", type=int, default=60)
     ap.add_argument("--universe", default="wide")
     ap.add_argument("--symbols", default="")
-    args = ap.parse_args(argv)
 
     symbols = ([s.strip().upper() for s in args.symbols.split(",") if s.strip()]
                or UNIVERSES.get(args.universe) or UNIVERSES["wide"])
@@ -397,6 +436,12 @@ def main(argv=None) -> int:
         log.error("Nothing rankable.")
         return 1
     out = research(data, dailies, args.universe)
+    try:
+        cfg = json.loads((REPORTS / "inplay.json").read_text())["best"]
+        all_dates = {d for x in dailies.values() for d in x.index}
+        out += "\n" + sensitivity(data, dailies, cfg, all_dates)
+    except Exception as exc:                                   # noqa: BLE001
+        log.warning("Sensitivity pass failed: %s", exc)
     REPORTS.mkdir(exist_ok=True)
     (REPORTS / "inplay.md").write_text(out)
     print(out)
