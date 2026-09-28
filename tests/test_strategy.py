@@ -1284,3 +1284,34 @@ def test_live_quiet_message_says_how_long_is_left():
     text = render_live({"at": "2026-09-28 11:04 ET", "minutes_to_close": 296,
                         "no_bar_yet": 0, "rows": [], "settings": {}})
     assert "nothing at its level" in text and "296 min" in text
+
+
+def test_preclose_alert_is_actionable_and_says_when_to_act():
+    """The whole point: a signal that arrives while it can still be taken.
+    Reporting after the close gives someone a trade they cannot enter."""
+    from src.paper import preclose_alert
+    msg = preclose_alert({"at": "2026-09-28 15:45 ET", "minutes_to_close": 15,
+                          "rows": [_live_row()]})
+    assert msg and "TAKE THESE AT THE CLOSE" in msg
+    assert "SMCI" in msg
+    assert "4 shares" in msg          # size, not just a price
+    assert "39.80" in msg             # stop
+    assert "51.00" in msg             # target
+    assert "15 minutes left" in msg
+    assert "Paper only" in msg
+
+
+def test_preclose_stays_silent_when_nothing_qualifies():
+    """Only a break WITH volume is a signal. Near-misses are not."""
+    from src.paper import preclose_alert
+    assert preclose_alert({"at": "x", "minutes_to_close": 15, "rows": []}) is None
+    for status in ("above_light_volume", "at_the_level"):
+        assert preclose_alert({"at": "x", "minutes_to_close": 15,
+                               "rows": [_live_row(status=status)]}) is None
+
+
+def test_preclose_marks_a_position_too_big_for_the_account():
+    from src.paper import preclose_alert
+    msg = preclose_alert({"at": "x", "minutes_to_close": 15,
+                          "rows": [_live_row(shares=0)]})
+    assert "skip" in msg and "risks more than" in msg
