@@ -29,7 +29,8 @@ from datetime import datetime
 
 import pandas as pd
 
-from .breakout import (BASE_BO, median_atr_pct, prepare, signal_times_bo)
+from .breakout import (BASE_BO, indicators_bo, median_atr_pct, prepare,
+                       signal_times_bo)
 from .config import REPO_ROOT, Credentials, load_config
 from .data import AlpacaError, MarketData
 from .forensics import MOVERS
@@ -247,6 +248,81 @@ def render(r: dict) -> str:
     return "\n".join(out)
 
 
+def watchlist(limit: int = 12) -> dict:
+    """Which screened names are coiled and near the top of their base.
+
+    This is NOT a prediction and NOT a signal. The rule fires on a CLOSE above
+    the base on volume, so nothing here is actionable until the close. It only
+    answers "where is the setup building", which is the honest version of
+    asking what today might bring.
+
+    Every value is read off the last completed bar, and the base excludes the
+    current bar, so nothing here can see the future.
+    """
+    cfg = settings()
+    md = MarketData(Credentials.from_env(), feed="iex")
+    start = (pd.Timestamp.now(tz="America/New_York")
+             - pd.Timedelta(days=400)).date().isoformat()
+    data = md.daily_bars(MOVERS, start=start)
+    data = {s_: d for s_, d in data.items() if len(d) > 120}
+    rows, asof = [], None
+    for sym, df in data.items():
+        d = indicators_bo(df, RULE)
+        bar = d.iloc[-1]
+        a, close = float(bar["atr"]), float(bar["close"])
+        bh, bl, bv = (float(bar["base_high"]), float(bar["base_low"]),
+                      float(bar["base_vol"]))
+        if not (a > 0 and bh > 0 and bv > 0):
+            continue
+        asof = d.index[-1]
+        atr_pct = 100 * a / close
+        if atr_pct < SCREEN_ATR_PCT:
+            continue
+        tight = (bh - bl) / a
+        to_go = 100 * (bh - close) / close      # negative = already above
+        rows.append({"symbol": sym, "close": round(close, 2),
+                     "base_high": round(bh, 2), "base_low": round(bl, 2),
+                     "to_go_pct": round(to_go, 2),
+                     "tightness_atr": round(tight, 2),
+                     "atr_pct": round(atr_pct, 2),
+                     "coiled": tight <= RULE["squeeze_atr"],
+                     "rvol": round(float(bar["volume"]) / bv, 2)})
+    # closest to triggering first, coiled names only - an uncoiled base is not
+    # a setup however near the price is
+    ready = sorted([r for r in rows if r["coiled"] and r["to_go_pct"] > -5],
+                   key=lambda r: abs(r["to_go_pct"]))
+    return {"as_of": str(asof.date()) if asof is not None else "—",
+            "screened": len(rows), "universe": len(data),
+            "settings": cfg, "rows": ready[:limit]}
+
+
+def render_watchlist(w: dict) -> str:
+    out = [f"# What is set up — {w['as_of']}", "",
+           f"{w['screened']} of {w['universe']} names pass the "
+           f"{SCREEN_ATR_PCT:.0f}% volatility screen. Below are the coiled "
+           "ones, closest to their breakout level first.", "",
+           "**Nothing here is a signal.** The rule needs a CLOSE above the "
+           "base on above-average volume. A name can sit on the level all day "
+           "and never trigger.", ""]
+    if not w["rows"]:
+        out.append("**Nothing is coiled right now.** That is normal and it is "
+                   "the setup doing its job — it waits for quiet before loud.")
+        return "\n".join(out)
+    out += ["| Symbol | Last | Breaks above | Distance | Coil | Daily range |",
+            "|---|---|---|---|---|---|"]
+    for r in w["rows"]:
+        dist = (f"**{r['to_go_pct']:+.1f}%**" if abs(r["to_go_pct"]) < 2
+                else f"{r['to_go_pct']:+.1f}%")
+        note = " *(already above — needs volume)*" if r["to_go_pct"] < 0 else ""
+        out.append(f"| **{r['symbol']}** | ${r['close']:,.2f} | "
+                   f"${r['base_high']:,.2f} | {dist}{note} | "
+                   f"{r['tightness_atr']:.1f}x ATR | {r['atr_pct']:.1f}% |")
+    out += ["", "_Distance is how far the last close sits below the level the "
+            "rule needs it to clear. Coil is the base width in ATRs — lower is "
+            "tighter._"]
+    return "\n".join(out)
+
+
 def previous() -> dict:
     """Yesterday's scoring, so today's message can say what actually changed."""
     path = STATE / "paper.json"
@@ -435,7 +511,22 @@ def main(argv=None) -> int:
                     help="score and write, but send nothing")
     ap.add_argument("--sample", action="store_true",
                     help="send one worked example of the alert and exit")
+    ap.add_argument("--watchlist", action="store_true",
+                    help="show which screened names are coiled near their "
+                         "breakout level, and exit")
     args = ap.parse_args(argv)
+
+    if args.watchlist:
+        try:
+            text = render_watchlist(watchlist())
+        except AlpacaError as exc:
+            log.error("Data fetch failed: %s", exc)
+            return 1
+        print(text)
+        if not args.dry_run:
+            REPORTS.mkdir(exist_ok=True)
+            (REPORTS / "watchlist.md").write_text(text)
+        return 0
 
     if args.sample:
         text = sample()
