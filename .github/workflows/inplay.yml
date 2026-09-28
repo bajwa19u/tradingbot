@@ -27,6 +27,14 @@ on:
         description: "Comma-separated symbols (overrides universe)"
         required: false
         default: ""
+      slippage:
+        description: "Percent each way. 0.05 is the optimistic assumption."
+        required: false
+        default: "0.05"
+      stops:
+        description: "ATR fractions to test, e.g. 0.2,0.3,0.5"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -55,12 +63,16 @@ jobs:
           IN_DAYS: ${{ inputs.days }}
           IN_UNI: ${{ inputs.universe }}
           IN_SYM: ${{ inputs.symbols }}
+          IN_SLIP: ${{ inputs.slippage }}
+          IN_STOPS: ${{ inputs.stops }}
         run: |
           set -uo pipefail
           mkdir -p reports
           rm -f reports/inplay.md reports/inplay.json
-          ARGS=(--days "${IN_DAYS:-60}" --universe "${IN_UNI:-wide}")
+          ARGS=(--days "${IN_DAYS:-60}" --universe "${IN_UNI:-wide}" \
+                --slippage "${IN_SLIP:-0.05}")
           [ -n "${IN_SYM:-}" ] && ARGS+=(--symbols "${IN_SYM}") || true
+          [ -n "${IN_STOPS:-}" ] && ARGS+=(--stops "${IN_STOPS}") || true
           set +e
           python -m src.inplay "${ARGS[@]}" 2>&1 | tee reports/inplay_run.log
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
