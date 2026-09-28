@@ -1,0 +1,22 @@
+# Intraday squeeze break — 5-minute bars
+
+**36 symbols · 2026-08-29 to now · 2026-09-28 16:05**
+
+Coil, then break, either direction. Built to read the setup the daily long-only rule could not see.
+
+| | Trades | Won | Lost | Win % | Profit |
+|---|---|---|---|---|---|
+| **Both sides** | 19 | 6 | 13 | 31.6% | **-7.9%** |
+| long | 11 | 2 | 9 | 18.2% | -7.9% |
+| short | 8 | 4 | 4 | 50.0% | +0.0% |
+
+Worst drop **-8.0%**.
+
+**Long vs short:** 7.9% apart. The short side loses money here, so adding it did not buy what it was supposed to.
+
+### The biggest winner
+
+**NIO short** — in at `$3.60`, out at `$3.58` (target), held 23 bars
++0.75% on the stock. An option on the same move can be worth many times that - and lose its whole premium on the trades that go the other way, which this backtest counts as -1R.
+
+_Shorting is assumed always available. On the names that move most it often is not, and that flatters the short side here._
