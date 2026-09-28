@@ -309,9 +309,17 @@ def main(argv=None) -> int:
                  name, st["n"], st["expectancy_R"],
                  st["periods_positive"], st["periods_scored"])
 
-    survivors = [r for r in results
-                 if r["expectancy_R"] > 0 and r["n"] >= args.min_trades
-                 and r["periods_positive"] >= max(1, r["periods_scored"] - 1)]
+    # The survivor filter exists to stop the best of many configurations being
+    # mistaken for an edge. With --only there is exactly one config and nothing
+    # is being chosen, so the filter has no job and would only suppress the
+    # holdout run - which is the measurement the whole exercise is for.
+    if args.only:
+        survivors = list(results)
+        log.info("--only: one config, no selection, filter skipped")
+    else:
+        survivors = [r for r in results
+                     if r["expectancy_R"] > 0 and r["n"] >= args.min_trades
+                     and r["periods_positive"] >= max(1, r["periods_scored"] - 1)]
     survivors.sort(key=lambda r: (-r["worst_period_R"], -r["expectancy_R"]))
 
     hold = None
@@ -400,12 +408,34 @@ def render(p: dict) -> str:
     w, h = p.get("winner"), p.get("holdout")
     out += ["", "## Selected", ""]
     if not w:
-        out += ["**Nothing passed.** No setting was profitable while staying "
-                "positive across periods on an adequate number of trades. The "
-                "unseen stocks were not touched.", "",
-                f"Worth noting: a search over {p['tried']} settings could not "
-                "find a profitable one even by accident. When a dataset cannot "
-                "be overfitted, the idea is wrong for it rather than mistuned."]
+        best = max(p["results"], key=lambda r: r.get("return_pct", 0),
+                   default=None)
+        out += ["**Nothing passed the filter.** The unseen stocks were not "
+                "touched.", ""]
+        if best and best.get("return_pct", 0) > 0:
+            # Do not call a profitable setting unprofitable. It failed a
+            # different gate, and saying which one is the difference between
+            # a useful report and a misleading one.
+            why = []
+            if best["n"] < 40:
+                why.append(f"only {best['n']} trades")
+            scored = best.get("periods_scored", 0)
+            if scored and best.get("periods_positive", 0) < max(1, scored - 1):
+                why.append(f"positive in only {best.get('periods_positive')} "
+                           f"of {scored} periods")
+            elif not scored:
+                why.append("too few trades in each period to score "
+                           "consistency")
+            out += [f"The best setting returned "
+                    f"**{best['return_pct']:+.1f}%** — it was not rejected for "
+                    "losing money, but for " + (" and ".join(why) or
+                    "failing a consistency check") + ". Treat the figure above "
+                    "as real but unconfirmed."]
+        else:
+            out += [f"A search over {p['tried']} setting"
+                    f"{'s' if p['tried'] != 1 else ''} could not find a "
+                    "profitable one even by accident. When a dataset cannot be "
+                    "overfitted, the idea is wrong for it rather than mistuned."]
         return "\n".join(out)
 
     out += [f"**`{w['name']}`**", ""]
