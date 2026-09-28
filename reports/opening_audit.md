@@ -1,0 +1,17 @@
+# AMD · 2026-09-28
+
+- 09:30 open: **627.27**
+- premarket bars: 1
+- minute scale (prior day): **1.625**
+
+Levels:
+  - pdc = 630.47
+  - pdh = 638.79
+  - pdl = 625.80
+  - pmh = 624.01
+  - pml = 624.01
+
+Breaks in the window:
+  - 09:30 short pdl @ 625.80 → entry 622.21 at 09:30, stop 627.42, target 611.78 → **-1.06%** (stop at 09:32)
+  - 09:30 short pmh @ 624.01 → entry 622.21 at 09:30, stop 625.63, target 615.36 → **-1.09%** (stop at 09:31)
+  - 09:30 short pml @ 624.01 → entry 622.21 at 09:30, stop 625.63, target 615.36 → **-1.09%** (stop at 09:31)
