@@ -1789,14 +1789,14 @@ def test_replay_message_is_never_mistaken_for_a_live_signal():
              "entry_time": "12:20", "level": 610.62, "entry": 608.10,
              "stop": 614.43, "target": 595.40, "shares": 3, "risk": 18.90,
              "outcome": {"won": 1, "r": 2.0}}]
-    msg = replay_message(sigs, "2026-09-28 · 50 symbols")
+    msg = replay_message(sigs, "2026-09-28 · 50 symbols", "nowhere")
     assert "REPLAY" in msg
     assert "not a live signal" in msg or "not actionable now" in msg \
         or "none of this is actionable" in msg
     assert "AMD" in msg and "608.10" in msg and "614.43" in msg
     assert "12:20" in msg                       # the time it would have fired
     assert "WON" in msg
-    empty = replay_message([], "2026-09-28 · 50 symbols")
+    empty = replay_message([], "2026-09-28 · 50 symbols", "nowhere")
     assert "No setups today" in empty and "normal" in empty
 
 
@@ -1817,3 +1817,44 @@ def test_tech10_is_marked_as_not_a_holdout():
     used = set(RESEARCH) | set(HOLDOUT) | set(MOVERS)
     assert set(TECH10) & used, "if this ever stops overlapping, re-read why"
     assert len(TECH10) == 10
+
+
+def test_replay_reports_profit_percent_and_never_R():
+    """The owner has asked three times for profit %, not R multiples. R must
+    not appear anywhere in a message they read."""
+    from src.retest import replay_message
+    sigs = [{"symbol": "AMD", "side": "short", "break_time": "11:55",
+             "entry_time": "12:20", "level": 610.62, "entry": 608.10,
+             "stop": 614.43, "target": 595.40, "shares": 3, "risk": 18.90,
+             "outcome": {"won": 1, "r": 2.0}},
+            {"symbol": "MU", "side": "short", "break_time": "13:00",
+             "entry_time": "13:15", "level": 100.0, "entry": 99.5,
+             "stop": 101.0, "target": 96.5, "shares": 13, "risk": 19.50,
+             "outcome": {"won": 0, "r": -1.0}}]
+    msg = replay_message(sigs, "2026-09-28 · 10 symbols", "nowhere", 1.0)
+    assert "+2.00%" in msg and "-1.00%" in msg
+    assert "+1.00%" in msg                      # the day's total
+    assert "50% win rate" in msg
+    import re
+    assert not re.search(r"[-+]?\d+\.?\d*R\b", msg), "an R multiple leaked in"
+
+
+def test_replay_recap_accumulates_days_without_double_counting(tmp_path,
+                                                               monkeypatch):
+    """Re-running the same day must replace it, not add it again - otherwise
+    a second run of a good day doubles the running total."""
+    import src.retest as R
+    monkeypatch.setattr(R, "REPO_ROOT", tmp_path)
+    sig = [{"symbol": "X", "risk": 20.0, "outcome": {"won": 1, "r": 2.0}}]
+    R.record_day("2026-09-28", "fresh", sig, 2000.0, 1.0)
+    R.record_day("2026-09-28", "fresh", sig, 2000.0, 1.0)   # same day again
+    rows, total = R.recap("fresh")
+    assert len(rows) == 1 and total["trades"] == 1
+    assert total["profit_pct"] == 2.0
+
+    R.record_day("2026-09-29", "fresh", sig * 2, 2000.0, 1.0)
+    rows, total = R.recap("fresh")
+    assert total["days"] == 2 and total["trades"] == 3
+    assert total["green_days"] == 2
+    # a different universe keeps its own running total
+    assert R.recap("tech10") == ([], {})
