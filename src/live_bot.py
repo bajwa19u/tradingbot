@@ -1,9 +1,23 @@
-"""The live bot. Break and retest, shorts only, on the core watchlist.
+"""The live bot. Two rules, one watchlist, one Discord feed.
 
-Runs every five minutes through the session. Posts an entry the moment the
-rule fires, a close when the trade ends, and one summary at the bell.
+  * OPENING DRIVE, 09:30-10:00, one-minute bars. Breaks of prices that
+    already existed before the bell - yesterday's high, low and close, and
+    the premarket high and low. No warmup, no pullback required. This is the
+    rule that exists because the bot sat out AMD's 2.5% opening drop on
+    28 September.
+  * BREAK AND RETEST, 09:45-15:30, five-minute bars. The original rule,
+    unchanged.
 
-Two design choices that matter:
+Posts an entry the moment either rule fires, a close when the trade ends,
+and one summary at the bell.
+
+Three design choices that matter:
+
+The opening window is covered by a POLLING run, not by cron. GitHub's
+scheduled workflows are routinely several minutes late, which is survivable
+at 11am and useless at 09:31. One job starts before the bell and checks
+every forty-five seconds until 10:05; cron only has to be roughly on time
+once, to start it.
 
 The day is REPLAYED in full on every run, and what has already been announced
 is tracked separately. Nothing about a position is carried forward in mutable
@@ -22,11 +36,13 @@ import argparse
 import json
 import logging
 import sys
+import time as _time
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
 import pandas as pd
 
+from . import opening as op
 from .config import REPO_ROOT, Credentials
 from .data import AlpacaError, MarketData
 from .forensics import CORE
@@ -42,7 +58,15 @@ logging.basicConfig(level=logging.INFO,
                     stream=sys.stdout)
 log = logging.getLogger("live_bot")
 
-OPEN_T, CLOSE_T = "09:45", "15:55"
+OPEN_T, CLOSE_T = "09:45", "15:55"      # the retest rule's window
+BELL = "09:30"                          # the opening rule's window starts here
+OPENING_LAST_RUN = "10:05"              # after this the polling job stops
+
+# The opening rule's settings. `enabled` is a deliberate switch rather than a
+# default: this rule does not go live until the holdout run says it survives
+# on dates it was not built on, and that run writes reports/opening.json.
+OPENING = {"enabled": False, **op.BASE, "side": "short", "entry_mode": "drive",
+           "stop_mode": "level", "stop_mult": 1.0, "target_r": 2.0, "pen": 0.0}
 
 
 def simulate_day(day: pd.DataFrame, sym: str, p: dict, cfg: dict) -> list[dict]:
@@ -121,24 +145,78 @@ def scan(cfg: dict) -> tuple[list[dict], str, bool]:
     return trades, stamp, closed_for_day
 
 
+LEVEL_LABEL = {"pmh": "premarket high", "pml": "premarket low",
+               "pdh": "yesterday's high", "pdl": "yesterday's low",
+               "pdc": "yesterday's close"}
+
+
+def opening_scan(cfg: dict, now: pd.Timestamp) -> list[dict]:
+    """The opening-drive rule, live. Same shape of trade as the retest rule.
+
+    Prices from before the bell, so the very first minute of the session is
+    tradeable. The forming bar is dropped exactly as elsewhere - a one-minute
+    bar that has not closed has a close that has not happened.
+    """
+    if not OPENING["enabled"]:
+        return []
+    md = MarketData(Credentials.from_env(), feed="iex")
+    start = (now - pd.Timedelta(days=6)).date().isoformat()
+    data = md.intraday_bars(CORE, 1, start=start, extended=True)
+    today = now.date()
+    out = []
+    for sym, df in data.items():
+        if df.empty:
+            continue
+        if len(df) and now < df.index[-1].tz_convert(EASTERN) + pd.Timedelta(minutes=1):
+            df = df.iloc[:-1]
+        days = op.by_day(df)
+        if len(days) < 2 or days[-1][0] != today:
+            continue
+        _, prior = op.split_session(days[-2][1])
+        for t in op.day_trades(days[-1][1], prior, OPENING):
+            rps, live = t["rps"], t["reason"] == "open"
+            n = shares(t["entry"], rps, cfg["equity"], cfg["risk_pct"])
+            out.append({
+                "id": f"OPEN-{sym}-{t['level_name']}-{today}",
+                "rule": "opening", "symbol": sym, "side": t["side"],
+                "entry_time": t["entry_time"], "entry": round(t["entry"], 2),
+                "stop": round(t["stop"], 2), "target": round(t["target"], 2),
+                "shares": n, "risk": round(n * rps, 2),
+                "level": t["level"], "level_name": t["level_name"],
+                "exit": None if live else round(t["exit"], 2),
+                "exit_time": None if live else t["exit_time"],
+                "reason": None if live else t["reason"],
+                "pct": None if live else round(t["pct"], 2),
+                "cash": None if live else round(n * rps * t["r"], 2)})
+    return out
+
+
 def entry_msg(t: dict) -> str:
     size = (f"{t['shares']} share{'s' if t['shares'] != 1 else ''}"
             if t["shares"] else "**0 — too small for the account**")
-    return (f"🔻 **SHORT {t['symbol']}**  ·  {t['entry_time']} ET\n"
+    short = t.get("side", "short") == "short"
+    why = ""
+    if t.get("rule") == "opening":
+        why = (f"\n_opening drive · broke "
+               f"{LEVEL_LABEL.get(t['level_name'], t['level_name'])} "
+               f"${t['level']:,.2f}_")
+    return (f"{'🔻' if short else '🔺'} **{'SHORT' if short else 'LONG'} "
+            f"{t['symbol']}**  ·  {t['entry_time']} ET\n"
             f"Entry `${t['entry']:,.2f}`\n"
             f"🛑 SL `${t['stop']:,.2f}`\n"
             f"🎯 TP `${t['target']:,.2f}`\n"
-            f"{size} · risking `${t['risk']:,.2f}`")
+            f"{size} · risking `${t['risk']:,.2f}`{why}")
 
 
 def close_msg(t: dict) -> str:
     won = (t["pct"] or 0) > 0
     why = {"target": "hit target", "stop": "hit stop",
-           "bell": "closed at the bell"}.get(t["reason"], t["reason"])
+           "bell": "closed at the bell",
+           "time": "closed on the hold limit"}.get(t["reason"], t["reason"])
     return (f"{'✅' if won else '❌'} **CLOSED {t['symbol']}**  ·  "
             f"{t['exit_time']} ET\n"
             f"Exit `${t['exit']:,.2f}` — {why}\n"
-            f"**{t['pct']:+.2f}%**  (${t.get('cash', 0):+,.2f})")
+            f"**{t['pct']:+.2f}%**  (${(t.get('cash') or 0):+,.2f})")
 
 
 def summary_msg(trades: list[dict], date: str) -> str:
@@ -148,7 +226,7 @@ def summary_msg(trades: list[dict], date: str) -> str:
                 "_Quiet days are normal for this setup._")
     won = sum(1 for t in done if (t["pct"] or 0) > 0)
     pct = sum(t["pct"] or 0 for t in done)
-    cash = sum(t.get("cash", 0) for t in done)
+    cash = sum((t.get("cash") or 0) for t in done)
     lines = [f"📊 **{date}**", "",
              f"**{len(done)} trade{'s' if len(done) != 1 else ''} · "
              f"{won} won, {len(done) - won} lost · "
@@ -185,27 +263,36 @@ def load_seen(date: str) -> dict:
     return {**blank, **{k: s.get(k, blank[k]) for k in blank}}
 
 
-def main(argv=None) -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--dry-run", action="store_true")
-    ap.add_argument("--force", action="store_true",
-                    help="ignore the market-hours check")
-    args = ap.parse_args(argv)
+def all_trades(cfg: dict, now: pd.Timestamp) -> tuple[list[dict], str, bool]:
+    """Both rules, merged and ordered by entry time.
 
-    now = pd.Timestamp.now(tz=EASTERN)
-    if not args.force:
-        if now.weekday() > 4:
-            log.info("Weekend — nothing to do."); return 0
-        if not (pd.Timestamp(OPEN_T).time() <= now.time()
-                <= pd.Timestamp("16:10").time()):
-            log.info("Outside the window (%s ET)", now.strftime("%H:%M"))
-            return 0
-
-    cfg = settings()
+    Either rule failing is logged and survived. A broken opening scan must
+    not take the retest rule off the air, and the reverse.
+    """
+    trades, stamp, day_done = [], "—", False
     try:
         trades, stamp, day_done = scan(cfg)
     except AlpacaError as exc:
-        log.error("Fetch failed: %s", exc); return 1
+        log.error("Retest scan failed: %s", exc)
+    except Exception as exc:                                   # noqa: BLE001
+        log.exception("Retest scan blew up: %s", exc)
+    try:
+        trades += opening_scan(cfg, now)
+    except AlpacaError as exc:
+        log.error("Opening scan failed: %s", exc)
+    except Exception as exc:                                   # noqa: BLE001
+        log.exception("Opening scan blew up: %s", exc)
+    trades.sort(key=lambda t: (t["entry_time"], t["symbol"]))
+    if now.time() >= pd.Timestamp("16:00").time():
+        day_done = True
+    return trades, stamp, day_done
+
+
+def tick(cfg: dict, dry_run: bool) -> int:
+    """One pass: recompute the day, announce whatever is new. Returns the
+    number of messages sent."""
+    now = pd.Timestamp.now(tz=EASTERN)
+    trades, stamp, day_done = all_trades(cfg, now)
 
     date = str(now.date())
     seen = load_seen(date)
@@ -219,12 +306,12 @@ def main(argv=None) -> int:
         msgs.append(summary_msg(trades, now.strftime("%A %d %B")))
         seen["summary"] = True
 
-    log.info("bars through %s · %d trades today · %d new message(s)",
-             stamp, len(trades), len(msgs))
+    log.info("%s ET · bars through %s · %d trade(s) today · %d new message(s)",
+             now.strftime("%H:%M:%S"), stamp, len(trades), len(msgs))
     for m in msgs:
         print("\n" + m)
-    if args.dry_run:
-        return 0
+    if dry_run:
+        return len(msgs)
 
     STATE.mkdir(exist_ok=True); REPORTS.mkdir(exist_ok=True)
     (STATE / SEEN_FILE).write_text(json.dumps(seen, indent=2))
@@ -234,7 +321,53 @@ def main(argv=None) -> int:
                     for t in trades))
     for m in msgs:
         notify(m)
-    return 0
+    return len(msgs)
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--force", action="store_true",
+                    help="ignore the market-hours check")
+    ap.add_argument("--until", default="",
+                    help="poll until this Eastern time, e.g. 10:05")
+    ap.add_argument("--every", type=int, default=45,
+                    help="seconds between polls when --until is set")
+    args = ap.parse_args(argv)
+
+    now = pd.Timestamp.now(tz=EASTERN)
+    first = BELL if OPENING["enabled"] else OPEN_T
+    if not args.force:
+        if now.weekday() > 4:
+            log.info("Weekend — nothing to do."); return 0
+        end = args.until or "16:10"
+        if now.time() > pd.Timestamp(end).time():
+            log.info("Past %s ET — nothing to do.", end); return 0
+        if not args.until and now.time() < pd.Timestamp(first).time():
+            log.info("Before %s ET — nothing to do.", first); return 0
+
+    cfg = settings()
+    if not args.until:
+        return 0 if tick(cfg, args.dry_run) >= 0 else 1
+
+    # Polling mode. Cron only has to be roughly on time once; this job then
+    # covers the open at its own cadence. Sleeping past the bell rather than
+    # scanning before it keeps the log honest about what it has seen.
+    stop = pd.Timestamp(args.until).time()
+    log.info("Polling every %ds until %s ET", args.every, args.until)
+    while True:
+        now = pd.Timestamp.now(tz=EASTERN)
+        if now.time() > stop:
+            log.info("Reached %s ET — done.", args.until)
+            return 0
+        if now.time() >= pd.Timestamp(first).time():
+            try:
+                tick(cfg, args.dry_run)
+            except Exception as exc:                           # noqa: BLE001
+                log.exception("Tick failed, continuing: %s", exc)
+        else:
+            log.info("%s ET — waiting for %s", now.strftime("%H:%M:%S"), first)
+        _time.sleep(max(5, args.every))
 
 
 if __name__ == "__main__":
