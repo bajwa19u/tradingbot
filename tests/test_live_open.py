@@ -1,0 +1,185 @@
+"""The live wiring: message shape, de-duplication, and the two-rule merge.
+
+These are the failures that reach Discord rather than a log file — a trade
+announced twice, a close posted for a position that is still running, or a
+result reported in a unit the account holder has said three times he does not
+use.
+"""
+from __future__ import annotations
+
+import pandas as pd
+import pytest
+
+from src import live_bot as lb
+
+
+def trade(**kw):
+    base = {"id": "X-1", "rule": "opening", "symbol": "AMD", "side": "short",
+            "entry_time": "09:31", "entry": 622.21, "stop": 627.42,
+            "target": 611.78, "shares": 3, "risk": 15.6, "level": 625.80,
+            "level_name": "pdl", "exit": None, "exit_time": None,
+            "reason": None, "pct": None, "cash": None}
+    return {**base, **kw}
+
+
+# --- messages ----------------------------------------------------------------
+def test_entry_message_has_the_five_things_asked_for():
+    m = lb.entry_msg(trade())
+    assert "AMD" in m                    # name
+    assert "622.21" in m                 # price to buy in
+    assert "627.42" in m and "🛑" in m    # stop
+    assert "611.78" in m and "🎯" in m    # target
+    assert "🔻" in m                      # an emoji for the name
+
+
+def test_entry_message_names_the_level_for_an_opening_trade():
+    m = lb.entry_msg(trade())
+    assert "yesterday's low" in m and "625.80" in m
+
+
+def test_a_retest_trade_gets_no_opening_footnote():
+    m = lb.entry_msg(trade(rule="retest"))
+    assert "opening drive" not in m
+
+
+def test_long_and_short_read_differently():
+    s, l = lb.entry_msg(trade()), lb.entry_msg(trade(side="long"))
+    assert "SHORT" in s and "🔻" in s
+    assert "LONG" in l and "🔺" in l
+
+
+def test_close_message_is_a_percentage_not_a_multiple():
+    m = lb.close_msg(trade(exit=611.78, exit_time="10:45", reason="target",
+                           pct=2.0, cash=31.2))
+    assert "+2.00%" in m and "✅" in m
+    assert "R" not in m.replace("SHORT", "").replace("AMD", "")
+
+
+def test_close_message_survives_a_missing_cash_figure():
+    m = lb.close_msg(trade(exit=627.42, exit_time="09:33", reason="stop",
+                           pct=-1.0, cash=None))
+    assert "-1.00%" in m and "❌" in m and "+$0.00" in m
+
+
+def test_hold_limit_exit_is_explained_in_english():
+    m = lb.close_msg(trade(exit=620.0, exit_time="11:31", reason="time",
+                           pct=0.3, cash=5.0))
+    assert "hold limit" in m
+
+
+# --- the daily recap ---------------------------------------------------------
+def test_summary_counts_winners_and_losers_and_a_total():
+    ts = [trade(id="a", exit=1.0, pct=2.0, cash=30.0, exit_time="10:00",
+                reason="target"),
+          trade(id="b", exit=1.0, pct=-1.0, cash=-15.0, exit_time="10:10",
+                reason="stop"),
+          trade(id="c", exit=1.0, pct=2.0, cash=30.0, exit_time="11:00",
+                reason="target")]
+    m = lb.summary_msg(ts, "Tuesday 29 September")
+    assert "3 trades" in m and "2 won, 1 lost" in m and "67% win rate" in m
+    assert "+3.00%" in m and "+$45.00" in m
+
+
+def test_summary_ignores_positions_that_are_still_open():
+    ts = [trade(id="a", exit=1.0, pct=2.0, cash=30.0, exit_time="10:00",
+                reason="target"),
+          trade(id="b")]                       # still running
+    m = lb.summary_msg(ts, "Tuesday 29 September")
+    assert "1 trade" in m and "1 won, 0 lost" in m
+
+
+def test_summary_says_so_on_a_quiet_day():
+    assert "no trades today" in lb.summary_msg([], "Tuesday 29 September")
+
+
+def test_no_user_facing_message_mentions_r_multiples():
+    """Stated more than once: win %, profit %, winners versus losers."""
+    ts = [trade(id="a", exit=611.78, pct=2.0, cash=30.0, exit_time="10:00",
+                reason="target")]
+    blob = " ".join([lb.entry_msg(ts[0]), lb.close_msg(ts[0]),
+                     lb.summary_msg(ts, "Tuesday 29 September")])
+    for banned in (" R\n", " R ", "1R", "2R", "3R", "R-multiple", "R multiple"):
+        assert banned not in blob
+
+
+# --- de-duplication ----------------------------------------------------------
+def test_an_opening_trade_id_is_stable_across_reruns():
+    """The whole day is replayed every poll. If the id moved, every poll
+    would post the same trade again."""
+    ids = {f"OPEN-AMD-pdl-2026-09-29" for _ in range(5)}
+    assert len(ids) == 1
+
+
+def test_seen_file_defaults_every_field(tmp_path, monkeypatch):
+    monkeypatch.setattr(lb, "STATE", tmp_path)
+    (tmp_path / lb.SEEN_FILE).write_text('{"date": "2026-09-29"}')
+    s = lb.load_seen("2026-09-29")
+    assert s["entries"] == [] and s["exits"] == [] and s["summary"] is False
+
+
+def test_a_foreign_seen_file_does_not_crash_the_run(tmp_path, monkeypatch):
+    monkeypatch.setattr(lb, "STATE", tmp_path)
+    (tmp_path / lb.SEEN_FILE).write_text("not json at all")
+    assert lb.load_seen("2026-09-29")["entries"] == []
+
+
+def test_yesterdays_seen_file_is_ignored(tmp_path, monkeypatch):
+    monkeypatch.setattr(lb, "STATE", tmp_path)
+    (tmp_path / lb.SEEN_FILE).write_text(
+        '{"date": "2026-09-28", "entries": ["OPEN-AMD-pdl-2026-09-28"]}')
+    assert lb.load_seen("2026-09-29")["entries"] == []
+
+
+# --- the merge ---------------------------------------------------------------
+def test_opening_scan_is_off_until_it_has_been_measured():
+    """It stays off until the holdout run says it survives on unseen dates.
+    Flipping this is a decision, not a default."""
+    if not lb.OPENING["enabled"]:
+        assert lb.opening_scan({"equity": 2000.0, "risk_pct": 1.0},
+                               pd.Timestamp.now(tz=lb.EASTERN)) == []
+
+
+def test_a_broken_rule_does_not_silence_the_other(monkeypatch):
+    def boom(*a, **k):
+        raise RuntimeError("data feed on fire")
+    monkeypatch.setattr(lb, "scan", boom)
+    monkeypatch.setattr(lb, "opening_scan",
+                        lambda cfg, now: [trade(entry_time="09:31")])
+    now = pd.Timestamp("2026-09-29 09:50", tz=lb.EASTERN)
+    trades, _, _ = lb.all_trades({"equity": 2000.0, "risk_pct": 1.0}, now)
+    assert len(trades) == 1
+
+
+def test_trades_come_out_in_time_order(monkeypatch):
+    monkeypatch.setattr(lb, "scan", lambda cfg: (
+        [trade(id="r", rule="retest", entry_time="10:20")], "10:20", False))
+    monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: [
+        trade(id="o2", symbol="TSLA", entry_time="09:31"),
+        trade(id="o1", symbol="AMD", entry_time="09:30")])
+    now = pd.Timestamp("2026-09-29 11:00", tz=lb.EASTERN)
+    trades, _, _ = lb.all_trades({"equity": 2000.0, "risk_pct": 1.0}, now)
+    assert [t["entry_time"] for t in trades] == ["09:30", "09:31", "10:20"]
+
+
+def test_the_retest_rule_is_not_polled_before_its_window_opens(monkeypatch):
+    called = []
+    monkeypatch.setattr(lb, "scan", lambda cfg: called.append(1) or ([], "", False))
+    monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: [])
+    lb.all_trades({}, pd.Timestamp("2026-09-29 09:31", tz=lb.EASTERN))
+    assert called == [], "no point fetching 5-minute bars it cannot act on"
+    lb.all_trades({}, pd.Timestamp("2026-09-29 09:50", tz=lb.EASTERN))
+    assert called == [1]
+
+
+def test_the_day_is_done_after_the_bell(monkeypatch):
+    monkeypatch.setattr(lb, "scan", lambda cfg: ([], "15:55", False))
+    monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: [])
+    _, _, done = lb.all_trades({}, pd.Timestamp("2026-09-29 16:01",
+                                                tz=lb.EASTERN))
+    assert done is True
+
+
+# --- the window --------------------------------------------------------------
+def test_the_opening_rule_moves_the_start_of_the_day_to_the_bell():
+    assert lb.BELL == "09:30"
+    assert lb.OPEN_T == "09:45", "the retest rule keeps its own window"
