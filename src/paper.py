@@ -34,6 +34,9 @@ from .breakout import (BASE_BO, indicators_bo, median_atr_pct, prepare,
 from .config import REPO_ROOT, Credentials, load_config
 from .data import AlpacaError, MarketData
 from .forensics import MOVERS
+from zoneinfo import ZoneInfo
+
+EASTERN = ZoneInfo("America/New_York")
 from .swing import run_portfolio
 
 REPORTS = REPO_ROOT / "reports"
@@ -323,6 +326,134 @@ def render_watchlist(w: dict) -> str:
     return "\n".join(out)
 
 
+def live_scan() -> dict:
+    """Where every screened name stands RIGHT NOW, mid-session.
+
+    The honest caveat, stated here and in every message this produces: the
+    tested rule enters at the CLOSING price (src/swing.py: entry = close). A
+    name above its level at 11am has not triggered - it has to still be there
+    at 16:00. Intraday breaks that fail before the close are the classic way
+    this kind of setup loses money, so acting on one of these at noon is
+    trading a DIFFERENT strategy from the one that was measured.
+
+    What this is for: knowing what to have on screen, and being ready.
+
+    Everything is read from bars that are already complete, except today's
+    partial bar, which supplies only the current price and volume-so-far. The
+    base and the ATR come from history ending yesterday, so nothing here can
+    see forward.
+    """
+    cfg = settings()
+    md = MarketData(Credentials.from_env(), feed="iex")
+    start = (pd.Timestamp.now(tz=EASTERN) - pd.Timedelta(days=400)).date().isoformat()
+    data = md.daily_bars(MOVERS, start=start)
+    today = pd.Timestamp.now(tz=EASTERN).date()
+
+    rows, stale = [], 0
+    for sym, df in data.items():
+        if len(df) < 120:
+            continue
+        if df.index[-1].date() != today:
+            stale += 1          # no bar for today yet
+            continue
+        d = indicators_bo(df, RULE)
+        last, prev = d.iloc[-1], d.iloc[-2]
+        # ATR through YESTERDAY. Today's true range is only part-formed, and a
+        # part-formed range understates ATR, which would loosen the coil test
+        # exactly when it should not be loosened.
+        a = float(prev["atr"])
+        bh, bl, bv = (float(last["base_high"]), float(last["base_low"]),
+                      float(last["base_vol"]))
+        price, vol, op = (float(last["close"]), float(last["volume"]),
+                          float(last["open"]))
+        if not (a > 0 and bh > 0 and bv > 0 and price > 0):
+            continue
+        if 100 * a / price < SCREEN_ATR_PCT:
+            continue
+        if (bh - bl) > RULE["squeeze_atr"] * a:
+            continue                      # not coiled, not a setup
+        need_vol = RULE["vol_mult"] * bv
+        above = price > bh and price > op
+        vol_pct = 100 * vol / need_vol if need_vol else 0.0
+        gap = 100 * (price - bh) / bh
+        if above and vol >= need_vol:
+            status = "triggering"
+        elif above:
+            status = "above_light_volume"
+        elif gap > -1.5:
+            status = "at_the_level"
+        else:
+            continue
+        stop = bl - a * RULE["stop_atr"]
+        rps = price - stop
+        rows.append({
+            "symbol": sym, "status": status, "price": round(price, 2),
+            "level": round(bh, 2), "gap_pct": round(gap, 2),
+            "volume_pct_of_needed": round(vol_pct),
+            "stop": round(stop, 2),
+            "target": round(price + max(RULE["target_r"], 1.5) * rps, 2),
+            "shares": shares(price, rps, cfg["equity"], cfg["risk_pct"]),
+        })
+    order = {"triggering": 0, "above_light_volume": 1, "at_the_level": 2}
+    rows.sort(key=lambda r: (order[r["status"]], -r["gap_pct"]))
+    now = pd.Timestamp.now(tz=EASTERN)
+    return {"at": now.strftime("%Y-%m-%d %H:%M ET"),
+            "minutes_to_close": max(0, int(
+                (now.replace(hour=16, minute=0, second=0) - now).total_seconds() // 60)),
+            "no_bar_yet": stale, "rows": rows, "settings": cfg}
+
+
+def render_live(s: dict) -> str:
+    if not s["rows"]:
+        return (f"**Live check {s['at']}** — nothing at its level. "
+                f"{s['minutes_to_close']} min to the close.")
+    out = [f"**Live check — {s['at']}** · {s['minutes_to_close']} min to the "
+           "close", ""]
+    label = {"triggering": "🟡 **AT LEVEL, VOLUME CONFIRMS**",
+             "above_light_volume": "⚪ above level, volume light",
+             "at_the_level": "⚪ right at the level"}
+    for r in s["rows"]:
+        out.append(f"{label[r['status']]} — **{r['symbol']}** "
+                   f"`${r['price']:,.2f}` vs level `${r['level']:,.2f}` "
+                   f"({r['gap_pct']:+.1f}%) · volume "
+                   f"{r['volume_pct_of_needed']}% of what it needs")
+        if r["status"] == "triggering":
+            size = (f"{r['shares']} share{'s' if r['shares'] != 1 else ''}"
+                    if r["shares"] else "**0 — too small for this account**")
+            out.append(f"   → if it closes here: stop `${r['stop']:,.2f}`, "
+                       f"target `${r['target']:,.2f}`, {size}")
+    out += ["", "⚠️ **Not a trade yet.** The tested rule enters at the "
+            "CLOSING price. Anything here can fall back below its level "
+            "before 16:00, and intraday breaks that fail are the main way "
+            "this setup loses. The 17:30 run is what counts."]
+    return "\n".join(out)
+
+
+def live_changes(now: dict, before: dict) -> str | None:
+    """Alert only when a name reaches a state it was not in before today.
+
+    Fifteen scans a day would otherwise send fifteen near-identical messages
+    and the channel would be muted by Wednesday.
+    """
+    seen = before.get("seen") or {}
+    fresh = [r for r in now["rows"]
+             if r["status"] == "triggering" and seen.get(r["symbol"]) != "triggering"]
+    if not fresh:
+        return None
+    lines = [f"**Live check — {now['at']}**", ""]
+    for r in fresh:
+        size = (f"{r['shares']} share{'s' if r['shares'] != 1 else ''}"
+                if r["shares"] else "**0 — too small for this account**")
+        lines += [f"🟡 **{r['symbol']} is above its level on volume** — "
+                  f"`${r['price']:,.2f}` vs `${r['level']:,.2f}`",
+                  f"If it closes here: stop `${r['stop']:,.2f}` · target "
+                  f"`${r['target']:,.2f}` · {size}"]
+    lines += ["", f"{now['minutes_to_close']} min to the close.",
+              "⚠️ **Not a trade yet** — the tested rule enters at the CLOSING "
+              "price, and an intraday break can fail before 16:00."]
+    return "\n".join(lines)
+
+
 def previous() -> dict:
     """Yesterday's scoring, so today's message can say what actually changed."""
     path = STATE / "paper.json"
@@ -511,10 +642,54 @@ def main(argv=None) -> int:
                     help="score and write, but send nothing")
     ap.add_argument("--sample", action="store_true",
                     help="send one worked example of the alert and exit")
+    ap.add_argument("--live", action="store_true",
+                    help="mid-session check: which names are at their level "
+                         "right now. Alerts only on new ones.")
     ap.add_argument("--watchlist", action="store_true",
                     help="show which screened names are coiled near their "
                          "breakout level, and exit")
     args = ap.parse_args(argv)
+
+    if args.live:
+        now_et = pd.Timestamp.now(tz=EASTERN)
+        if now_et.weekday() > 4 or not (
+                pd.Timestamp("09:35").time() <= now_et.time()
+                <= pd.Timestamp("16:00").time()):
+            log.info("Outside market hours (%s) - nothing to do",
+                     now_et.strftime("%H:%M ET"))
+            return 0
+        try:
+            state = live_scan()
+        except AlpacaError as exc:
+            log.error("Data fetch failed: %s", exc)
+            return 1
+        print(render_live(state))
+        seen_path = STATE / "live_seen.json"
+        before = {}
+        if seen_path.exists():
+            try:
+                before = json.loads(seen_path.read_text())
+            except json.JSONDecodeError:
+                before = {}
+        if before.get("date") != str(now_et.date()):
+            before = {"date": str(now_et.date()), "seen": {}}
+        msg = live_changes(state, before)
+        if args.dry_run:
+            print("\n--- Discord " + ("---\n" + msg if msg
+                                       else "--- (nothing new)"))
+            return 0
+        before["seen"] = {**(before.get("seen") or {}),
+                          **{r["symbol"]: r["status"] for r in state["rows"]}}
+        STATE.mkdir(exist_ok=True)
+        seen_path.write_text(json.dumps(before, indent=2))
+        REPORTS.mkdir(exist_ok=True)
+        (REPORTS / "live.md").write_text(render_live(state))
+        if msg and not args.no_notify:
+            notify(msg)
+            log.info("Live alert sent for %d name(s)", msg.count("is above"))
+        else:
+            log.info("Nothing new since the last check.")
+        return 0
 
     if args.watchlist:
         try:
