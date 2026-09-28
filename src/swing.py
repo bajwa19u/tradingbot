@@ -210,7 +210,17 @@ def run_portfolio(prepared: dict[str, pd.DataFrame], p: dict,
             bar = d.iloc[i]
             lookback = d.iloc[max(0, i - p["touch_window"]):i + 1]
             pullback_low = float(lookback["low"].min())
-            entry = float(bar["close"]) * 1.0005
+            # entry_style "close" is the tested rule: buy the closing price.
+            # "level" is the intraday version - buy the moment price crosses
+            # the breakout level, which in daily bars means the level itself,
+            # or the open when the day gapped straight past it. The gap case
+            # matters: pretending a gapped-away level was filled is the most
+            # common way an intraday backtest flatters itself.
+            if p.get("entry_style") == "level" and "base_high" in d.columns:
+                level = float(bar["base_high"])
+                entry = max(level, float(bar["open"])) * 1.0005
+            else:
+                entry = float(bar["close"]) * 1.0005
             stop = pullback_low - float(bar["atr"]) * p["stop_atr"]
             rps = entry - stop
             if rps <= 0 or rps / entry > 0.25:
