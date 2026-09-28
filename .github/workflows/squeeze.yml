@@ -1,0 +1,102 @@
+name: Intraday squeeze
+
+# The short-capable, intraday version. Built to read the setup on the AMD
+# chart: a coil on a fast timeframe, a break out of it on volume, either
+# direction.
+#
+# Manual only - it fetches minute bars and is slow. Nothing here is scheduled
+# and nothing alerts; this is a measurement tool until it has earned more.
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: "Start date (YYYY-MM-DD, blank = 30 days back)"
+        required: false
+        default: ""
+      end:
+        description: "End date (YYYY-MM-DD)"
+        required: false
+        default: ""
+      minutes:
+        description: "Bar size in minutes"
+        required: false
+        default: "5"
+      universe:
+        description: "movers | research | holdout | fresh | wide"
+        required: false
+        default: "movers"
+      symbols:
+        description: "Comma-separated symbols (overrides universe)"
+        required: false
+        default: ""
+      side:
+        description: "both | long | short"
+        required: false
+        default: "both"
+
+permissions:
+  contents: write
+
+jobs:
+  squeeze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Backtest the squeeze
+        id: run
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          IN_START: ${{ inputs.start }}
+          IN_END: ${{ inputs.end }}
+          IN_MIN: ${{ inputs.minutes }}
+          IN_UNI: ${{ inputs.universe }}
+          IN_SYM: ${{ inputs.symbols }}
+          IN_SIDE: ${{ inputs.side }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports
+          ARGS=(--minutes "${IN_MIN:-5}" --universe "${IN_UNI:-movers}" \
+                --side "${IN_SIDE:-both}")
+          [ -n "${IN_START:-}" ] && ARGS+=(--start "${IN_START}") || true
+          [ -n "${IN_END:-}" ] && ARGS+=(--end "${IN_END}") || true
+          [ -n "${IN_SYM:-}" ] && ARGS+=(--symbols "${IN_SYM}") || true
+          set +e
+          python -m src.squeeze "${ARGS[@]}" 2>&1 | tee reports/squeeze_run.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports
+          if ! git diff --cached --quiet; then
+            git commit -m "squeeze: results [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/squeeze.md ]; then
+            cat reports/squeeze.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            { echo '```'; tail -n 40 reports/squeeze_run.log; echo '```'; } \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Fail if the run failed
+        if: always() && steps.run.outputs.code != '0'
+        run: exit 1
