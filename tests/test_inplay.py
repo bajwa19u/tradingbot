@@ -203,3 +203,17 @@ def test_the_command_line_actually_parses():
     a = ip.parse_args(["--days", "30", "--universe", "core",
                        "--symbols", "amd,nvda"])
     assert a.days == 30 and a.universe == "core" and a.symbols == "amd,nvda"
+
+
+def test_costs_and_stops_are_settings_not_constants():
+    a = ip.parse_args(["--slippage", "0.15", "--stops", "0.2,0.3,0.5"])
+    assert a.slippage == 0.15 and a.stops == "0.2,0.3,0.5"
+
+
+def test_the_grid_follows_the_stop_list():
+    before = list(ip.FRACS)
+    try:
+        ip.FRACS[:] = [0.2, 0.3]
+        assert {c["atr_frac"] for c in ip.grid()} == {0.2, 0.3}
+    finally:
+        ip.FRACS[:] = before
