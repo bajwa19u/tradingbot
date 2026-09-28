@@ -1449,3 +1449,120 @@ def test_buy_and_hold_control_exists_and_is_shown():
     assert "Buy and hold" in text
     assert "+140.0%" in text and "+120.0%" in text
     assert "matching it means the work bought nothing" in text
+
+
+# ---------------------------------------------------------------------------
+# Intraday squeeze break, both directions
+# ---------------------------------------------------------------------------
+def _session(coil_px=100.0, direction="up", n_coil=20, seed=5):
+    """One session: a tight coil, then a decisive break on volume."""
+    import numpy as np
+    import pandas as pd
+    rng = np.random.default_rng(seed)
+    n = n_coil + 30
+    idx = pd.date_range("2026-09-25 09:30", periods=n, freq="5min",
+                        tz="America/New_York").tz_convert("UTC")
+    px = np.empty(n)
+    px[:n_coil] = coil_px + rng.normal(0, 0.05, n_coil)
+    step = 0.35 if direction == "up" else -0.35
+    px[n_coil:] = coil_px + step * np.arange(1, n - n_coil + 1)
+    o = np.concatenate([[px[0]], px[:-1]])
+    h = np.maximum(o, px) + 0.04
+    l = np.minimum(o, px) - 0.04
+    v = np.full(n, 1e5)
+    v[n_coil] = 1e6
+    return pd.DataFrame({"open": o, "high": h, "low": l, "close": px,
+                         "volume": v}, index=idx)
+
+
+def test_squeeze_fires_short_on_a_downside_break():
+    """The whole reason this engine exists: the daily rule is long-only and
+    could not see a short at all."""
+    from src.squeeze import BASE_SQ, find_breaks, prepare_sq
+    p = dict(BASE_SQ, base_len=12, atr_len=5, squeeze_atr=6.0, vol_mult=1.2)
+    d = prepare_sq(_session(direction="down", n_coil=20), p)
+    sides = [s for _, s in find_breaks(d, p)]
+    assert "short" in sides, "a downside break must produce a short"
+
+
+def test_squeeze_is_symmetric_between_long_and_short():
+    """Long and short must be the same rule mirrored. If one side quietly
+    gains a filter the other lacks, every long-vs-short comparison this
+    produces is meaningless."""
+    from src.squeeze import BASE_SQ, find_breaks, prepare_sq
+    p = dict(BASE_SQ, base_len=12, atr_len=5, squeeze_atr=6.0, vol_mult=1.2)
+    up = find_breaks(prepare_sq(_session(direction="up"), p), p)
+    down = find_breaks(prepare_sq(_session(direction="down"), p), p)
+    assert [i for i, _ in up] == [i for i, _ in down], \
+        "the two directions fired on different bars from mirrored data"
+
+
+def test_squeeze_respects_the_side_switches():
+    from src.squeeze import BASE_SQ, find_breaks, prepare_sq
+    base = dict(BASE_SQ, base_len=12, atr_len=5, squeeze_atr=6.0, vol_mult=1.2)
+    d = prepare_sq(_session(direction="down"), base)
+    assert find_breaks(d, {**base, "allow_short": False}) == []
+    assert find_breaks(d, {**base, "allow_long": False}) != []
+
+
+def test_squeeze_never_holds_overnight():
+    """An intraday break held overnight is a different strategy with gap risk
+    the backtest never measured."""
+    from src.squeeze import BASE_SQ, prepare_sq, run_day
+    p = dict(BASE_SQ, base_len=12, atr_len=5, squeeze_atr=6.0, vol_mult=1.2,
+             max_bars=999, target_r=99.0)
+    d = prepare_sq(_session(direction="up", n_coil=20), p)
+    trades = run_day(d, "TEST", p)
+    assert trades, "fixture produced no trades"
+    assert all(t.reason in ("close_of_day", "stop", "target", "time")
+               for t in trades)
+    assert any(t.reason == "close_of_day" for t in trades)
+
+
+def test_squeeze_skips_the_opening_whipsaw():
+    from src.squeeze import BASE_SQ, find_breaks, prepare_sq
+    p = dict(BASE_SQ, base_len=12, atr_len=5, squeeze_atr=6.0, vol_mult=1.2,
+             no_entry_before="15:00")
+    d = prepare_sq(_session(direction="up"), p)
+    assert find_breaks(d, p) == [], "entered before the window opened"
+
+
+def test_squeeze_stop_wins_ties():
+    """When a bar touches both the stop and the target, the backtest must
+    assume the stop. Anything else invents money."""
+    import pandas as pd
+    from src.squeeze import BASE_SQ, prepare_sq, run_day
+    p = dict(BASE_SQ, base_len=12, atr_len=5, squeeze_atr=6.0, vol_mult=1.2,
+             target_r=1.0)
+    df = _session(direction="up", n_coil=20)
+    # make the bar after entry span everything
+    j = 21
+    df.iloc[j, df.columns.get_loc("high")] = float(df["close"].iloc[j]) * 1.20
+    df.iloc[j, df.columns.get_loc("low")] = float(df["close"].iloc[j]) * 0.80
+    trades = run_day(prepare_sq(df, p), "TEST", p)
+    assert trades and trades[0].reason == "stop"
+
+
+def test_leverage_note_does_not_quote_an_options_return():
+    """Putting a 334% options number next to a share backtest compares two
+    different things."""
+    from src.squeeze import leverage_note
+    note = leverage_note(2.2)
+    assert "+2.20% on the stock" in note
+    assert "334" not in note
+    assert "lose its whole premium" in note
+
+
+def test_squeeze_closes_a_position_when_the_bars_run_out():
+    """A position open when the session's data ends must be closed at the last
+    price, not discarded. The trades that reach neither stop nor target are
+    disproportionately the flat ones - dropping them would delete the duds and
+    inflate every number."""
+    from src.squeeze import BASE_SQ, prepare_sq, run_day
+    p = dict(BASE_SQ, base_len=12, atr_len=5, squeeze_atr=6.0, vol_mult=1.2,
+             max_bars=999, target_r=99.0, force_exit="23:59")
+    trades = run_day(prepare_sq(_session(direction="up", n_coil=20), p),
+                     "TEST", p)
+    assert len(trades) == 1
+    assert trades[0].reason == "close_of_day"
+    assert trades[0].exit > 0
