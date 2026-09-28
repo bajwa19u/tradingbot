@@ -1419,3 +1419,33 @@ def test_nothing_passed_does_not_call_a_profitable_setting_unprofitable():
                     "results": [loser], "winner": None, "holdout": None,
                     "holdout_size": 0})
     assert "could not find a profitable one" in text2
+
+
+def test_buy_and_hold_control_exists_and_is_shown():
+    """A long-only breakout rule in a bull market posts a big number whether or
+    not it has an edge. Without this control the report cannot tell the two
+    apart - and 2024-2025 in high-beta names is exactly that bull market."""
+    import numpy as np
+    import pandas as pd
+    from src.breakout import buy_and_hold, render
+    idx = pd.bdate_range("2024-01-02", periods=100, tz="America/New_York")
+    up = pd.DataFrame({"close": np.linspace(100, 200, 100)}, index=idx)
+    flat = pd.DataFrame({"close": np.full(100, 50.0)}, index=idx)
+    r = buy_and_hold({"UP": up, "FLAT": flat}, idx[0])
+    assert r["n"] == 2 and abs(r["return_pct"] - 50.0) < 1e-6
+
+    w = {"name": "x", "n": 205, "expectancy_R": 0.5, "total_R": 100.0,
+         "periods_positive": 4, "periods_scored": 4, "worst_period_R": 0.1,
+         "max_dd_pct": -11.9, "wins": 115, "losses": 90, "win_rate_pct": 56.1,
+         "return_pct": 69.7}
+    h = dict(w, n=207, wins=119, losses=88, return_pct=69.3, max_dd_pct=-17.4)
+    text = render({"universe": "movers", "symbols": 34, "start": "2024-01-01",
+                   "tried": 1, "survivors": 1, "noise_floor": 0.4,
+                   "results": [w], "winner": w, "holdout": h,
+                   "holdout_size": 51,
+                   "buy_hold": {"n": 34, "return_pct": 140.0, "median_pct": 90.0},
+                   "buy_hold_holdout": {"n": 50, "return_pct": 120.0,
+                                        "median_pct": 80.0}})
+    assert "Buy and hold" in text
+    assert "+140.0%" in text and "+120.0%" in text
+    assert "matching it means the work bought nothing" in text
