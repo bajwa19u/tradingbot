@@ -24,22 +24,22 @@ Stop `$1,056.24` · target `$1,048.37` · 7 shares
 🔻 **SHORT MSFT** — 15:05 ET
 Broke `$510.81` at 15:00, retested it, entered `$510.45`
 Stop `$511.43` · target `$508.49` · 20 shares
-→ **UNFINISHED +1.14%** ($+22.30)  _(still open at the bell, closed at the last price)_
+→ **UNFINISHED +1.11%** ($+21.71)  _(still open at the bell, closed at the last price)_
 
 🔻 **SHORT META** — 15:05 ET
 Broke `$720.89` at 15:00, retested it, entered `$718.88`
 Stop `$722.47` · target `$711.71` · 5 shares
-→ **UNFINISHED +0.69%** ($+12.37)  _(still open at the bell, closed at the last price)_
+→ **UNFINISHED +0.93%** ($+16.67)  _(still open at the bell, closed at the last price)_
 
 🔻 **SHORT AVGO** — 15:10 ET
 Broke `$350.55` at 15:05, retested it, entered `$350.17`
 Stop `$351.03` · target `$348.44` · 23 shares
-→ **UNFINISHED +1.17%** ($+23.27)  _(still open at the bell, closed at the last price)_
+→ **UNFINISHED +0.54%** ($+10.74)  _(still open at the bell, closed at the last price)_
 
 🔻 **SHORT META** — 15:15 ET
 Broke `$718.88` at 15:10, retested it, entered `$718.27`
 Stop `$720.44` · target `$713.94` · 9 shares
-→ **UNFINISHED +0.85%** ($+16.57)  _(still open at the bell, closed at the last price)_
+→ **WON +2.00%** ($+38.98)
 
 🔻 **SHORT PLTR** — 15:15 ET
 Broke `$187.91` at 15:10, retested it, entered `$187.81`
@@ -54,19 +54,19 @@ Stop `$511.30` · target `$509.31` · 30 shares
 🔻 **SHORT AVGO** — 15:30 ET
 Broke `$350.17` at 15:15, retested it, entered `$349.95`
 Stop `$350.64` · target `$348.59` · 29 shares
-→ **UNFINISHED +1.17%** ($+23.22)  _(still open at the bell, closed at the last price)_
+→ **UNFINISHED +0.37%** ($+7.34)  _(still open at the bell, closed at the last price)_
 
 🔻 **SHORT AMZN** — 15:35 ET
 Broke `$246.61` at 14:55, retested it, entered `$246.16`
 Stop `$246.86` · target `$244.76` · 28 shares
-→ **UNFINISHED +0.04%** ($+0.79)  _(still open at the bell, closed at the last price)_
+→ **UNFINISHED -0.24%** ($-4.72)  _(still open at the bell, closed at the last price)_
 
 🔻 **SHORT AMZN** — 15:35 ET
 Broke `$246.48` at 15:00, retested it, entered `$246.16`
 Stop `$246.76` · target `$244.96` · 33 shares
-→ **UNFINISHED +0.05%** ($+0.99)  _(still open at the bell, closed at the last price)_
+→ **UNFINISHED -0.28%** ($-5.53)  _(still open at the bell, closed at the last price)_
 
-**Today: 3 won, 3 lost · 50% win rate · +8.11% ($+160.70)** · 7 still open at the bell
+**Today: 4 won, 3 lost · 57% win rate · +7.43% ($+146.40)** · 6 still open at the bell
 
 ---
 
@@ -74,9 +74,9 @@ Stop `$246.76` · target `$244.96` · 33 shares
 
 | Day | Trades | Won | Lost | Win % | Profit |
 |---|---|---|---|---|---|
-| 09-28 | 13 | 3 | 3 | 50.0% | **+8.11%** |
+| 09-28 | 13 | 4 | 3 | 57.1% | **+7.43%** |
 
-**Running total: 13 trades · 3 won, 10 lost · 23.1% win rate · +8.11% ($+160.70)**
+**Running total: 13 trades · 4 won, 9 lost · 30.8% win rate · +7.43% ($+146.40)**
 _1 of 1 days green._
 _13 trades so far. The backtest needed about fifty before the numbers stopped moving around._
 _Paper only. No orders were placed._

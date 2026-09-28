@@ -78,7 +78,7 @@
       "risk": 19.56,
       "outcome": {
         "won": 1,
-        "r": 1.14,
+        "r": 1.11,
         "unfinished": true
       }
     },
@@ -95,7 +95,7 @@
       "risk": 17.93,
       "outcome": {
         "won": 1,
-        "r": 0.69,
+        "r": 0.93,
         "unfinished": true
       }
     },
@@ -112,7 +112,7 @@
       "risk": 19.89,
       "outcome": {
         "won": 1,
-        "r": 1.17,
+        "r": 0.54,
         "unfinished": true
       }
     },
@@ -129,8 +129,7 @@
       "risk": 19.49,
       "outcome": {
         "won": 1,
-        "r": 0.85,
-        "unfinished": true
+        "r": 2.0
       }
     },
     {
@@ -178,7 +177,7 @@
       "risk": 19.85,
       "outcome": {
         "won": 1,
-        "r": 1.17,
+        "r": 0.37,
         "unfinished": true
       }
     },
@@ -194,8 +193,8 @@
       "shares": 28,
       "risk": 19.65,
       "outcome": {
-        "won": 1,
-        "r": 0.04,
+        "won": 0,
+        "r": -0.24,
         "unfinished": true
       }
     },
@@ -211,8 +210,8 @@
       "shares": 33,
       "risk": 19.74,
       "outcome": {
-        "won": 1,
-        "r": 0.05,
+        "won": 0,
+        "r": -0.28,
         "unfinished": true
       }
     }
