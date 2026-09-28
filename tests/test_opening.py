@@ -281,3 +281,50 @@ def test_reports_never_mention_r_multiples():
     row = op.fmt_row("x", op.tally([{"pct": 1.0, "side": "short"}],
                                    {"target_r": 2.0, "risk_pct": 1.0}))
     assert "R" not in row and "r=" not in row
+
+
+# --- the opening range -------------------------------------------------------
+def test_opening_range_is_the_first_n_minutes(prior):
+    day = minutes("2026-09-25", "09:30", 20, 100.0, 0.5)
+    lv, ready = op.opening_range(day, 5)
+    assert ready == 5
+    assert lv["orh"] == pytest.approx(float(day["high"].iloc[:5].max()))
+    assert lv["orl"] == pytest.approx(float(day["low"].iloc[:5].min()))
+
+
+def test_the_range_cannot_be_traded_while_it_is_still_forming(prior):
+    """The bar that sets the high of the range must not also be the bar that
+    breaks it. That is reading the future by one bar."""
+    day = minutes("2026-09-25", "09:30", 20, 100.0, 0.5)
+    lv, ready = op.opening_range(day, 5)
+    brk = op.opening_breaks(day, lv, 1.0, {**op.BASE, "side": "both"},
+                            {k: ready for k in lv})
+    assert all(i >= 5 for i, *_ in brk)
+
+
+def test_a_short_day_has_no_opening_range():
+    day = minutes("2026-09-25", "09:30", 3, 100.0, 0.5)
+    assert op.opening_range(day, 5) == ({}, 0)
+
+
+def test_the_amd_shape_breaks_its_own_opening_range(prior):
+    """Range in the first five minutes, then a close underneath it. That is
+    what the AMD tape on 28 September actually was."""
+    rows = [("09:30", 627.27, 628.75, 621.01, 622.52, 9000),
+            ("09:31", 622.52, 626.53, 622.00, 625.80, 9000),
+            ("09:32", 626.88, 628.02, 625.54, 625.92, 9000),
+            ("09:33", 623.91, 625.96, 623.51, 625.84, 9000),
+            ("09:34", 625.62, 625.62, 622.65, 622.75, 9000),
+            ("09:35", 622.49, 623.43, 618.38, 618.38, 9000)]
+    day = frame("2026-09-25", rows)
+    lv, ready = op.opening_range(day, 5)
+    assert lv["orl"] == pytest.approx(621.01)
+    brk = op.opening_breaks(day, lv, 1.6, {**op.BASE, "side": "short"},
+                            {k: ready for k in lv})
+    assert brk and brk[0][0] == 5 and brk[0][3] == "orl"
+
+
+def test_or_grid_is_small_and_separate():
+    g = op.or_grid()
+    assert len(g) == 24 and len({c["name"] for c in g}) == 24
+    assert all(c["levels"] == "or" for c in g)
