@@ -85,15 +85,21 @@ FRESH = [
     "MRNA", "NVAX", "VKTX", "CRSP", "BEAM", "NTLA", "RXRX",
 ]
 
-# The names everyone actually watches. Not a clean holdout - NVDA, TSLA, AMD
-# and MU all appear in lists this project has already used - so results here
-# are in-sample and cannot confirm anything. They are for watching the rule on
-# familiar stocks, not for proving it works.
-TECH10 = ["NVDA", "TSLA", "AMD", "MU", "AAPL", "MSFT", "META", "AMZN",
-          "GOOGL", "AVGO"]
+# The watchlist this bot trades: the big names plus whatever is actually in
+# play. Not a clean holdout - NVDA, TSLA, AMD and MU are all in lists this
+# project has already used - so results here are IN-SAMPLE and confirm
+# nothing. The familiar names are the most misleading precisely because a
+# number on NVDA feels more real than the same number on RDW.
+CORE = [
+    # the ones everyone watches
+    "NVDA", "TSLA", "AMD", "AAPL", "MSFT", "META", "AMZN", "GOOGL",
+    # in play right now - memory/AI supercycle and the high-beta AI names
+    "MU", "AVGO", "PLTR", "SMCI",
+]
+TECH10 = CORE          # old name, kept so nothing breaks
 
 UNIVERSES = {"research": RESEARCH, "holdout": HOLDOUT, "movers": MOVERS,
-             "tech10": TECH10,
+             "core": CORE, "tech10": CORE,
              "fresh": FRESH,
              "wide": WIDE}
 
