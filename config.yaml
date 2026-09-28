@@ -168,7 +168,7 @@ notifications:
 # been wrong. These four settings are yours to change.
 # ---------------------------------------------------------------------------
 paper:
-  start: "2026-09-29"           # day the forward test begins; do not move it
+  start: "2026-09-28"           # day the forward test begins; do not move it
   equity: 2000.0                # account size
   risk_pct: 1.0                 # risked per trade, so $20 on $2,000
   halt_drawdown_pct: 25.0       # stop trading at this drawdown until reviewed
