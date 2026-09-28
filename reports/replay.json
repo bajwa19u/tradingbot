@@ -2,211 +2,163 @@
   "date": "2026-09-28",
   "signals": [
     {
-      "symbol": "VKTX",
+      "symbol": "GOOGL",
       "side": "short",
       "break_time": "11:40",
       "entry_time": "11:45",
-      "level": 34.39,
-      "entry": 34.31,
-      "stop": 34.66,
-      "target": 33.63,
-      "shares": 58,
-      "risk": 19.98,
-      "outcome": {
-        "won": 1,
-        "r": 1.45
-      }
-    },
-    {
-      "symbol": "APP",
-      "side": "short",
-      "break_time": "11:45",
-      "entry_time": "11:50",
-      "level": 308.79,
-      "entry": 308.2,
-      "stop": 311.09,
-      "target": 302.43,
-      "shares": 6,
-      "risk": 17.32,
-      "outcome": {
-        "won": 1,
-        "r": 0.04
-      }
-    },
-    {
-      "symbol": "LUNR",
-      "side": "short",
-      "break_time": "12:30",
-      "entry_time": "12:35",
-      "level": 15.49,
-      "entry": 15.48,
-      "stop": 15.62,
-      "target": 15.22,
-      "shares": 153,
-      "risk": 19.9,
+      "level": 340.06,
+      "entry": 339.91,
+      "stop": 340.98,
+      "target": 337.78,
+      "shares": 18,
+      "risk": 19.19,
       "outcome": {
         "won": 0,
         "r": -1.0
       }
     },
     {
-      "symbol": "RDDT",
+      "symbol": "AMZN",
       "side": "short",
-      "break_time": "12:35",
-      "entry_time": "12:40",
-      "level": 146.5,
-      "entry": 146.23,
-      "stop": 146.89,
-      "target": 144.9,
-      "shares": 30,
-      "risk": 19.93,
+      "break_time": "14:20",
+      "entry_time": "14:25",
+      "level": 246.85,
+      "entry": 246.79,
+      "stop": 247.15,
+      "target": 246.07,
+      "shares": 55,
+      "risk": 19.7,
       "outcome": {
         "won": 1,
         "r": 2.0
       }
     },
     {
-      "symbol": "RDW",
+      "symbol": "AMZN",
       "side": "short",
-      "break_time": "12:50",
-      "entry_time": "12:55",
-      "level": 11.34,
-      "entry": 11.3,
-      "stop": 11.41,
-      "target": 11.08,
-      "shares": 180,
-      "risk": 19.93,
+      "break_time": "14:30",
+      "entry_time": "14:35",
+      "level": 246.78,
+      "entry": 246.75,
+      "stop": 247.06,
+      "target": 246.12,
+      "shares": 63,
+      "risk": 19.71,
+      "outcome": {
+        "won": 1,
+        "r": 2.0
+      }
+    },
+    {
+      "symbol": "MU",
+      "side": "short",
+      "break_time": "14:35",
+      "entry_time": "14:45",
+      "level": 1053.92,
+      "entry": 1053.62,
+      "stop": 1056.24,
+      "target": 1048.37,
+      "shares": 7,
+      "risk": 18.37,
       "outcome": {
         "won": 0,
         "r": -1.0
       }
     },
     {
-      "symbol": "VKTX",
-      "side": "short",
-      "break_time": "12:45",
-      "entry_time": "13:00",
-      "level": 34.1,
-      "entry": 34.03,
-      "stop": 34.33,
-      "target": 33.44,
-      "shares": 67,
-      "risk": 19.91,
-      "outcome": {
-        "won": 0,
-        "r": -1.0
-      }
-    },
-    {
-      "symbol": "APP",
-      "side": "short",
-      "break_time": "13:35",
-      "entry_time": "13:40",
-      "level": 307.91,
-      "entry": 307.86,
-      "stop": 308.98,
-      "target": 305.63,
-      "shares": 17,
-      "risk": 18.98,
-      "outcome": {
-        "won": 0,
-        "r": -0.2
-      }
-    },
-    {
-      "symbol": "RDW",
-      "side": "short",
-      "break_time": "14:20",
-      "entry_time": "14:25",
-      "level": 11.38,
-      "entry": 11.36,
-      "stop": 11.42,
-      "target": 11.22,
-      "shares": 304,
-      "risk": 19.99,
-      "outcome": {
-        "won": 1,
-        "r": 0.91
-      }
-    },
-    {
-      "symbol": "LUNR",
-      "side": "short",
-      "break_time": "14:20",
-      "entry_time": "14:40",
-      "level": 15.48,
-      "entry": 15.46,
-      "stop": 15.56,
-      "target": 15.25,
-      "shares": 197,
-      "risk": 19.96,
-      "outcome": {
-        "won": 1,
-        "r": 1.83
-      }
-    },
-    {
-      "symbol": "QBTS",
+      "symbol": "MSFT",
       "side": "short",
       "break_time": "15:00",
       "entry_time": "15:05",
-      "level": 17.1,
-      "entry": 17.06,
-      "stop": 17.15,
-      "target": 16.87,
-      "shares": 212,
-      "risk": 19.96,
+      "level": 510.81,
+      "entry": 510.45,
+      "stop": 511.43,
+      "target": 508.49,
+      "shares": 20,
+      "risk": 19.56,
       "outcome": {
         "won": 1,
-        "r": 1.12
+        "r": 1.75
       }
     },
     {
-      "symbol": "FVRR",
+      "symbol": "META",
       "side": "short",
       "break_time": "15:00",
       "entry_time": "15:05",
-      "level": 8.51,
-      "entry": 8.51,
-      "stop": 8.53,
-      "target": 8.48,
-      "shares": 1177,
-      "risk": 20.0,
-      "outcome": {
-        "won": 0,
-        "r": -1.0
-      }
-    },
-    {
-      "symbol": "CIFR",
-      "side": "short",
-      "break_time": "15:05",
-      "entry_time": "15:10",
-      "level": 16.95,
-      "entry": 16.9,
-      "stop": 17.01,
-      "target": 16.68,
-      "shares": 182,
-      "risk": 19.94,
+      "level": 720.89,
+      "entry": 718.88,
+      "stop": 722.47,
+      "target": 711.71,
+      "shares": 5,
+      "risk": 17.93,
       "outcome": {
         "won": 1,
-        "r": 1.55
+        "r": 0.51
       }
     },
     {
-      "symbol": "AI",
+      "symbol": "AVGO",
       "side": "short",
       "break_time": "15:05",
       "entry_time": "15:10",
-      "level": 10.26,
-      "entry": 10.25,
-      "stop": 10.28,
-      "target": 10.18,
-      "shares": 594,
-      "risk": 19.98,
+      "level": 350.55,
+      "entry": 350.17,
+      "stop": 351.03,
+      "target": 348.44,
+      "shares": 23,
+      "risk": 19.89,
+      "outcome": {
+        "won": 1,
+        "r": 1.42
+      }
+    },
+    {
+      "symbol": "MSFT",
+      "side": "short",
+      "break_time": "15:05",
+      "entry_time": "15:25",
+      "level": 510.69,
+      "entry": 510.64,
+      "stop": 511.3,
+      "target": 509.31,
+      "shares": 30,
+      "risk": 19.89,
+      "outcome": {
+        "won": 1,
+        "r": 2.0
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "side": "short",
+      "break_time": "14:55",
+      "entry_time": "15:35",
+      "level": 246.61,
+      "entry": 246.16,
+      "stop": 246.86,
+      "target": 244.76,
+      "shares": 28,
+      "risk": 19.65,
       "outcome": {
         "won": 0,
-        "r": -1.0
+        "r": 0.0
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "side": "short",
+      "break_time": "15:00",
+      "entry_time": "15:35",
+      "level": 246.48,
+      "entry": 246.16,
+      "stop": 246.76,
+      "target": 244.96,
+      "shares": 33,
+      "risk": 19.74,
+      "outcome": {
+        "won": 0,
+        "r": 0.0
       }
     }
   ]

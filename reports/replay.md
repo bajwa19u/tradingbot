@@ -1,82 +1,67 @@
-🔁 **REPLAY — 2026-09-28 · 49 symbols** · 13 setups
+🔁 **REPLAY — 2026-09-28 · 10 symbols** · 10 setups
 _What the rule would have sent today, at the times it would have sent them. The session is closed - none of this is actionable now._
 
-🔻 **SHORT VKTX** — 11:45 ET
-Broke `$34.39` at 11:40, retested it, entered `$34.31`
-Stop `$34.66` · target `$33.63` · 58 shares
-→ **WON +1.45%** ($+28.97)
+🔻 **SHORT GOOGL** — 11:45 ET
+Broke `$340.06` at 11:40, retested it, entered `$339.91`
+Stop `$340.98` · target `$337.78` · 18 shares
+→ **LOST -1.00%** ($-19.19)
 
-🔻 **SHORT APP** — 11:50 ET
-Broke `$308.79` at 11:45, retested it, entered `$308.20`
-Stop `$311.09` · target `$302.43` · 6 shares
-→ **WON +0.04%** ($+0.69)
+🔻 **SHORT AMZN** — 14:25 ET
+Broke `$246.85` at 14:20, retested it, entered `$246.79`
+Stop `$247.15` · target `$246.07` · 55 shares
+→ **WON +2.00%** ($+39.40)
 
-🔻 **SHORT LUNR** — 12:35 ET
-Broke `$15.49` at 12:30, retested it, entered `$15.48`
-Stop `$15.62` · target `$15.22` · 153 shares
-→ **LOST -1.00%** ($-19.90)
+🔻 **SHORT AMZN** — 14:35 ET
+Broke `$246.78` at 14:30, retested it, entered `$246.75`
+Stop `$247.06` · target `$246.12` · 63 shares
+→ **WON +2.00%** ($+39.42)
 
-🔻 **SHORT RDDT** — 12:40 ET
-Broke `$146.50` at 12:35, retested it, entered `$146.23`
-Stop `$146.89` · target `$144.90` · 30 shares
-→ **WON +2.00%** ($+39.86)
+🔻 **SHORT MU** — 14:45 ET
+Broke `$1,053.92` at 14:35, retested it, entered `$1,053.62`
+Stop `$1,056.24` · target `$1,048.37` · 7 shares
+→ **LOST -1.00%** ($-18.37)
 
-🔻 **SHORT RDW** — 12:55 ET
-Broke `$11.34` at 12:50, retested it, entered `$11.30`
-Stop `$11.41` · target `$11.08` · 180 shares
-→ **LOST -1.00%** ($-19.93)
+🔻 **SHORT MSFT** — 15:05 ET
+Broke `$510.81` at 15:00, retested it, entered `$510.45`
+Stop `$511.43` · target `$508.49` · 20 shares
+→ **WON +1.75%** ($+34.23)
 
-🔻 **SHORT VKTX** — 13:00 ET
-Broke `$34.10` at 12:45, retested it, entered `$34.03`
-Stop `$34.33` · target `$33.44` · 67 shares
-→ **LOST -1.00%** ($-19.91)
+🔻 **SHORT META** — 15:05 ET
+Broke `$720.89` at 15:00, retested it, entered `$718.88`
+Stop `$722.47` · target `$711.71` · 5 shares
+→ **WON +0.51%** ($+9.14)
 
-🔻 **SHORT APP** — 13:40 ET
-Broke `$307.91` at 13:35, retested it, entered `$307.86`
-Stop `$308.98` · target `$305.63` · 17 shares
-→ **LOST -0.20%** ($-3.80)
+🔻 **SHORT AVGO** — 15:10 ET
+Broke `$350.55` at 15:05, retested it, entered `$350.17`
+Stop `$351.03` · target `$348.44` · 23 shares
+→ **WON +1.42%** ($+28.24)
 
-🔻 **SHORT RDW** — 14:25 ET
-Broke `$11.38` at 14:20, retested it, entered `$11.36`
-Stop `$11.42` · target `$11.22` · 304 shares
-→ **WON +0.91%** ($+18.19)
+🔻 **SHORT MSFT** — 15:25 ET
+Broke `$510.69` at 15:05, retested it, entered `$510.64`
+Stop `$511.30` · target `$509.31` · 30 shares
+→ **WON +2.00%** ($+39.78)
 
-🔻 **SHORT LUNR** — 14:40 ET
-Broke `$15.48` at 14:20, retested it, entered `$15.46`
-Stop `$15.56` · target `$15.25` · 197 shares
-→ **WON +1.83%** ($+36.53)
+🔻 **SHORT AMZN** — 15:35 ET
+Broke `$246.61` at 14:55, retested it, entered `$246.16`
+Stop `$246.86` · target `$244.76` · 28 shares
+→ **LOST +0.00%** ($+0.00)
 
-🔻 **SHORT QBTS** — 15:05 ET
-Broke `$17.10` at 15:00, retested it, entered `$17.06`
-Stop `$17.15` · target `$16.87` · 212 shares
-→ **WON +1.12%** ($+22.36)
+🔻 **SHORT AMZN** — 15:35 ET
+Broke `$246.48` at 15:00, retested it, entered `$246.16`
+Stop `$246.76` · target `$244.96` · 33 shares
+→ **LOST +0.00%** ($+0.00)
 
-🔻 **SHORT FVRR** — 15:05 ET
-Broke `$8.51` at 15:00, retested it, entered `$8.51`
-Stop `$8.53` · target `$8.48` · 1177 shares
-→ **LOST -1.00%** ($-20.00)
-
-🔻 **SHORT CIFR** — 15:10 ET
-Broke `$16.95` at 15:05, retested it, entered `$16.90`
-Stop `$17.01` · target `$16.68` · 182 shares
-→ **WON +1.55%** ($+30.91)
-
-🔻 **SHORT AI** — 15:10 ET
-Broke `$10.26` at 15:05, retested it, entered `$10.25`
-Stop `$10.28` · target `$10.18` · 594 shares
-→ **LOST -1.00%** ($-19.98)
-
-**Today: 7 won, 6 lost · 54% win rate · +3.70% ($+73.99)**
+**Today: 6 won, 4 lost · 60% win rate · +7.68% ($+152.66)**
 
 ---
 
-**Last 1 day — fresh**
+**Last 1 day — tech10**
 
 | Day | Trades | Won | Lost | Win % | Profit |
 |---|---|---|---|---|---|
-| 09-28 | 13 | 7 | 6 | 53.8% | **+3.70%** |
+| 09-28 | 10 | 6 | 4 | 60.0% | **+7.68%** |
 
-**Running total: 13 trades · 7 won, 6 lost · 53.8% win rate · +3.70% ($+73.99)**
+**Running total: 10 trades · 6 won, 4 lost · 60.0% win rate · +7.68% ($+152.66)**
 _1 of 1 days green._
-_13 trades so far. The backtest needed about fifty before the numbers stopped moving around._
+_10 trades so far. The backtest needed about fifty before the numbers stopped moving around._
 _Paper only. No orders were placed._
