@@ -1212,3 +1212,21 @@ def test_breakout_holdout_flag_selects_the_list():
     # mirror of the real parser's choices, kept honest by the assert below
     assert set(B.UNIVERSES) >= {"research", "holdout", "movers", "fresh"}
     assert B.UNIVERSES["fresh"] == FRESH
+
+
+def test_watchlist_render_never_calls_anything_a_signal():
+    """The watchlist shows where setups are building. Read as a buy list it
+    would have someone entering before the close the rule actually needs."""
+    from src.paper import render_watchlist
+    w = {"as_of": "2026-09-25", "screened": 30, "universe": 36,
+         "settings": {"start": "2026-09-28", "equity": 2000.0,
+                      "risk_pct": 1.0, "halt_drawdown_pct": 25.0},
+         "rows": [{"symbol": "PLTR", "close": 41.20, "base_high": 41.60,
+                   "base_low": 38.20, "to_go_pct": 0.97, "tightness_atr": 2.1,
+                   "atr_pct": 4.3, "coiled": True, "rvol": 0.9}]}
+    text = render_watchlist(w)
+    assert "Nothing here is a signal" in text
+    assert "PLTR" in text and "41.60" in text
+    empty = render_watchlist(dict(w, rows=[]))
+    assert "Nothing is coiled" in empty
+    assert "normal" in empty
