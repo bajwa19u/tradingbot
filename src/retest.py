@@ -125,9 +125,12 @@ def label(day: pd.DataFrame, j: int, side: str, level: float,
             return {"won": 0, "r": -1.0}
         if (hi >= target if side == "long" else lo <= target):
             return {"won": 1, "r": TARGET_R}
+    # The session ended before this hit either side. It is NOT a loss - it is
+    # a trade that never finished, and filing it with the real losers makes
+    # the win rate look worse and the average loss look smaller than they are.
     last = float(day["close"].iloc[-1])
     r = (last - entry) / rps if side == "long" else (entry - last) / rps
-    return {"won": 1 if r > 0 else 0, "r": round(r, 2)}
+    return {"won": 1 if r > 0 else 0, "r": round(r, 2), "unfinished": True}
 
 
 def run(data: dict, p: dict, combos: list[dict]) -> list[dict]:
@@ -279,14 +282,16 @@ def day_log_path():
 def record_day(date: str, universe: str, sigs: list[dict],
                equity: float, risk_pct: float) -> dict:
     """Append this day's result and return it. Append-only, never rewritten."""
-    won = sum(1 for s in sigs if s["outcome"]["won"])
+    done = [s for s in sigs if not s["outcome"].get("unfinished")]
+    won = sum(1 for s in done if s["outcome"]["won"])
     # profit as a percentage of the account, which is the only unit the owner
     # asked for. R multiples are kept out of every message on purpose.
     pct = sum(s["outcome"]["r"] * risk_pct for s in sigs)
     cash = sum(s["risk"] * s["outcome"]["r"] for s in sigs)
     row = {"date": date, "universe": universe, "trades": len(sigs),
-           "won": won, "lost": len(sigs) - won,
-           "win_pct": round(100 * won / len(sigs), 1) if sigs else 0.0,
+           "won": won, "lost": len(done) - won,
+           "unfinished": len(sigs) - len(done),
+           "win_pct": round(100 * won / len(done), 1) if done else 0.0,
            "profit_pct": round(pct, 2), "profit_dollars": round(cash, 2)}
     path = day_log_path()
     path.parent.mkdir(exist_ok=True)
@@ -339,7 +344,9 @@ def replay_message(sigs: list[dict], when: str, universe: str = "fresh",
                 "coil, a break down through it, and price back at the level. "
                 "Empty days are normal.")
     else:
-        won = sum(1 for s in sigs if s["outcome"]["won"])
+        done = [s for s in sigs if not s["outcome"].get("unfinished")]
+        open_at_bell = len(sigs) - len(done)
+        won = sum(1 for s in done if s["outcome"]["won"])
         day_pct = sum(s["outcome"]["r"] * risk_pct for s in sigs)
         day_cash = sum(s["risk"] * s["outcome"]["r"] for s in sigs)
         lines = [f"🔁 **REPLAY — {when}** · {len(sigs)} setup"
@@ -353,16 +360,22 @@ def replay_message(sigs: list[dict], when: str, universe: str = "fresh",
             o = s["outcome"]
             pct = o["r"] * risk_pct
             cash = s["risk"] * o["r"]
+            verdict = ("UNFINISHED" if o.get("unfinished")
+                       else "WON" if o["won"] else "LOST")
             lines += [f"🔻 **SHORT {s['symbol']}** — {s['entry_time']} ET",
                       f"Broke `${s['level']:,.2f}` at {s['break_time']}, "
                       f"retested it, entered `${s['entry']:,.2f}`",
                       f"Stop `${s['stop']:,.2f}` · target "
                       f"`${s['target']:,.2f}` · {size}",
-                      f"→ **{'WON' if o['won'] else 'LOST'} "
-                      f"{pct:+.2f}%** (${cash:+,.2f})", ""]
-        lines += [f"**Today: {won} won, {len(sigs) - won} lost · "
-                  f"{100 * won / len(sigs):.0f}% win rate · "
-                  f"{day_pct:+.2f}% (${day_cash:+,.2f})**"]
+                      f"→ **{verdict} {pct:+.2f}%** (${cash:+,.2f})"
+                      + ("  _(still open at the bell, closed at the last "
+                         "price)_" if o.get("unfinished") else ""), ""]
+        rate = (f"{100 * won / len(done):.0f}% win rate" if done
+                else "no finished trades")
+        tail = (f" · {open_at_bell} still open at the bell"
+                if open_at_bell else "")
+        lines += [f"**Today: {won} won, {len(done) - won} lost · {rate} · "
+                  f"{day_pct:+.2f}% (${day_cash:+,.2f})**{tail}"]
         head = "\n".join(lines)
 
     rows, total = recap(universe)
