@@ -87,11 +87,19 @@ class MarketData:
 
     # -- public -------------------------------------------------------------
     def intraday_bars(self, symbols: Iterable[str], minutes: int,
-                      start: str, end: str | None = None
+                      start: str, end: str | None = None,
+                      extended: bool = False
                       ) -> dict[str, pd.DataFrame]:
+        """Intraday bars. `extended=True` keeps pre- and post-market bars.
+
+        The default drops everything outside 09:30-15:59 because most of the
+        rules here are regular-hours rules. The opening-drive rule is not: the
+        levels it trades are made in the premarket, so it needs those bars.
+        """
         symbols = list(symbols)
         raw = self._paged_bars(symbols, f"{minutes}Min", start, end)
-        return {sym: _to_frame(rows) for sym, rows in raw.items()}
+        return {sym: _to_frame(rows, extended=extended)
+                for sym, rows in raw.items()}
 
     def daily_bars(self, symbols: Iterable[str], start: str,
                    end: str | None = None) -> dict[str, pd.DataFrame]:
@@ -119,7 +127,8 @@ class MarketData:
         return [row["symbol"] for row in resp.json().get("most_actives", [])]
 
 
-def _to_frame(rows: list[dict], daily: bool = False) -> pd.DataFrame:
+def _to_frame(rows: list[dict], daily: bool = False,
+              extended: bool = False) -> pd.DataFrame:
     if not rows:
         return pd.DataFrame(columns=["open", "high", "low", "close", "volume"])
     df = pd.DataFrame(rows)
@@ -131,9 +140,13 @@ def _to_frame(rows: list[dict], daily: bool = False) -> pd.DataFrame:
     df.index = df.index.tz_convert(EASTERN)
     keep = ["open", "high", "low", "close", "volume"]
     df = df[[c for c in keep if c in df.columns]].astype(float)
-    if not daily:
+    if not daily and not extended:
         # Regular trading hours only — the methodology is an opening-range play
         df = df.between_time("09:30", "15:59")
+    elif not daily:
+        # Keep the premarket, drop the after-hours tail: the opening rule uses
+        # levels built between 04:00 and the bell, and nothing after 16:00.
+        df = df.between_time("04:00", "15:59")
     return df
 
 
