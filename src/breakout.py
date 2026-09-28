@@ -322,7 +322,7 @@ def main(argv=None) -> int:
                      and r["periods_positive"] >= max(1, r["periods_scored"] - 1)]
     survivors.sort(key=lambda r: (-r["worst_period_R"], -r["expectancy_R"]))
 
-    hold = None
+    hold, hd_data = None, {}
     winner = survivors[0] if survivors else None
     if winner and holdout:
         log.info("Winner %s — one run on %d unseen symbols", winner["name"],
@@ -339,6 +339,7 @@ def main(argv=None) -> int:
                 log.info("Holdout screen >= %.1f%%: kept %d of %d",
                          args.min_atr_pct, len(kept), len(hd))
                 hd = kept
+            hd_data = hd
             if hd:
                 # by_periods already reports win rate, return and drawdown from
                 # its own full-window run, so there is nothing to recompute.
@@ -367,7 +368,12 @@ def main(argv=None) -> int:
     noise = round(1.3 / np.sqrt(n) * np.sqrt(2 * np.log(len(configs))), 3) \
         if n else 0.0
 
+    end_ts = pd.Timestamp(args.end, tz="America/New_York") if args.end else None
+    bh_tuned = buy_and_hold(data, trade_from, end_ts)
+    bh_hold = (buy_and_hold(hd_data, trade_from, end_ts) if hd_data
+               else {"n": 0, "return_pct": 0.0, "median_pct": 0.0})
     payload = {"universe": args.universe, "symbols": len(data),
+               "buy_hold": bh_tuned, "buy_hold_holdout": bh_hold,
                "start": args.start, "tried": len(configs),
                "survivors": len(survivors), "noise_floor": noise,
                "results": sorted(results, key=lambda r: -r["expectancy_R"]),
@@ -379,6 +385,29 @@ def main(argv=None) -> int:
     (REPORTS / "breakout.md").write_text(text)
     print("\n" + text)
     return 0
+
+
+def buy_and_hold(data: dict, lo, hi=None) -> dict:
+    """Equal-weight buy-and-hold over the same names and the same window.
+
+    The control this project did not have. A long-only breakout rule run
+    through a bull market in high-beta names will post a big number whether or
+    not it has any edge, because the names went up. The only way to tell those
+    apart is to ask what doing nothing clever would have returned.
+    """
+    rets = []
+    for sym, d in data.items():
+        w = d[(d.index >= lo)] if hi is None else d[(d.index >= lo) & (d.index < hi)]
+        if len(w) < 2:
+            continue
+        first, last = float(w["close"].iloc[0]), float(w["close"].iloc[-1])
+        if first > 0:
+            rets.append(100 * (last / first - 1))
+    if not rets:
+        return {"n": 0, "return_pct": 0.0, "median_pct": 0.0}
+    return {"n": len(rets),
+            "return_pct": round(float(np.mean(rets)), 1),
+            "median_pct": round(float(np.median(rets)), 1)}
 
 
 def render(p: dict) -> str:
@@ -449,6 +478,15 @@ def render(p: dict) -> str:
                 f"| Profit | {w.get('return_pct',0):+.1f}% | "
                 f"**{h.get('return_pct',0):+.1f}%** |",
                 f"| Worst drop | {w['max_dd_pct']}% | **{h['max_dd_pct']}%** |"]
+        bh, bhh = p.get("buy_hold") or {}, p.get("buy_hold_holdout") or {}
+        if bh.get("n") or bhh.get("n"):
+            out += [f"| _Buy and hold, same names_ | _{bh.get('return_pct',0):+.1f}%_ "
+                    f"| _{bhh.get('return_pct',0):+.1f}%_ |", "",
+                    "**Buy and hold is the row that matters.** A long-only "
+                    "breakout rule in a bull market posts a big number whether "
+                    "or not it has an edge, because the stocks went up. Beating "
+                    "that row is the claim; matching it means the work bought "
+                    "nothing."]
     else:
         out += ["| | Tuned on |", "|---|---|",
                 f"| Trades | {w['n']} |",
