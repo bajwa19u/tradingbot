@@ -26,6 +26,10 @@ on:
         description: "One day under the microscope, as SYMBOL:YYYY-MM-DD"
         required: false
         default: ""
+      levels:
+        description: "prior (yesterday's levels) | or (the opening range) | both"
+        required: false
+        default: "prior"
 
 permissions:
   contents: write
@@ -55,12 +59,14 @@ jobs:
           IN_UNI: ${{ inputs.universe }}
           IN_SYM: ${{ inputs.symbols }}
           IN_AUDIT: ${{ inputs.audit }}
+          IN_LEVELS: ${{ inputs.levels }}
         run: |
           set -uo pipefail
           mkdir -p reports
           # Never let a previous run's report be mistaken for this one's.
           rm -f reports/opening.md reports/opening_audit.md reports/opening.json
-          ARGS=(--days "${IN_DAYS:-60}" --universe "${IN_UNI:-core}")
+          ARGS=(--days "${IN_DAYS:-60}" --universe "${IN_UNI:-core}" \
+                --levels "${IN_LEVELS:-prior}")
           [ -n "${IN_SYM:-}" ] && ARGS+=(--symbols "${IN_SYM}") || true
           [ -n "${IN_AUDIT:-}" ] && ARGS+=(--audit "${IN_AUDIT}") || true
           set +e
