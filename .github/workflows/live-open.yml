@@ -1,0 +1,105 @@
+name: Live bot — the open
+
+# The opening window, covered by POLLING rather than by cron.
+#
+# GitHub's scheduled workflows are routinely several minutes late. That is
+# survivable at 11am and useless at 09:31, which is exactly when the rule
+# this job exists for fires. So cron only has to be roughly on time once: it
+# starts this job before the bell, and the job then checks every forty-five
+# seconds on its own clock until 10:05 ET.
+#
+# Both crons are deliberate. UTC has no daylight-saving awareness, so 13:20
+# is 09:20 Eastern in summer and 14:20 is 09:20 Eastern in winter. The one
+# that is wrong for the season starts, sees it is past 10:05 Eastern, and
+# exits in seconds.
+#
+# Shares a concurrency group with the five-minute job on purpose: both write
+# the same record of what has already been announced, and two of them running
+# at once is how the same trade gets posted to Discord twice.
+on:
+  schedule:
+    - cron: "20 13 * * 1-5"
+    - cron: "20 14 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Print the messages instead of sending them"
+        type: boolean
+        default: false
+      until:
+        description: "Poll until this Eastern time"
+        required: false
+        default: "10:05"
+      every:
+        description: "Seconds between checks"
+        required: false
+        default: "45"
+      force:
+        description: "Ignore the market-hours check"
+        type: boolean
+        default: false
+
+concurrency:
+  group: live-bot
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  open:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: Poll the open
+        id: run
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          IN_DRY: ${{ inputs.dry_run }}
+          IN_UNTIL: ${{ inputs.until }}
+          IN_EVERY: ${{ inputs.every }}
+          IN_FORCE: ${{ inputs.force }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports state
+          ARGS=(--until "${IN_UNTIL:-10:05}" --every "${IN_EVERY:-45}")
+          if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
+          if [ "${IN_FORCE:-false}" = "true" ]; then ARGS+=(--force); fi
+          set +e
+          python -m src.live_bot "${ARGS[@]}" 2>&1 | tee reports/live_open.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit what was announced
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports state
+          if ! git diff --cached --quiet; then
+            git commit -m "live: the open [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/live_today.md ]; then
+            cat reports/live_today.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            { echo '```'; tail -n 30 reports/live_open.log; echo '```'; } \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Fail if the run failed
+        if: always() && steps.run.outputs.code != '0'
+        run: exit 1
