@@ -454,6 +454,44 @@ def live_changes(now: dict, before: dict) -> str | None:
     return "\n".join(lines)
 
 
+def preclose_alert(state: dict) -> str | None:
+    """The message that is actually ACTIONABLE.
+
+    The rule enters at the close. So the only honest moment to send a signal
+    is minutes before the close, when the day's price is all but final and
+    there is still time to act on it. Sending after the close - which is what
+    this repo did first - gives someone a trade they cannot take.
+
+    Fifteen minutes of slippage is the price of that, and it is a real cost:
+    the price at 15:45 is not exactly the closing price. The backtest already
+    charges 0.05% on entry, which covers a normal last-quarter-hour drift but
+    not a violent one.
+    """
+    fire = [r for r in state["rows"] if r["status"] == "triggering"]
+    if not fire:
+        return None
+    lines = [f"🔔 **TAKE THESE AT THE CLOSE — {state['at']}**",
+             f"_{state['minutes_to_close']} minutes left. These meet the rule "
+             "right now: coiled base, price above it, volume confirming._", ""]
+    for r in fire:
+        size = (f"**{r['shares']} share{'s' if r['shares'] != 1 else ''}**"
+                if r["shares"] else "**skip — one share risks more than "
+                                    "the budget**")
+        risk = r["shares"] * (r["price"] - r["stop"])
+        lines += [f"**{r['symbol']}** — {size}",
+                  f"Entry `~${r['price']:,.2f}` · stop `${r['stop']:,.2f}` "
+                  f"({100 * (r['price'] - r['stop']) / r['price']:.1f}% below) "
+                  f"· target `${r['target']:,.2f}`",
+                  (f"Risking `${risk:,.2f}`" if r["shares"] else
+                   "No size that fits the risk budget"),
+                  f"Broke `${r['level']:,.2f}` on "
+                  f"{r['volume_pct_of_needed']}% of the volume it needs", ""]
+    lines += ["_Enter near the close — the tested entry IS the closing price, "
+              "so the longer you wait after this, the less the numbers apply._",
+              "_Paper only. No orders are being placed._"]
+    return "\n".join(lines)
+
+
 def previous() -> dict:
     """Yesterday's scoring, so today's message can say what actually changed."""
     path = STATE / "paper.json"
@@ -642,6 +680,9 @@ def main(argv=None) -> int:
                     help="score and write, but send nothing")
     ap.add_argument("--sample", action="store_true",
                     help="send one worked example of the alert and exit")
+    ap.add_argument("--preclose", action="store_true",
+                    help="the actionable run: minutes before the close, send "
+                         "the trades to take at the close")
     ap.add_argument("--live", action="store_true",
                     help="mid-session check: which names are at their level "
                          "right now. Alerts only on new ones.")
@@ -649,6 +690,32 @@ def main(argv=None) -> int:
                     help="show which screened names are coiled near their "
                          "breakout level, and exit")
     args = ap.parse_args(argv)
+
+    if args.preclose:
+        now_et = pd.Timestamp.now(tz=EASTERN)
+        if now_et.weekday() > 4 or not (
+                pd.Timestamp("15:30").time() <= now_et.time()
+                <= pd.Timestamp("16:05").time()):
+            log.info("Not the pre-close window (%s ET) - skipping",
+                     now_et.strftime("%H:%M"))
+            return 0
+        try:
+            state = live_scan()
+        except AlpacaError as exc:
+            log.error("Data fetch failed: %s", exc)
+            return 1
+        msg = preclose_alert(state)
+        print(msg or render_live(state))
+        if args.dry_run:
+            return 0
+        REPORTS.mkdir(exist_ok=True)
+        (REPORTS / "preclose.md").write_text(msg or render_live(state))
+        if msg and not args.no_notify:
+            notify(msg)
+            log.info("Pre-close signals sent.")
+        else:
+            log.info("Nothing meets the rule into the close.")
+        return 0
 
     if args.live:
         now_et = pd.Timestamp.now(tz=EASTERN)
