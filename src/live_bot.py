@@ -115,7 +115,10 @@ def simulate_day(day: pd.DataFrame, sym: str, p: dict, cfg: dict) -> list[dict]:
             continue
         target = entry - TARGET_R * rps
         n = shares(entry, rps, cfg["equity"], cfg["risk_pct"])
-        t = {"id": f"{sym}-{str(day.index[j])[:16]}", "symbol": sym,
+        # The level is part of the identity. Without it two different breaks
+        # that happen to enter on the same bar collide, and the second is
+        # counted in the recap but never announced.
+        t = {"id": f"{sym}-{str(day.index[j])[:16]}-{level:.2f}", "symbol": sym,
              "entry_time": str(day.index[j].tz_convert(EASTERN))[11:16],
              "entry": round(entry, 2), "stop": round(stop, 2),
              "target": round(target, 2), "shares": n,
@@ -270,14 +273,16 @@ def close_msg(t: dict) -> str:
             f"**{t['pct']:+.2f}%**  ({money(t.get('cash') or 0)})")
 
 
-def block(done: list[dict], head: str, mark: tuple[str, str]) -> list[str]:
+def block(done: list[dict], head: str, mark: tuple[str, str],
+          cash: float | None = None) -> list[str]:
     won = sum(1 for t in done if (t["pct"] or 0) > 0)
     pct = sum(t["pct"] or 0 for t in done)
+    total = f"**{pct:+.2f}%**" + (f"  ({money(cash)})" if cash is not None else "")
     lines = [head,
              f"**{len(done)} trade{'s' if len(done) != 1 else ''} · "
              f"{won} won, {len(done) - won} lost · "
              f"{100 * won / len(done):.0f}% win rate**",
-             f"**{pct:+.2f}%**"]
+             total]
     for t in done:
         lines.append(f"{mark[0] if (t['pct'] or 0) > 0 else mark[1]} "
                      f"{t['symbol']} {t['entry_time']}→{t['exit_time']}  "
@@ -300,9 +305,8 @@ def summary_msg(trades: list[dict], date: str) -> str:
 
     lines = [f"📊 **{date}**", ""]
     if real:
-        cash = sum((t.get("cash") or 0) for t in real)
-        lines += block(real, "**Traded**", ("✅", "❌"))
-        lines[-2] += f"  ({money(cash)})"
+        lines += block(real, "**Traded**", ("✅", "❌"),
+                       cash=sum((t.get("cash") or 0) for t in real))
     else:
         lines += ["**Traded** — nothing fired today.", ""]
     if watch:
