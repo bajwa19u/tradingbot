@@ -161,16 +161,28 @@ def summary_msg(trades: list[dict], date: str) -> str:
     return "\n".join(lines)
 
 
+# Its own filename: src/paper.py --live already owns state/live_seen.json with
+# a different shape, and sharing it meant today's file loaded and then failed
+# on a missing key. Every field is also defaulted, so a file written by an
+# older version of this bot degrades to "announce it again" rather than
+# crashing the run.
+SEEN_FILE = "live_bot_seen.json"
+
+
 def load_seen(date: str) -> dict:
-    f = STATE / "live_seen.json"
-    if f.exists():
-        try:
-            s = json.loads(f.read_text())
-            if s.get("date") == date:
-                return s
-        except json.JSONDecodeError:
-            pass
-    return {"date": date, "entries": [], "exits": [], "summary": False}
+    blank = {"date": date, "entries": [], "exits": [], "summary": False}
+    f = STATE / SEEN_FILE
+    if not f.exists():
+        return blank
+    try:
+        s = json.loads(f.read_text())
+    except (json.JSONDecodeError, OSError) as exc:
+        log.warning("Could not read %s (%s) - starting the day fresh",
+                    SEEN_FILE, exc)
+        return blank
+    if s.get("date") != date:
+        return blank
+    return {**blank, **{k: s.get(k, blank[k]) for k in blank}}
 
 
 def main(argv=None) -> int:
@@ -215,7 +227,7 @@ def main(argv=None) -> int:
         return 0
 
     STATE.mkdir(exist_ok=True); REPORTS.mkdir(exist_ok=True)
-    (STATE / "live_seen.json").write_text(json.dumps(seen, indent=2))
+    (STATE / SEEN_FILE).write_text(json.dumps(seen, indent=2))
     (REPORTS / "live_today.md").write_text(
         summary_msg(trades, date) + "\n\n" +
         "\n\n".join(entry_msg(t) + ("\n" + close_msg(t) if t["exit"] else "")
