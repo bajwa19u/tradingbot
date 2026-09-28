@@ -221,12 +221,99 @@ def render(p: dict) -> str:
     return "\n".join(out)
 
 
+# The rule this bot trades. Fixed, and chosen BEFORE the holdout was run:
+#   retest entry, shorts only, no confirmation candle, 12-bar wait, 0.25 ATR
+# On 50 fresh symbols it never saw: 40.4% of shorts against a 33.3% break-even.
+LIVE = {"wait": 12, "depth": 0.25, "confirm": False, "side": "short"}
+
+
+def signals_today(data: dict, p: dict) -> list[dict]:
+    """Every entry the rule would have taken today, in order.
+
+    A replay, not a forecast. Each signal is stamped with the bar time it
+    fired on so it can be checked against the chart rather than believed.
+    """
+    from .paper import settings, shares
+    cfg = settings()
+    out = []
+    for sym, df in data.items():
+        if df.empty:
+            continue
+        d = prepare_sq(df, p)
+        for _, day in d.groupby(d.index.tz_convert(EASTERN).date):
+            if len(day) < p["base_len"] + p["atr_len"] + 8:
+                continue
+            for i, side, level in breaks_in(day, p):
+                if side != LIVE["side"]:
+                    continue
+                j = find_retest(day, i, side, level, LIVE["wait"],
+                                LIVE["depth"], LIVE["confirm"])
+                if j is None:
+                    continue
+                a = float(day["atr"].iloc[i])
+                entry = float(day["close"].iloc[j])
+                stop = level + STOP_ATR * a
+                rps = abs(entry - stop)
+                if rps <= 0 or rps / entry > 0.10:
+                    continue
+                target = entry - TARGET_R * rps
+                res = label(day, j, side, level, i)
+                out.append({
+                    "symbol": sym, "side": side,
+                    "break_time": str(day.index[i].tz_convert(EASTERN))[11:16],
+                    "entry_time": str(day.index[j].tz_convert(EASTERN))[11:16],
+                    "level": round(level, 2), "entry": round(entry, 2),
+                    "stop": round(stop, 2), "target": round(target, 2),
+                    "shares": shares(entry, rps, cfg["equity"], cfg["risk_pct"]),
+                    "risk": round(shares(entry, rps, cfg["equity"],
+                                         cfg["risk_pct"]) * rps, 2),
+                    "outcome": res})
+    out.sort(key=lambda r: r["entry_time"])
+    return out
+
+
+def replay_message(sigs: list[dict], when: str) -> str:
+    if not sigs:
+        return (f"**Replay — {when}**\n\nNo setups today. The rule needs a "
+                "coil, a break down through it, and price back at the level. "
+                "Empty days are normal.\n_Replay of a closed session, not a "
+                "live signal._")
+    lines = [f"🔁 **REPLAY — {when}** · {len(sigs)} setup"
+             f"{'s' if len(sigs) != 1 else ''}",
+             "_What the rule would have sent today, at the times it would "
+             "have sent them. The session is closed - none of this is "
+             "actionable now._", ""]
+    won = 0
+    for s in sigs:
+        size = (f"{s['shares']} share{'s' if s['shares'] != 1 else ''}"
+                if s["shares"] else "**too small for the account**")
+        lines += [f"🔻 **SHORT {s['symbol']}** — {s['entry_time']} ET",
+                  f"Broke `${s['level']:,.2f}` at {s['break_time']}, retested "
+                  f"it, entered `${s['entry']:,.2f}`",
+                  f"Stop `${s['stop']:,.2f}` · target `${s['target']:,.2f}` "
+                  f"· {size}"
+                  + (f" · risking `${s['risk']:,.2f}`" if s["shares"] else "")]
+        o = s.get("outcome")
+        if o:
+            won += o["won"]
+            lines.append(f"→ _Result: {'WON' if o['won'] else 'lost'} "
+                         f"({o['r']:+.2f}R)_")
+        lines.append("")
+    lines += [f"**Today: {won} won, {len(sigs) - won} lost.**",
+              "_Paper only. No orders were placed._"]
+    return "\n".join(lines)
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--start", default=None)
     ap.add_argument("--end", default=None)
     ap.add_argument("--minutes", type=int, default=5)
     ap.add_argument("--universe", default="movers", choices=list(UNIVERSES))
+    ap.add_argument("--replay", action="store_true",
+                    help="run the live rule over today only and send what it "
+                         "would have fired to Discord")
+    ap.add_argument("--no-notify", action="store_true")
     args = ap.parse_args(argv)
 
     p = {**SCAN, "minutes": args.minutes}
@@ -246,6 +333,26 @@ def main(argv=None) -> int:
         log.error("Fetch failed: %s", exc)
         return 1
     data = {s: d for s, d in data.items() if not d.empty}
+
+    if args.replay:
+        today = pd.Timestamp.now(tz=EASTERN).date()
+        data = {s: d[d.index.tz_convert(EASTERN).date == today]
+                for s, d in data.items()}
+        data = {s: d for s, d in data.items() if len(d) > 20}
+        sigs = signals_today(data, p)
+        when = f"{today} · {len(data)} symbols"
+        msg = replay_message(sigs, when)
+        print(msg)
+        REPORTS.mkdir(exist_ok=True)
+        (REPORTS / "replay.md").write_text(msg)
+        (REPORTS / "replay.json").write_text(json.dumps(
+            {"date": str(today), "signals": sigs}, indent=2, default=str))
+        if not args.no_notify:
+            from .paper import notify
+            notify(msg)
+            log.info("Replay sent: %d signal(s)", len(sigs))
+        return 0
+
     rows, seen = run(data, p, combos)
     log.info("%d breaks followed, %d combinations with enough trades",
              seen, len(rows))
