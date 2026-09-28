@@ -39,6 +39,10 @@ on:
         description: "close (tested rule, buy at the close) | level (buy when price crosses intraday)"
         required: false
         default: "close"
+      entry_slippage_pct:
+        description: "Percent paid on entry (blank = 0.05)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -67,6 +71,7 @@ jobs:
           IN_UNI: ${{ inputs.universe }}
           IN_HOLD: ${{ inputs.holdout }}
           IN_ENTRY: ${{ inputs.entry_style }}
+          IN_SLIP: ${{ inputs.entry_slippage_pct }}
           IN_ONLY: ${{ inputs.only }}
           IN_SPLIT: ${{ inputs.vol_split }}
           IN_MINATR: ${{ inputs.min_atr_pct }}
@@ -81,6 +86,7 @@ jobs:
           [ -n "${IN_ONLY:-}" ] && ARGS+=(--only "${IN_ONLY}") || true
           [ "${IN_SPLIT:-false}" = "true" ] && ARGS+=(--vol-split) || true
           [ -n "${IN_MINATR:-}" ] && [ "${IN_MINATR}" != "0" ] && ARGS+=(--min-atr-pct "${IN_MINATR}") || true
+          [ -n "${IN_SLIP:-}" ] && ARGS+=(--entry-slippage-pct "${IN_SLIP}") || true
           set +e
           python -m src.breakout "${ARGS[@]}" 2>&1 | tee reports/breakout_run.log
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
