@@ -1,0 +1,78 @@
+name: Break and retest
+
+# Why the breaks fail. The sweep settled that stop width, hold length and
+# re-entry are not the problem - all 24 combinations lost. So this stops
+# tuning and asks what the winners have that the losers do not.
+#
+# Same method that produced the only real finding in this project. Nothing
+# found by searching parameters has survived here; both things that did came
+# from comparing winners to losers directly.
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: "Start date (blank = 60 days back)"
+        required: false
+        default: ""
+      minutes:
+        description: "Bar size in minutes"
+        required: false
+        default: "5"
+      universe:
+        description: "movers | research | holdout | fresh | wide"
+        required: false
+        default: "movers"
+
+permissions:
+  contents: write
+
+jobs:
+  retest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Test retest conditions
+        id: run
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          IN_START: ${{ inputs.start }}
+          IN_MIN: ${{ inputs.minutes }}
+          IN_UNI: ${{ inputs.universe }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports
+          ARGS=(--minutes "${IN_MIN:-5}" --universe "${IN_UNI:-movers}")
+          [ -n "${IN_START:-}" ] && ARGS+=(--start "${IN_START}") || true
+          set +e
+          python -m src.retest "${ARGS[@]}" 2>&1 | tee reports/retest_run.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports
+          if ! git diff --cached --quiet; then
+            git commit -m "retest: results [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed"
+          fi
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/retest.md ]; then
+            cat reports/retest.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            { echo '```'; tail -n 40 reports/retest_run.log; echo '```'; } \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Fail if the run failed
+        if: always() && steps.run.outputs.code != '0'
+        run: exit 1
