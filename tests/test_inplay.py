@@ -173,3 +173,23 @@ def test_the_grid_includes_the_no_selection_control():
 def test_results_are_reported_without_r_multiples():
     line = ip.row("x", ip.tally([{"pct": 1.0}], ip.BASE))
     assert "R" not in line
+
+
+# --- cost sensitivity --------------------------------------------------------
+def test_slippage_is_restored_even_when_the_pass_blows_up(monkeypatch):
+    """It mutates a module global. Leaving it mutated would silently change
+    the costs of every later run in the same process."""
+    before = op.SLIP_PCT
+    monkeypatch.setattr(ip, "run", lambda *a, **k: (_ for _ in ()).throw(
+        RuntimeError("boom")))
+    with pytest.raises(RuntimeError):
+        ip.sensitivity({}, {}, dict(ip.BASE), set())
+    assert op.SLIP_PCT == before
+
+
+def test_sensitivity_reports_the_cost_level_that_kills_it(monkeypatch):
+    seq = iter([[{"pct": 5.0}], [{"pct": 3.0}], [{"pct": 1.0}],
+                [{"pct": -1.0}], [{"pct": -3.0}], [{"pct": -5.0}]])
+    monkeypatch.setattr(ip, "run", lambda *a, **k: next(seq))
+    out = ip.sensitivity({}, {}, dict(ip.BASE), set())
+    assert "stops making money at slippage 0.15%" in out
