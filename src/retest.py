@@ -272,36 +272,121 @@ def signals_today(data: dict, p: dict) -> list[dict]:
     return out
 
 
-def replay_message(sigs: list[dict], when: str) -> str:
+def day_log_path():
+    return REPO_ROOT / "state" / "replay_log.jsonl"
+
+
+def record_day(date: str, universe: str, sigs: list[dict],
+               equity: float, risk_pct: float) -> dict:
+    """Append this day's result and return it. Append-only, never rewritten."""
+    won = sum(1 for s in sigs if s["outcome"]["won"])
+    # profit as a percentage of the account, which is the only unit the owner
+    # asked for. R multiples are kept out of every message on purpose.
+    pct = sum(s["outcome"]["r"] * risk_pct for s in sigs)
+    cash = sum(s["risk"] * s["outcome"]["r"] for s in sigs)
+    row = {"date": date, "universe": universe, "trades": len(sigs),
+           "won": won, "lost": len(sigs) - won,
+           "win_pct": round(100 * won / len(sigs), 1) if sigs else 0.0,
+           "profit_pct": round(pct, 2), "profit_dollars": round(cash, 2)}
+    path = day_log_path()
+    path.parent.mkdir(exist_ok=True)
+    seen = []
+    if path.exists():
+        for line in path.read_text().splitlines():
+            try:
+                r = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            # re-running the same day replaces that day rather than
+            # double-counting it into the running total
+            if not (r.get("date") == date and r.get("universe") == universe):
+                seen.append(r)
+    seen.append(row)
+    path.write_text("\n".join(json.dumps(r) for r in seen) + "\n")
+    return row
+
+
+def recap(universe: str, days: int = 10) -> tuple[list[dict], dict]:
+    path = day_log_path()
+    if not path.exists():
+        return [], {}
+    rows = []
+    for line in path.read_text().splitlines():
+        try:
+            r = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if r.get("universe") == universe:
+            rows.append(r)
+    rows.sort(key=lambda r: r["date"])
+    if not rows:
+        return [], {}
+    t = sum(r["trades"] for r in rows)
+    w = sum(r["won"] for r in rows)
+    total = {"days": len(rows), "trades": t, "won": w, "lost": t - w,
+             "win_pct": round(100 * w / t, 1) if t else 0.0,
+             "profit_pct": round(sum(r["profit_pct"] for r in rows), 2),
+             "profit_dollars": round(sum(r["profit_dollars"] for r in rows), 2),
+             "green_days": sum(1 for r in rows if r["profit_pct"] > 0)}
+    return rows[-days:], total
+
+
+def replay_message(sigs: list[dict], when: str, universe: str = "fresh",
+                   risk_pct: float = 1.0) -> str:
+    date = when.split(" ")[0]
     if not sigs:
-        return (f"**Replay — {when}**\n\nNo setups today. The rule needs a "
+        head = (f"**Replay — {when}**\n\nNo setups today. The rule needs a "
                 "coil, a break down through it, and price back at the level. "
-                "Empty days are normal.\n_Replay of a closed session, not a "
-                "live signal._")
-    lines = [f"🔁 **REPLAY — {when}** · {len(sigs)} setup"
-             f"{'s' if len(sigs) != 1 else ''}",
-             "_What the rule would have sent today, at the times it would "
-             "have sent them. The session is closed - none of this is "
-             "actionable now._", ""]
-    won = 0
-    for s in sigs:
-        size = (f"{s['shares']} share{'s' if s['shares'] != 1 else ''}"
-                if s["shares"] else "**too small for the account**")
-        lines += [f"🔻 **SHORT {s['symbol']}** — {s['entry_time']} ET",
-                  f"Broke `${s['level']:,.2f}` at {s['break_time']}, retested "
-                  f"it, entered `${s['entry']:,.2f}`",
-                  f"Stop `${s['stop']:,.2f}` · target `${s['target']:,.2f}` "
-                  f"· {size}"
-                  + (f" · risking `${s['risk']:,.2f}`" if s["shares"] else "")]
-        o = s.get("outcome")
-        if o:
-            won += o["won"]
-            lines.append(f"→ _Result: {'WON' if o['won'] else 'lost'} "
-                         f"({o['r']:+.2f}R)_")
-        lines.append("")
-    lines += [f"**Today: {won} won, {len(sigs) - won} lost.**",
-              "_Paper only. No orders were placed._"]
-    return "\n".join(lines)
+                "Empty days are normal.")
+    else:
+        won = sum(1 for s in sigs if s["outcome"]["won"])
+        day_pct = sum(s["outcome"]["r"] * risk_pct for s in sigs)
+        day_cash = sum(s["risk"] * s["outcome"]["r"] for s in sigs)
+        lines = [f"🔁 **REPLAY — {when}** · {len(sigs)} setup"
+                 f"{'s' if len(sigs) != 1 else ''}",
+                 "_What the rule would have sent today, at the times it would "
+                 "have sent them. The session is closed - none of this is "
+                 "actionable now._", ""]
+        for s in sigs:
+            size = (f"{s['shares']} share{'s' if s['shares'] != 1 else ''}"
+                    if s["shares"] else "**too small for the account**")
+            o = s["outcome"]
+            pct = o["r"] * risk_pct
+            cash = s["risk"] * o["r"]
+            lines += [f"🔻 **SHORT {s['symbol']}** — {s['entry_time']} ET",
+                      f"Broke `${s['level']:,.2f}` at {s['break_time']}, "
+                      f"retested it, entered `${s['entry']:,.2f}`",
+                      f"Stop `${s['stop']:,.2f}` · target "
+                      f"`${s['target']:,.2f}` · {size}",
+                      f"→ **{'WON' if o['won'] else 'LOST'} "
+                      f"{pct:+.2f}%** (${cash:+,.2f})", ""]
+        lines += [f"**Today: {won} won, {len(sigs) - won} lost · "
+                  f"{100 * won / len(sigs):.0f}% win rate · "
+                  f"{day_pct:+.2f}% (${day_cash:+,.2f})**"]
+        head = "\n".join(lines)
+
+    rows, total = recap(universe)
+    if not rows:
+        return head + "\n_Paper only. No orders were placed._"
+    out = [head, "", "---", "", f"**Last {len(rows)} day"
+           f"{'s' if len(rows) != 1 else ''} — {universe}**", "",
+           "| Day | Trades | Won | Lost | Win % | Profit |",
+           "|---|---|---|---|---|---|"]
+    for r in rows:
+        out.append(f"| {r['date'][5:]} | {r['trades']} | {r['won']} | "
+                   f"{r['lost']} | {r['win_pct']}% | "
+                   f"**{r['profit_pct']:+.2f}%** |")
+    out += ["",
+            f"**Running total: {total['trades']} trades · {total['won']} won, "
+            f"{total['lost']} lost · {total['win_pct']}% win rate · "
+            f"{total['profit_pct']:+.2f}% "
+            f"(${total['profit_dollars']:+,.2f})**",
+            f"_{total['green_days']} of {total['days']} days green._"]
+    if total["trades"] < 50:
+        out.append(f"_{total['trades']} trades so far. The backtest needed "
+                   "about fifty before the numbers stopped moving around._")
+    out.append("_Paper only. No orders were placed._")
+    return "\n".join(out)
 
 
 def main(argv=None) -> int:
@@ -343,8 +428,13 @@ def main(argv=None) -> int:
                 for s, d in data.items()}
         data = {s: d for s, d in data.items() if len(d) > 20}
         sigs = signals_today(data, p)
+        from .paper import settings
+        cfg = settings()
+        uni = args.symbols and "custom" or args.universe
+        if sigs:
+            record_day(str(today), uni, sigs, cfg["equity"], cfg["risk_pct"])
         when = f"{today} · {len(data)} symbols"
-        msg = replay_message(sigs, when)
+        msg = replay_message(sigs, when, uni, cfg["risk_pct"])
         print(msg)
         REPORTS.mkdir(exist_ok=True)
         (REPORTS / "replay.md").write_text(msg)
