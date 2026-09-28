@@ -1,0 +1,85 @@
+name: Live bot
+
+# THE DEPLOYED BOT. Break and retest, shorts only, core watchlist.
+#
+# Every five minutes through the session: posts an entry the moment the rule
+# fires, a close when the trade ends, and one summary after the bell.
+#
+# The cron window is wide because UTC has no daylight-saving awareness; the
+# script checks real Eastern time and exits outside 09:45-16:10.
+#
+# It replays the whole day on every run and tracks what it has already
+# announced, so a missed run, a duplicate run or a crash cannot corrupt the
+# record - the next run recomputes the same day and posts whatever is new.
+on:
+  schedule:
+    - cron: "*/5 13-21 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Print the messages instead of sending them"
+        type: boolean
+        default: false
+      force:
+        description: "Ignore the market-hours check"
+        type: boolean
+        default: false
+
+concurrency:
+  group: live-bot
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Scan and alert
+        id: run
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          IN_DRY: ${{ inputs.dry_run }}
+          IN_FORCE: ${{ inputs.force }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports state
+          ARGS=()
+          if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
+          if [ "${IN_FORCE:-false}" = "true" ]; then ARGS+=(--force); fi
+          set +e
+          python -m src.live_bot "${ARGS[@]}" 2>&1 | tee reports/live_bot.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+      - name: Commit what was announced
+        if: always() && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports state
+          if ! git diff --cached --quiet; then
+            git commit -m "live: session state [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed"
+          fi
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/live_today.md ]; then
+            cat reports/live_today.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            { echo '```'; tail -n 25 reports/live_bot.log; echo '```'; } \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Fail if the run failed
+        if: always() && steps.run.outputs.code != '0'
+        run: exit 1
