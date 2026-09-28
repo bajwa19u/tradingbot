@@ -1,0 +1,89 @@
+name: Live check
+
+# Every 30 minutes through the US session: which screened names are at their
+# breakout level RIGHT NOW, and which have just got there on volume.
+#
+# What this is NOT: a trade signal. The tested rule enters at the CLOSING
+# price (src/swing.py: entry = close), so a name above its level at 11am has
+# not triggered - it has to still be there at 16:00. Every message this sends
+# says so. The 17:30 "Paper account" run is what actually scores.
+#
+# The cron window is wide because UTC has no daylight-saving awareness; the
+# script checks real Eastern time and exits immediately outside 09:35-16:00.
+#
+# This is not the old live-signals job. That one fired every 5 minutes on a
+# strategy measured at -0.234R and -87% drawdown, and stays disabled. This one
+# reports state and books nothing.
+on:
+  schedule:
+    - cron: "5,35 13-20 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Print the check instead of sending or committing it"
+        type: boolean
+        default: false
+
+concurrency:
+  group: live
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check where things stand
+        id: run
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          IN_DRY: ${{ inputs.dry_run }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports state
+          ARGS=(--live)
+          if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
+          set +e
+          python -m src.paper "${ARGS[@]}" 2>&1 | tee reports/live_run.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit the state
+        if: always() && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports state
+          if ! git diff --cached --quiet; then
+            git commit -m "live: intraday check [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push || echo "push failed"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/live.md ]; then
+            cat reports/live.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            { echo '```'; tail -n 30 reports/live_run.log; echo '```'; } \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Fail if the check failed
+        if: always() && steps.run.outputs.code != '0'
+        run: exit 1
