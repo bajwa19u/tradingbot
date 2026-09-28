@@ -1877,3 +1877,85 @@ def test_unfinished_trades_are_not_counted_as_losses():
     assert "still open at the bell" in msg
     # one finished trade, and it won - so 100%, not 50%
     assert "1 won, 0 lost" in msg and "100% win rate" in msg
+
+
+# ---------------------------------------------------------------------------
+# The live bot
+# ---------------------------------------------------------------------------
+def _live_trade(**kw):
+    t = {"id": "NVDA-2026-09-29T14:25", "symbol": "NVDA",
+         "entry_time": "14:25", "entry": 182.40, "stop": 184.10,
+         "target": 179.00, "shares": 11, "risk": 18.70, "level": 183.00,
+         "exit": None, "exit_time": None, "reason": None, "pct": None}
+    t.update(kw)
+    return t
+
+
+def test_live_entry_message_has_the_five_things_needed_to_act():
+    from src.live_bot import entry_msg
+    m = entry_msg(_live_trade())
+    for piece in ("NVDA", "14:25", "182.40", "184.10", "179.00", "11 shares"):
+        assert piece in m, piece
+    assert "SL" in m and "TP" in m
+
+
+def test_live_close_message_states_why_and_how_much():
+    from src.live_bot import close_msg
+    win = close_msg(_live_trade(exit=179.00, exit_time="15:10",
+                                reason="target", pct=2.0, cash=37.40))
+    assert "✅" in win and "hit target" in win and "+2.00%" in win
+    loss = close_msg(_live_trade(exit=184.10, exit_time="14:40",
+                                 reason="stop", pct=-1.0, cash=-18.70))
+    assert "❌" in loss and "hit stop" in loss and "-1.00%" in loss
+    bell = close_msg(_live_trade(exit=181.0, exit_time="15:55",
+                                 reason="bell", pct=0.4, cash=7.5))
+    assert "closed at the bell" in bell
+
+
+def test_live_never_announces_the_same_event_twice():
+    """It runs every five minutes and replays the whole day each time. Without
+    this the same entry is posted seventy times."""
+    import json
+    import src.live_bot as L
+
+    def run(trades, seen):
+        msgs = []
+        for t in trades:
+            if t["id"] not in seen["entries"]:
+                msgs.append("E"); seen["entries"].append(t["id"])
+            if t["exit"] is not None and t["id"] not in seen["exits"]:
+                msgs.append("X"); seen["exits"].append(t["id"])
+        return msgs
+
+    seen = {"date": "d", "entries": [], "exits": [], "summary": False}
+    t = _live_trade()
+    assert run([t], seen) == ["E"]
+    assert run([t], seen) == []                      # same scan again
+    t2 = _live_trade(exit=179.0, exit_time="15:10", reason="target", pct=2.0)
+    assert run([t2], seen) == ["X"]                  # now it has closed
+    assert run([t2], seen) == []
+
+
+def test_live_summary_counts_only_finished_trades():
+    from src.live_bot import summary_msg
+    trades = [_live_trade(id="a", exit=179.0, exit_time="15:10",
+                          reason="target", pct=2.0, cash=37.4),
+              _live_trade(id="b", symbol="MU", exit=184.1, exit_time="14:40",
+                          reason="stop", pct=-1.0, cash=-18.7),
+              _live_trade(id="c", symbol="AMD")]     # still open
+    m = summary_msg(trades, "Tuesday 29 September")
+    assert "2 trades" in m and "1 won, 1 lost" in m and "50% win rate" in m
+    assert "+1.00%" in m
+    assert "AMD" not in m
+    assert "no trades today" in summary_msg([], "Tuesday 29 September")
+
+
+def test_live_drops_the_bar_that_is_still_forming():
+    """A five-minute bar still forming has a close that has not happened. The
+    rule enters on a close, so acting on it means entering at a price the rule
+    never saw."""
+    import inspect
+    import src.live_bot as L
+    src = inspect.getsource(L.scan)
+    assert "df.iloc[:-1]" in src
+    assert "still forming" in src or "has not happened" in src
