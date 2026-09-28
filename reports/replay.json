@@ -78,7 +78,8 @@
       "risk": 19.56,
       "outcome": {
         "won": 1,
-        "r": 1.75
+        "r": 1.14,
+        "unfinished": true
       }
     },
     {
@@ -94,7 +95,8 @@
       "risk": 17.93,
       "outcome": {
         "won": 1,
-        "r": 0.51
+        "r": 0.69,
+        "unfinished": true
       }
     },
     {
@@ -110,7 +112,41 @@
       "risk": 19.89,
       "outcome": {
         "won": 1,
-        "r": 1.42
+        "r": 1.17,
+        "unfinished": true
+      }
+    },
+    {
+      "symbol": "META",
+      "side": "short",
+      "break_time": "15:10",
+      "entry_time": "15:15",
+      "level": 718.88,
+      "entry": 718.27,
+      "stop": 720.44,
+      "target": 713.94,
+      "shares": 9,
+      "risk": 19.49,
+      "outcome": {
+        "won": 1,
+        "r": 0.85,
+        "unfinished": true
+      }
+    },
+    {
+      "symbol": "PLTR",
+      "side": "short",
+      "break_time": "15:10",
+      "entry_time": "15:15",
+      "level": 187.91,
+      "entry": 187.81,
+      "stop": 188.26,
+      "target": 186.9,
+      "shares": 44,
+      "risk": 19.85,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
       }
     },
     {
@@ -130,6 +166,23 @@
       }
     },
     {
+      "symbol": "AVGO",
+      "side": "short",
+      "break_time": "15:15",
+      "entry_time": "15:30",
+      "level": 350.17,
+      "entry": 349.95,
+      "stop": 350.64,
+      "target": 348.59,
+      "shares": 29,
+      "risk": 19.85,
+      "outcome": {
+        "won": 1,
+        "r": 1.17,
+        "unfinished": true
+      }
+    },
+    {
       "symbol": "AMZN",
       "side": "short",
       "break_time": "14:55",
@@ -141,8 +194,9 @@
       "shares": 28,
       "risk": 19.65,
       "outcome": {
-        "won": 0,
-        "r": 0.0
+        "won": 1,
+        "r": 0.04,
+        "unfinished": true
       }
     },
     {
@@ -157,8 +211,9 @@
       "shares": 33,
       "risk": 19.74,
       "outcome": {
-        "won": 0,
-        "r": 0.0
+        "won": 1,
+        "r": 0.05,
+        "unfinished": true
       }
     }
   ]
