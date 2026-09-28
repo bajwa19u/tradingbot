@@ -59,6 +59,10 @@ BASE_BO = {
     "vol_mult": 1.3,         # breakout volume vs the base average
     "min_atr_pct": 4.0,      # volatility floor, from the autopsy
     "entry_style": "close",  # "close" = the tested rule; "level" = intraday
+    "entry_slippage_pct": 0.05,   # paid on entry. 0.05% is optimistic for a
+                                  # market order into a breakout on a volatile
+                                  # name; the point of making it a dial is to
+                                  # see how much of an edge it eats.
     "require_above_slow": False,   # deliberately OFF - the evidence says the
                                    # EMA stack was blocking the real moves
     # exits / sizing, reused from the swing engine
@@ -211,6 +215,9 @@ def main(argv=None) -> int:
                     help="drop symbols whose typical daily range is below "
                          "this %% of price, judged on history before the "
                          "trading window")
+    ap.add_argument("--entry-slippage-pct", type=float, default=None,
+                    help="percent paid on entry. Default 0.05. Raise it to "
+                         "see how much of the edge survives a realistic fill.")
     ap.add_argument("--entry-style", default="close",
                     choices=["close", "level"],
                     help="close = buy the closing price (the tested rule); "
@@ -281,10 +288,16 @@ def main(argv=None) -> int:
             log.error("No config named %s. Available: %s", args.only,
                       ", ".join(n for n, _ in grid_bo()))
             return 1
+    over = {}
     if args.entry_style != "close":
-        configs = [(n, {**q, "entry_style": args.entry_style})
-                   for n, q in configs]
-        log.info("Entry style: %s", args.entry_style)
+        over["entry_style"] = args.entry_style
+    if args.entry_slippage_pct is not None:
+        over["entry_slippage_pct"] = args.entry_slippage_pct
+    if over:
+        configs = [(n, {**q, **over}) for n, q in configs]
+        log.info("Entry: style=%s slippage=%.3f%%",
+                 over.get("entry_style", "close"),
+                 over.get("entry_slippage_pct", 0.05))
         log.info("Single-config validation run (no search): %s", args.only)
     log.info("Scoring %d breakout configurations", len(configs))
     results = []
