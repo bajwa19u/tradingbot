@@ -58,6 +58,8 @@ jobs:
         run: |
           set -uo pipefail
           mkdir -p reports
+          # Never let a previous run's report be mistaken for this one's.
+          rm -f reports/opening.md reports/opening_audit.md reports/opening.json
           ARGS=(--days "${IN_DAYS:-60}" --universe "${IN_UNI:-core}")
           [ -n "${IN_SYM:-}" ] && ARGS+=(--symbols "${IN_SYM}") || true
           [ -n "${IN_AUDIT:-}" ] && ARGS+=(--audit "${IN_AUDIT}") || true
@@ -71,18 +73,33 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add reports
-          if ! git diff --cached --quiet; then
-            git commit -m "opening: results [skip ci]"
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
-            git push || echo "push failed"
-          fi
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "opening: results [skip ci]"
+          # A swallowed push is how a result silently disappears: the job goes
+          # green, the report never lands, and the run looks like it produced
+          # nothing. Retry the rebase, and fail loudly if it still will not go.
+          for i in 1 2 3 4 5; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
+               && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              exit 0
+            fi
+            echo "push attempt $i failed; retrying"
+            sleep $((i * 5))
+          done
+          echo "::error::could not push results after 5 attempts"
+          exit 1
 
       - name: Summary
         if: always()
+        env:
+          IN_AUDIT: ${{ inputs.audit }}
         run: |
-          for f in reports/opening_audit.md reports/opening.md; do
-            if [ -f "$f" ]; then cat "$f" >> "$GITHUB_STEP_SUMMARY"; exit 0; fi
-          done
+          # An audit run shows the audit; a study run shows the study. Picking
+          # whichever file exists means a stale audit from a previous run gets
+          # shown as though it were this run's result.
+          if [ -n "${IN_AUDIT:-}" ]; then f=reports/opening_audit.md
+          else f=reports/opening.md; fi
+          if [ -f "$f" ]; then cat "$f" >> "$GITHUB_STEP_SUMMARY"; exit 0; fi
           { echo '```'; tail -n 40 reports/opening_run.log; echo '```'; } \
             >> "$GITHUB_STEP_SUMMARY"
 
