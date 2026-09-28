@@ -20,6 +20,10 @@ on:
         description: "Comma-separated symbols (overrides universe)"
         required: false
         default: ""
+      chart:
+        description: "Export bars for ONE symbol so the setup can be drawn (e.g. AMZN)"
+        required: false
+        default: ""
       dry_run:
         description: "Print it instead of sending"
         type: boolean
@@ -49,12 +53,14 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           IN_UNI: ${{ inputs.universe }}
           IN_SYM: ${{ inputs.symbols }}
+          IN_CHART: ${{ inputs.chart }}
           IN_DRY: ${{ inputs.dry_run }}
         run: |
           set -uo pipefail
           mkdir -p reports state
           ARGS=(--replay --minutes 5 --universe "${IN_UNI:-core}")
           [ -n "${IN_SYM:-}" ] && ARGS+=(--symbols "${IN_SYM}") || true
+          [ -n "${IN_CHART:-}" ] && ARGS+=(--chart "${IN_CHART}") || true
           if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--no-notify); fi
           set +e
           python -m src.retest "${ARGS[@]}" 2>&1 | tee reports/replay_run.log
