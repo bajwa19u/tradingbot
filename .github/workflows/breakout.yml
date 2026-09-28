@@ -35,6 +35,10 @@ on:
         description: "Unseen list to check against: auto | none | fresh | research | holdout | movers"
         required: false
         default: "auto"
+      entry_style:
+        description: "close (tested rule, buy at the close) | level (buy when price crosses intraday)"
+        required: false
+        default: "close"
 
 permissions:
   contents: write
@@ -62,6 +66,7 @@ jobs:
           IN_PERIODS: ${{ inputs.periods }}
           IN_UNI: ${{ inputs.universe }}
           IN_HOLD: ${{ inputs.holdout }}
+          IN_ENTRY: ${{ inputs.entry_style }}
           IN_ONLY: ${{ inputs.only }}
           IN_SPLIT: ${{ inputs.vol_split }}
           IN_MINATR: ${{ inputs.min_atr_pct }}
@@ -70,7 +75,8 @@ jobs:
           mkdir -p reports
           ARGS=(--start "${IN_START:-2026-01-01}" --periods "${IN_PERIODS:-3}" \
                 --universe "${IN_UNI:-movers}"
-                --holdout "${IN_HOLD:-auto}")
+                --holdout "${IN_HOLD:-auto}"
+                --entry-style "${IN_ENTRY:-close}")
           [ -n "${IN_END:-}" ] && ARGS+=(--end "${IN_END}") || true
           [ -n "${IN_ONLY:-}" ] && ARGS+=(--only "${IN_ONLY}") || true
           [ "${IN_SPLIT:-false}" = "true" ] && ARGS+=(--vol-split) || true
