@@ -68,7 +68,16 @@ log = logging.getLogger("opening")
 PRE_START, PRE_END = "04:00", "09:29"
 WIN_START, WIN_END = "09:30", "10:00"   # when a break may be taken
 SCALE_WINDOW = ("09:30", "10:00")       # prior day, for the stop unit
-MAX_HOLD_MIN = 120                      # then out, whatever it is doing
+# NO HOLD CAP BY DEFAULT. A position is closed by its stop or its target and
+# by nothing else. The old 120-minute clock closed seven of eleven trades on
+# 29 September without one of them reaching a target, which is not managing a
+# trade, it is interrupting one.
+#
+# The closing bell is the single exception and it is not a choice: the market
+# shuts. A trade still open at FORCE_EXIT is closed there, and it is reported
+# as "bell" rather than lumped in with the stop and the target, because it is
+# not a result the rule produced - it is a result the clock produced.
+MAX_HOLD_MIN = None                     # minutes, or None for no cap at all
 FORCE_EXIT = "15:55"
 SLIP_PCT = 0.05
 MIN_SCALE_PCT = 0.01                    # a scale below this is a dead symbol
@@ -260,7 +269,8 @@ def simulate(rth: pd.DataFrame, i: int, j: int, side: str, level: float,
               else entry + p["target_r"] * rps)
 
     times = rth.index.tz_convert(EASTERN)
-    deadline = times[j] + pd.Timedelta(minutes=MAX_HOLD_MIN)
+    cap = p.get("max_hold_min", MAX_HOLD_MIN)
+    deadline = (times[j] + pd.Timedelta(minutes=int(cap))) if cap else None
     flat = pd.Timestamp(FORCE_EXIT).time()
 
     px, why, k_out = None, None, len(rth) - 1
@@ -274,8 +284,10 @@ def simulate(rth: pd.DataFrame, i: int, j: int, side: str, level: float,
             px, why = stop, "stop"
         elif hit_targ:
             px, why = target, "target"
-        elif times[k] >= deadline or times[k].time() >= flat:
+        elif deadline is not None and times[k] >= deadline:
             px, why = float(b["close"]), "time"
+        elif times[k].time() >= flat:
+            px, why = float(b["close"]), "bell"
         if px is not None:
             break
     if px is None:
@@ -519,7 +531,9 @@ def research(data: dict[str, pd.DataFrame], universe: str) -> str:
          + ("the session's own opening range"
             if MODE["levels"] == "or"
             else "prior-day high/low/close and premarket high/low")
-         + f" · hold limit {MAX_HOLD_MIN} min "
+         + (f" · hold limit {MAX_HOLD_MIN} min"
+            if MAX_HOLD_MIN else " · no hold limit — stop, target or the bell")
+         + " "
          f"· slippage {SLIP_PCT}% each way", "",
          "## Does the free feed have a usable premarket?", ""]
     if health.get("days"):
