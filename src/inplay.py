@@ -346,7 +346,19 @@ def research(data, dailies, universe: str) -> str:
     verdict = []
     if conf["n"] < 20:
         verdict.append(f"Only {conf['n']} holdout trades — too few to conclude.")
-    if conf["profit_pct"] <= 0:
+    if best["profit_pct"] <= 0:
+        # The holdout can only CONFIRM something. When every configuration
+        # lost on the dates they were chosen from, "best" means least-bad,
+        # and a positive holdout on top of that is noise, not a survival.
+        # Reporting it as a survival is how this project talks itself into a
+        # dead rule.
+        verdict.append(
+            f"**Every configuration lost money on the explore split** — the "
+            f"best of {len(results)} managed {best['profit_pct']:+.1f}%. There "
+            f"is nothing here for the holdout to confirm, so its "
+            f"{conf['profit_pct']:+.1f}% is noise on {conf['n']} trades, not "
+            f"evidence. Do not deploy it.")
+    elif conf["profit_pct"] <= 0:
         verdict.append("**Loses money on unseen dates.** Selection did not "
                        "rescue it, and that is now three independent rules "
                        "that failed the same way. Do not deploy it.")
