@@ -1,7 +1,7 @@
 📊 **2026-09-29**
 
-**9 trades · 2 won, 7 lost · 22% win rate**
-**-3.28%**  (-$53.24)
+**12 trades · 2 won, 10 lost · 17% win rate**
+**-6.28%**  (-$110.35)
 ❌ AVGO 09:35→10:30  -1.03%
 ❌ AMD 09:36→09:51  -1.03%
 ❌ AMZN 09:40→12:50  -1.09%
@@ -9,8 +9,11 @@
 ❌ MU 09:41→10:19  -1.03%
 ❌ META 09:45→13:21  -1.05%
 ❌ AAPL 12:05→13:35  -1.00%
+❌ TSLA 12:45→14:00  -1.00%
+❌ TSLA 12:50→14:00  -1.00%
 ✅ AMD 13:10→13:55  +2.00%
 ✅ NVDA 13:20→13:55  +2.00%
+❌ AMD 13:50→14:05  -1.00%
 
 
 ⚠️ _6 shorts within 15 min — that is one market move read several times, not several independent trades. Count it as roughly one result._
@@ -120,6 +123,9 @@ Entry `$352.46`
 🛑 SL `$353.60`
 🎯 TP `$350.20`
 17 shares · risking `$19.23`  ·  __
+❌ **CLOSED TSLA**  ·  14:00 ET
+Exit `$353.60` — hit stop
+**-1.00%**  (-$19.23)
 
 🔻 **SHORT NVDA**  ·  12:50 ET
 Entry `$229.55`
@@ -132,6 +138,9 @@ Entry `$352.06`
 🛑 SL `$353.36`
 🎯 TP `$349.47`
 15 shares · risking `$19.46`  ·  __
+❌ **CLOSED TSLA**  ·  14:00 ET
+Exit `$353.36` — hit stop
+**-1.00%**  (-$19.46)
 
 🔻 **SHORT AVGO**  ·  13:00 ET
 Entry `$355.77`
@@ -162,3 +171,24 @@ Entry `$229.04`
 ✅ **CLOSED NVDA**  ·  13:55 ET
 Exit `$228.06` — hit target
 **+2.00%**  (+$39.11)
+
+🔻 **SHORT AVGO**  ·  13:40 ET
+Entry `$355.10`
+🛑 SL `$356.11`
+🎯 TP `$353.09`
+19 shares · risking `$19.12`  ·  __
+
+🔻 **SHORT AVGO**  ·  13:45 ET
+Entry `$354.89`
+🛑 SL `$355.86`
+🎯 TP `$352.95`
+20 shares · risking `$19.39`  ·  __
+
+🔻 **SHORT AMD**  ·  13:50 ET
+Entry `$609.00`
+🛑 SL `$611.31`
+🎯 TP `$604.40`
+8 shares · risking `$18.42`  ·  __
+❌ **CLOSED AMD**  ·  14:05 ET
+Exit `$611.31` — hit stop
+**-1.00%**  (-$18.42)
