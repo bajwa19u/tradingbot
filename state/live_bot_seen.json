@@ -17,7 +17,13 @@
     "OPEN-AMD-orl-2026-09-29",
     "OPEN-MSFT-orl-2026-09-29",
     "OPEN-MU-orl-2026-09-29",
-    "OPEN-AVGO-orl-2026-09-29"
+    "OPEN-AVGO-orl-2026-09-29",
+    "OPEN-NVDA-orl-2026-09-29",
+    "OPEN-TSLA-orl-2026-09-29",
+    "OPEN-GOOGL-orl-2026-09-29",
+    "OPEN-AMZN-orl-2026-09-29",
+    "OPEN-PLTR-orl-2026-09-29",
+    "OPEN-SMCI-orl-2026-09-29"
   ],
   "summary": false
 }
