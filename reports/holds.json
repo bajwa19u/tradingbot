@@ -1,0 +1,169 @@
+{
+  "15 min": {
+    "explore": {
+      "n": 450,
+      "won": 211,
+      "lost": 239,
+      "win_pct": 46.9,
+      "profit_pct": -25.1,
+      "avg_pct": -0.056,
+      "ends": {
+        "time": 409,
+        "stop": 40,
+        "target": 1
+      }
+    },
+    "holdout": {
+      "n": 221,
+      "won": 79,
+      "lost": 142,
+      "win_pct": 35.7,
+      "profit_pct": -32.44,
+      "avg_pct": -0.147,
+      "ends": {
+        "stop": 20,
+        "time": 201
+      }
+    }
+  },
+  "30 min": {
+    "explore": {
+      "n": 450,
+      "won": 218,
+      "lost": 232,
+      "win_pct": 48.4,
+      "profit_pct": -17.91,
+      "avg_pct": -0.04,
+      "ends": {
+        "time": 369,
+        "stop": 73,
+        "target": 8
+      }
+    },
+    "holdout": {
+      "n": 221,
+      "won": 86,
+      "lost": 135,
+      "win_pct": 38.9,
+      "profit_pct": -33.91,
+      "avg_pct": -0.153,
+      "ends": {
+        "stop": 33,
+        "time": 186,
+        "target": 2
+      }
+    }
+  },
+  "60 min": {
+    "explore": {
+      "n": 450,
+      "won": 225,
+      "lost": 225,
+      "win_pct": 50.0,
+      "profit_pct": 5.52,
+      "avg_pct": 0.012,
+      "ends": {
+        "stop": 113,
+        "time": 314,
+        "target": 23
+      }
+    },
+    "holdout": {
+      "n": 221,
+      "won": 90,
+      "lost": 131,
+      "win_pct": 40.7,
+      "profit_pct": -29.31,
+      "avg_pct": -0.133,
+      "ends": {
+        "stop": 52,
+        "time": 164,
+        "target": 5
+      }
+    }
+  },
+  "120 min": {
+    "explore": {
+      "n": 450,
+      "won": 207,
+      "lost": 243,
+      "win_pct": 46.0,
+      "profit_pct": -7.29,
+      "avg_pct": -0.016,
+      "ends": {
+        "stop": 144,
+        "time": 268,
+        "target": 38
+      }
+    },
+    "holdout": {
+      "n": 221,
+      "won": 93,
+      "lost": 128,
+      "win_pct": 42.1,
+      "profit_pct": -20.82,
+      "avg_pct": -0.094,
+      "ends": {
+        "stop": 62,
+        "target": 10,
+        "time": 149
+      }
+    }
+  },
+  "240 min": {
+    "explore": {
+      "n": 450,
+      "won": 207,
+      "lost": 243,
+      "win_pct": 46.0,
+      "profit_pct": 14.48,
+      "avg_pct": 0.032,
+      "ends": {
+        "stop": 159,
+        "time": 239,
+        "target": 52
+      }
+    },
+    "holdout": {
+      "n": 218,
+      "won": 90,
+      "lost": 128,
+      "win_pct": 41.3,
+      "profit_pct": -18.68,
+      "avg_pct": -0.086,
+      "ends": {
+        "stop": 74,
+        "target": 16,
+        "time": 128
+      }
+    }
+  },
+  "no cap (stop/target/bell)": {
+    "explore": {
+      "n": 450,
+      "won": 208,
+      "lost": 242,
+      "win_pct": 46.2,
+      "profit_pct": 6.75,
+      "avg_pct": 0.015,
+      "ends": {
+        "stop": 168,
+        "time": 216,
+        "target": 66
+      }
+    },
+    "holdout": {
+      "n": 216,
+      "won": 90,
+      "lost": 126,
+      "win_pct": 41.7,
+      "profit_pct": -22.2,
+      "avg_pct": -0.103,
+      "ends": {
+        "stop": 87,
+        "target": 18,
+        "time": 111
+      }
+    }
+  }
+}
