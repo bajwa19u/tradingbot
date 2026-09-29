@@ -1,322 +1,322 @@
 {
   "or5/pad0.0/target2.0": {
     "explore": {
-      "n": 450,
-      "won": 208,
-      "lost": 242,
-      "win_pct": 46.2,
-      "profit_pct": 6.75,
-      "avg_win": 1.01,
-      "avg_loss": -0.84
+      "n": 480,
+      "won": 220,
+      "lost": 260,
+      "win_pct": 45.8,
+      "profit_pct": 0.57,
+      "avg_win": 0.99,
+      "avg_loss": -0.83
     },
     "holdout": {
-      "n": 216,
-      "won": 90,
-      "lost": 126,
-      "win_pct": 41.7,
-      "profit_pct": -22.2,
-      "avg_win": 0.91,
-      "avg_loss": -0.82
+      "n": 248,
+      "won": 101,
+      "lost": 147,
+      "win_pct": 40.7,
+      "profit_pct": -24.96,
+      "avg_win": 0.9,
+      "avg_loss": -0.79
     }
   },
   "or5/pad0.0/targetlevel": {
     "explore": {
-      "n": 450,
-      "won": 209,
-      "lost": 241,
-      "win_pct": 46.4,
-      "profit_pct": 1.38,
-      "avg_win": 0.98,
-      "avg_loss": -0.85
+      "n": 480,
+      "won": 221,
+      "lost": 259,
+      "win_pct": 46.0,
+      "profit_pct": -4.81,
+      "avg_win": 0.96,
+      "avg_loss": -0.83
     },
     "holdout": {
-      "n": 216,
-      "won": 91,
-      "lost": 125,
-      "win_pct": 42.1,
-      "profit_pct": -18.87,
-      "avg_win": 0.93,
-      "avg_loss": -0.83
+      "n": 248,
+      "won": 102,
+      "lost": 146,
+      "win_pct": 41.1,
+      "profit_pct": -22.6,
+      "avg_win": 0.91,
+      "avg_loss": -0.79
     }
   },
   "or5/pad2.0/target2.0": {
     "explore": {
-      "n": 450,
-      "won": 237,
-      "lost": 213,
-      "win_pct": 52.7,
-      "profit_pct": 19.89,
-      "avg_win": 0.45,
-      "avg_loss": -0.41
+      "n": 480,
+      "won": 250,
+      "lost": 230,
+      "win_pct": 52.1,
+      "profit_pct": 16.57,
+      "avg_win": 0.44,
+      "avg_loss": -0.4
     },
     "holdout": {
-      "n": 210,
-      "won": 101,
-      "lost": 109,
-      "win_pct": 48.1,
-      "profit_pct": -5.97,
-      "avg_win": 0.33,
-      "avg_loss": -0.36
+      "n": 248,
+      "won": 115,
+      "lost": 133,
+      "win_pct": 46.4,
+      "profit_pct": -8.7,
+      "avg_win": 0.32,
+      "avg_loss": -0.34
     }
   },
   "or5/pad2.0/targetlevel": {
     "explore": {
-      "n": 450,
-      "won": 237,
-      "lost": 213,
-      "win_pct": 52.7,
-      "profit_pct": 19.13,
-      "avg_win": 0.45,
-      "avg_loss": -0.41
+      "n": 480,
+      "won": 250,
+      "lost": 230,
+      "win_pct": 52.1,
+      "profit_pct": 15.8,
+      "avg_win": 0.43,
+      "avg_loss": -0.4
     },
     "holdout": {
-      "n": 210,
-      "won": 101,
-      "lost": 109,
-      "win_pct": 48.1,
-      "profit_pct": -5.53,
-      "avg_win": 0.33,
-      "avg_loss": -0.36
+      "n": 248,
+      "won": 115,
+      "lost": 133,
+      "win_pct": 46.4,
+      "profit_pct": -8.26,
+      "avg_win": 0.32,
+      "avg_loss": -0.34
     }
   },
   "or15/pad0.0/target2.0": {
     "explore": {
-      "n": 322,
-      "won": 147,
-      "lost": 175,
-      "win_pct": 45.7,
-      "profit_pct": -13.57,
-      "avg_win": 0.74,
-      "avg_loss": -0.7
+      "n": 445,
+      "won": 201,
+      "lost": 244,
+      "win_pct": 45.2,
+      "profit_pct": -20.61,
+      "avg_win": 0.7,
+      "avg_loss": -0.66
     },
     "holdout": {
-      "n": 128,
-      "won": 68,
-      "lost": 60,
-      "win_pct": 53.1,
-      "profit_pct": 5.4,
-      "avg_win": 0.71,
-      "avg_loss": -0.72
+      "n": 207,
+      "won": 96,
+      "lost": 111,
+      "win_pct": 46.4,
+      "profit_pct": -5.56,
+      "avg_win": 0.67,
+      "avg_loss": -0.63
     }
   },
   "or15/pad0.0/targetlevel": {
     "explore": {
-      "n": 322,
-      "won": 148,
-      "lost": 174,
-      "win_pct": 46.0,
-      "profit_pct": -11.84,
-      "avg_win": 0.74,
-      "avg_loss": -0.7
+      "n": 445,
+      "won": 202,
+      "lost": 243,
+      "win_pct": 45.4,
+      "profit_pct": -18.88,
+      "avg_win": 0.71,
+      "avg_loss": -0.67
     },
     "holdout": {
-      "n": 128,
-      "won": 68,
-      "lost": 60,
-      "win_pct": 53.1,
-      "profit_pct": 5.41,
-      "avg_win": 0.71,
-      "avg_loss": -0.72
+      "n": 207,
+      "won": 96,
+      "lost": 111,
+      "win_pct": 46.4,
+      "profit_pct": -6.52,
+      "avg_win": 0.66,
+      "avg_loss": -0.63
     }
   },
   "or15/pad2.0/target2.0": {
     "explore": {
-      "n": 322,
-      "won": 156,
-      "lost": 166,
-      "win_pct": 48.4,
-      "profit_pct": -0.48,
-      "avg_win": 0.36,
-      "avg_loss": -0.34
+      "n": 445,
+      "won": 213,
+      "lost": 232,
+      "win_pct": 47.9,
+      "profit_pct": -1.53,
+      "avg_win": 0.34,
+      "avg_loss": -0.32
     },
     "holdout": {
-      "n": 125,
-      "won": 69,
-      "lost": 56,
-      "win_pct": 55.2,
-      "profit_pct": 4.71,
-      "avg_win": 0.3,
-      "avg_loss": -0.29
+      "n": 207,
+      "won": 99,
+      "lost": 108,
+      "win_pct": 47.8,
+      "profit_pct": -1.71,
+      "avg_win": 0.27,
+      "avg_loss": -0.27
     }
   },
   "or15/pad2.0/targetlevel": {
     "explore": {
-      "n": 322,
-      "won": 156,
-      "lost": 166,
-      "win_pct": 48.4,
-      "profit_pct": -0.48,
-      "avg_win": 0.36,
-      "avg_loss": -0.34
+      "n": 445,
+      "won": 213,
+      "lost": 232,
+      "win_pct": 47.9,
+      "profit_pct": -1.53,
+      "avg_win": 0.34,
+      "avg_loss": -0.32
     },
     "holdout": {
-      "n": 125,
-      "won": 69,
-      "lost": 56,
-      "win_pct": 55.2,
-      "profit_pct": 4.71,
-      "avg_win": 0.3,
-      "avg_loss": -0.29
+      "n": 207,
+      "won": 99,
+      "lost": 108,
+      "win_pct": 47.8,
+      "profit_pct": -1.71,
+      "avg_win": 0.27,
+      "avg_loss": -0.27
     }
   },
   "or30/pad0.0/target2.0": {
     "explore": {
-      "n": 40,
-      "won": 17,
-      "lost": 23,
-      "win_pct": 42.5,
-      "profit_pct": -5.39,
-      "avg_win": 0.35,
-      "avg_loss": -0.49
+      "n": 375,
+      "won": 170,
+      "lost": 205,
+      "win_pct": 45.3,
+      "profit_pct": -18.0,
+      "avg_win": 0.54,
+      "avg_loss": -0.54
     },
     "holdout": {
-      "n": 22,
-      "won": 14,
-      "lost": 8,
-      "win_pct": 63.6,
-      "profit_pct": 4.22,
-      "avg_win": 0.59,
-      "avg_loss": -0.51
+      "n": 182,
+      "won": 78,
+      "lost": 104,
+      "win_pct": 42.9,
+      "profit_pct": -16.78,
+      "avg_win": 0.53,
+      "avg_loss": -0.56
     }
   },
   "or30/pad0.0/targetlevel": {
     "explore": {
-      "n": 40,
-      "won": 17,
-      "lost": 23,
-      "win_pct": 42.5,
-      "profit_pct": -5.39,
-      "avg_win": 0.35,
-      "avg_loss": -0.49
+      "n": 375,
+      "won": 171,
+      "lost": 204,
+      "win_pct": 45.6,
+      "profit_pct": -16.47,
+      "avg_win": 0.54,
+      "avg_loss": -0.54
     },
     "holdout": {
-      "n": 22,
-      "won": 14,
-      "lost": 8,
-      "win_pct": 63.6,
-      "profit_pct": 4.22,
-      "avg_win": 0.59,
-      "avg_loss": -0.51
+      "n": 182,
+      "won": 78,
+      "lost": 104,
+      "win_pct": 42.9,
+      "profit_pct": -17.0,
+      "avg_win": 0.52,
+      "avg_loss": -0.56
     }
   },
   "or30/pad2.0/target2.0": {
     "explore": {
-      "n": 39,
-      "won": 17,
-      "lost": 22,
-      "win_pct": 43.6,
-      "profit_pct": -2.52,
-      "avg_win": 0.21,
-      "avg_loss": -0.27
+      "n": 373,
+      "won": 178,
+      "lost": 195,
+      "win_pct": 47.7,
+      "profit_pct": -3.13,
+      "avg_win": 0.27,
+      "avg_loss": -0.26
     },
     "holdout": {
-      "n": 22,
-      "won": 15,
-      "lost": 7,
-      "win_pct": 68.2,
-      "profit_pct": 2.7,
-      "avg_win": 0.26,
-      "avg_loss": -0.17
+      "n": 182,
+      "won": 80,
+      "lost": 102,
+      "win_pct": 44.0,
+      "profit_pct": -6.15,
+      "avg_win": 0.23,
+      "avg_loss": -0.24
     }
   },
   "or30/pad2.0/targetlevel": {
     "explore": {
-      "n": 39,
-      "won": 17,
-      "lost": 22,
-      "win_pct": 43.6,
-      "profit_pct": -2.52,
-      "avg_win": 0.21,
-      "avg_loss": -0.27
+      "n": 373,
+      "won": 178,
+      "lost": 195,
+      "win_pct": 47.7,
+      "profit_pct": -3.13,
+      "avg_win": 0.27,
+      "avg_loss": -0.26
     },
     "holdout": {
-      "n": 22,
-      "won": 15,
-      "lost": 7,
-      "win_pct": 68.2,
-      "profit_pct": 2.7,
-      "avg_win": 0.26,
-      "avg_loss": -0.17
+      "n": 182,
+      "won": 80,
+      "lost": 102,
+      "win_pct": 44.0,
+      "profit_pct": -6.15,
+      "avg_win": 0.23,
+      "avg_loss": -0.24
     }
   },
   "or60/pad0.0/target2.0": {
     "explore": {
-      "n": 0,
-      "won": 0,
-      "lost": 0,
-      "win_pct": 0.0,
-      "profit_pct": 0,
-      "avg_win": 0.0,
-      "avg_loss": 0.0
+      "n": 286,
+      "won": 122,
+      "lost": 164,
+      "win_pct": 42.7,
+      "profit_pct": -19.99,
+      "avg_win": 0.42,
+      "avg_loss": -0.43
     },
     "holdout": {
-      "n": 0,
-      "won": 0,
-      "lost": 0,
-      "win_pct": 0.0,
-      "profit_pct": 0,
-      "avg_win": 0.0,
-      "avg_loss": 0.0
+      "n": 117,
+      "won": 49,
+      "lost": 68,
+      "win_pct": 41.9,
+      "profit_pct": -17.82,
+      "avg_win": 0.36,
+      "avg_loss": -0.52
     }
   },
   "or60/pad0.0/targetlevel": {
     "explore": {
-      "n": 0,
-      "won": 0,
-      "lost": 0,
-      "win_pct": 0.0,
-      "profit_pct": 0,
-      "avg_win": 0.0,
-      "avg_loss": 0.0
+      "n": 286,
+      "won": 123,
+      "lost": 163,
+      "win_pct": 43.0,
+      "profit_pct": -17.63,
+      "avg_win": 0.43,
+      "avg_loss": -0.43
     },
     "holdout": {
-      "n": 0,
-      "won": 0,
-      "lost": 0,
-      "win_pct": 0.0,
-      "profit_pct": 0,
-      "avg_win": 0.0,
-      "avg_loss": 0.0
+      "n": 117,
+      "won": 49,
+      "lost": 68,
+      "win_pct": 41.9,
+      "profit_pct": -18.79,
+      "avg_win": 0.34,
+      "avg_loss": -0.52
     }
   },
   "or60/pad2.0/target2.0": {
     "explore": {
-      "n": 0,
-      "won": 0,
-      "lost": 0,
-      "win_pct": 0.0,
-      "profit_pct": 0,
-      "avg_win": 0.0,
-      "avg_loss": 0.0
+      "n": 278,
+      "won": 121,
+      "lost": 157,
+      "win_pct": 43.5,
+      "profit_pct": -5.41,
+      "avg_win": 0.23,
+      "avg_loss": -0.21
     },
     "holdout": {
-      "n": 0,
-      "won": 0,
-      "lost": 0,
-      "win_pct": 0.0,
-      "profit_pct": 0,
-      "avg_win": 0.0,
-      "avg_loss": 0.0
+      "n": 117,
+      "won": 49,
+      "lost": 68,
+      "win_pct": 41.9,
+      "profit_pct": -9.24,
+      "avg_win": 0.17,
+      "avg_loss": -0.26
     }
   },
   "or60/pad2.0/targetlevel": {
     "explore": {
-      "n": 0,
-      "won": 0,
-      "lost": 0,
-      "win_pct": 0.0,
-      "profit_pct": 0,
-      "avg_win": 0.0,
-      "avg_loss": 0.0
+      "n": 278,
+      "won": 121,
+      "lost": 157,
+      "win_pct": 43.5,
+      "profit_pct": -5.41,
+      "avg_win": 0.23,
+      "avg_loss": -0.21
     },
     "holdout": {
-      "n": 0,
-      "won": 0,
-      "lost": 0,
-      "win_pct": 0.0,
-      "profit_pct": 0,
-      "avg_win": 0.0,
-      "avg_loss": 0.0
+      "n": 117,
+      "won": 49,
+      "lost": 68,
+      "win_pct": 41.9,
+      "profit_pct": -9.24,
+      "avg_win": 0.17,
+      "avg_loss": -0.26
     }
   }
 }
