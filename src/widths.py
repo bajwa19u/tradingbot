@@ -203,6 +203,27 @@ def sweep(data: dict[str, pd.DataFrame], p: dict) -> tuple[str, dict]:
     for pad, tr, _, h in rows:
         L.append(row(pad, tr, h))
 
+    # A level target that silently falls back to the multiple produces a row
+    # identical to the multiple's. That happened once and went unnoticed, so
+    # the report now states outright how often the level was really used.
+    lv_used = {}
+    for pad in PADS:
+        ts = [t for t in trades_for(data, explore, variant(p, pad, "level"))
+              if t.get("reason") != "open"]
+        named = sum(1 for t in ts if t.get("target_name") not in
+                    (None, f"{p['target_r']:g}x"))
+        lv_used[pad] = (named, len(ts))
+    L += ["", "### Did the level target actually get used?", "",
+          "| stop room | trades aiming at a real level | of |",
+          "|---|---|---|"]
+    for pad in PADS:
+        a, b = lv_used[pad]
+        L.append(f"| +{pad:.1f}% | {a} | {b} |")
+    if all(a == 0 for a, _ in lv_used.values()):
+        L.append("")
+        L.append("> **Never used.** Every level target fell back to the fixed "
+                 "multiple, so those rows measure nothing new.")
+
     L += ["", "### What the extra room actually buys, at the live target", "",
           "| stop room | losers rescued | losers made worse | net profit % |",
           "|---|---|---|---|"]
