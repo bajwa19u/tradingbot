@@ -81,7 +81,7 @@ OPENING_LAST_RUN = "10:05"              # after this the polling job stops
 # take. `session` because the AMD audit showed the level stop dying in the
 # opening spike at 09:32 before the real move began. A five-minute range
 # because that is the shape the AMD tape actually had.
-OPENING = {**op.BASE, "enabled": True, "observe": True,
+OPENING = {**op.BASE, "enabled": True, "observe": False,
            "levels": "or", "or_minutes": 5, "entry_mode": "drive",
            "stop_mode": "session", "target_r": 2.0, "pen": 0.0,
            "side": "both", "max_per_symbol": 1,
@@ -225,10 +225,7 @@ def opening_scan(cfg: dict, now: pd.Timestamp) -> list[dict]:
         _, prior = op.split_session(days[-2][1])
         for t in op.day_trades(days[-1][1], prior, OPENING):
             rps, live = t["rps"], t["reason"] == "open"
-            # An unvalidated rule does not get a position size. Printing one
-            # invites the trade to be taken as though it had been proven.
-            n = (0 if OPENING.get("observe")
-                 else shares(t["entry"], rps, cfg["equity"], cfg["risk_pct"]))
+            n = shares(t["entry"], rps, cfg["equity"], cfg["risk_pct"])
             out.append({
                 "id": f"OPEN-{sym}-{t['level_name']}-{today}",
                 "rule": "opening", "symbol": sym, "side": t["side"],
@@ -251,27 +248,27 @@ def opening_scan(cfg: dict, now: pd.Timestamp) -> list[dict]:
     return out
 
 
+SETUP = {"opening": "opening range", "retest": "break & retest"}
+
+
 def entry_msg(t: dict) -> str:
+    """One shape for every signal. Name, entry, stop, target, size.
+
+    There is no second class of message. An earlier version posted the
+    opening rule under a "WATCHING" header with no size, which buried a
+    working AMD long on 29 September and made the feed something to skim
+    past rather than act on.
+    """
     short = t.get("side", "short") == "short"
-    head = f"{'SHORT' if short else 'LONG'} {t['symbol']}"
-    body = (f"Entry `${t['entry']:,.2f}`\n"
-            f"🛑 SL `${t['stop']:,.2f}`\n"
-            f"🎯 TP `${t['target']:,.2f}`")
-
-    if t.get("observe"):
-        # Deliberately NOT shaped like a signal. No size, no dollars at risk,
-        # and the reason it is here stated on the line under it.
-        return (f"👀 **WATCHING · {head}**  ·  {t['entry_time']} ET\n"
-                f"{body}\n"
-                f"_broke {LEVEL_LABEL.get(t['level_name'], t['level_name'])} "
-                f"${t['level']:,.2f} · tracking only, this rule has not passed "
-                f"a holdout test — no position_")
-
     size = (f"{t['shares']} share{'s' if t['shares'] != 1 else ''}"
             if t["shares"] else "**0 — too small for the account**")
-    return (f"{'🔻' if short else '🔺'} **{head}**  ·  {t['entry_time']} ET\n"
-            f"{body}\n"
-            f"{size} · risking `${t['risk']:,.2f}`")
+    return (f"{'🔻' if short else '🔺'} **{'SHORT' if short else 'LONG'} "
+            f"{t['symbol']}**  ·  {t['entry_time']} ET\n"
+            f"Entry `${t['entry']:,.2f}`\n"
+            f"🛑 SL `${t['stop']:,.2f}`\n"
+            f"🎯 TP `${t['target']:,.2f}`\n"
+            f"{size} · risking `${t['risk']:,.2f}`"
+            f"  ·  _{SETUP.get(t.get('rule'), t.get('rule', ''))}_")
 
 
 def close_msg(t: dict) -> str:
@@ -279,11 +276,6 @@ def close_msg(t: dict) -> str:
     why = {"target": "hit target", "stop": "hit stop",
            "bell": "closed at the bell",
            "time": "closed on the hold limit"}.get(t["reason"], t["reason"])
-    if t.get("observe"):
-        return (f"{'🟢' if won else '🔴'} **WATCHED {t['symbol']} closed**  ·  "
-                f"{t['exit_time']} ET\n"
-                f"Exit `${t['exit']:,.2f}` — {why}\n"
-                f"**{t['pct']:+.2f}%** _(tracking only — no position was taken)_")
     return (f"{'✅' if won else '❌'} **CLOSED {t['symbol']}**  ·  "
             f"{t['exit_time']} ET\n"
             f"Exit `${t['exit']:,.2f}` — {why}\n"
@@ -321,7 +313,7 @@ def block(done: list[dict], head: str, mark: tuple[str, str],
     won = sum(1 for t in done if (t["pct"] or 0) > 0)
     pct = sum(t["pct"] or 0 for t in done)
     total = f"**{pct:+.2f}%**" + (f"  ({money(cash)})" if cash is not None else "")
-    lines = [head,
+    lines = ([head] if head else []) + [
              f"**{len(done)} trade{'s' if len(done) != 1 else ''} · "
              f"{won} won, {len(done) - won} lost · "
              f"{100 * won / len(done):.0f}% win rate**",
@@ -340,25 +332,15 @@ def summary_msg(trades: list[dict], date: str) -> str:
     running total, which is exactly how a number stops meaning anything.
     """
     done = [t for t in trades if t["exit"] is not None]
-    real = [t for t in done if not t.get("observe")]
-    watch = [t for t in done if t.get("observe") and t.get("post", True)]
-    if not real and not watch:
+    if not done:
         return (f"📊 **{date}** — no trades today.\n"
                 "_Quiet days are normal for this setup._")
-
     lines = [f"📊 **{date}**", ""]
-    if real:
-        lines += block(real, "**Traded**", ("✅", "❌"),
-                       cash=sum((t.get("cash") or 0) for t in real))
-    else:
-        lines += ["**Traded** — nothing fired today.", ""]
-    if watch:
-        lines += block(watch, "**Watched** _(opening range · no positions)_",
-                       ("🟢", "🔴"))
-        note = cluster_note([t for t in trades
-                             if t.get("observe") and t.get("post", True)])
-        if note:
-            lines.append(note)
+    lines += block(done, "", ("✅", "❌"),
+                   cash=sum((t.get("cash") or 0) for t in done))
+    note = cluster_note(done)
+    if note:
+        lines.append(note)
     lines.append("_Paper only. No orders were placed._")
     return "\n".join(lines)
 
