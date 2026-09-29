@@ -125,16 +125,16 @@
       }
     },
     "holdout": {
-      "n": 218,
-      "won": 90,
+      "n": 221,
+      "won": 93,
       "lost": 128,
-      "win_pct": 41.3,
-      "profit_pct": -18.68,
-      "avg_pct": -0.086,
+      "win_pct": 42.1,
+      "profit_pct": -16.66,
+      "avg_pct": -0.075,
       "ends": {
         "stop": 74,
         "target": 16,
-        "time": 128
+        "time": 131
       }
     }
   },
@@ -148,7 +148,7 @@
       "avg_pct": 0.015,
       "ends": {
         "stop": 168,
-        "time": 216,
+        "bell": 216,
         "target": 66
       }
     },
@@ -162,7 +162,7 @@
       "ends": {
         "stop": 87,
         "target": 18,
-        "time": 111
+        "bell": 111
       }
     }
   }
