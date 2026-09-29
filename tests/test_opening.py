@@ -462,3 +462,36 @@ def test_targets_see_every_level_even_when_entries_do_not():
     assert trades[0]["target_name"] != "2x", \
         "it must aim at a real level, not fall back to the multiple"
     assert trades[0]["target_name"] in ("pdl", "pdc", "pml", "orl")
+
+
+# --- the entry window, measured from the range -------------------------------
+def test_a_fixed_window_starves_a_long_range():
+    """The 10:00 close was not a judgement about long ranges, it was an
+    accident that made them untestable: a 30-minute range finished exactly
+    as the window shut."""
+    day = minutes("2026-09-29", "09:30", 60, 100.0, -0.1)
+    lv, ready = op.opening_range(day, 30)
+    fixed = op.opening_breaks(day, lv, 1.0, {**op.BASE, "or_minutes": 30,
+                                             "side": "short"},
+                              {k: ready for k in lv})
+    scaled = op.opening_breaks(day, lv, 1.0,
+                               {**op.BASE, "or_minutes": 30, "side": "short",
+                                "win_after_range_min": 30},
+                               {k: ready for k in lv})
+    assert len(scaled) >= len(fixed)
+
+
+def test_the_window_runs_from_the_end_of_the_range():
+    day = minutes("2026-09-29", "09:30", 120, 100.0, -0.05)
+    lv, ready = op.opening_range(day, 15)
+    brk = op.opening_breaks(day, lv, 1.0,
+                            {**op.BASE, "or_minutes": 15, "side": "short",
+                             "win_after_range_min": 30},
+                            {k: ready for k in lv})
+    assert brk, "a break should be findable"
+    # range ends 09:45, so the last tradeable bar is 10:15
+    assert str(day.index[brk[0][0]])[11:16] <= "10:15"
+
+
+def test_the_fixed_window_is_still_the_default():
+    assert op.BASE["win_after_range_min"] is None
