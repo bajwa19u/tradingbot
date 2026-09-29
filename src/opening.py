@@ -95,6 +95,7 @@ BASE = {
     "retest_depth": 0.5,     # how close to the level counts as a retest
     "side": "both",
     "risk_pct": 1.0,
+    "stop_pad_pct": 0.0,     # extra room beyond the stop, as % of entry
     "use_premarket": True,   # turned off automatically when the feed is thin
     "max_per_symbol": 1,     # one idea per symbol per day, not one per level
     "levels": "prior",       # prior | or | both
@@ -261,6 +262,12 @@ def simulate(rth: pd.DataFrame, i: int, j: int, side: str, level: float,
     else:
         stop = (level + p["stop_mult"] * scale if side == "short"
                 else level - p["stop_mult"] * scale)
+
+    # Optional extra room, measured in percent OF THE ENTRY PRICE, so "give
+    # it another 1%" means the same thing on a $40 stock and a $600 one.
+    pad = float(p.get("stop_pad_pct", 0.0)) / 100.0
+    if pad:
+        stop = stop + pad * entry if side == "short" else stop - pad * entry
 
     rps = abs(entry - stop)
     if rps <= 0 or rps / entry > 0.10:
