@@ -29,37 +29,31 @@ def drifting_day(minutes: int = 300, step: float = -0.02) -> pd.DataFrame:
     return pd.DataFrame(rows, index=pd.DatetimeIndex(idx))
 
 
-# --- the clock is put back ---------------------------------------------------
-def test_the_cap_is_restored_afterwards():
+# --- the cap travels in the config, not in a global --------------------------
+def test_the_cap_is_a_setting_and_nothing_is_mutated():
     before = op.MAX_HOLD_MIN
-    with holds.with_cap(30):
-        assert op.MAX_HOLD_MIN == 30
-    assert op.MAX_HOLD_MIN == before
-
-
-def test_the_cap_is_restored_even_when_the_block_raises():
-    """It mutates a module global. A leak here silently rewrites the costs of
-    every later run in the same process."""
-    before = op.MAX_HOLD_MIN
-    with pytest.raises(RuntimeError):
-        with holds.with_cap(30):
-            raise RuntimeError("boom")
-    assert op.MAX_HOLD_MIN == before
+    q = holds.capped(dict(op.BASE), 30)
+    assert q["max_hold_min"] == 30
+    assert op.MAX_HOLD_MIN == before, "no global may be touched"
 
 
 def test_zero_means_no_cap_not_instant_exit():
     """`0` reads like 'close immediately'. It must mean the opposite."""
-    with holds.with_cap(0):
-        assert op.MAX_HOLD_MIN >= 1000
+    assert holds.capped(dict(op.BASE), 0)["max_hold_min"] is None
+
+
+def test_the_live_default_is_no_cap():
+    """A trade is closed by its stop or its target. Nothing else."""
+    assert op.MAX_HOLD_MIN is None
 
 
 # --- the cap actually changes the exit ---------------------------------------
 def test_a_tighter_cap_closes_a_drifter_sooner():
     day = drifting_day()
-    with holds.with_cap(30):
-        short = op.simulate(day, 0, 0, "short", 101.0, 1.0, dict(op.BASE))
-    with holds.with_cap(120):
-        longer = op.simulate(day, 0, 0, "short", 101.0, 1.0, dict(op.BASE))
+    short = op.simulate(day, 0, 0, "short", 101.0, 1.0,
+                        holds.capped(dict(op.BASE), 30))
+    longer = op.simulate(day, 0, 0, "short", 101.0, 1.0,
+                         holds.capped(dict(op.BASE), 120))
     assert short["exit_time"] < longer["exit_time"]
     assert short["reason"] == longer["reason"] == "time"
 
@@ -68,19 +62,19 @@ def test_no_cap_lets_a_drifter_reach_the_bell():
     """Drift gentle enough that it never reaches the target — so the only
     thing left that can close it is the closing bell."""
     day = drifting_day(minutes=400, step=-0.002)
-    with holds.with_cap(0):
-        t = op.simulate(day, 0, 0, "short", 101.0, 1.0, dict(op.BASE))
-    assert t["reason"] == "time" and t["exit_time"] >= "15:55"
+    t = op.simulate(day, 0, 0, "short", 101.0, 1.0,
+                    holds.capped(dict(op.BASE), 0))
+    assert t["reason"] == "bell" and t["exit_time"] >= "15:55"
 
 
 def test_letting_a_winner_run_beats_capping_it():
     """A position drifting the right way should end up better with more
     time. If this ever inverts, the exit logic is wrong, not the market."""
     day = drifting_day(step=-0.02)          # falling, so a short gains
-    with holds.with_cap(30):
-        early = op.simulate(day, 0, 0, "short", 101.0, 1.0, dict(op.BASE))
-    with holds.with_cap(0):
-        late = op.simulate(day, 0, 0, "short", 101.0, 1.0, dict(op.BASE))
+    early = op.simulate(day, 0, 0, "short", 101.0, 1.0,
+                        holds.capped(dict(op.BASE), 30))
+    late = op.simulate(day, 0, 0, "short", 101.0, 1.0,
+                       holds.capped(dict(op.BASE), 0))
     assert late["pct"] > early["pct"]
 
 
