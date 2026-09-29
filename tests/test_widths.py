@@ -103,3 +103,11 @@ def test_unfinished_trades_are_excluded():
 def test_rows_never_mention_r_multiples():
     line = w.row(1.0, 2.0, w.tally([{"pct": 1.0, "reason": "stop"}]))
     assert "R" not in line
+
+
+def test_a_level_target_that_falls_back_is_detectable():
+    """Rows identical to the multiple's row are how a broken level target
+    hides. The report has to be able to say the level was never used."""
+    src = open("src/widths.py").read()
+    assert "Did the level target actually get used?" in src
+    assert "Never used." in src
