@@ -96,6 +96,8 @@ BASE = {
     "side": "both",
     "risk_pct": 1.0,
     "stop_pad_pct": 0.0,     # extra room beyond the stop, as % of entry
+    "target_mode": "r",      # r = a multiple of the risk | level = structure
+    "min_target_r": 1.0,     # a level nearer than this is not worth aiming at
     "use_premarket": True,   # turned off automatically when the feed is thin
     "max_per_symbol": 1,     # one idea per symbol per day, not one per level
     "levels": "prior",       # prior | or | both
@@ -243,8 +245,30 @@ def entry_index(rth: pd.DataFrame, i: int, side: str, level: float,
     return None
 
 
+def next_level(levels: dict[str, float], entry: float, side: str,
+               exclude: float | None = None) -> tuple[float, str] | None:
+    """The nearest price the market already cares about, in our direction.
+
+    For a short that is the highest known level BELOW the entry; for a long
+    the lowest ABOVE it. Yesterday's high, low and close and the opening
+    range are all prices other people are watching, which is a better reason
+    to take profit there than "twice whatever our stop happened to be".
+
+    The level we just broke is excluded - we are leaving it, not aiming at it.
+    """
+    cands = [(v, k) for k, v in levels.items()
+             if exclude is None or abs(v - exclude) > 1e-9]
+    ahead = [(v, k) for v, k in cands if (v < entry if side == "short"
+                                          else v > entry)]
+    if not ahead:
+        return None
+    v, k = max(ahead) if side == "short" else min(ahead)
+    return float(v), k
+
+
 def simulate(rth: pd.DataFrame, i: int, j: int, side: str, level: float,
-             scale: float, p: dict) -> dict | None:
+             scale: float, p: dict, levels: dict[str, float] | None = None
+             ) -> dict | None:
     """One trade, priced with slippage on both ends. None if unsizeable."""
     slip = SLIP_PCT / 100.0
     raw = float(rth["close"].iloc[j])
@@ -274,6 +298,17 @@ def simulate(rth: pd.DataFrame, i: int, j: int, side: str, level: float,
         return None
     target = (entry - p["target_r"] * rps if side == "short"
               else entry + p["target_r"] * rps)
+    target_name = f"{p['target_r']:g}x"
+
+    # Structure instead of arithmetic, when asked for and when there is any.
+    # A level closer than min_target_r is worse than the fixed target, so the
+    # fixed one is kept rather than aiming at something not worth reaching.
+    if p.get("target_mode") == "level" and levels:
+        nxt = next_level(levels, entry, side, exclude=level)
+        if nxt is not None:
+            lv, nm = nxt
+            if abs(entry - lv) / rps >= float(p.get("min_target_r", 1.0)):
+                target, target_name = lv, nm
 
     times = rth.index.tz_convert(EASTERN)
     cap = p.get("max_hold_min", MAX_HOLD_MIN)
@@ -308,7 +343,8 @@ def simulate(rth: pd.DataFrame, i: int, j: int, side: str, level: float,
     gain = (entry - exit_px) if side == "short" else (exit_px - entry)
     r = gain / rps
     return {"side": side, "entry": round(entry, 4), "stop": round(stop, 4),
-            "target": round(target, 4), "exit": round(exit_px, 4),
+            "target": round(target, 4), "target_name": target_name,
+            "exit": round(exit_px, 4),
             "reason": why, "r": round(float(r), 4),
             "pct": round(float(r) * p["risk_pct"], 4),
             "entry_time": str(times[j])[11:16],
@@ -344,7 +380,7 @@ def day_trades(day_ext: pd.DataFrame, prior_rth: pd.DataFrame,
         j = entry_index(rth, i, side, level, scale, p)
         if j is None:
             continue
-        t = simulate(rth, i, j, side, level, scale, p)
+        t = simulate(rth, i, j, side, level, scale, p, levels=lv)
         if t is None:
             continue
         t.update(level=round(level, 4), level_name=name, scale=round(scale, 4),
