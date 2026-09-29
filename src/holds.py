@@ -196,7 +196,19 @@ def sweep(data: dict[str, pd.DataFrame], p: dict) -> tuple[str, dict]:
     live = next((r for r in rows if r[0] == 120), None)
     best_e = max(rows, key=lambda r: r[1]["profit_pct"])
     L += ["", "### Verdict", ""]
-    if live and best_e[0] == 120:
+
+    # The holdout is the split that decides. If EVERY cap loses there, then
+    # "best" means least-bad and ranking them is picking a favourite among
+    # losses. Saying "the holdout agrees" about -18.7% versus -20.8% is the
+    # same overclaim that had to be pulled out of the stocks-in-play report.
+    if all(r[2]["profit_pct"] <= 0 for r in rows):
+        L.append(f"- **Every hold cap loses money on the holdout**, from "
+                 f"{min(r[2]['profit_pct'] for r in rows):+.1f}% to "
+                 f"{max(r[2]['profit_pct'] for r in rows):+.1f}%. The clock is "
+                 f"not what is wrong with this rule — it only decides how the "
+                 f"losses are distributed. Ranking these is choosing a "
+                 f"favourite among losses.")
+    elif live and best_e[0] == 120:
         L.append("- The two-hour cap is the best of the caps tested on the "
                  "explore split. It was a guess, and it happens to hold up.")
     elif live:
