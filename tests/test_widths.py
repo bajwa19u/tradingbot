@@ -101,7 +101,7 @@ def test_unfinished_trades_are_excluded():
 
 
 def test_rows_never_mention_r_multiples():
-    line = w.row(1.0, 2.0, w.tally([{"pct": 1.0, "reason": "stop"}]))
+    line = w.row(5, 1.0, 2.0, w.tally([{"pct": 1.0, "reason": "stop"}]))
     assert "R" not in line
 
 
@@ -111,3 +111,39 @@ def test_a_level_target_that_falls_back_is_detectable():
     src = open("src/widths.py").read()
     assert "Did the level target actually get used?" in src
     assert "Never used." in src
+
+
+# --- opening-range length as a swept dimension -------------------------------
+def test_the_range_length_travels_in_the_config():
+    q = w.variant(dict(op.BASE), 1.0, 2.0, 30)
+    assert q["or_minutes"] == 30
+
+
+def test_omitting_the_range_leaves_it_alone():
+    p = {**op.BASE, "or_minutes": 5}
+    assert w.variant(p, 1.0, 2.0)["or_minutes"] == 5
+
+
+def test_the_default_range_list_is_the_live_one():
+    assert w.ORS == [5], "the sweep must default to what actually trades"
+
+
+def test_a_longer_range_produces_a_wider_band():
+    """A 30-minute range cannot be narrower than the 5-minute range inside
+    it. If it ever is, the range is being built from the wrong bars."""
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    import pandas as pd
+    E = ZoneInfo("America/New_York")
+    idx, rows, px = [], [], 100.0
+    for k in range(40):
+        hh, mm = 9 + (30 + k) // 60, (30 + k) % 60
+        idx.append(datetime(2026, 9, 29, hh, mm, tzinfo=E))
+        px += 0.1
+        rows.append({"open": px, "high": px + 0.2, "low": px - 0.2,
+                     "close": px, "volume": 1000})
+    day = pd.DataFrame(rows, index=pd.DatetimeIndex(idx))
+    five, _ = op.opening_range(day, 5)
+    thirty, _ = op.opening_range(day, 30)
+    assert thirty["orh"] - thirty["orl"] >= five["orh"] - five["orl"]
+    assert thirty["orh"] >= five["orh"] and thirty["orl"] <= five["orl"]
