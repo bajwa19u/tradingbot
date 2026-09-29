@@ -220,9 +220,15 @@ def test_the_grid_follows_the_stop_list():
 
 
 # --- the verdict must not overclaim ------------------------------------------
-def _fake(monkeypatch, explore_pct, holdout_pct):
-    """Drive research() with controlled numbers, no data."""
+def _fake(monkeypatch, explore_pct, holdout_pct, tmp_path):
+    """Drive research() with controlled numbers, no data.
+
+    REPORTS is redirected because research() writes inplay.json as a side
+    effect. Without this the test overwrites the real committed report with
+    its own fake numbers - which it did, once.
+    """
     import pandas as pd
+    monkeypatch.setattr(ip, "REPORTS", tmp_path)
     calls = {"n": 0}
 
     def fake_run(data, dailies, p, dates):
@@ -242,14 +248,28 @@ def _fake(monkeypatch, explore_pct, holdout_pct):
     return ip.research({}, dailies, "test")
 
 
-def test_a_positive_holdout_is_not_a_survival_when_explore_lost(monkeypatch):
+def test_a_positive_holdout_is_not_a_survival_when_explore_lost(monkeypatch,
+                                                               tmp_path):
     """The 0.15%-slippage run printed 'Holds up on dates it never saw' after
     every single configuration lost money on the explore split."""
-    out = _fake(monkeypatch, explore_pct=-1.3, holdout_pct=+5.9)
+    out = _fake(monkeypatch, explore_pct=-1.3, holdout_pct=+5.9,
+                tmp_path=tmp_path)
     assert "Every configuration lost money on the explore split" in out
     assert "Holds up on dates it never saw" not in out
 
 
-def test_a_real_survival_is_still_reported(monkeypatch):
-    out = _fake(monkeypatch, explore_pct=+40.0, holdout_pct=+20.0)
+def test_a_real_survival_is_still_reported(monkeypatch, tmp_path):
+    out = _fake(monkeypatch, explore_pct=+40.0, holdout_pct=+20.0,
+                tmp_path=tmp_path)
     assert "Holds up on dates it never saw" in out
+
+
+def test_the_suite_never_writes_into_the_repos_reports():
+    """A guard, because the failure mode is silent: a test writes plausible
+    numbers over a real result and nothing complains until someone reads the
+    report and believes it."""
+    import subprocess
+    out = subprocess.run(["git", "status", "--porcelain", "reports"],
+                         capture_output=True, text=True,
+                         cwd=str(ip.REPO_ROOT)).stdout.strip()
+    assert out == "", f"the test suite dirtied the repo: {out}"
