@@ -24,6 +24,18 @@ on:
         description: "One day to break down in detail (YYYY-MM-DD)"
         required: false
         default: ""
+      ors:
+        description: "Opening-range lengths in minutes, e.g. 5,15,30"
+        required: false
+        default: ""
+      pads:
+        description: "Stop room list in percent, e.g. 0,1,2"
+        required: false
+        default: ""
+      targets:
+        description: "Targets, e.g. 2,3,level"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -52,12 +64,18 @@ jobs:
           IN_DAYS: ${{ inputs.days }}
           IN_UNI: ${{ inputs.universe }}
           IN_DATE: ${{ inputs.date }}
+          IN_ORS: ${{ inputs.ors }}
+          IN_PADS: ${{ inputs.pads }}
+          IN_TARGETS: ${{ inputs.targets }}
         run: |
           set -uo pipefail
           mkdir -p reports
           rm -f reports/widths.md reports/widths.json
           ARGS=(--days "${IN_DAYS:-60}" --universe "${IN_UNI:-core}")
           [ -n "${IN_DATE:-}" ] && ARGS+=(--date "${IN_DATE}") || true
+          [ -n "${IN_ORS:-}" ] && ARGS+=(--ors "${IN_ORS}") || true
+          [ -n "${IN_PADS:-}" ] && ARGS+=(--pads "${IN_PADS}") || true
+          [ -n "${IN_TARGETS:-}" ] && ARGS+=(--targets "${IN_TARGETS}") || true
           set +e
           python -m src.widths "${ARGS[@]}" 2>&1 | tee reports/widths_run.log
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
