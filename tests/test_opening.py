@@ -392,3 +392,51 @@ def test_a_wider_stop_means_a_bigger_loss_when_it_still_fails():
 
 def test_no_padding_by_default():
     assert op.BASE["stop_pad_pct"] == 0.0
+
+
+# --- targets at structure rather than at a multiple ---------------------------
+LV = {"pdh": 110.0, "pdc": 104.0, "orh": 102.0, "orl": 98.0,
+      "pdl": 92.0, "pml": 88.0}
+
+
+def test_a_short_aims_at_the_nearest_level_below():
+    assert op.next_level(LV, entry=100.0, side="short") == (98.0, "orl")
+
+
+def test_a_long_aims_at_the_nearest_level_above():
+    assert op.next_level(LV, entry=100.0, side="long") == (102.0, "orh")
+
+
+def test_the_level_we_just_broke_is_not_the_target():
+    """We are leaving that level, not aiming at it."""
+    assert op.next_level(LV, 100.0, "short", exclude=98.0) == (92.0, "pdl")
+
+
+def test_no_level_ahead_means_no_level_target():
+    assert op.next_level({"pdh": 110.0}, 100.0, "short") is None
+
+
+def test_a_level_target_replaces_the_multiple():
+    day = frame("2026-09-25", [("09:30", 99.0, 99.0, 99.0, 99.0, 1000),
+                               ("09:31", 99.0, 99.2, 98.9, 99.0, 1000)])
+    fixed = op.simulate(day, 0, 0, "short", 100.0, 1.0, dict(op.BASE))
+    lvl = op.simulate(day, 0, 0, "short", 100.0, 1.0,
+                      {**op.BASE, "target_mode": "level", "min_target_r": 1.0},
+                      levels={"pdl": 92.0})
+    assert fixed["target_name"] == "2x"
+    assert lvl["target_name"] == "pdl" and lvl["target"] == pytest.approx(92.0)
+
+
+def test_a_level_too_close_to_be_worth_it_is_ignored():
+    """A target inside the noise is worse than the fixed one, so the fixed
+    one stays rather than aiming at something not worth reaching."""
+    day = frame("2026-09-25", [("09:30", 99.0, 99.0, 99.0, 99.0, 1000),
+                               ("09:31", 99.0, 99.2, 98.9, 99.0, 1000)])
+    t = op.simulate(day, 0, 0, "short", 100.0, 1.0,
+                    {**op.BASE, "target_mode": "level", "min_target_r": 1.0},
+                    levels={"close": 98.9})
+    assert t["target_name"] == "2x", "a level half a step away is not a target"
+
+
+def test_level_targets_are_off_by_default():
+    assert op.BASE["target_mode"] == "r"
