@@ -1,5 +1,3 @@
-2026-09-29 13:59:16,770 INFO Fetching 1-minute extended-hours bars from 2026-09-15 for 1 symbols
-2026-09-29 13:59:17,086 INFO Usable: 1 symbols, 3797 bars total
 # AMD · 2026-09-29
 
 - 09:30 open: **615.52**
@@ -31,4 +29,3 @@ First ten minutes, one-minute bars:
 Breaks in the window:
   - 09:36 short orl @ 609.01 → entry 608.33 at 09:36, stop 611.07, target 602.83 → **-1.11%** (stop at 09:44)
   - 09:51 long orh @ 617.06 → entry 618.60 at 09:51, stop 615.00, target 625.81 → **+1.26%** (open at 09:58)
-
