@@ -1,7 +1,7 @@
 📊 **2026-09-29**
 
-**15 trades · 2 won, 13 lost · 13% win rate**
-**-9.28%**  (-$167.58)
+**18 trades · 5 won, 13 lost · 28% win rate**
+**-3.28%**  (-$48.40)
 ❌ AVGO 09:35→10:30  -1.03%
 ❌ AMD 09:36→09:51  -1.03%
 ❌ AMZN 09:40→12:50  -1.09%
@@ -17,6 +17,9 @@
 ❌ AVGO 13:40→14:35  -1.00%
 ❌ AVGO 13:45→14:25  -1.00%
 ❌ AMD 13:50→14:05  -1.00%
+✅ AAPL 15:00→15:40  +2.00%
+✅ AAPL 15:05→15:40  +2.00%
+✅ AMD 15:05→15:35  +2.00%
 
 
 ⚠️ _6 shorts within 15 min — that is one market move read several times, not several independent trades. Count it as roughly one result._
@@ -210,15 +213,24 @@ Entry `$330.77`
 🛑 SL `$331.51`
 🎯 TP `$329.30`
 27 shares · risking `$19.87`  ·  __
+✅ **CLOSED AAPL**  ·  15:40 ET
+Exit `$329.30` — hit target
+**+2.00%**  (+$39.74)
 
 🔻 **SHORT AAPL**  ·  15:05 ET
 Entry `$330.64`
 🛑 SL `$331.28`
 🎯 TP `$329.37`
 31 shares · risking `$19.81`  ·  __
+✅ **CLOSED AAPL**  ·  15:40 ET
+Exit `$329.37` — hit target
+**+2.00%**  (+$39.62)
 
 🔻 **SHORT AMD**  ·  15:05 ET
 Entry `$609.59`
 🛑 SL `$610.70`
 🎯 TP `$607.38`
 18 shares · risking `$19.91`  ·  __
+✅ **CLOSED AMD**  ·  15:35 ET
+Exit `$607.38` — hit target
+**+2.00%**  (+$39.82)
