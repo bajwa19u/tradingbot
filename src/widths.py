@@ -49,6 +49,12 @@ log = logging.getLogger("widths")
 
 PADS = [0.0, 0.5, 1.0, 2.0]             # extra stop room, % of entry price
 TARGETS = [1.0, 1.5, 2.0, 3.0, "level"]   # multiple of risk, or structure
+ORS = [5]                               # opening-range length, minutes
+
+# A five-minute range is a scalper's structure. These trades now run for
+# hours - about half reach the closing bell - so the range they are measured
+# against arguably ought to be proportionate to the hold, not to the entry.
+# That is an argument, not a finding, which is why it gets swept.
 
 
 def cfg() -> dict:
@@ -56,13 +62,19 @@ def cfg() -> dict:
             if k not in ("enabled", "observe", "post_sides")}
 
 
-def variant(p: dict, pad: float, target) -> dict:
+def variant(p: dict, pad: float, target, or_min: int | None = None) -> dict:
     """`target` is a reward multiple, or "level" for the next structural
     price in our direction — yesterday's high/low/close or the other side of
     the opening range."""
+    q = dict(p)
+    if or_min is not None:
+        q["or_minutes"] = int(or_min)
+    q["stop_pad_pct"] = pad
     if target == "level":
-        return {**p, "stop_pad_pct": pad, "target_mode": "level"}
-    return {**p, "stop_pad_pct": pad, "target_mode": "r", "target_r": target}
+        q["target_mode"] = "level"
+    else:
+        q["target_mode"], q["target_r"] = "r", target
+    return q
 
 
 def trades_for(data: dict[str, pd.DataFrame], dates: set | None,
@@ -123,13 +135,14 @@ def rescue_count(base: list[dict], wider: list[dict]) -> tuple[int, int, int]:
     return rescued, worse, same
 
 
-HEAD = ("| stop room | target | trades | win % | won | lost | avg win | "
-        "avg loss | profit % |\n|---|---|---|---|---|---|---|---|---|")
+HEAD = ("| range | stop room | target | trades | win % | won | lost | "
+        "avg win | avg loss | profit % |"
+        "\n|---|---|---|---|---|---|---|---|---|---|")
 
 
-def row(pad: float, tr, t: dict) -> str:
+def row(orm: int, pad: float, tr, t: dict) -> str:
     lab = "next level" if tr == "level" else f"{tr:g}x"
-    return (f"| +{pad:.1f}% | {lab} | {t['n']} | {t['win_pct']:.1f}% | "
+    return (f"| {orm}m | +{pad:.1f}% | {lab} | {t['n']} | {t['win_pct']:.1f}% | "
             f"{t['won']} | {t['lost']} | {t['avg_win']:+.2f}% | "
             f"{t['avg_loss']:+.2f}% | {t['profit_pct']:+.1f}% |")
 
@@ -177,38 +190,40 @@ def sweep(data: dict[str, pd.DataFrame], p: dict) -> tuple[str, dict]:
     cut = int(len(dates) * 2 / 3)
     explore, holdout = set(dates[:cut]), set(dates[cut:])
 
-    base_e = trades_for(data, explore, variant(p, 0.0, p["target_r"]))
+    base_e = trades_for(data, explore, variant(p, 0.0, p["target_r"], ORS[0]))
     # which target each trade actually used, so a level target can be seen
     # to be doing something rather than silently falling back
     rows, js = [], {}
-    for pad, tr in product(PADS, TARGETS):
-        q = variant(p, pad, tr)
+    for orm, pad, tr in product(ORS, PADS, TARGETS):
+        q = variant(p, pad, tr, orm)
         e = tally(trades_for(data, explore, q))
         h = tally(trades_for(data, holdout, q))
-        rows.append((pad, tr, e, h))
-        js[f"pad{pad}/target{tr}"] = {
+        rows.append((orm, pad, tr, e, h))
+        js[f"or{orm}/pad{pad}/target{tr}"] = {
             "explore": {k: v for k, v in e.items() if k != "trades"},
             "holdout": {k: v for k, v in h.items() if k != "trades"}}
-        log.info("pad %+.1f%% target %-6s explore %+.1f%%  holdout %+.1f%%",
-                 pad, tr, e["profit_pct"], h["profit_pct"])
+        log.info("or %2dm pad %+.1f%% target %-6s explore %+.1f%%  "
+                 "holdout %+.1f%%", orm, pad, tr,
+                 e["profit_pct"], h["profit_pct"])
 
     L = [f"## Every stop width and target, {len(dates)} days "
          f"({dates[0]} to {dates[-1]})", "",
          f"Explore = first {cut} days, holdout = last {len(dates) - cut}. "
          "Stop room is extra distance beyond the rule's own stop, as a "
          "percent of the entry price.", "", "### Explore", "", HEAD]
-    for pad, tr, e, _ in rows:
-        L.append(row(pad, tr, e))
+    for orm, pad, tr, e, _ in rows:
+        L.append(row(orm, pad, tr, e))
     L += ["", "### Holdout (never used to choose anything)", "", HEAD]
-    for pad, tr, _, h in rows:
-        L.append(row(pad, tr, h))
+    for orm, pad, tr, _, h in rows:
+        L.append(row(orm, pad, tr, h))
 
     # A level target that silently falls back to the multiple produces a row
     # identical to the multiple's. That happened once and went unnoticed, so
     # the report now states outright how often the level was really used.
     lv_used = {}
     for pad in PADS:
-        ts = [t for t in trades_for(data, explore, variant(p, pad, "level"))
+        ts = [t for t in trades_for(data, explore,
+                                    variant(p, pad, "level", ORS[0]))
               if t.get("reason") != "open"]
         named = sum(1 for t in ts if t.get("target_name") not in
                     (None, f"{p['target_r']:g}x"))
@@ -228,27 +243,28 @@ def sweep(data: dict[str, pd.DataFrame], p: dict) -> tuple[str, dict]:
           "| stop room | losers rescued | losers made worse | net profit % |",
           "|---|---|---|---|"]
     for pad in PADS[1:]:
-        wider = trades_for(data, explore, variant(p, pad, p["target_r"]))
+        wider = trades_for(data, explore, variant(p, pad, p["target_r"], ORS[0]))
         r, w, _ = rescue_count(base_e, wider)
         net = tally(wider)["profit_pct"] - tally(base_e)["profit_pct"]
         L.append(f"| +{pad:.1f}% | {r} | {w} | {net:+.1f}% |")
 
     L += ["", "### Verdict", ""]
-    if all(h["profit_pct"] <= 0 for _, _, _, h in rows):
-        best_h = max(rows, key=lambda r: r[3]["profit_pct"])
-        L.append(f"- **Every stop width and every target loses money on the "
-                 f"holdout**, the best being +{best_h[0]:.1f}% room at "
-                 f"{best_h[1]} on {best_h[3]['profit_pct']:+.1f}%. Widening "
+    if all(h["profit_pct"] <= 0 for *_, h in rows):
+        best_h = max(rows, key=lambda r: r[4]["profit_pct"])
+        L.append(f"- **Every combination loses money on the "
+                 f"holdout**, the best being a {best_h[0]}m range with "
+                 f"+{best_h[1]:.1f}% room at "
+                 f"{best_h[2]} on {best_h[4]['profit_pct']:+.1f}%. Widening "
                  f"the stop rescues trades and costs more on the ones it does "
                  f"not rescue, and the two cancel. This is not the dial that "
                  f"is wrong.")
     else:
-        best_e = max(rows, key=lambda r: r[2]["profit_pct"])
-        agrees = best_e[3]["profit_pct"] > 0
-        L.append(f"- Best on explore: +{best_e[0]:.1f}% room at "
-                 f"{best_e[1]}, {best_e[2]['profit_pct']:+.1f}%.")
+        best_e = max(rows, key=lambda r: r[3]["profit_pct"])
+        agrees = best_e[4]["profit_pct"] > 0
+        L.append(f"- Best on explore: {best_e[0]}m range, +{best_e[1]:.1f}% "
+                 f"room, {best_e[2]}, {best_e[3]['profit_pct']:+.1f}%.")
         L.append(f"- On the holdout that setting makes "
-                 f"{best_e[3]['profit_pct']:+.1f}%"
+                 f"{best_e[4]['profit_pct']:+.1f}%"
                  + (", which is the only reason it is worth anything."
                     if agrees else
                     ", so it is a preference of the explore dates. Ignore it."))
@@ -260,6 +276,10 @@ def main(argv=None) -> int:
     ap.add_argument("--days", type=int, default=60)
     ap.add_argument("--universe", default="core")
     ap.add_argument("--date", default="", help="one day to break down")
+    ap.add_argument("--ors", default="", help="opening-range lengths, e.g. 5,15,30")
+    ap.add_argument("--pads", default="", help="stop room list, e.g. 0,1,2")
+    ap.add_argument("--targets", default="",
+                    help="targets, e.g. 2,3,level")
     args = ap.parse_args(argv)
 
     try:
@@ -272,8 +292,17 @@ def main(argv=None) -> int:
         log.error("No usable data.")
         return 1
 
+    if args.ors:
+        ORS[:] = [int(x) for x in args.ors.split(",") if x.strip()]
+    if args.pads:
+        PADS[:] = [float(x) for x in args.pads.split(",") if x.strip()]
+    if args.targets:
+        TARGETS[:] = [x.strip() if x.strip() == "level" else float(x)
+                      for x in args.targets.split(",") if x.strip()]
+    log.info("ranges %s · stop room %s · targets %s", ORS, PADS, TARGETS)
+
     p = cfg()
-    parts = ["# Stop width and target", ""]
+    parts = ["# Opening range, stop width and target", ""]
     if args.date:
         parts.append(day_detail(data, args.date, p))
     body, js = sweep(data, p)
