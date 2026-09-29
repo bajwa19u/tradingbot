@@ -14,7 +14,9 @@
     "OPEN-META-orl-2026-09-29"
   ],
   "exits": [
-    "OPEN-AMD-orl-2026-09-29"
+    "OPEN-AMD-orl-2026-09-29",
+    "OPEN-MSFT-orl-2026-09-29",
+    "OPEN-MU-orl-2026-09-29"
   ],
   "summary": false
 }

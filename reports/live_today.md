@@ -3,10 +3,14 @@
 **Traded** — nothing fired today.
 
 **Watched** _(opening range · no positions)_
-**1 trade · 0 won, 1 lost · 0% win rate**
-**-1.03%**
+**3 trades · 0 won, 3 lost · 0% win rate**
+**-3.11%**
 🔴 AMD 09:36→09:51  -1.03%
+🔴 MSFT 09:41→10:26  -1.05%
+🔴 MU 09:41→10:19  -1.03%
 
+
+⚠️ _11 shorts within 15 min — that is one market move read several times, not several independent trades. Count it as roughly one result._
 _Paper only. No orders were placed._
 
 👀 **WATCHING · SHORT AVGO**  ·  09:35 ET
@@ -53,12 +57,18 @@ Entry `$504.40`
 🛑 SL `$509.22`
 🎯 TP `$494.75`
 _broke the opening-range low $505.46 · tracking only, this rule has not passed a holdout test — no position_
+🔴 **WATCHED MSFT closed**  ·  10:26 ET
+Exit `$509.48` — hit stop
+**-1.05%** _(tracking only — no position was taken)_
 
 👀 **WATCHING · SHORT MU**  ·  09:41 ET
 Entry `$1,059.96`
 🛑 SL `$1,079.07`
 🎯 TP `$1,021.75`
 _broke the opening-range low $1,060.77 · tracking only, this rule has not passed a holdout test — no position_
+🔴 **WATCHED MU closed**  ·  10:19 ET
+Exit `$1,079.61` — hit stop
+**-1.03%** _(tracking only — no position was taken)_
 
 👀 **WATCHING · SHORT PLTR**  ·  09:41 ET
 Entry `$186.20`
