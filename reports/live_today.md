@@ -3,8 +3,9 @@
 **Traded** — nothing fired today.
 
 **Watched** _(opening range · no positions)_
-**3 trades · 0 won, 3 lost · 0% win rate**
-**-3.11%**
+**4 trades · 0 won, 4 lost · 0% win rate**
+**-4.14%**
+🔴 AVGO 09:35→10:30  -1.03%
 🔴 AMD 09:36→09:51  -1.03%
 🔴 MSFT 09:41→10:26  -1.05%
 🔴 MU 09:41→10:19  -1.03%
@@ -18,6 +19,9 @@ Entry `$355.87`
 🛑 SL `$361.25`
 🎯 TP `$345.12`
 _broke the opening-range low $356.10 · tracking only, this rule has not passed a holdout test — no position_
+🔴 **WATCHED AVGO closed**  ·  10:30 ET
+Exit `$361.43` — hit stop
+**-1.03%** _(tracking only — no position was taken)_
 
 👀 **WATCHING · SHORT AMD**  ·  09:36 ET
 Entry `$608.33`

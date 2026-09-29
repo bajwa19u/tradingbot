@@ -16,7 +16,8 @@
   "exits": [
     "OPEN-AMD-orl-2026-09-29",
     "OPEN-MSFT-orl-2026-09-29",
-    "OPEN-MU-orl-2026-09-29"
+    "OPEN-MU-orl-2026-09-29",
+    "OPEN-AVGO-orl-2026-09-29"
   ],
   "summary": false
 }
