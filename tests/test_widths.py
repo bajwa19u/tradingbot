@@ -147,3 +147,10 @@ def test_a_longer_range_produces_a_wider_band():
     thirty, _ = op.opening_range(day, 30)
     assert thirty["orh"] - thirty["orl"] >= five["orh"] - five["orl"]
     assert thirty["orh"] >= five["orh"] and thirty["orl"] <= five["orl"]
+
+
+def test_every_range_length_gets_the_same_window():
+    """A longer range with a fixed 10:00 close is starved, not tested."""
+    q5 = w.variant(dict(op.BASE), 0.0, 2.0, 5)
+    q30 = w.variant(dict(op.BASE), 0.0, 2.0, 30)
+    assert q5["win_after_range_min"] == q30["win_after_range_min"] == w.WIN_AFTER
