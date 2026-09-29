@@ -85,12 +85,29 @@ OPENING = {**op.BASE, "enabled": True, "observe": True,
            "levels": "or", "or_minutes": 5, "entry_mode": "drive",
            "stop_mode": "session", "target_r": 2.0, "pen": 0.0,
            "side": "both", "max_per_symbol": 1,
-           # Both sides are recorded; only shorts are posted. Longs off the
-           # opening range lost 32.0% across both splits while shorts made
-           # 5.7%, and long/short asymmetry has now turned up in five
-           # separate studies here. That is not enough to trade on and it is
-           # more than enough to keep a Discord feed readable.
-           "post_sides": ("short",)}
+           # BOTH SIDES ARE POSTED. This started as shorts-only, on the
+           # grounds that longs off the opening range lost 32.0% while shorts
+           # made 5.7%. On 29 September that filter hid a working trade: AMD
+           # broke its opening-range high at 09:51 and ran, and the feed never
+           # showed it because it was a long.
+           #
+           # The asymmetry is also not stable. It favoured shorts in the
+           # retest studies, favoured LONGS heavily in the stocks-in-play run
+           # at a tight stop (+118% against -19%), and was roughly even at a
+           # wide one. An argument that flips sign between studies is not an
+           # argument for throwing away half the forward record of a rule
+           # whose entire job right now is to gather one.
+           "post_sides": ("short", "long")}
+
+# How many entries inside this many minutes counts as one market move rather
+# than several independent ideas. On 29 September ALL TWELVE core names broke
+# their opening-range low between 09:35 and 09:45 and every one went short.
+# That is not twelve signals; it is the whole market dipping at the open,
+# read twelve times. At 1% risk each it would have been 11% of the account on
+# a single directional bet, and in the forward record it will look like
+# twelve data points when it is worth about one.
+CLUSTER_MINUTES = 15
+CLUSTER_WARN = 4
 
 
 def simulate_day(day: pd.DataFrame, sym: str, p: dict, cfg: dict) -> list[dict]:
@@ -273,6 +290,32 @@ def close_msg(t: dict) -> str:
             f"**{t['pct']:+.2f}%**  ({money(t.get('cash') or 0)})")
 
 
+def cluster_note(trades: list[dict]) -> str:
+    """Warn when most of the day's entries are really one market move.
+
+    Counts entries by side inside a rolling window. Twelve shorts in ten
+    minutes is the open selling off, not twelve findings, and a win rate
+    computed across them is one coin flip reported as twelve.
+    """
+    out = []
+    for side in ("short", "long"):
+        times = sorted(int(t["entry_time"][:2]) * 60 + int(t["entry_time"][3:5])
+                       for t in trades if t.get("side") == side
+                       and t.get("entry_time"))
+        best, n = 0, len(times)
+        for i, a in enumerate(times):
+            k = sum(1 for b in times[i:] if b - a <= CLUSTER_MINUTES)
+            best = max(best, k)
+        if best >= CLUSTER_WARN:
+            out.append(f"{best} {side}s within {CLUSTER_MINUTES} min"
+                       + (f" (of {n})" if n != best else ""))
+    if not out:
+        return ""
+    return ("\n⚠️ _" + "; ".join(out) +
+            " — that is one market move read several times, not several "
+            "independent trades. Count it as roughly one result._")
+
+
 def block(done: list[dict], head: str, mark: tuple[str, str],
           cash: float | None = None) -> list[str]:
     won = sum(1 for t in done if (t["pct"] or 0) > 0)
@@ -312,6 +355,10 @@ def summary_msg(trades: list[dict], date: str) -> str:
     if watch:
         lines += block(watch, "**Watched** _(opening range · no positions)_",
                        ("🟢", "🔴"))
+        note = cluster_note([t for t in trades
+                             if t.get("observe") and t.get("post", True)])
+        if note:
+            lines.append(note)
     lines.append("_Paper only. No orders were placed._")
     return "\n".join(lines)
 
