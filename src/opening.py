@@ -363,13 +363,24 @@ def day_trades(day_ext: pd.DataFrame, prior_rth: pd.DataFrame,
     if scale <= 0 or scale / ref * 100 < MIN_SCALE_PCT:
         return []
     which = p.get("levels", "prior")
+    prior_lv = session_levels(prior_rth, pre, p.get("use_premarket", True))
+    or_lv, first = opening_range(rth, p.get("or_minutes", 5))
+
+    # Which levels can trigger an ENTRY is a setting. Which levels a target
+    # may aim at is not: every known price is a candidate. Sharing one dict
+    # between the two silently broke the level targets - the live rule enters
+    # on the opening range alone, so after excluding the level just broken
+    # there was never anything ahead to aim at, and every "next level" target
+    # quietly fell back to the fixed multiple. The study could not tell the
+    # difference because the numbers came out identical.
     lv, ready = {}, {}
     if which in ("prior", "both"):
-        lv.update(session_levels(prior_rth, pre, p.get("use_premarket", True)))
+        lv.update(prior_lv)
     if which in ("or", "both"):
-        orl, first = opening_range(rth, p.get("or_minutes", 5))
-        lv.update(orl)
-        ready.update({k: first for k in orl})
+        lv.update(or_lv)
+        ready.update({k: first for k in or_lv})
+    targets = {**prior_lv, **or_lv}
+
     out = []
     for i, side, level, name in opening_breaks(rth, lv, scale, p, ready):
         # Yesterday's low and the premarket low are usually the same idea a
@@ -380,7 +391,7 @@ def day_trades(day_ext: pd.DataFrame, prior_rth: pd.DataFrame,
         j = entry_index(rth, i, side, level, scale, p)
         if j is None:
             continue
-        t = simulate(rth, i, j, side, level, scale, p, levels=lv)
+        t = simulate(rth, i, j, side, level, scale, p, levels=targets)
         if t is None:
             continue
         t.update(level=round(level, 4), level_name=name, scale=round(scale, 4),
