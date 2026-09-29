@@ -124,3 +124,18 @@ def test_tally_is_consistent_and_ignores_unfinished():
 def test_rows_never_mention_r_multiples():
     assert "R" not in holds.row("120 min", holds.tally([{"pct": 1.0,
                                                          "reason": "stop"}]))
+
+
+def test_a_least_bad_cap_is_not_reported_as_an_improvement():
+    """Every holdout row negative means 'least bad', not 'better'. Saying the
+    holdout agrees about -18.7% against -20.8% is the overclaim that already
+    had to be pulled out of the stocks-in-play report once."""
+    import re
+    src = open("src/holds.py").read()
+    i = src.index("### Verdict")
+    j = src.index("How trades ended", i)
+    verdict = src[i:j]
+    assert 'all(r[2]["profit_pct"] <= 0 for r in rows)' in verdict, \
+        "the verdict must check the HOLDOUT for an all-negative sweep"
+    assert verdict.index('all(r[2]') < verdict.index('best_e[0] == 120'), \
+        "the all-negative check has to run before any 'this one is better'"
