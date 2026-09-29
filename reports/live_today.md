@@ -3,8 +3,8 @@
 **Traded** — nothing fired today.
 
 **Watched** _(opening range · no positions)_
-**10 trades · 3 won, 7 lost · 30% win rate**
-**-2.79%**
+**11 trades · 4 won, 7 lost · 36% win rate**
+**-2.28%**
 🔴 AVGO 09:35→10:30  -1.03%
 🔴 AMD 09:36→09:51  -1.03%
 🔴 NVDA 09:36→11:36  -0.23%
@@ -15,6 +15,7 @@
 🔴 MU 09:41→10:19  -1.03%
 🟢 PLTR 09:41→11:41  +0.08%
 🟢 SMCI 09:43→11:43  +1.23%
+🟢 META 09:45→11:45  +0.51%
 
 
 ⚠️ _11 shorts within 15 min — that is one market move read several times, not several independent trades. Count it as roughly one result._
@@ -115,3 +116,6 @@ Entry `$720.88`
 🛑 SL `$727.65`
 🎯 TP `$707.35`
 _broke the opening-range low $721.38 · tracking only, this rule has not passed a holdout test — no position_
+🟢 **WATCHED META closed**  ·  11:45 ET
+Exit `$717.43` — closed on the hold limit
+**+0.51%** _(tracking only — no position was taken)_
