@@ -48,26 +48,17 @@ log = logging.getLogger("holds")
 from .live_bot import OPENING                                   # noqa: E402
 
 CAPS = [15, 30, 60, 120, 240, 0]        # 0 means no cap: stop, target or bell
-NO_CAP = 10_000
 
 
-def with_cap(minutes: int):
-    """Run a block with a different hold cap, then put it back.
+def capped(p: dict, minutes: int | None) -> dict:
+    """The same settings with a different hold cap. `0` or None means none.
 
-    MAX_HOLD_MIN is a module global read inside op.simulate, so this is the
-    honest way to vary it. Leaving it mutated would silently change every
-    later run in the same process.
+    This used to swap a module global in and out around each run. Passing it
+    in the config is the same measurement with nothing left mutated - no
+    context manager to leak, and no chance of a later run inheriting a clock
+    from an earlier one.
     """
-    class _Ctx:
-        def __enter__(self):
-            self.before = op.MAX_HOLD_MIN
-            op.MAX_HOLD_MIN = NO_CAP if minutes in (0, None) else int(minutes)
-            return self
-
-        def __exit__(self, *a):
-            op.MAX_HOLD_MIN = self.before
-            return False
-    return _Ctx()
+    return {**p, "max_hold_min": None if minutes in (0, None) else int(minutes)}
 
 
 def cfg() -> dict:
@@ -123,13 +114,11 @@ def one_day(data: dict[str, pd.DataFrame], date: str, p: dict) -> str:
     """The trades that timed out, and where they actually went."""
     d = pd.Timestamp(date).date()
     base = {}
-    with with_cap(OPENING.get("max_hold", 120) or 120):
-        for t in trades_for(data, {d}, p):
-            base[t["symbol"]] = t
+    for t in trades_for(data, {d}, capped(p, 120)):
+        base[t["symbol"]] = t
     freed = {}
-    with with_cap(0):
-        for t in trades_for(data, {d}, p):
-            freed[t["symbol"]] = t
+    for t in trades_for(data, {d}, capped(p, 0)):
+        freed[t["symbol"]] = t
     if not base:
         return f"No trades on {date}.\n"
 
@@ -141,7 +130,7 @@ def one_day(data: dict[str, pd.DataFrame], date: str, p: dict) -> str:
         f = freed.get(sym)
         if f is None:
             continue
-        if b["reason"] != "time":
+        if b["reason"] not in ("time",):
             L.append(f"| {sym} | {b['pct']:+.2f}% ({b['reason']} "
                      f"{b['exit_time']}) | — same, it never hit the clock | — |")
             continue
@@ -172,9 +161,9 @@ def sweep(data: dict[str, pd.DataFrame], p: dict) -> tuple[str, dict]:
 
     rows, out = [], {}
     for cap in CAPS:
-        with with_cap(cap):
-            e = tally(trades_for(data, explore, p))
-            h = tally(trades_for(data, holdout, p))
+        q = capped(p, cap)
+        e = tally(trades_for(data, explore, q))
+        h = tally(trades_for(data, holdout, q))
         rows.append((cap, e, h))
         out[label(cap)] = {"explore": {k: v for k, v in e.items() if k != "trades"},
                            "holdout": {k: v for k, v in h.items() if k != "trades"}}
@@ -235,7 +224,7 @@ def sweep(data: dict[str, pd.DataFrame], p: dict) -> tuple[str, dict]:
     for cap, e, _ in rows:
         n = e["ends"]
         L.append(f"| {label(cap)} | {n.get('stop', 0)} | {n.get('target', 0)} "
-                 f"| {n.get('time', 0)} | {n.get('close', 0) + n.get('bell', 0)} |")
+                 f"| {n.get('time', 0)} | {n.get('bell', 0) + n.get('close', 0)} |")
     return "\n".join(L) + "\n", out
 
 
