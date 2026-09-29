@@ -1,115 +1,97 @@
 {
-  "date": "2026-09-28",
+  "date": "2026-09-29",
   "signals": [
     {
-      "symbol": "GOOGL",
+      "symbol": "AAPL",
       "side": "short",
-      "break_time": "11:40",
-      "entry_time": "11:45",
-      "level": 340.06,
-      "entry": 339.91,
-      "stop": 340.98,
-      "target": 337.78,
+      "break_time": "11:50",
+      "entry_time": "11:55",
+      "level": 331.51,
+      "entry": 331.34,
+      "stop": 332.63,
+      "target": 328.76,
+      "shares": 15,
+      "risk": 19.37,
+      "outcome": {
+        "won": 1,
+        "r": 2.0
+      }
+    },
+    {
+      "symbol": "AAPL",
+      "side": "short",
+      "break_time": "12:00",
+      "entry_time": "12:05",
+      "level": 331.0,
+      "entry": 330.96,
+      "stop": 332.03,
+      "target": 328.81,
       "shares": 18,
-      "risk": 19.19,
+      "risk": 19.35,
       "outcome": {
         "won": 0,
         "r": -1.0
       }
     },
     {
-      "symbol": "AMZN",
+      "symbol": "TSLA",
       "side": "short",
-      "break_time": "14:20",
-      "entry_time": "14:25",
-      "level": 246.85,
-      "entry": 246.79,
-      "stop": 247.15,
-      "target": 246.07,
-      "shares": 55,
-      "risk": 19.7,
-      "outcome": {
-        "won": 1,
-        "r": 2.0
-      }
-    },
-    {
-      "symbol": "AMZN",
-      "side": "short",
-      "break_time": "14:30",
-      "entry_time": "14:35",
-      "level": 246.78,
-      "entry": 246.75,
-      "stop": 247.06,
-      "target": 246.12,
-      "shares": 63,
-      "risk": 19.71,
-      "outcome": {
-        "won": 1,
-        "r": 2.0
-      }
-    },
-    {
-      "symbol": "MU",
-      "side": "short",
-      "break_time": "14:35",
-      "entry_time": "14:45",
-      "level": 1053.92,
-      "entry": 1053.62,
-      "stop": 1056.24,
-      "target": 1048.37,
-      "shares": 7,
-      "risk": 18.37,
+      "break_time": "12:40",
+      "entry_time": "12:45",
+      "level": 352.74,
+      "entry": 352.46,
+      "stop": 353.6,
+      "target": 350.2,
+      "shares": 17,
+      "risk": 19.23,
       "outcome": {
         "won": 0,
         "r": -1.0
       }
     },
     {
-      "symbol": "MSFT",
+      "symbol": "NVDA",
       "side": "short",
-      "break_time": "15:00",
-      "entry_time": "15:05",
-      "level": 510.81,
-      "entry": 510.45,
-      "stop": 511.43,
-      "target": 508.49,
-      "shares": 20,
-      "risk": 19.56,
+      "break_time": "12:40",
+      "entry_time": "12:50",
+      "level": 230.05,
+      "entry": 229.55,
+      "stop": 230.59,
+      "target": 227.48,
+      "shares": 19,
+      "risk": 19.69,
       "outcome": {
         "won": 1,
-        "r": 1.11,
-        "unfinished": true
+        "r": 2.0
       }
     },
     {
-      "symbol": "META",
+      "symbol": "TSLA",
       "side": "short",
-      "break_time": "15:00",
-      "entry_time": "15:05",
-      "level": 720.89,
-      "entry": 718.88,
-      "stop": 722.47,
-      "target": 711.71,
-      "shares": 5,
-      "risk": 17.93,
+      "break_time": "12:45",
+      "entry_time": "12:50",
+      "level": 352.5,
+      "entry": 352.06,
+      "stop": 353.36,
+      "target": 349.47,
+      "shares": 15,
+      "risk": 19.46,
       "outcome": {
-        "won": 1,
-        "r": 0.93,
-        "unfinished": true
+        "won": 0,
+        "r": -1.0
       }
     },
     {
       "symbol": "AVGO",
       "side": "short",
-      "break_time": "15:05",
-      "entry_time": "15:10",
-      "level": 350.55,
-      "entry": 350.17,
-      "stop": 351.03,
-      "target": 348.44,
-      "shares": 23,
-      "risk": 19.89,
+      "break_time": "12:55",
+      "entry_time": "13:00",
+      "level": 355.96,
+      "entry": 355.77,
+      "stop": 356.91,
+      "target": 353.49,
+      "shares": 17,
+      "risk": 19.38,
       "outcome": {
         "won": 1,
         "r": 0.54,
@@ -117,101 +99,163 @@
       }
     },
     {
-      "symbol": "META",
+      "symbol": "AMD",
       "side": "short",
-      "break_time": "15:10",
-      "entry_time": "15:15",
-      "level": 718.88,
-      "entry": 718.27,
-      "stop": 720.44,
-      "target": 713.94,
-      "shares": 9,
-      "risk": 19.49,
+      "break_time": "12:40",
+      "entry_time": "13:10",
+      "level": 612.12,
+      "entry": 612.09,
+      "stop": 613.77,
+      "target": 608.72,
+      "shares": 11,
+      "risk": 18.52,
       "outcome": {
         "won": 1,
         "r": 2.0
       }
     },
     {
-      "symbol": "PLTR",
+      "symbol": "NVDA",
       "side": "short",
-      "break_time": "15:10",
-      "entry_time": "15:15",
-      "level": 187.91,
-      "entry": 187.81,
-      "stop": 188.26,
-      "target": 186.9,
-      "shares": 44,
-      "risk": 19.85,
+      "break_time": "13:15",
+      "entry_time": "13:20",
+      "level": 229.07,
+      "entry": 229.04,
+      "stop": 229.53,
+      "target": 228.06,
+      "shares": 40,
+      "risk": 19.56,
+      "outcome": {
+        "won": 1,
+        "r": 2.0
+      }
+    },
+    {
+      "symbol": "MSFT",
+      "side": "short",
+      "break_time": "13:10",
+      "entry_time": "13:20",
+      "level": 507.21,
+      "entry": 507.0,
+      "stop": 508.34,
+      "target": 504.33,
+      "shares": 14,
+      "risk": 18.72,
       "outcome": {
         "won": 0,
         "r": -1.0
       }
     },
     {
-      "symbol": "MSFT",
+      "symbol": "AVGO",
       "side": "short",
-      "break_time": "15:05",
-      "entry_time": "15:25",
-      "level": 510.69,
-      "entry": 510.64,
-      "stop": 511.3,
-      "target": 509.31,
-      "shares": 30,
-      "risk": 19.89,
+      "break_time": "13:35",
+      "entry_time": "13:40",
+      "level": 355.42,
+      "entry": 355.1,
+      "stop": 356.11,
+      "target": 353.09,
+      "shares": 19,
+      "risk": 19.12,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "AVGO",
+      "side": "short",
+      "break_time": "13:40",
+      "entry_time": "13:45",
+      "level": 355.18,
+      "entry": 354.89,
+      "stop": 355.86,
+      "target": 352.95,
+      "shares": 20,
+      "risk": 19.39,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "AMD",
+      "side": "short",
+      "break_time": "13:45",
+      "entry_time": "13:50",
+      "level": 610.12,
+      "entry": 609.0,
+      "stop": 611.31,
+      "target": 604.4,
+      "shares": 8,
+      "risk": 18.42,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "AAPL",
+      "side": "short",
+      "break_time": "14:55",
+      "entry_time": "15:00",
+      "level": 331.02,
+      "entry": 330.77,
+      "stop": 331.51,
+      "target": 329.3,
+      "shares": 27,
+      "risk": 19.87,
       "outcome": {
         "won": 1,
         "r": 2.0
       }
     },
     {
-      "symbol": "AVGO",
-      "side": "short",
-      "break_time": "15:15",
-      "entry_time": "15:30",
-      "level": 350.17,
-      "entry": 349.95,
-      "stop": 350.64,
-      "target": 348.59,
-      "shares": 29,
-      "risk": 19.85,
-      "outcome": {
-        "won": 1,
-        "r": 0.37,
-        "unfinished": true
-      }
-    },
-    {
-      "symbol": "AMZN",
-      "side": "short",
-      "break_time": "14:55",
-      "entry_time": "15:35",
-      "level": 246.61,
-      "entry": 246.16,
-      "stop": 246.86,
-      "target": 244.76,
-      "shares": 28,
-      "risk": 19.65,
-      "outcome": {
-        "won": 0,
-        "r": -0.24,
-        "unfinished": true
-      }
-    },
-    {
-      "symbol": "AMZN",
+      "symbol": "AMD",
       "side": "short",
       "break_time": "15:00",
-      "entry_time": "15:35",
-      "level": 246.48,
-      "entry": 246.16,
-      "stop": 246.76,
-      "target": 244.96,
-      "shares": 33,
-      "risk": 19.74,
+      "entry_time": "15:05",
+      "level": 609.69,
+      "entry": 609.59,
+      "stop": 610.7,
+      "target": 607.38,
+      "shares": 18,
+      "risk": 19.91,
       "outcome": {
-        "won": 0,
-        "r": -0.28,
+        "won": 1,
+        "r": 2.0
+      }
+    },
+    {
+      "symbol": "AAPL",
+      "side": "short",
+      "break_time": "15:00",
+      "entry_time": "15:05",
+      "level": 330.8,
+      "entry": 330.64,
+      "stop": 331.28,
+      "target": 329.37,
+      "shares": 31,
+      "risk": 19.81,
+      "outcome": {
+        "won": 1,
+        "r": 2.0
+      }
+    },
+    {
+      "symbol": "TSLA",
+      "side": "short",
+      "break_time": "15:20",
+      "entry_time": "15:45",
+      "level": 353.15,
+      "entry": 352.95,
+      "stop": 353.68,
+      "target": 351.49,
+      "shares": 27,
+      "risk": 19.66,
+      "outcome": {
+        "won": 1,
+        "r": 0.01,
         "unfinished": true
       }
     }
