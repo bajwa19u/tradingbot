@@ -33,9 +33,10 @@ def test_entry_message_has_the_five_things_asked_for():
     assert "🔻" in m                      # an emoji for the name
 
 
-def test_entry_message_names_the_level_for_a_watched_trade():
-    m = lb.entry_msg(trade(observe=True, level_name="orl", shares=0))
-    assert "the opening-range low" in m and "625.80" in m
+def test_the_entry_message_is_short_enough_to_read_on_a_phone():
+    """Five lines: name, entry, stop, target, size. Nothing else."""
+    m = lb.entry_msg(trade(rule="opening", level_name="orl"))
+    assert len(m.splitlines()) == 5
 
 
 def test_a_retest_trade_gets_no_opening_footnote():
@@ -132,11 +133,9 @@ def test_yesterdays_seen_file_is_ignored(tmp_path, monkeypatch):
 
 
 # --- the merge ---------------------------------------------------------------
-def test_the_opening_rule_is_in_observation_mode():
-    """Both holdout studies failed. It runs to gather a forward record; it
-    must not quietly become a trading rule without another study."""
+def test_both_rules_are_live_and_post_both_sides():
     assert lb.OPENING["enabled"] is True
-    assert lb.OPENING["observe"] is True
+    assert set(lb.OPENING["post_sides"]) == {"short", "long"}
 
 
 def test_a_broken_rule_does_not_silence_the_other(monkeypatch):
@@ -185,62 +184,46 @@ def test_the_opening_rule_moves_the_start_of_the_day_to_the_bell():
     assert lb.OPEN_T == "09:45", "the retest rule keeps its own window"
 
 
-# --- observation mode --------------------------------------------------------
-def test_a_watched_entry_is_not_shaped_like_a_signal():
-    """If it reads like the traded alerts it will be taken like them."""
-    m = lb.entry_msg(trade(observe=True, shares=0, level_name="orl"))
-    assert "👀" in m and "WATCHING" in m
-    assert "tracking only" in m and "no position" in m
-    assert "risking" not in m and "shares" not in m
+# --- one message shape, no second class -------------------------------------
+def test_every_signal_has_the_same_shape():
+    """An earlier version posted the opening rule under a WATCHING header
+    with no size. It buried a working AMD long on 29 September and trained
+    the eye to skim past half the feed."""
+    a = lb.entry_msg(trade(rule="retest"))
+    b = lb.entry_msg(trade(rule="opening", level_name="orl"))
+    for m in (a, b):
+        assert "WATCHING" not in m and "tracking only" not in m
+        assert "shares" in m and "risking" in m
+        assert "🛑" in m and "🎯" in m
 
 
-def test_a_watched_entry_still_carries_the_prices():
-    m = lb.entry_msg(trade(observe=True, shares=0, level_name="orl"))
-    assert "622.21" in m and "627.42" in m and "611.78" in m
+def test_the_entry_says_which_setup_it_came_from():
+    assert "break & retest" in lb.entry_msg(trade(rule="retest"))
+    assert "opening range" in lb.entry_msg(trade(rule="opening"))
 
 
-def test_a_watched_close_says_no_position_was_taken():
-    m = lb.close_msg(trade(observe=True, shares=0, exit=611.78,
-                           exit_time="10:40", reason="target", pct=2.0,
-                           cash=0.0))
-    assert "WATCHED" in m and "no position was taken" in m
-    assert "✅" not in m, "the traded tick is reserved for traded results"
+def test_an_opening_trade_is_sized_like_any_other():
+    assert lb.OPENING["observe"] is False
 
 
-def test_watched_results_are_kept_out_of_the_accounts_total():
-    ts = [trade(id="r", exit=1.0, pct=2.0, cash=30.0, exit_time="10:00",
-                reason="target"),
-          trade(id="w", observe=True, shares=0, exit=1.0, pct=-1.0, cash=0.0,
+def test_closes_have_one_shape_too():
+    a = lb.close_msg(trade(rule="retest", exit=611.78, exit_time="10:40",
+                           reason="target", pct=2.0, cash=31.2))
+    b = lb.close_msg(trade(rule="opening", exit=611.78, exit_time="10:40",
+                           reason="target", pct=2.0, cash=31.2))
+    for m in (a, b):
+        assert "WATCHED" not in m and "no position was taken" not in m
+        assert "CLOSED" in m and "+2.00%" in m
+
+
+def test_the_recap_is_one_list():
+    ts = [trade(id="a", rule="retest", exit=1.0, pct=2.0, cash=40.0,
+                exit_time="10:00", reason="target"),
+          trade(id="b", rule="opening", exit=1.0, pct=-1.0, cash=-20.0,
                 exit_time="10:20", reason="stop")]
     m = lb.summary_msg(ts, "Tuesday 29 September")
-    traded, watched = m.split("**Watched**")
-    assert "+2.00%" in traded and "1 trade · 1 won, 0 lost" in traded
-    assert "-1.00%" in watched
-
-
-def test_summary_says_so_when_only_the_watched_rule_fired():
-    ts = [trade(id="w", observe=True, shares=0, exit=1.0, pct=2.0, cash=0.0,
-                exit_time="10:20", reason="target")]
-    m = lb.summary_msg(ts, "Tuesday 29 September")
-    assert "nothing fired today" in m and "Watched" in m
-
-
-def test_a_trade_not_marked_for_posting_never_reaches_the_feed(monkeypatch,
-                                                               tmp_path):
-    """Longs off the opening range are recorded for the study and kept out
-    of the feed. A bug here is a wall of Discord messages."""
-    monkeypatch.setattr(lb, "STATE", tmp_path)
-    monkeypatch.setattr(lb, "REPORTS", tmp_path)
-    monkeypatch.setattr(lb, "scan", lambda cfg: ([], "09:31", False))
-    monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: [
-        trade(id="keep", observe=True, shares=0, post=True),
-        trade(id="drop", observe=True, shares=0, post=False, side="long")])
-    sent = []
-    monkeypatch.setattr(lb, "notify", sent.append)
-    lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
-    entries = [m for m in sent if "WATCHING" in m]
-    assert len(entries) == 1
-    assert "LONG" not in " ".join(entries)
+    assert "Watched" not in m and "Traded" not in m
+    assert "2 trades · 1 won, 1 lost" in m and "+1.00%" in m
 
 
 def test_the_cash_total_sits_on_the_totals_line():
@@ -277,10 +260,9 @@ def test_longs_are_posted_now():
     assert set(lb.OPENING["post_sides"]) == {"short", "long"}
 
 
-def test_a_long_watch_entry_renders():
-    m = lb.entry_msg(trade(observe=True, side="long", shares=0,
-                           level_name="orh"))
-    assert "LONG" in m and "opening-range high" in m and "WATCHING" in m
+def test_a_long_entry_renders():
+    m = lb.entry_msg(trade(side="long", rule="opening", level_name="orh"))
+    assert "LONG" in m and "🔺" in m and "opening range" in m
 
 
 # --- correlated entries are one result, not many -----------------------------
@@ -309,8 +291,8 @@ def test_opposite_sides_do_not_add_up_into_a_cluster():
 
 
 def test_the_warning_reaches_the_daily_recap():
-    ts = [trade(id=str(i), observe=True, shares=0, side="short",
-                entry_time=f"09:{35 + i:02d}", exit=1.0, pct=-1.0, cash=0.0,
-                exit_time="10:00", reason="stop") for i in range(6)]
+    ts = [trade(id=str(i), side="short", entry_time=f"09:{35 + i:02d}",
+                exit=1.0, pct=-1.0, cash=-20.0, exit_time="10:00",
+                reason="stop") for i in range(6)]
     m = lb.summary_msg(ts, "Tuesday 29 September")
     assert "⚠️" in m and "one market move" in m
