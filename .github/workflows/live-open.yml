@@ -8,18 +8,31 @@ name: Live bot — the open
 # starts this job before the bell, and the job then checks every forty-five
 # seconds on its own clock until 10:05 ET.
 #
-# Both crons are deliberate. UTC has no daylight-saving awareness, so 13:20
-# is 09:20 Eastern in summer and 14:20 is 09:20 Eastern in winter. The one
-# that is wrong for the season starts, sees it is past 10:05 Eastern, and
-# exits in seconds.
+# START EARLY, THEN WAIT. This job exists because GitHub's scheduler is
+# routinely minutes late, and on 29 September it proved the point by not
+# starting this job at all at 13:20 - the bot only covered the open because
+# it was dispatched by hand at 09:25 Eastern. A job whose whole purpose is to
+# beat cron delay must not depend on cron being punctual.
+#
+# So it now starts around 08:47 Eastern and sleeps until the bell on its own
+# clock. Fifteen minutes of scheduler drift costs nothing; it just waits
+# fifteen minutes less.
+#
+# The 13:xx and 14:xx pairs are the same time in summer and winter - UTC has
+# no daylight-saving awareness - and the one that is wrong for the season
+# starts, sees it is past 10:05 Eastern, and exits in seconds. The later pair
+# is a backstop for a skipped first firing; if the first is still polling,
+# this one queues behind it and then exits immediately.
 #
 # Shares a concurrency group with the five-minute job on purpose: both write
 # the same record of what has already been announced, and two of them running
 # at once is how the same trade gets posted to Discord twice.
 on:
   schedule:
-    - cron: "20 13 * * 1-5"
-    - cron: "20 14 * * 1-5"
+    - cron: "47 12 * * 1-5"
+    - cron: "47 13 * * 1-5"
+    - cron: "07 13 * * 1-5"
+    - cron: "07 14 * * 1-5"
   workflow_dispatch:
     inputs:
       dry_run:
@@ -49,7 +62,7 @@ permissions:
 jobs:
   open:
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 100
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
