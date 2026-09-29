@@ -1,7 +1,7 @@
 📊 **2026-09-29**
 
-**11 trades · 4 won, 7 lost · 36% win rate**
-**-2.28%**  (-$41.91)
+**12 trades · 4 won, 8 lost · 33% win rate**
+**-3.28%**  (-$61.26)
 ❌ AVGO 09:35→10:30  -1.03%
 ❌ AMD 09:36→09:51  -1.03%
 ❌ NVDA 09:36→11:36  -0.23%
@@ -13,6 +13,7 @@
 ✅ PLTR 09:41→11:41  +0.08%
 ✅ SMCI 09:43→11:43  +1.23%
 ✅ META 09:45→11:45  +0.51%
+❌ AAPL 12:05→13:35  -1.00%
 
 
 ⚠️ _11 shorts within 15 min — that is one market move read several times, not several independent trades. Count it as roughly one result._
@@ -128,6 +129,9 @@ Entry `$330.96`
 🛑 SL `$332.03`
 🎯 TP `$328.81`
 18 shares · risking `$19.35`  ·  __
+❌ **CLOSED AAPL**  ·  13:35 ET
+Exit `$332.03` — hit stop
+**-1.00%**  (-$19.35)
 
 🔻 **SHORT TSLA**  ·  12:45 ET
 Entry `$352.46`
@@ -158,3 +162,9 @@ Entry `$612.09`
 🛑 SL `$613.77`
 🎯 TP `$608.72`
 11 shares · risking `$18.52`  ·  __
+
+🔻 **SHORT MSFT**  ·  13:20 ET
+Entry `$507.00`
+🛑 SL `$508.34`
+🎯 TP `$504.33`
+14 shares · risking `$18.72`  ·  __
