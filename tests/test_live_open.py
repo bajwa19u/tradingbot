@@ -268,3 +268,49 @@ def test_two_breaks_on_the_same_bar_get_different_ids():
         index=pd.DatetimeIndex([pd.Timestamp("2026-09-29 09:50", tz=m.EASTERN)]))
     ids = {f"AMZN-{str(day.index[0])[:16]}-{lvl:.2f}" for lvl in (246.86, 247.15)}
     assert len(ids) == 2
+
+
+# --- both sides reach the feed -----------------------------------------------
+def test_longs_are_posted_now():
+    """Shorts-only hid AMD's opening-range-high break on 29 September, which
+    ran while the feed showed nothing."""
+    assert set(lb.OPENING["post_sides"]) == {"short", "long"}
+
+
+def test_a_long_watch_entry_renders():
+    m = lb.entry_msg(trade(observe=True, side="long", shares=0,
+                           level_name="orh"))
+    assert "LONG" in m and "opening-range high" in m and "WATCHING" in m
+
+
+# --- correlated entries are one result, not many -----------------------------
+def test_a_wall_of_same_side_entries_is_flagged():
+    """All twelve core names broke their opening-range low inside ten minutes
+    on 29 September. Twelve shorts, one market move."""
+    ts = [trade(id=str(i), side="short", entry_time=f"09:{35 + i:02d}")
+          for i in range(8)]
+    note = lb.cluster_note(ts)
+    assert "8 shorts within 15 min" in note
+    assert "one market move" in note
+
+
+def test_entries_spread_through_the_day_are_not_flagged():
+    ts = [trade(id="a", entry_time="09:35"), trade(id="b", entry_time="10:30"),
+          trade(id="c", entry_time="12:00"), trade(id="d", entry_time="14:45")]
+    assert lb.cluster_note(ts) == ""
+
+
+def test_opposite_sides_do_not_add_up_into_a_cluster():
+    ts = ([trade(id=f"s{i}", side="short", entry_time=f"09:{35 + i:02d}")
+           for i in range(2)] +
+          [trade(id=f"l{i}", side="long", entry_time=f"09:{37 + i:02d}")
+           for i in range(2)])
+    assert lb.cluster_note(ts) == ""
+
+
+def test_the_warning_reaches_the_daily_recap():
+    ts = [trade(id=str(i), observe=True, shares=0, side="short",
+                entry_time=f"09:{35 + i:02d}", exit=1.0, pct=-1.0, cash=0.0,
+                exit_time="10:00", reason="stop") for i in range(6)]
+    m = lb.summary_msg(ts, "Tuesday 29 September")
+    assert "⚠️" in m and "one market move" in m
