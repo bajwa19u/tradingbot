@@ -351,3 +351,44 @@ def test_or_grid_is_small_and_separate():
     g = op.or_grid()
     assert len(g) == 24 and len({c["name"] for c in g}) == 24
     assert all(c["levels"] == "or" for c in g)
+
+
+# --- stop padding ------------------------------------------------------------
+def test_padding_pushes_the_stop_away_by_a_percent_of_price():
+    day = frame("2026-09-25", [("09:30", 99.0, 99.0, 99.0, 99.0, 1000),
+                               ("09:31", 99.0, 99.2, 98.9, 99.0, 1000)])
+    tight = op.simulate(day, 0, 0, "short", 100.0, 1.0, dict(op.BASE))
+    wide = op.simulate(day, 0, 0, "short", 100.0, 1.0,
+                       {**op.BASE, "stop_pad_pct": 1.0})
+    # values are rounded to 4dp in the result, so compare loosely
+    assert wide["stop"] - tight["stop"] == pytest.approx(tight["entry"] / 100,
+                                                         abs=1e-3)
+
+
+def test_padding_works_the_other_way_for_a_long():
+    day = frame("2026-09-25", [("09:30", 101.0, 101.0, 101.0, 101.0, 1000),
+                               ("09:31", 101.0, 101.2, 100.9, 101.0, 1000)])
+    tight = op.simulate(day, 0, 0, "long", 100.0, 1.0, dict(op.BASE))
+    wide = op.simulate(day, 0, 0, "long", 100.0, 1.0,
+                       {**op.BASE, "stop_pad_pct": 1.0})
+    assert wide["stop"] < tight["stop"]
+
+
+def test_a_wider_stop_means_a_bigger_loss_when_it_still_fails():
+    """The part that gets forgotten: room is not free. Every loser that does
+    not get rescued costs more."""
+    rows = [("09:30", 99.0, 99.0, 99.0, 99.0, 1000)]
+    for k in range(1, 60):
+        hh, mm = 9 + (30 + k) // 60, (30 + k) % 60
+        rows.append((f"{hh:02d}:{mm:02d}", 99.0 + k * 0.2, 99.2 + k * 0.2,
+                     98.9 + k * 0.2, 99.0 + k * 0.2, 1000))
+    day = frame("2026-09-25", rows)
+    tight = op.simulate(day, 0, 0, "short", 100.0, 1.0, dict(op.BASE))
+    wide = op.simulate(day, 0, 0, "short", 100.0, 1.0,
+                       {**op.BASE, "stop_pad_pct": 2.0})
+    assert tight["reason"] == wide["reason"] == "stop"
+    assert wide["exit"] > tight["exit"], "stopped out further away"
+
+
+def test_no_padding_by_default():
+    assert op.BASE["stop_pad_pct"] == 0.0
