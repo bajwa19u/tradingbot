@@ -50,6 +50,7 @@ log = logging.getLogger("widths")
 PADS = [0.0, 0.5, 1.0, 2.0]             # extra stop room, % of entry price
 TARGETS = [1.0, 1.5, 2.0, 3.0, "level"]   # multiple of risk, or structure
 ORS = [5]                               # opening-range length, minutes
+WIN_AFTER = 30                          # minutes of entry window after it ends
 
 # A five-minute range is a scalper's structure. These trades now run for
 # hours - about half reach the closing bell - so the range they are measured
@@ -69,6 +70,10 @@ def variant(p: dict, pad: float, target, or_min: int | None = None) -> dict:
     q = dict(p)
     if or_min is not None:
         q["or_minutes"] = int(or_min)
+        # Give every range length the same amount of window, measured from
+        # where it ends. Without this a longer range is not tested, it is
+        # just starved.
+        q["win_after_range_min"] = WIN_AFTER
     q["stop_pad_pct"] = pad
     if target == "level":
         q["target_mode"] = "level"
@@ -280,6 +285,8 @@ def main(argv=None) -> int:
     ap.add_argument("--pads", default="", help="stop room list, e.g. 0,1,2")
     ap.add_argument("--targets", default="",
                     help="targets, e.g. 2,3,level")
+    ap.add_argument("--win-after", type=int, default=30,
+                    help="entry window minutes after the range ends")
     args = ap.parse_args(argv)
 
     try:
@@ -299,7 +306,9 @@ def main(argv=None) -> int:
     if args.targets:
         TARGETS[:] = [x.strip() if x.strip() == "level" else float(x)
                       for x in args.targets.split(",") if x.strip()]
-    log.info("ranges %s · stop room %s · targets %s", ORS, PADS, TARGETS)
+    globals()["WIN_AFTER"] = int(args.win_after)
+    log.info("ranges %s · stop room %s · targets %s · window +%dm",
+             ORS, PADS, TARGETS, WIN_AFTER)
 
     p = cfg()
     parts = ["# Opening range, stop width and target", ""]
