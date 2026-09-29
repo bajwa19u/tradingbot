@@ -128,3 +128,33 @@ Entry `$330.96`
 🛑 SL `$332.03`
 🎯 TP `$328.81`
 18 shares · risking `$19.35`  ·  __
+
+🔻 **SHORT TSLA**  ·  12:45 ET
+Entry `$352.46`
+🛑 SL `$353.60`
+🎯 TP `$350.20`
+17 shares · risking `$19.23`  ·  __
+
+🔻 **SHORT NVDA**  ·  12:50 ET
+Entry `$229.55`
+🛑 SL `$230.59`
+🎯 TP `$227.48`
+19 shares · risking `$19.69`  ·  __
+
+🔻 **SHORT TSLA**  ·  12:50 ET
+Entry `$352.06`
+🛑 SL `$353.36`
+🎯 TP `$349.47`
+15 shares · risking `$19.46`  ·  __
+
+🔻 **SHORT AVGO**  ·  13:00 ET
+Entry `$355.77`
+🛑 SL `$356.91`
+🎯 TP `$353.49`
+17 shares · risking `$19.38`  ·  __
+
+🔻 **SHORT AMD**  ·  13:10 ET
+Entry `$612.09`
+🛑 SL `$613.77`
+🎯 TP `$608.72`
+11 shares · risking `$18.52`  ·  __
