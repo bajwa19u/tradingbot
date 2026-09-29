@@ -440,3 +440,25 @@ def test_a_level_too_close_to_be_worth_it_is_ignored():
 
 def test_level_targets_are_off_by_default():
     assert op.BASE["target_mode"] == "r"
+
+
+def test_targets_see_every_level_even_when_entries_do_not():
+    """The bug that made the whole level-target study meaningless: the live
+    rule enters on the opening range alone, so sharing one level dict between
+    entry and target left nothing ahead to aim at, and every level target
+    silently became the fixed multiple."""
+    prior = frame("2026-09-28", [
+        ("09:30", 100.0, 105.0, 99.5, 104.0, 9_000),
+        ("09:31", 104.0, 104.5, 103.5, 104.0, 9_000),
+        ("09:32", 104.0, 104.5, 103.5, 104.0, 9_000),
+        ("09:33", 104.0, 104.5, 103.5, 104.0, 9_000),
+        ("09:34", 104.0, 104.5, 103.5, 104.0, 9_000),
+        ("15:00", 104.0, 104.5, 95.0, 100.0, 9_000)])
+    day = minutes("2026-09-29", "09:30", 25, 99.0, -0.15)
+    p = {**op.BASE, "levels": "or", "or_minutes": 5, "side": "short",
+         "target_mode": "level", "min_target_r": 0.5}
+    trades = op.day_trades(day, prior, p)
+    assert trades, "a short off the opening-range low should fire"
+    assert trades[0]["target_name"] != "2x", \
+        "it must aim at a real level, not fall back to the multiple"
+    assert trades[0]["target_name"] in ("pdl", "pdc", "pml", "orl")
