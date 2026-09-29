@@ -204,3 +204,21 @@ Entry `$609.00`
 ❌ **CLOSED AMD**  ·  14:05 ET
 Exit `$611.31` — hit stop
 **-1.00%**  (-$18.42)
+
+🔻 **SHORT AAPL**  ·  15:00 ET
+Entry `$330.77`
+🛑 SL `$331.51`
+🎯 TP `$329.30`
+27 shares · risking `$19.87`  ·  __
+
+🔻 **SHORT AAPL**  ·  15:05 ET
+Entry `$330.64`
+🛑 SL `$331.28`
+🎯 TP `$329.37`
+31 shares · risking `$19.81`  ·  __
+
+🔻 **SHORT AMD**  ·  15:05 ET
+Entry `$609.59`
+🛑 SL `$610.70`
+🎯 TP `$607.38`
+18 shares · risking `$19.91`  ·  __
