@@ -48,7 +48,7 @@ logging.basicConfig(level=logging.INFO,
 log = logging.getLogger("widths")
 
 PADS = [0.0, 0.5, 1.0, 2.0]             # extra stop room, % of entry price
-TARGETS = [1.0, 1.5, 2.0, 3.0]          # reward multiple of the risk
+TARGETS = [1.0, 1.5, 2.0, 3.0, "level"]   # multiple of risk, or structure
 
 
 def cfg() -> dict:
@@ -56,8 +56,13 @@ def cfg() -> dict:
             if k not in ("enabled", "observe", "post_sides")}
 
 
-def variant(p: dict, pad: float, target_r: float) -> dict:
-    return {**p, "stop_pad_pct": pad, "target_r": target_r}
+def variant(p: dict, pad: float, target) -> dict:
+    """`target` is a reward multiple, or "level" for the next structural
+    price in our direction — yesterday's high/low/close or the other side of
+    the opening range."""
+    if target == "level":
+        return {**p, "stop_pad_pct": pad, "target_mode": "level"}
+    return {**p, "stop_pad_pct": pad, "target_mode": "r", "target_r": target}
 
 
 def trades_for(data: dict[str, pd.DataFrame], dates: set | None,
@@ -122,8 +127,9 @@ HEAD = ("| stop room | target | trades | win % | won | lost | avg win | "
         "avg loss | profit % |\n|---|---|---|---|---|---|---|---|---|")
 
 
-def row(pad: float, tr: float, t: dict) -> str:
-    return (f"| +{pad:.1f}% | {tr:g}x | {t['n']} | {t['win_pct']:.1f}% | "
+def row(pad: float, tr, t: dict) -> str:
+    lab = "next level" if tr == "level" else f"{tr:g}x"
+    return (f"| +{pad:.1f}% | {lab} | {t['n']} | {t['win_pct']:.1f}% | "
             f"{t['won']} | {t['lost']} | {t['avg_win']:+.2f}% | "
             f"{t['avg_loss']:+.2f}% | {t['profit_pct']:+.1f}% |")
 
@@ -172,6 +178,8 @@ def sweep(data: dict[str, pd.DataFrame], p: dict) -> tuple[str, dict]:
     explore, holdout = set(dates[:cut]), set(dates[cut:])
 
     base_e = trades_for(data, explore, variant(p, 0.0, p["target_r"]))
+    # which target each trade actually used, so a level target can be seen
+    # to be doing something rather than silently falling back
     rows, js = [], {}
     for pad, tr in product(PADS, TARGETS):
         q = variant(p, pad, tr)
@@ -181,7 +189,7 @@ def sweep(data: dict[str, pd.DataFrame], p: dict) -> tuple[str, dict]:
         js[f"pad{pad}/target{tr}"] = {
             "explore": {k: v for k, v in e.items() if k != "trades"},
             "holdout": {k: v for k, v in h.items() if k != "trades"}}
-        log.info("pad %+.1f%% target %gx  explore %+.1f%%  holdout %+.1f%%",
+        log.info("pad %+.1f%% target %-6s explore %+.1f%%  holdout %+.1f%%",
                  pad, tr, e["profit_pct"], h["profit_pct"])
 
     L = [f"## Every stop width and target, {len(dates)} days "
@@ -209,7 +217,7 @@ def sweep(data: dict[str, pd.DataFrame], p: dict) -> tuple[str, dict]:
         best_h = max(rows, key=lambda r: r[3]["profit_pct"])
         L.append(f"- **Every stop width and every target loses money on the "
                  f"holdout**, the best being +{best_h[0]:.1f}% room at "
-                 f"{best_h[1]:g}x on {best_h[3]['profit_pct']:+.1f}%. Widening "
+                 f"{best_h[1]} on {best_h[3]['profit_pct']:+.1f}%. Widening "
                  f"the stop rescues trades and costs more on the ones it does "
                  f"not rescue, and the two cancel. This is not the dial that "
                  f"is wrong.")
@@ -217,7 +225,7 @@ def sweep(data: dict[str, pd.DataFrame], p: dict) -> tuple[str, dict]:
         best_e = max(rows, key=lambda r: r[2]["profit_pct"])
         agrees = best_e[3]["profit_pct"] > 0
         L.append(f"- Best on explore: +{best_e[0]:.1f}% room at "
-                 f"{best_e[1]:g}x, {best_e[2]['profit_pct']:+.1f}%.")
+                 f"{best_e[1]}, {best_e[2]['profit_pct']:+.1f}%.")
         L.append(f"- On the holdout that setting makes "
                  f"{best_e[3]['profit_pct']:+.1f}%"
                  + (", which is the only reason it is worth anything."
