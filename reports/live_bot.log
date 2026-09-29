@@ -1,13 +1,59 @@
-2026-09-29 19:53:12,776 INFO 15:53:11 ET · bars through 15:45 · 26 trade(s) today · 3 new message(s)
+2026-09-29 20:07:24,998 INFO 16:07:24 ET · bars through 15:55 · 27 trade(s) today · 6 new message(s)
 
-✅ **CLOSED AAPL**  ·  15:40 ET
-Exit `$329.30` — hit target
-**+2.00%**  (+$39.74)
+✅ **CLOSED AAPL**  ·  15:55 ET
+Exit `$328.76` — hit target
+**+2.00%**  (+$38.75)
 
-✅ **CLOSED AAPL**  ·  15:40 ET
-Exit `$329.37` — hit target
-**+2.00%**  (+$39.62)
+✅ **CLOSED NVDA**  ·  15:55 ET
+Exit `$227.48` — hit target
+**+2.00%**  (+$39.38)
 
-✅ **CLOSED AMD**  ·  15:35 ET
-Exit `$607.38` — hit target
-**+2.00%**  (+$39.82)
+✅ **CLOSED AVGO**  ·  15:55 ET
+Exit `$355.15` — closed at the bell
+**+0.54%**  (+$10.54)
+
+🔻 **SHORT TSLA**  ·  15:45 ET
+Entry `$352.95`
+🛑 SL `$353.68`
+🎯 TP `$351.49`
+27 shares · risking `$19.66`  ·  __
+
+✅ **CLOSED TSLA**  ·  15:55 ET
+Exit `$352.94` — closed at the bell
+**+0.01%**  (+$0.27)
+
+📊 **Tuesday 29 September**
+
+**27 trades · 11 won, 16 lost · 41% win rate**
+**+3.24%**  (+$78.36)
+❌ AVGO 09:35→10:30  -1.03%
+❌ AMD 09:36→09:51  -1.03%
+✅ NVDA 09:36→15:55  +1.04%
+❌ TSLA 09:37→15:55  -0.12%
+❌ GOOGL 09:39→15:55  -0.29%
+❌ AMZN 09:40→12:50  -1.09%
+❌ MSFT 09:41→10:26  -1.05%
+❌ MU 09:41→10:19  -1.03%
+❌ PLTR 09:41→15:55  -0.32%
+✅ SMCI 09:43→15:55  +1.66%
+❌ META 09:45→13:21  -1.05%
+✅ AAPL 11:55→15:55  +2.00%
+❌ AAPL 12:05→13:35  -1.00%
+❌ TSLA 12:45→14:00  -1.00%
+✅ NVDA 12:50→15:55  +2.00%
+❌ TSLA 12:50→14:00  -1.00%
+✅ AVGO 13:00→15:55  +0.54%
+✅ AMD 13:10→13:55  +2.00%
+❌ MSFT 13:20→14:35  -1.00%
+✅ NVDA 13:20→13:55  +2.00%
+❌ AVGO 13:40→14:35  -1.00%
+❌ AVGO 13:45→14:25  -1.00%
+❌ AMD 13:50→14:05  -1.00%
+✅ AAPL 15:00→15:40  +2.00%
+✅ AAPL 15:05→15:40  +2.00%
+✅ AMD 15:05→15:35  +2.00%
+✅ TSLA 15:45→15:55  +0.01%
+
+
+⚠️ _11 shorts within 15 min — that is one market move read several times, not several independent trades. Count it as roughly one result._
+_Paper only. No orders were placed._
