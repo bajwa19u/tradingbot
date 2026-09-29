@@ -59,14 +59,23 @@ def test_the_grid_includes_doing_nothing():
     assert w.OPENING["target_r"] in w.TARGETS
 
 
-def test_variant_only_changes_the_two_things_under_test():
+def test_the_grid_includes_a_structural_target():
+    assert "level" in w.TARGETS
+
+
+def test_a_level_variant_switches_mode_rather_than_setting_a_multiple():
+    q = w.variant(dict(op.BASE), 1.0, "level")
+    assert q["target_mode"] == "level"
+    assert q["target_r"] == op.BASE["target_r"], "the multiple is untouched"
+
+
+def test_variant_only_changes_the_things_under_test():
     p = dict(op.BASE)
     q = w.variant(p, 1.0, 3.0)
     assert q["stop_pad_pct"] == 1.0 and q["target_r"] == 3.0
-    assert {k: v for k, v in q.items()
-            if k not in ("stop_pad_pct", "target_r")} == \
-           {k: v for k, v in p.items()
-            if k not in ("stop_pad_pct", "target_r")}
+    keys = ("stop_pad_pct", "target_r", "target_mode")
+    assert {k: v for k, v in q.items() if k not in keys} == \
+           {k: v for k, v in p.items() if k not in keys}
 
 
 def test_settings_come_from_the_live_bot():
