@@ -1,0 +1,322 @@
+{
+  "pad0.0/target1.0": {
+    "explore": {
+      "n": 450,
+      "won": 227,
+      "lost": 223,
+      "win_pct": 50.4,
+      "profit_pct": -13.94,
+      "avg_win": 0.8,
+      "avg_loss": -0.87
+    },
+    "holdout": {
+      "n": 218,
+      "won": 100,
+      "lost": 118,
+      "win_pct": 45.9,
+      "profit_pct": -22.14,
+      "avg_win": 0.78,
+      "avg_loss": -0.85
+    }
+  },
+  "pad0.0/target1.5": {
+    "explore": {
+      "n": 450,
+      "won": 215,
+      "lost": 235,
+      "win_pct": 47.8,
+      "profit_pct": 6.16,
+      "avg_win": 0.96,
+      "avg_loss": -0.85
+    },
+    "holdout": {
+      "n": 216,
+      "won": 92,
+      "lost": 124,
+      "win_pct": 42.6,
+      "profit_pct": -20.52,
+      "avg_win": 0.89,
+      "avg_loss": -0.83
+    }
+  },
+  "pad0.0/target2.0": {
+    "explore": {
+      "n": 450,
+      "won": 208,
+      "lost": 242,
+      "win_pct": 46.2,
+      "profit_pct": 6.75,
+      "avg_win": 1.01,
+      "avg_loss": -0.84
+    },
+    "holdout": {
+      "n": 216,
+      "won": 90,
+      "lost": 126,
+      "win_pct": 41.7,
+      "profit_pct": -22.2,
+      "avg_win": 0.91,
+      "avg_loss": -0.82
+    }
+  },
+  "pad0.0/target3.0": {
+    "explore": {
+      "n": 450,
+      "won": 205,
+      "lost": 245,
+      "win_pct": 45.6,
+      "profit_pct": 17.43,
+      "avg_win": 1.09,
+      "avg_loss": -0.84
+    },
+    "holdout": {
+      "n": 216,
+      "won": 89,
+      "lost": 127,
+      "win_pct": 41.2,
+      "profit_pct": -28.63,
+      "avg_win": 0.86,
+      "avg_loss": -0.83
+    }
+  },
+  "pad0.5/target1.0": {
+    "explore": {
+      "n": 450,
+      "won": 245,
+      "lost": 205,
+      "win_pct": 54.4,
+      "profit_pct": 16.03,
+      "avg_win": 0.67,
+      "avg_loss": -0.72
+    },
+    "holdout": {
+      "n": 215,
+      "won": 102,
+      "lost": 113,
+      "win_pct": 47.4,
+      "profit_pct": -15.94,
+      "avg_win": 0.6,
+      "avg_loss": -0.68
+    }
+  },
+  "pad0.5/target1.5": {
+    "explore": {
+      "n": 450,
+      "won": 233,
+      "lost": 217,
+      "win_pct": 51.8,
+      "profit_pct": 21.17,
+      "avg_win": 0.75,
+      "avg_loss": -0.71
+    },
+    "holdout": {
+      "n": 214,
+      "won": 98,
+      "lost": 116,
+      "win_pct": 45.8,
+      "profit_pct": -16.11,
+      "avg_win": 0.63,
+      "avg_loss": -0.67
+    }
+  },
+  "pad0.5/target2.0": {
+    "explore": {
+      "n": 450,
+      "won": 230,
+      "lost": 220,
+      "win_pct": 51.1,
+      "profit_pct": 21.77,
+      "avg_win": 0.77,
+      "avg_loss": -0.7
+    },
+    "holdout": {
+      "n": 214,
+      "won": 98,
+      "lost": 116,
+      "win_pct": 45.8,
+      "profit_pct": -17.85,
+      "avg_win": 0.61,
+      "avg_loss": -0.67
+    }
+  },
+  "pad0.5/target3.0": {
+    "explore": {
+      "n": 450,
+      "won": 230,
+      "lost": 220,
+      "win_pct": 51.1,
+      "profit_pct": 28.48,
+      "avg_win": 0.8,
+      "avg_loss": -0.7
+    },
+    "holdout": {
+      "n": 214,
+      "won": 98,
+      "lost": 116,
+      "win_pct": 45.8,
+      "profit_pct": -20.19,
+      "avg_win": 0.59,
+      "avg_loss": -0.67
+    }
+  },
+  "pad1.0/target1.0": {
+    "explore": {
+      "n": 450,
+      "won": 239,
+      "lost": 211,
+      "win_pct": 53.1,
+      "profit_pct": 12.8,
+      "avg_win": 0.58,
+      "avg_loss": -0.59
+    },
+    "holdout": {
+      "n": 212,
+      "won": 101,
+      "lost": 111,
+      "win_pct": 47.6,
+      "profit_pct": -7.43,
+      "avg_win": 0.49,
+      "avg_loss": -0.51
+    }
+  },
+  "pad1.0/target1.5": {
+    "explore": {
+      "n": 450,
+      "won": 235,
+      "lost": 215,
+      "win_pct": 52.2,
+      "profit_pct": 17.53,
+      "avg_win": 0.61,
+      "avg_loss": -0.59
+    },
+    "holdout": {
+      "n": 212,
+      "won": 100,
+      "lost": 112,
+      "win_pct": 47.2,
+      "profit_pct": -7.88,
+      "avg_win": 0.49,
+      "avg_loss": -0.51
+    }
+  },
+  "pad1.0/target2.0": {
+    "explore": {
+      "n": 450,
+      "won": 234,
+      "lost": 216,
+      "win_pct": 52.0,
+      "profit_pct": 19.71,
+      "avg_win": 0.63,
+      "avg_loss": -0.59
+    },
+    "holdout": {
+      "n": 212,
+      "won": 100,
+      "lost": 112,
+      "win_pct": 47.2,
+      "profit_pct": -10.81,
+      "avg_win": 0.46,
+      "avg_loss": -0.51
+    }
+  },
+  "pad1.0/target3.0": {
+    "explore": {
+      "n": 450,
+      "won": 234,
+      "lost": 216,
+      "win_pct": 52.0,
+      "profit_pct": 20.61,
+      "avg_win": 0.63,
+      "avg_loss": -0.59
+    },
+    "holdout": {
+      "n": 212,
+      "won": 100,
+      "lost": 112,
+      "win_pct": 47.2,
+      "profit_pct": -10.81,
+      "avg_win": 0.46,
+      "avg_loss": -0.51
+    }
+  },
+  "pad2.0/target1.0": {
+    "explore": {
+      "n": 450,
+      "won": 239,
+      "lost": 211,
+      "win_pct": 53.1,
+      "profit_pct": 16.72,
+      "avg_win": 0.43,
+      "avg_loss": -0.41
+    },
+    "holdout": {
+      "n": 210,
+      "won": 101,
+      "lost": 109,
+      "win_pct": 48.1,
+      "profit_pct": -4.12,
+      "avg_win": 0.35,
+      "avg_loss": -0.36
+    }
+  },
+  "pad2.0/target1.5": {
+    "explore": {
+      "n": 450,
+      "won": 237,
+      "lost": 213,
+      "win_pct": 52.7,
+      "profit_pct": 21.17,
+      "avg_win": 0.45,
+      "avg_loss": -0.41
+    },
+    "holdout": {
+      "n": 210,
+      "won": 101,
+      "lost": 109,
+      "win_pct": 48.1,
+      "profit_pct": -5.97,
+      "avg_win": 0.33,
+      "avg_loss": -0.36
+    }
+  },
+  "pad2.0/target2.0": {
+    "explore": {
+      "n": 450,
+      "won": 237,
+      "lost": 213,
+      "win_pct": 52.7,
+      "profit_pct": 19.89,
+      "avg_win": 0.45,
+      "avg_loss": -0.41
+    },
+    "holdout": {
+      "n": 210,
+      "won": 101,
+      "lost": 109,
+      "win_pct": 48.1,
+      "profit_pct": -5.97,
+      "avg_win": 0.33,
+      "avg_loss": -0.36
+    }
+  },
+  "pad2.0/target3.0": {
+    "explore": {
+      "n": 450,
+      "won": 237,
+      "lost": 213,
+      "win_pct": 52.7,
+      "profit_pct": 20.66,
+      "avg_win": 0.45,
+      "avg_loss": -0.41
+    },
+    "holdout": {
+      "n": 210,
+      "won": 101,
+      "lost": 109,
+      "win_pct": 48.1,
+      "profit_pct": -5.97,
+      "avg_win": 0.33,
+      "avg_loss": -0.36
+    }
+  }
+}
