@@ -36,6 +36,10 @@ on:
         description: "Targets, e.g. 2,3,level"
         required: false
         default: ""
+      win_after:
+        description: "Entry window minutes after the range ends"
+        required: false
+        default: "30"
 
 permissions:
   contents: write
@@ -67,6 +71,7 @@ jobs:
           IN_ORS: ${{ inputs.ors }}
           IN_PADS: ${{ inputs.pads }}
           IN_TARGETS: ${{ inputs.targets }}
+          IN_WIN: ${{ inputs.win_after }}
         run: |
           set -uo pipefail
           mkdir -p reports
@@ -76,6 +81,7 @@ jobs:
           [ -n "${IN_ORS:-}" ] && ARGS+=(--ors "${IN_ORS}") || true
           [ -n "${IN_PADS:-}" ] && ARGS+=(--pads "${IN_PADS}") || true
           [ -n "${IN_TARGETS:-}" ] && ARGS+=(--targets "${IN_TARGETS}") || true
+          [ -n "${IN_WIN:-}" ] && ARGS+=(--win-after "${IN_WIN}") || true
           set +e
           python -m src.widths "${ARGS[@]}" 2>&1 | tee reports/widths_run.log
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
