@@ -236,15 +236,38 @@ def test_slippage_hurts_both_ends():
     assert t["r"] < 2.0, "slippage must cost something"
 
 
-def test_the_hold_limit_closes_a_drifting_trade():
+def _drifting(minutes=200):
     rows = [("09:30", 99.0, 99.0, 99.0, 99.0, 1000)]
-    for k in range(1, 200):
+    for k in range(1, minutes):
         hh, mm = 9 + (30 + k) // 60, (30 + k) % 60
+        if hh > 15 or (hh == 15 and mm > 58):
+            break
         rows.append((f"{hh:02d}:{mm:02d}", 99.0, 99.2, 98.9, 99.0, 1000))
-    day = frame("2026-09-25", rows)
+    return frame("2026-09-25", rows)
+
+
+def test_by_default_nothing_closes_a_trade_but_the_stop_or_the_target():
+    """The 120-minute clock closed seven of eleven trades on 29 September
+    without one reaching a target. A position is now held until the rule
+    resolves it."""
+    day = _drifting()
     t = op.simulate(day, 0, 0, "short", 100.0, 1.0, dict(op.BASE))
-    assert t["reason"] == "time"
-    assert t["exit_time"] <= "11:31", "must be out within the hold limit"
+    assert t["reason"] == "open", "still running, not closed by a clock"
+
+
+def test_a_hold_cap_still_works_when_one_is_asked_for():
+    day = _drifting()
+    t = op.simulate(day, 0, 0, "short", 100.0, 1.0,
+                    {**op.BASE, "max_hold_min": 120})
+    assert t["reason"] == "time" and t["exit_time"] <= "11:31"
+
+
+def test_the_bell_is_reported_as_the_bell_not_as_a_result():
+    """An exit at 15:55 is the market shutting, not the rule concluding
+    anything. Filing it with stops and targets flatters both."""
+    day = _drifting(minutes=400)
+    t = op.simulate(day, 0, 0, "short", 100.0, 1.0, dict(op.BASE))
+    assert t["reason"] == "bell" and t["exit_time"] >= "15:55"
 
 
 # --- reporting ---------------------------------------------------------------
