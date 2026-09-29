@@ -67,6 +67,12 @@ log = logging.getLogger("opening")
 # --- fixed, not tuned --------------------------------------------------------
 PRE_START, PRE_END = "04:00", "09:29"
 WIN_START, WIN_END = "09:30", "10:00"   # when a break may be taken
+# How long AFTER the range completes a break may still be taken. The fixed
+# 10:00 close made longer ranges untestable rather than unprofitable: a
+# 30-minute range finished exactly as the window shut, so it produced 40
+# trades in 44 days, and a 60-minute range produced none at all. A window
+# measured from the end of the range gives every length the same chance.
+WIN_AFTER_RANGE_MIN = 30
 SCALE_WINDOW = ("09:30", "10:00")       # prior day, for the stop unit
 # NO HOLD CAP BY DEFAULT. A position is closed by its stop or its target and
 # by nothing else. The old 120-minute clock closed seven of eleven trades on
@@ -102,6 +108,8 @@ BASE = {
     "max_per_symbol": 1,     # one idea per symbol per day, not one per level
     "levels": "prior",       # prior | or | both
     "or_minutes": 5,         # the opening range, when levels includes "or"
+    "win_after_range_min": None,   # entry window length after the range ends;
+    #                                None keeps the fixed WIN_END
 }
 
 LEVEL_NAMES = ("pmh", "pml", "pdh", "pdl", "pdc", "orh", "orl")
@@ -184,7 +192,14 @@ def opening_breaks(rth: pd.DataFrame, levels: dict[str, float], scale: float,
     ref = float(rth["open"].iloc[0])
     close = rth["close"].astype(float).values
     times = rth.index.tz_convert(EASTERN).time
-    lo_t, hi_t = pd.Timestamp(WIN_START).time(), pd.Timestamp(WIN_END).time()
+    lo_t = pd.Timestamp(WIN_START).time()
+    after = p.get("win_after_range_min")
+    if after is None:
+        hi_t = pd.Timestamp(WIN_END).time()
+    else:
+        start = rth.index[0].tz_convert(EASTERN)
+        hi_t = (start + pd.Timedelta(minutes=int(p.get("or_minutes", 5))
+                                     + int(after))).time()
     pen = p["pen"] * scale
     want = p.get("side", "both")
 
