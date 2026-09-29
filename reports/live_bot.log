@@ -1,11 +1,15 @@
-2026-09-29 17:48:03,022 INFO 13:48:01 ET · bars through 13:40 · 19 trade(s) today · 2 new message(s)
+2026-09-29 18:01:56,200 INFO 14:01:53 ET · bars through 13:55 · 20 trade(s) today · 3 new message(s)
 
-❌ **CLOSED AAPL**  ·  13:35 ET
-Exit `$332.03` — hit stop
-**-1.00%**  (-$19.35)
+✅ **CLOSED AMD**  ·  13:55 ET
+Exit `$608.72` — hit target
+**+2.00%**  (+$37.04)
 
-🔻 **SHORT MSFT**  ·  13:20 ET
-Entry `$507.00`
-🛑 SL `$508.34`
-🎯 TP `$504.33`
-14 shares · risking `$18.72`  ·  __
+🔻 **SHORT NVDA**  ·  13:20 ET
+Entry `$229.04`
+🛑 SL `$229.53`
+🎯 TP `$228.06`
+40 shares · risking `$19.56`  ·  __
+
+✅ **CLOSED NVDA**  ·  13:55 ET
+Exit `$228.06` — hit target
+**+2.00%**  (+$39.11)
