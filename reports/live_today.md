@@ -70,3 +70,9 @@ _Paper only. No orders were placed._
 `SL       739.72`
 `TP       751.96`
 4 shares · _opening range_
+
+🔴 **SHORT AAPL**  ·  12:15 ET
+`Entry    336.71`
+`SL       337.80`
+`TP       334.55`
+18 shares · __
