@@ -11,12 +11,13 @@ name: In play — live
 #
 # Its own concurrency group. It writes its own record and posts to its own
 # webhook, so it has no reason to queue behind the main bot.
+#
+# PARKED 30 September. The webhook this job was pointed at belongs to the
+# channel Uday made for the swing / pre-earnings idea, so an intraday scanner
+# was posting day trades into a channel meant for a strategy we have not
+# built yet. The schedule is off until this has a channel of its own; manual
+# dispatch still works for testing against a dry run.
 on:
-  schedule:
-    - cron: "51 12 * * 1-5"
-    - cron: "51 13 * * 1-5"
-    - cron: "11 13 * * 1-5"
-    - cron: "11 14 * * 1-5"
   workflow_dispatch:
     inputs:
       dry_run:
