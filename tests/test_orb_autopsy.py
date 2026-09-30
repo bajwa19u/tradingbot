@@ -114,3 +114,21 @@ def test_avgo_is_out_of_the_universe():
 
 def test_rows_never_mention_r_multiples():
     assert "R" not in a.row("x", a.tally([brk("A", "d", 1, pct=1.0)]))
+
+
+def test_binary_candidates_are_judged_on_both_splits():
+    """A filter positive on explore and negative on holdout is a
+    coincidence. The report must show both rather than the better one."""
+    src = open("src/orb_autopsy.py").read()
+    i = src.index("Candidate filters, explore against holdout")
+    j = src.index("Which feature separates", i)
+    block = src[i:j]
+    assert 'e2["profit_pct"] > 0 and h2["profit_pct"] > 0' in block
+    assert 'h2["n"] >= 30' in block, "a survivor needs a real holdout sample"
+
+
+def test_the_separation_column_is_known_to_miss_binaries():
+    """with_gap showed a 40-point profit swing and the separation table
+    scored every feature as noise, because it never tested a boolean."""
+    src = open("src/orb_autopsy.py").read()
+    assert "condition is invisible to it" in src
