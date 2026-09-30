@@ -34,9 +34,9 @@ def test_entry_message_has_the_five_things_asked_for():
 
 
 def test_the_entry_message_is_short_enough_to_read_on_a_phone():
-    """Five lines: name, entry, stop, target, size. Nothing else."""
+    """Three lines: who, the prices, the size."""
     m = lb.entry_msg(trade(rule="opening", level_name="orl"))
-    assert len(m.splitlines()) == 5
+    assert len(m.splitlines()) == 3
 
 
 def test_a_retest_trade_gets_no_opening_footnote():
@@ -57,10 +57,13 @@ def test_close_message_is_a_percentage_not_a_multiple():
     assert "R" not in m.replace("SHORT", "").replace("AMD", "")
 
 
-def test_close_message_survives_a_missing_cash_figure():
-    m = lb.close_msg(trade(exit=627.42, exit_time="09:33", reason="stop",
-                           pct=-1.0, cash=None))
-    assert "-1.00%" in m and "❌" in m and "+$0.00" in m
+def test_no_message_carries_a_dollar_figure():
+    """Prices are bare numbers and results are percentages. Cash amounts are
+    gone entirely."""
+    t = trade(exit=627.42, exit_time="09:33", reason="stop", pct=-1.0)
+    blob = (lb.entry_msg(t) + lb.close_msg(t)
+            + lb.summary_msg([t], "Tuesday 30 September"))
+    assert "$" not in blob
 
 
 def test_hold_limit_exit_is_explained_in_english():
@@ -79,7 +82,7 @@ def test_summary_counts_winners_and_losers_and_a_total():
                 reason="target")]
     m = lb.summary_msg(ts, "Tuesday 29 September")
     assert "3 trades" in m and "2 won, 1 lost" in m and "67% win rate" in m
-    assert "+3.00%" in m and "+$45.00" in m
+    assert "+3.00%" in m
 
 
 def test_summary_ignores_positions_that_are_still_open():
@@ -193,8 +196,7 @@ def test_every_signal_has_the_same_shape():
     b = lb.entry_msg(trade(rule="opening", level_name="orl"))
     for m in (a, b):
         assert "WATCHING" not in m and "tracking only" not in m
-        assert "shares" in m and "risking" in m
-        assert "🛑" in m and "🎯" in m
+        assert "shares" in m and "🛑" in m and "🎯" in m
 
 
 def test_the_entry_says_which_setup_it_came_from():
@@ -213,7 +215,7 @@ def test_closes_have_one_shape_too():
                            reason="target", pct=2.0, cash=31.2))
     for m in (a, b):
         assert "WATCHED" not in m and "no position was taken" not in m
-        assert "CLOSED" in m and "+2.00%" in m
+        assert "+2.00%" in m and "→" in m
 
 
 def test_the_recap_is_one_list():
@@ -226,18 +228,11 @@ def test_the_recap_is_one_list():
     assert "2 trades · 1 won, 1 lost" in m and "+1.00%" in m
 
 
-def test_the_cash_total_sits_on_the_totals_line():
-    """It once landed on the last trade's line, which read as though that
-    one losing trade had made $146."""
-    ts = [trade(id="a", exit=1.0, pct=2.0, cash=40.0, exit_time="10:00",
-                reason="target"),
-          trade(id="b", exit=1.0, pct=-1.0, cash=-20.0, exit_time="10:10",
-                reason="stop")]
+def test_the_recap_totals_a_percentage():
+    ts = [trade(id="a", exit=1.0, pct=2.0, exit_time="10:00", reason="target"),
+          trade(id="b", exit=1.0, pct=-1.0, exit_time="10:20", reason="stop")]
     m = lb.summary_msg(ts, "Tuesday 29 September")
-    lines = m.splitlines()
-    total = next(l for l in lines if l.startswith("**+1.00%"))
-    assert "+$20.00" in total
-    assert not any("+$20.00" in l for l in lines if l.startswith(("✅", "❌")))
+    assert any(l.startswith("**+1.00%") for l in m.splitlines())
 
 
 def test_two_breaks_on_the_same_bar_get_different_ids():
@@ -296,3 +291,88 @@ def test_the_warning_reaches_the_daily_recap():
                 reason="stop") for i in range(6)]
     m = lb.summary_msg(ts, "Tuesday 29 September")
     assert "⚠️" in m and "one market move" in m
+
+
+# --- one message per trade, edited in place ----------------------------------
+def _tick(monkeypatch, tmp_path, trades, posts, edits, mid="m1"):
+    monkeypatch.setattr(lb, "STATE", tmp_path)
+    monkeypatch.setattr(lb, "REPORTS", tmp_path)
+    monkeypatch.setattr(lb, "scan", lambda cfg: ([], "09:40", False))
+    monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: trades)
+    monkeypatch.setattr(lb.dm, "post",
+                        lambda url, text: posts.append(text) or mid)
+    monkeypatch.setattr(lb.dm, "edit",
+                        lambda url, m, text: edits.append((m, text)) is None)
+    lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
+
+
+def test_an_entry_posts_once_and_its_id_is_remembered(monkeypatch, tmp_path):
+    posts, edits = [], []
+    _tick(monkeypatch, tmp_path, [trade(id="t1")], posts, edits)
+    import json
+    seen = json.loads((tmp_path / lb.SEEN_FILE).read_text())
+    cards = [t for t in posts if "SHORT" in t or "LONG" in t]
+    assert len(cards) == 1 and seen["cards"]["t1"] == "m1"
+
+
+def test_a_close_edits_the_card_instead_of_posting_again(monkeypatch, tmp_path):
+    posts, edits = [], []
+    monkeypatch.setattr(lb, "STATE", tmp_path)
+    (tmp_path / lb.SEEN_FILE).write_text(
+        '{"date": "%s", "entries": ["t1"], "exits": [], "summary": true,'
+        ' "cards": {"t1": "m1"}}' % str(pd.Timestamp.now(tz=lb.EASTERN).date()))
+    _tick(monkeypatch, tmp_path,
+          [trade(id="t1", exit=611.0, exit_time="10:40", reason="target",
+                 pct=2.0)], posts, edits)
+    assert edits and edits[0][0] == "m1"
+    assert not posts, "the result must rewrite the card, not add a message"
+
+
+def test_a_close_falls_back_to_its_own_message_if_the_edit_fails(monkeypatch,
+                                                                 tmp_path):
+    """A dropped result is worse than an extra message."""
+    posts = []
+    monkeypatch.setattr(lb, "STATE", tmp_path)
+    (tmp_path / lb.SEEN_FILE).write_text(
+        '{"date": "%s", "entries": ["t1"], "exits": [], "summary": true,'
+        ' "cards": {"t1": "gone"}}' % str(pd.Timestamp.now(tz=lb.EASTERN).date()))
+    monkeypatch.setattr(lb, "REPORTS", tmp_path)
+    monkeypatch.setattr(lb, "scan", lambda cfg: ([], "09:40", False))
+    monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: [
+        trade(id="t1", exit=611.0, exit_time="10:40", reason="target", pct=2.0)])
+    monkeypatch.setattr(lb.dm, "post", lambda url, text: posts.append(text) or "m2")
+    monkeypatch.setattr(lb.dm, "edit", lambda url, m, text: False)
+    lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
+    assert len(posts) == 1 and "+2.00%" in posts[0]
+
+
+def test_a_close_with_no_card_posts_on_its_own(monkeypatch, tmp_path):
+    """State written before cards existed must still deliver results."""
+    posts, edits = [], []
+    monkeypatch.setattr(lb, "STATE", tmp_path)
+    (tmp_path / lb.SEEN_FILE).write_text(
+        '{"date": "%s", "entries": ["t1"], "exits": [], "summary": true}'
+        % str(pd.Timestamp.now(tz=lb.EASTERN).date()))
+    _tick(monkeypatch, tmp_path,
+          [trade(id="t1", exit=611.0, exit_time="10:40", reason="target",
+                 pct=2.0)], posts, edits, mid="m2")
+    assert len(posts) == 1 and not edits
+
+
+def test_a_dry_run_never_touches_discord(monkeypatch, tmp_path):
+    posts, edits = [], []
+    monkeypatch.setattr(lb, "STATE", tmp_path)
+    monkeypatch.setattr(lb, "REPORTS", tmp_path)
+    monkeypatch.setattr(lb, "scan", lambda cfg: ([], "09:40", False))
+    monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: [trade(id="t1")])
+    monkeypatch.setattr(lb.dm, "post", lambda url, text: posts.append(text) or "m")
+    monkeypatch.setattr(lb.dm, "edit", lambda url, m, text: edits.append(m) is None)
+    lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=True)
+    assert not posts and not edits
+
+
+def test_the_watchlist_is_the_live_universe():
+    from src.forensics import LIVE
+    assert lb.WATCHLIST == LIVE
+    assert "SPY" in LIVE and "QQQ" in LIVE
+    assert "AVGO" not in LIVE
