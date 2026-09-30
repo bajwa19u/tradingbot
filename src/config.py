@@ -76,6 +76,10 @@ class Credentials:
     alpaca_key: str = ""
     alpaca_secret: str = ""
     discord_webhook: str = ""
+    # A second channel, for a strategy that is not the one in the main feed.
+    # Keeping the feeds apart is the point: two rules with different evidence
+    # behind them should not be read as one stream of signals.
+    discord_webhook_inplay: str = ""
     telegram_token: str = ""
     telegram_chat_id: str = ""
     smtp_host: str = ""
@@ -89,6 +93,7 @@ class Credentials:
             alpaca_key=os.environ.get("ALPACA_API_KEY", ""),
             alpaca_secret=os.environ.get("ALPACA_API_SECRET", ""),
             discord_webhook=os.environ.get("DISCORD_WEBHOOK_URL", ""),
+            discord_webhook_inplay=os.environ.get("DISCORD_WEBHOOK_INPLAY", ""),
             telegram_token=os.environ.get("TELEGRAM_BOT_TOKEN", ""),
             telegram_chat_id=os.environ.get("TELEGRAM_CHAT_ID", ""),
             smtp_host=os.environ.get("SMTP_HOST", ""),
