@@ -1,0 +1,83 @@
+name: Data probe
+
+# Can the runner reach a source of historical EARNINGS DATES?
+#
+# Neither the cloud container nor the laptop can - both sit behind proxies
+# that refuse everything but a small allowlist. The runner is the only place
+# in this setup with open internet, and the pre-earnings study is not
+# buildable at all without a date for every report going back years. So this
+# asks the question once, cheaply, before any of it gets written.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with: { python-version: "3.12" }
+      - run: pip install --quiet requests yfinance
+      - name: Probe
+        run: |
+          mkdir -p reports
+          python - <<'PY' 2>&1 | tee reports/probe.md
+          import json, warnings
+          warnings.filterwarnings("ignore")
+          import requests
+          H = {"User-Agent": "tradingbot research bajwa19u@gmail.com"}
+          print("# Earnings-date sources, from the runner\n")
+          print("| source | result |")
+          print("|---|---|")
+
+          def row(name, fn):
+              try:
+                  print(f"| {name} | {fn()} |")
+              except Exception as e:
+                  print(f"| {name} | FAILED — {type(e).__name__}: {str(e)[:70]} |")
+
+          def sec():
+              r = requests.get("https://data.sec.gov/submissions/CIK0000320193.json",
+                               headers=H, timeout=25)
+              j = r.json()["filings"]["recent"]
+              n = sum(1 for f in j["form"] if f == "8-K")
+              return f"OK — {len(j['form'])} filings, {n} of them 8-K"
+
+          def nasdaq():
+              r = requests.get("https://api.nasdaq.com/api/calendar/earnings",
+                               params={"date": "2026-01-29"}, headers=H, timeout=25)
+              rows = r.json()["data"]["rows"]
+              return f"OK — {len(rows)} companies reporting that day"
+
+          def yahoo():
+              import yfinance as yf
+              d = yf.Ticker("AAPL").get_earnings_dates(limit=24)
+              return f"OK — {len(d)} AAPL earnings dates, back to {d.index[-1].date()}"
+
+          def yahoo_hist():
+              import yfinance as yf
+              h = yf.Ticker("AAPL").history(period="10y", interval="1d")
+              return f"OK — {len(h)} daily bars from {h.index[0].date()}"
+
+          row("SEC EDGAR (8-K filings)", sec)
+          row("Nasdaq earnings calendar", nasdaq)
+          row("Yahoo earnings dates", yahoo)
+          row("Yahoo 10y daily bars", yahoo_hist)
+          PY
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/probe.md
+          git diff --cached --quiet || {
+            git commit -m "probe: earnings-date sources [skip ci]"
+            git fetch origin main && git reset --soft origin/main
+            git add reports/probe.md && git commit -m "probe: earnings-date sources [skip ci]"
+            git push origin HEAD:main; }
+      - run: cat reports/probe.md >> "$GITHUB_STEP_SUMMARY"
+        if: always()
