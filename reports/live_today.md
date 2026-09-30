@@ -1,11 +1,12 @@
 📊 **2026-09-30**
 
-**8 trades · 1 won, 7 lost · 12% win rate**
-**-5.42%**
+**9 trades · 1 won, 8 lost · 11% win rate**
+**-6.45%**
 ❌ META 09:36→09:54  -1.04%
 ❌ AMZN 09:39→09:46  -1.10%
 ❌ TSLA 09:45→13:33  -1.03%
 ❌ SPY 09:46→09:54  -1.25%
+❌ GOOGL 09:49→15:52  -1.03%
 ❌ AMD 12:35→12:45  -1.00%
 ❌ MSFT 13:30→13:40  -1.00%
 ❌ QQQ 13:30→13:45  -1.00%
@@ -61,11 +62,12 @@ _Paper only. No orders were placed._
 `TP       340.36`
 5 shares · _opening range_
 
-🟢 **LONG GOOGL**  ·  09:49 ET
+❌ **LONG GOOGL**  ·  09:49 → 15:52
 `Entry    349.11`
 `SL       344.17`
 `TP       359.01`
-4 shares · _opening range_
+`Exit     343.99`  hit stop
+**-1.03%** · _opening range_
 
 🟢 **LONG NVDA**  ·  09:59 ET
 `Entry    231.52`
