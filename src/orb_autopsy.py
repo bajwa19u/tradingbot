@@ -219,6 +219,46 @@ def report(ts: list[dict], universe: str, or_min: int, pad: float,
                             lambda a, b: f"{a:g}x–{b:g}x the range average"):
         L.append(row(lab, tally(grp)))
 
+    # The separation yardstick only speaks to CONTINUOUS features - it
+    # compares the mean of winners against the mean of losers. A binary
+    # condition is invisible to it, which is how the biggest split in this
+    # whole report (with the gap against against it) came within a hair of
+    # being dismissed as noise by a column that never tested it.
+    CANDIDATES = {
+        "with the gap": lambda t: t["with_gap"],
+        "volume 1.2x+": lambda t: t["push"] >= 1.2,
+        "crowd of 5+": lambda t: t["cohort"] >= 5,
+        "with the gap AND volume 1.2x+":
+            lambda t: t["with_gap"] and t["push"] >= 1.2,
+        "with the gap AND crowd of 5+":
+            lambda t: t["with_gap"] and t["cohort"] >= 5,
+    }
+    L += ["", "## Candidate filters, explore against holdout", "",
+          "A filter is only worth anything if it survives dates it was not "
+          "chosen on. Both splits are shown side by side so a filter that "
+          "only works on one cannot be presented as a finding.", "",
+          "| filter | explore trades | explore win % | explore profit % | "
+          "holdout trades | holdout win % | holdout profit % |",
+          "|---|---|---|---|---|---|---|"]
+    def line(name, keep):
+        e2, h2 = tally([t for t in ex if keep(t)]), tally([t for t in ho if keep(t)])
+        return (f"| {name} | {e2['n']} | {e2['win_pct']:.1f}% | "
+                f"{e2['profit_pct']:+.1f}% | {h2['n']} | {h2['win_pct']:.1f}% | "
+                f"{h2['profit_pct']:+.1f}% |"), e2, h2
+    survivors = []
+    L.append(line("no filter (everything)", lambda t: True)[0])
+    for name, keep in CANDIDATES.items():
+        txt, e2, h2 = line(name, keep)
+        L.append(txt)
+        if e2["profit_pct"] > 0 and h2["profit_pct"] > 0 and h2["n"] >= 30:
+            survivors.append((name, e2, h2))
+    L += ["", "**Survives both splits:** "
+          + (", ".join(f"{n} (explore {e['profit_pct']:+.1f}%, holdout "
+                       f"{h['profit_pct']:+.1f}%)" for n, e, h in survivors)
+             if survivors else
+             "none. Every candidate is positive on one split and not the "
+             "other, which is what a coincidence looks like."), ""]
+
     L += ["", "## Which feature separates winners from losers at all", "",
           "Pooled standard deviations between the winning and losing groups. "
           "Under about 0.3 is noise — that threshold has already retired two "
