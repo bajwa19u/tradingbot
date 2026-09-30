@@ -1,3 +1,8 @@
-2026-09-29 21:40:18,522 INFO Screen >= 3.0%: kept 35 of 36
-2026-09-29 21:40:18,837 INFO 0 closed, 0 open, +0.0%, worst drop 0.0%
-2026-09-29 21:40:18,837 INFO Nothing changed today — staying quiet.
+2026-09-30 21:42:25,542 ERROR Data fetch failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
