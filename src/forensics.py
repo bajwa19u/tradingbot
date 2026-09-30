@@ -90,6 +90,15 @@ FRESH = [
 # project has already used - so results here are IN-SAMPLE and confirm
 # nothing. The familiar names are the most misleading precisely because a
 # number on NVDA feels more real than the same number on RDW.
+# Big tech only, AVGO dropped: over the live record and the backtests it
+# never contributed a winner worth the slot. NFLX and ORCL are added because
+# they are unambiguously in the same bucket and more names means more breaks
+# to measure, which is the whole point of an autopsy.
+BIGTECH = [
+    "AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META", "TSLA", "AMD",
+    "MU", "PLTR", "SMCI", "NFLX", "ORCL",
+]
+
 CORE = [
     # the ones everyone watches
     "NVDA", "TSLA", "AMD", "AAPL", "MSFT", "META", "AMZN", "GOOGL",
@@ -98,7 +107,8 @@ CORE = [
 ]
 TECH10 = CORE          # old name, kept so nothing breaks
 
-UNIVERSES = {"research": RESEARCH, "holdout": HOLDOUT, "movers": MOVERS,
+UNIVERSES = {
+    "bigtech": BIGTECH,"research": RESEARCH, "holdout": HOLDOUT, "movers": MOVERS,
              "core": CORE, "tech10": CORE,
              "fresh": FRESH,
              "wide": WIDE}
