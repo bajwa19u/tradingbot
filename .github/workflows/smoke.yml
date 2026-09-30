@@ -1,0 +1,58 @@
+name: Alpaca paper — pre-market check
+
+# Runs at 09:00 Eastern, half an hour before the bell, and says in Discord
+# whether the paper account can trade today.
+#
+# It places no orders. It proves the keys authenticate, the account has
+# options enabled, a real chain comes back with real quotes, contract
+# selection picks something from it, and the caps are untouched. The one
+# thing it cannot prove is that a fill happens.
+#
+# A red run means the live job must not send anything to a broker. Discord
+# signals are unaffected either way.
+
+on:
+  schedule:
+    - cron: "0 13 * * 1-5"      # 09:00 Eastern in summer
+    - cron: "0 14 * * 1-5"      # 09:00 Eastern in winter
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Print the result instead of sending it to Discord"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: smoke
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: Check the paper account
+        env:
+          ALPACA_PAPER_KEY: ${{ secrets.ALPACA_PAPER_KEY }}
+          ALPACA_PAPER_SECRET: ${{ secrets.ALPACA_PAPER_SECRET }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          IN_DRY: ${{ inputs.dry_run }}
+        run: |
+          set -uo pipefail
+          ARGS=()
+          if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
+          python -m src.smoke "${ARGS[@]}" 2>&1 | tee /tmp/smoke.log
+          code=${PIPESTATUS[0]}
+          { echo '```'; cat /tmp/smoke.log; echo '```'; } \
+            >> "$GITHUB_STEP_SUMMARY"
+          exit "$code"
