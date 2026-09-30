@@ -1,8 +1,39 @@
-2026-09-30 17:37:34,809 INFO 13:37:32 ET · bars through 13:30 · 12 trade(s) today · 1 new message(s)
+2026-09-30 17:52:57,157 INFO 13:52:55 ET · bars through 13:45 · 16 trade(s) today · 6 new message(s)
 
-❌ **SHORT TSLA**  ·  09:45 → 13:33
-`Entry    346.15`
-`SL       352.49`
-`TP       333.45`
-`Exit     352.67`  hit stop
-**-1.03%** · _opening range_
+🔴 **SHORT META**  ·  13:20 ET
+`Entry    734.64`
+`SL       736.82`
+`TP       730.27`
+9 shares · __
+
+🔴 **SHORT MSFT**  ·  13:30 ET
+`Entry    517.19`
+`SL       518.18`
+`TP       515.20`
+20 shares · __
+
+❌ **SHORT MSFT**  ·  13:30 → 13:40
+`Entry    517.19`
+`SL       518.18`
+`TP       515.20`
+`Exit     518.18`  hit stop
+**-1.00%** · __
+
+🔴 **SHORT QQQ**  ·  13:30 ET
+`Entry    742.75`
+`SL       743.74`
+`TP       740.77`
+20 shares · __
+
+❌ **SHORT QQQ**  ·  13:30 → 13:45
+`Entry    742.75`
+`SL       743.74`
+`TP       740.77`
+`Exit     743.74`  hit stop
+**-1.00%** · __
+
+🔴 **SHORT SPY**  ·  13:35 ET
+`Entry    767.37`
+`SL       768.17`
+`TP       765.78`
+25 shares · __
