@@ -158,8 +158,11 @@ def load_seen(date: str) -> dict:
     return {**blank, **{k: s.get(k, blank[k]) for k in blank}}
 
 
-def tick(cfg: dict, dry_run: bool) -> int:
-    now = pd.Timestamp.now(tz=EASTERN)
+def tick(cfg: dict, dry_run: bool, now: pd.Timestamp | None = None) -> int:
+    # `now` is injectable so tests can pin the clock. They used to read the
+    # real one, which meant every test that reached the end-of-day summary
+    # passed in the morning and failed after 16:00 Eastern.
+    now = now if now is not None else pd.Timestamp.now(tz=EASTERN)
     try:
         trades, picks, stamp = scan(cfg, now)
     except AlpacaError as exc:

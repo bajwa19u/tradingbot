@@ -49,6 +49,7 @@ import pandas as pd
 from .config import REPO_ROOT, Credentials
 from .data import AlpacaError, MarketData
 from .forensics import BIGTECH, UNIVERSES
+from . import confidence as conf
 from . import opening as op
 from .live_bot import OPENING
 
@@ -71,8 +72,10 @@ def cfg(or_minutes: int, pad: float) -> dict:
     return p
 
 
-def minute_of(hhmm: str) -> int:
-    return int(hhmm[:2]) * 60 + int(hhmm[3:5]) - (9 * 60 + 30)
+# Shared with the live bot on purpose: the confidence levels it shows are
+# these buckets, so the two must measure "minutes since the bell" and
+# "how many broke together" the same way or the labels mean nothing.
+minute_of = conf.minute_of
 
 
 def label_all(data: dict[str, pd.DataFrame], p: dict) -> list[dict]:

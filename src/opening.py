@@ -330,6 +330,20 @@ def simulate(rth: pd.DataFrame, i: int, j: int, side: str, level: float,
     deadline = (times[j] + pd.Timedelta(minutes=int(cap))) if cap else None
     flat = pd.Timestamp(FORCE_EXIT).time()
 
+    # --- profit protection, all off unless asked for -------------------------
+    # Every rule below reads the bar's CLOSE, never its high or low. A rule
+    # that fires on the extreme of a bar claims a fill at a price that existed
+    # for an instant, which is how a backtest invents money it could not have
+    # taken. The stop and the target keep using high and low because those are
+    # resting orders that really would have been touched.
+    near_after = p.get("near_target_after")             # minutes in the trade
+    near_frac = float(p.get("near_target_frac", 0.0))   # share of the way there
+    give_frac = float(p.get("giveback_frac", 0.0))      # of the best it showed
+    give_arm = float(p.get("giveback_arm_pct", 0.5)) / 100.0
+    be_pct = float(p.get("breakeven_after_pct", 0.0)) / 100.0
+    span = abs(target - entry)
+    peak = 0.0
+
     px, why, k_out = None, None, len(rth) - 1
     for k in range(j + 1, len(rth)):
         b = rth.iloc[k]
@@ -347,6 +361,32 @@ def simulate(rth: pd.DataFrame, i: int, j: int, side: str, level: float,
             px, why = float(b["close"]), "bell"
         if px is not None:
             break
+
+        c = float(b["close"])
+        gain = (entry - c) if side == "short" else (c - entry)
+        held = (times[k] - times[j]).total_seconds() / 60.0
+
+        # Close enough, and it has had long enough. AAPL on 30 September came
+        # within 86 cents of a 2% target and then went all the way back to
+        # flat; this is the rule that would have banked it.
+        if (near_after is not None and held >= float(near_after)
+                and span > 0 and gain >= near_frac * span):
+            px, why = c, "near target"
+            break
+
+        # Hand back no more than a share of the best it ever showed - but only
+        # once it has shown enough to be worth protecting, or the rule fires on
+        # the first tick of noise.
+        if give_frac and peak >= give_arm * entry and gain <= (1 - give_frac) * peak:
+            px, why = c, "gave back"
+            break
+
+        peak = max(peak, (entry - lo) if side == "short" else (hi - entry))
+
+        # Breakeven applies from the NEXT bar, because the peak that arms it
+        # happened inside this one. min/max so the stop can only tighten.
+        if be_pct and peak >= be_pct * entry:
+            stop = min(stop, entry) if side == "short" else max(stop, entry)
     if px is None:
         # Neither side was hit and neither deadline has passed, so the trade
         # is simply still running. Backtests almost never land here; the live
@@ -406,6 +446,15 @@ def day_trades(day_ext: pd.DataFrame, prior_rth: pd.DataFrame,
         j = entry_index(rth, i, side, level, scale, p)
         if j is None:
             continue
+        # Stop taking new trades after the morning. The autopsy is blunt about
+        # this: breaks 30-45 minutes after the bell lost 28% over the period
+        # and everything later kept losing, while the first half hour made
+        # money. Off unless a caller sets it.
+        cutoff = p.get("entry_before_min")
+        if cutoff is not None:
+            held = (rth.index[j] - rth.index[0]).total_seconds() / 60.0
+            if held > float(cutoff):
+                continue
         t = simulate(rth, i, j, side, level, scale, p, levels=targets)
         if t is None:
             continue

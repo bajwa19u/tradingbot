@@ -196,7 +196,10 @@ def test_every_signal_has_the_same_shape():
     b = lb.entry_msg(trade(rule="opening", level_name="orl"))
     for m in (a, b):
         assert "WATCHING" not in m and "tracking only" not in m
-        assert "shares" in m and "SL" in m and "TP" in m
+        assert "SL" in m and "TP" in m
+        # The share count came out on 30 September: position size belongs to
+        # one account, and a card printing it reads as an instruction.
+        assert "share" not in m
 
 
 def test_the_entry_says_which_setup_it_came_from():

@@ -9,6 +9,12 @@ import pytest
 from src import inplay_bot as b
 
 
+# Pinned to the middle of a session. Without this the end-of-day summary
+# fires whenever the suite happens to run after 16:00 Eastern, and tests that
+# count Discord posts fail every evening.
+MIDDAY = pd.Timestamp("2026-09-30 11:00", tz=b.EASTERN)
+
+
 def trade(**kw):
     t = {"id": "IP-NVDA-orl-2026-10-01", "rule": "inplay", "symbol": "NVDA",
          "side": "short", "entry_time": "09:36", "entry": 182.40,
@@ -35,7 +41,7 @@ def test_it_posts_to_its_own_webhook(monkeypatch, tmp_path):
     monkeypatch.setattr(b.dm, "post", lambda url, text: used.append(url) or "m1")
     monkeypatch.setenv("DISCORD_WEBHOOK_INPLAY", "https://second")
     monkeypatch.setenv("DISCORD_WEBHOOK_URL", "https://main")
-    b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
+    b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False, now=MIDDAY)
     assert used and all(u == "https://second" for u in used)
 
 
@@ -46,7 +52,7 @@ def test_nothing_is_sent_when_the_second_webhook_is_missing(monkeypatch,
     monkeypatch.setenv("DISCORD_WEBHOOK_INPLAY", "")
     sent = []
     monkeypatch.setattr(b.dm, "post", lambda url, text: sent.append(url) or "m")
-    assert b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False) == 0
+    assert b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False, now=MIDDAY) == 0
     assert not sent, "it must never fall back to the main channel"
 
 
@@ -70,7 +76,7 @@ def test_a_run_that_sent_nothing_leaves_the_record_alone(monkeypatch, tmp_path):
     monkeypatch.setattr(b, "REPORTS", tmp_path)
     monkeypatch.setattr(b, "scan", lambda cfg, now: ([], [], "—"))
     monkeypatch.setenv("DISCORD_WEBHOOK_INPLAY", "https://second")
-    b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
+    b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False, now=MIDDAY)
     assert not (tmp_path / b.SEEN_FILE).exists()
 
 
@@ -89,7 +95,7 @@ def test_a_close_edits_the_card(monkeypatch, tmp_path):
     monkeypatch.setattr(b.dm, "edit", lambda u, m, t: edits.append(m) is None)
     monkeypatch.setattr(b.dm, "post", lambda u, t: posts.append(t) or "m2")
     monkeypatch.setenv("DISCORD_WEBHOOK_INPLAY", "https://second")
-    b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
+    b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False, now=MIDDAY)
     assert edits == ["m1"] and not posts
 
 
@@ -102,9 +108,9 @@ def test_the_ranking_is_announced_once(monkeypatch, tmp_path):
     posts = []
     monkeypatch.setattr(b.dm, "post", lambda u, t: posts.append(t) or "m")
     monkeypatch.setenv("DISCORD_WEBHOOK_INPLAY", "https://second")
-    b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
+    b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False, now=MIDDAY)
     assert len(posts) == 1 and "In play" in posts[0] and "NVDA" in posts[0]
-    b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
+    b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False, now=MIDDAY)
     assert len(posts) == 1, "the ranking is news once, not every minute"
 
 
@@ -128,5 +134,5 @@ def test_a_dry_run_sends_nothing(monkeypatch, tmp_path):
     monkeypatch.setattr(b, "scan", lambda cfg, now: ([trade()], [], "09:40"))
     sent = []
     monkeypatch.setattr(b.dm, "post", lambda u, t: sent.append(t) or "m")
-    b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=True)
+    b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=True, now=MIDDAY)
     assert not sent

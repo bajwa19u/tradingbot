@@ -1894,10 +1894,11 @@ def _live_trade(**kw):
 def test_live_entry_message_has_the_five_things_needed_to_act():
     from src.live_bot import entry_msg
     m = entry_msg(_live_trade())
-    for piece in ("NVDA", "14:25", "182.40", "184.10", "179.00", "11 shares"):
+    for piece in ("NVDA", "14:25", "182.40", "184.10", "179.00"):
         assert piece in m, piece
     assert "SL" in m and "TP" in m
     assert "$" not in m, "prices are bare numbers now"
+    assert "share" not in m, "size is the reader's business, not the card's"
 
 
 def test_live_close_message_states_why_and_how_much():

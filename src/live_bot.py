@@ -42,6 +42,7 @@ from zoneinfo import ZoneInfo
 
 import pandas as pd
 
+from . import confidence as conf
 from . import discord_msg as dm
 from . import opening as op
 from .config import REPO_ROOT, Credentials
@@ -219,6 +220,12 @@ def opening_scan(cfg: dict, now: pd.Timestamp) -> list[dict]:
         if len(days) < 2 or days[-1][0] != today:
             continue
         _, prior = op.split_session(days[-2][1])
+        _, rth = op.split_session(days[-1][1])
+        # The overnight gap, which is half of the confidence level. Both legs
+        # are known before the range even forms, so nothing here reads ahead.
+        gap = (conf.gap_pct(float(rth["open"].iloc[0]),
+                            float(prior["close"].iloc[-1]))
+               if len(rth) and len(prior) else 0.0)
         for t in op.day_trades(days[-1][1], prior, OPENING):
             rps, live = t["rps"], t["reason"] == "open"
             n = shares(t["entry"], rps, cfg["equity"], cfg["risk_pct"])
@@ -230,11 +237,17 @@ def opening_scan(cfg: dict, now: pd.Timestamp) -> list[dict]:
                 "shares": n, "risk": round(n * rps, 2),
                 "observe": bool(OPENING.get("observe")),
                 "level": t["level"], "level_name": t["level_name"],
+                "gap": round(gap, 2),
+                "with_gap": conf.with_gap(gap, t["side"]),
+                "minute": conf.minute_of(t["break_time"]),
                 "exit": None if live else round(t["exit"], 2),
                 "exit_time": None if live else t["exit_time"],
                 "reason": None if live else t["reason"],
                 "pct": None if live else round(t["pct"], 2),
                 "cash": None if live else round(n * rps * t["r"], 2)})
+    # How many names broke the same way at the same time - the other half of
+    # the confidence level, and only answerable once every symbol is in.
+    conf.tag(out)
     # Both sides are computed so the forward record is complete; only the
     # posting sides reach the feed. Everything lands in the day file either
     # way, which is what the later study will read.
@@ -265,21 +278,29 @@ def card(t: dict) -> str:
     # it closes, because those are the two things worth seeing at a glance.
     # The stop and target sit in a code block so the numbers line up in a
     # column instead of wrapping into the prose.
+    #
+    # No share count. Position size is a property of one account, and a card
+    # that prints it reads like an instruction to buy that many.
     if t.get("exit") is None:
-        size = (f"{t['shares']} share{'s' if t['shares'] != 1 else ''}"
-                if t["shares"] else "**0 — too small for the account**")
+        why = conf.note(t)
         return (f"{'🔴' if short else '🟢'} **{side}**  ·  {t['entry_time']} ET\n"
-                f"{levels}\n{size} · _{setup}_")
+                f"{levels}\n"
+                + (f"{why}\n" if why else "")
+                + f"_{setup}_")
 
     won = (t["pct"] or 0) > 0
     why = {"target": "hit target", "stop": "hit stop",
            "bell": "closed at the bell",
            "time": "closed on the hold limit"}.get(t["reason"], t["reason"])
+    # The level it was given stays on the closed card too. A confidence
+    # scheme nobody can audit after the fact is decoration.
+    lv = conf.level(t)
+    badge = f"{conf.LABEL[lv]} · " if lv else ""
     return (f"{'✅' if won else '❌'} **{side}**  ·  "
             f"{t['entry_time']} → {t['exit_time']}\n"
             f"{levels}\n"
             f"`Exit  {t['exit']:>9,.2f}`  {why}\n"
-            f"**{t['pct']:+.2f}%** · _{setup}_")
+            f"**{t['pct']:+.2f}%** · {badge}_{setup}_")
 
 
 def entry_msg(t: dict) -> str:
