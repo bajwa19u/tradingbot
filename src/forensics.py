@@ -94,6 +94,14 @@ FRESH = [
 # never contributed a winner worth the slot. NFLX and ORCL are added because
 # they are unambiguously in the same bucket and more names means more breaks
 # to measure, which is the whole point of an autopsy.
+# What the bot actually trades. The megacaps everyone watches, plus the two
+# index ETFs - the Nasdaq itself is an index and cannot be bought, so QQQ is
+# the tradeable version of it, and SPY the same for the S&P.
+LIVE = [
+    "AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META", "TSLA", "AMD",
+    "SPY", "QQQ",
+]
+
 BIGTECH = [
     "AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META", "TSLA", "AMD",
     "MU", "PLTR", "SMCI", "NFLX", "ORCL",
@@ -108,6 +116,7 @@ CORE = [
 TECH10 = CORE          # old name, kept so nothing breaks
 
 UNIVERSES = {
+    "live": LIVE,
     "bigtech": BIGTECH,"research": RESEARCH, "holdout": HOLDOUT, "movers": MOVERS,
              "core": CORE, "tech10": CORE,
              "fresh": FRESH,
