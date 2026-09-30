@@ -65,6 +65,13 @@ def _check(url: str) -> None:
             f"{PAPER_URL}")
 
 
+def _check_data(url: str) -> None:
+    """Market data has its own host. It is READ ONLY - no order can be placed
+    against it - so it gets its own gate rather than widening the one above."""
+    if not url.startswith(DATA_URL):
+        raise BrokerError(f"refusing to read market data from {url!r}")
+
+
 # --- choosing the contract ---------------------------------------------------
 @dataclass(frozen=True)
 class Contract:
@@ -170,6 +177,55 @@ class Paper:
             log.warning("could not read positions: %s", exc)
             return []
 
+    def _get_data(self, path: str, params: dict | None = None) -> dict:
+        url = DATA_URL + path
+        _check_data(url)
+        r = self.http.get(url, headers=self._headers(), params=params or {},
+                          timeout=20)
+        if r.status_code >= 400:
+            raise BrokerError(f"GET {path} -> {r.status_code}: {r.text[:200]}")
+        return r.json()
+
+    def chain(self, underlying: str, kind: str, on: date,
+              allow_0dte: bool = False) -> list[Contract]:
+        """Tradable contracts for one name, with their current quotes.
+
+        Two calls: the trading API lists what exists, the data API prices it.
+        A contract with no quote is dropped rather than guessed at - an
+        option we cannot price is one we cannot size.
+        """
+        floor = on if allow_0dte else on + timedelta(days=MIN_DTE)
+        listing = self._get("/v2/options/contracts", {
+            "underlying_symbols": underlying.upper(),
+            "expiration_date_gte": floor.isoformat(),
+            "expiration_date_lte": (on + timedelta(days=MAX_DTE)).isoformat(),
+            "type": "call" if kind.lower().startswith("c") else "put",
+            "status": "active", "limit": 1000})
+        rows = listing.get("option_contracts", []) or []
+        if not rows:
+            return []
+
+        quotes: dict[str, dict] = {}
+        try:
+            snap = self._get_data(f"/v1beta1/options/snapshots/{underlying.upper()}",
+                                  {"feed": "indicative", "limit": 1000})
+            quotes = snap.get("snapshots", {}) or {}
+        except BrokerError as exc:
+            log.warning("no option quotes for %s: %s", underlying, exc)
+            return []
+
+        out = []
+        for r in rows:
+            q = (quotes.get(r["symbol"]) or {}).get("latestQuote") or {}
+            ask, bid = float(q.get("ap") or 0), float(q.get("bp") or 0)
+            if ask <= 0:
+                continue
+            out.append(Contract(
+                symbol=r["symbol"], underlying=underlying.upper(),
+                kind=r["type"], strike=float(r["strike_price"]),
+                expiry=pd_date(r["expiration_date"]), ask=ask, bid=bid))
+        return out
+
     # -- writes --
     def buy_to_open(self, c: Contract, qty: int) -> dict | None:
         """Buy `qty` contracts at market. Returns None when a cap refuses it."""
@@ -227,6 +283,11 @@ class Paper:
             except BrokerError as exc:
                 log.error("could not close %s: %s", p.get("symbol"), exc)
         return out
+
+
+def pd_date(s: str) -> date:
+    y, m, d = (int(x) for x in s.split("-")[:3])
+    return date(y, m, d)
 
 
 def occ(underlying: str, expiry: date, kind: str, strike: float) -> str:
