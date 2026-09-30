@@ -97,6 +97,12 @@ _Paper only. No orders were placed._
 `TP       730.27`
 9 shares · __
 
+🔴 **SHORT META**  ·  13:30 ET
+`Entry    733.24`
+`SL       735.65`
+`TP       728.41`
+8 shares · __
+
 ❌ **SHORT MSFT**  ·  13:30 → 13:40
 `Entry    517.19`
 `SL       518.18`
