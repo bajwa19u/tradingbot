@@ -26,17 +26,17 @@ def trade(**kw):
 # --- messages ----------------------------------------------------------------
 def test_entry_message_has_the_five_things_asked_for():
     m = lb.entry_msg(trade())
-    assert "AMD" in m                    # name
-    assert "622.21" in m                 # price to buy in
-    assert "627.42" in m and "🛑" in m    # stop
-    assert "611.78" in m and "🎯" in m    # target
-    assert "🔻" in m                      # an emoji for the name
+    assert "AMD" in m                     # name
+    assert "622.21" in m                  # price to buy in
+    assert "627.42" in m and "SL" in m    # stop
+    assert "611.78" in m and "TP" in m    # target
+    assert "🔴" in m                       # red for a short
 
 
 def test_the_entry_message_is_short_enough_to_read_on_a_phone():
     """Three lines: who, the prices, the size."""
     m = lb.entry_msg(trade(rule="opening", level_name="orl"))
-    assert len(m.splitlines()) == 3
+    assert len(m.splitlines()) == 5
 
 
 def test_a_retest_trade_gets_no_opening_footnote():
@@ -46,8 +46,8 @@ def test_a_retest_trade_gets_no_opening_footnote():
 
 def test_long_and_short_read_differently():
     s, l = lb.entry_msg(trade()), lb.entry_msg(trade(side="long"))
-    assert "SHORT" in s and "🔻" in s
-    assert "LONG" in l and "🔺" in l
+    assert "SHORT" in s and "🔴" in s
+    assert "LONG" in l and "🟢" in l
 
 
 def test_close_message_is_a_percentage_not_a_multiple():
@@ -196,7 +196,7 @@ def test_every_signal_has_the_same_shape():
     b = lb.entry_msg(trade(rule="opening", level_name="orl"))
     for m in (a, b):
         assert "WATCHING" not in m and "tracking only" not in m
-        assert "shares" in m and "🛑" in m and "🎯" in m
+        assert "shares" in m and "SL" in m and "TP" in m
 
 
 def test_the_entry_says_which_setup_it_came_from():
@@ -257,7 +257,7 @@ def test_longs_are_posted_now():
 
 def test_a_long_entry_renders():
     m = lb.entry_msg(trade(side="long", rule="opening", level_name="orh"))
-    assert "LONG" in m and "🔺" in m and "opening range" in m
+    assert "LONG" in m and "🟢" in m and "opening range" in m
 
 
 # --- correlated entries are one result, not many -----------------------------
@@ -376,3 +376,53 @@ def test_the_watchlist_is_the_live_universe():
     assert lb.WATCHLIST == LIVE
     assert "SPY" in LIVE and "QQQ" in LIVE
     assert "AVGO" not in LIVE
+
+
+# --- the state file is not rewritten by a run that did nothing ---------------
+def test_a_run_that_announced_nothing_leaves_the_record_untouched(monkeypatch,
+                                                                  tmp_path):
+    """On 30 September a run that exited with nothing to do rewrote the
+    record from its own stale checkout, wiping ten message ids, and the next
+    run posted all ten trades a second time."""
+    monkeypatch.setattr(lb, "STATE", tmp_path)
+    monkeypatch.setattr(lb, "REPORTS", tmp_path)
+    f = tmp_path / lb.SEEN_FILE
+    today = str(pd.Timestamp.now(tz=lb.EASTERN).date())
+    f.write_text('{"date": "%s", "entries": ["t1"], "exits": ["t1"],'
+                 ' "summary": true, "cards": {"t1": "m1"}}' % today)
+    before = f.read_text(), f.stat().st_mtime_ns
+    monkeypatch.setattr(lb, "scan", lambda cfg: ([], "10:00", False))
+    monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: [
+        trade(id="t1", exit=611.0, exit_time="10:40", reason="target", pct=2.0)])
+    monkeypatch.setattr(lb.dm, "post", lambda url, text: "m9")
+    monkeypatch.setattr(lb.dm, "edit", lambda url, m, text: True)
+    lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
+    assert (f.read_text(), f.stat().st_mtime_ns) == before, \
+        "an unchanged record must not even be re-touched"
+
+
+def test_a_run_that_announced_something_does_write(monkeypatch, tmp_path):
+    monkeypatch.setattr(lb, "STATE", tmp_path)
+    monkeypatch.setattr(lb, "REPORTS", tmp_path)
+    monkeypatch.setattr(lb, "scan", lambda cfg: ([], "09:40", False))
+    monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: [trade(id="new")])
+    monkeypatch.setattr(lb.dm, "post", lambda url, text: "m1")
+    monkeypatch.setattr(lb.dm, "edit", lambda url, m, text: True)
+    lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
+    import json
+    assert json.loads((tmp_path / lb.SEEN_FILE).read_text())["cards"]["new"] == "m1"
+
+
+# --- the card, at a glance ---------------------------------------------------
+def test_an_open_long_is_green_and_an_open_short_is_red():
+    assert lb.card(trade(side="long", exit=None)).startswith("🟢")
+    assert lb.card(trade(side="short", exit=None)).startswith("🔴")
+
+
+def test_a_closed_trade_shows_the_result_not_the_direction():
+    won = lb.card(trade(side="short", exit=1.0, exit_time="10:00",
+                        reason="target", pct=2.0))
+    lost = lb.card(trade(side="long", exit=1.0, exit_time="10:00",
+                         reason="stop", pct=-1.0))
+    assert won.startswith("✅") and lost.startswith("❌")
+    assert "🔴" not in won and "🟢" not in lost
