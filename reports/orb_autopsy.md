@@ -79,6 +79,22 @@ Same side, within 10 minutes. This is the 29 September question: is a break the 
 | 2x–4x the range average | 66 | 50.0% | 33 | 33 | +0.1% | +0.001% |
 | 4x–999x the range average | 5 | 40.0% | 2 | 3 | +1.1% | +0.219% |
 
+## Candidate filters, explore against holdout
+
+A filter is only worth anything if it survives dates it was not chosen on. Both splits are shown side by side so a filter that only works on one cannot be presented as a finding.
+
+| filter | explore trades | explore win % | explore profit % | holdout trades | holdout win % | holdout profit % |
+|---|---|---|---|---|---|---|
+| no filter (everything) | 703 | 47.9% | -3.0% | 343 | 49.6% | -1.3% |
+| with the gap | 329 | 51.4% | +11.8% | 175 | 52.6% | +6.0% |
+| volume 1.2x+ | 153 | 52.9% | +10.1% | 91 | 53.8% | +4.3% |
+| crowd of 5+ | 317 | 48.3% | +8.9% | 127 | 53.5% | +1.3% |
+| with the gap AND volume 1.2x+ | 87 | 57.5% | +9.4% | 51 | 54.9% | +4.1% |
+| with the gap AND crowd of 5+ | 142 | 54.9% | +16.0% | 61 | 57.4% | +5.1% |
+
+**Survives both splits:** with the gap (explore +11.8%, holdout +6.0%), volume 1.2x+ (explore +10.1%, holdout +4.3%), crowd of 5+ (explore +8.9%, holdout +1.3%), with the gap AND volume 1.2x+ (explore +9.4%, holdout +4.1%), with the gap AND crowd of 5+ (explore +16.0%, holdout +5.1%)
+
+
 ## Which feature separates winners from losers at all
 
 Pooled standard deviations between the winning and losing groups. Under about 0.3 is noise — that threshold has already retired two feature searches in this project.
