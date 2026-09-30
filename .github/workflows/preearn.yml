@@ -1,0 +1,110 @@
+name: Buying into earnings
+
+# Do some stocks reliably rally INTO their earnings report?
+#
+# Runs here and nowhere else: SEC EDGAR and Yahoo are both unreachable from
+# the laptop and the cloud container, which sit behind proxies with short
+# allowlists. The runner has open internet, so this is the only place the
+# study can be built at all.
+#
+# Measurement only. Nothing here alerts and nothing is scheduled.
+on:
+  workflow_dispatch:
+    inputs:
+      windows:
+        description: "Trading days before the report, e.g. 21,42,63"
+        required: false
+        default: "21,42,63"
+      min_hit:
+        description: "Minimum hit rate to qualify (percent)"
+        required: false
+        default: "65"
+      min_median:
+        description: "Minimum median excess return to qualify (percent)"
+        required: false
+        default: "1.0"
+      top:
+        description: "How many names to keep"
+        required: false
+        default: "20"
+      symbols:
+        description: "Comma-separated symbols (overrides the universe)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: preearn
+  cancel-in-progress: false
+
+jobs:
+  preearn:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt && pip install --quiet yfinance
+
+      - name: Measure
+        id: run
+        env:
+          IN_WIN: ${{ inputs.windows }}
+          IN_HIT: ${{ inputs.min_hit }}
+          IN_MED: ${{ inputs.min_median }}
+          IN_TOP: ${{ inputs.top }}
+          IN_SYM: ${{ inputs.symbols }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports
+          rm -f reports/preearn.md reports/preearn.json
+          ARGS=(--windows "${IN_WIN:-21,42,63}" --min-hit "${IN_HIT:-65}" \
+                --min-median "${IN_MED:-1.0}" --top "${IN_TOP:-20}")
+          [ -n "${IN_SYM:-}" ] && ARGS+=(--symbols "${IN_SYM}") || true
+          set +e
+          python -m src.preearn "${ARGS[@]}" 2>&1 | tee reports/preearn_run.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          mkdir -p reports
+          rm -rf /tmp/out && mkdir -p /tmp/out
+          cp -a reports /tmp/out/reports
+          for i in 1 2 3 4 5; do
+            git fetch origin "${GITHUB_REF_NAME}" || true
+            git reset --hard "origin/${GITHUB_REF_NAME}"
+            mkdir -p reports
+            cp -a /tmp/out/reports/. reports/
+            git add reports
+            if git diff --cached --quiet; then
+              echo "nothing to commit"; exit 0
+            fi
+            git commit -m "preearn: results [skip ci]"
+            if git push origin "HEAD:${GITHUB_REF_NAME}"; then exit 0; fi
+            echo "push attempt $i failed; retrying"
+            sleep $((i * 5))
+          done
+          echo "::error::could not push results after 5 attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/preearn.md ]; then
+            cat reports/preearn.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            { echo '```'; tail -n 40 reports/preearn_run.log; echo '```'; } \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Fail if the run failed
+        if: always() && steps.run.outputs.code != '0'
+        run: exit 1
