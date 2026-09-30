@@ -256,14 +256,19 @@ def card(t: dict) -> str:
     """
     short = t.get("side", "short") == "short"
     side = f"{'SHORT' if short else 'LONG'} {t['symbol']}"
-    levels = (f"Entry `{t['entry']:,.2f}` · 🛑 `{t['stop']:,.2f}` · "
-              f"🎯 `{t['target']:,.2f}`")
+    levels = (f"`Entry {t['entry']:>9,.2f}`\n"
+              f"`SL    {t['stop']:>9,.2f}`\n"
+              f"`TP    {t['target']:>9,.2f}`")
     setup = SETUP.get(t.get("rule"), t.get("rule", ""))
 
+    # Colour carries the direction while a trade is open and the RESULT once
+    # it closes, because those are the two things worth seeing at a glance.
+    # The stop and target sit in a code block so the numbers line up in a
+    # column instead of wrapping into the prose.
     if t.get("exit") is None:
         size = (f"{t['shares']} share{'s' if t['shares'] != 1 else ''}"
                 if t["shares"] else "**0 — too small for the account**")
-        return (f"{'🔻' if short else '🔺'} **{side}**  ·  {t['entry_time']} ET\n"
+        return (f"{'🔴' if short else '🟢'} **{side}**  ·  {t['entry_time']} ET\n"
                 f"{levels}\n{size} · _{setup}_")
 
     won = (t["pct"] or 0) > 0
@@ -273,7 +278,8 @@ def card(t: dict) -> str:
     return (f"{'✅' if won else '❌'} **{side}**  ·  "
             f"{t['entry_time']} → {t['exit_time']}\n"
             f"{levels}\n"
-            f"Exit `{t['exit']:,.2f}` — {why} · **{t['pct']:+.2f}%** _{setup}_")
+            f"`Exit  {t['exit']:>9,.2f}`  {why}\n"
+            f"**{t['pct']:+.2f}%** · _{setup}_")
 
 
 def entry_msg(t: dict) -> str:
@@ -451,7 +457,13 @@ def tick(cfg: dict, dry_run: bool) -> int:
             seen["entries"].append(tid)
 
     STATE.mkdir(exist_ok=True); REPORTS.mkdir(exist_ok=True)
-    (STATE / SEEN_FILE).write_text(json.dumps(seen, indent=2))
+    # Only touch the record when this run actually announced something.
+    # A run that did nothing must leave the file completely alone, mtime
+    # included: on 30 September a run that exited with "nothing to do"
+    # rewrote it from its own stale checkout, wiping ten message ids, and the
+    # next run could not find the cards so it posted all ten trades again.
+    if outbox:
+        (STATE / SEEN_FILE).write_text(json.dumps(seen, indent=2))
     (REPORTS / "live_today.md").write_text(
         summary_msg(trades, date) + "\n\n" +
         "\n\n".join(card(t) for t in trades))
