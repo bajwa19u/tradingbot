@@ -1,278 +1,49 @@
-📊 **2026-09-29**
+📊 **2026-09-30**
 
-**27 trades · 11 won, 16 lost · 41% win rate**
-**+3.24%**  (+$78.36)
-❌ AVGO 09:35→10:30  -1.03%
-❌ AMD 09:36→09:51  -1.03%
-✅ NVDA 09:36→15:55  +1.04%
-❌ TSLA 09:37→15:55  -0.12%
-❌ GOOGL 09:39→15:55  -0.29%
-❌ AMZN 09:40→12:50  -1.09%
-❌ MSFT 09:41→10:26  -1.05%
-❌ MU 09:41→10:19  -1.03%
-❌ PLTR 09:41→15:55  -0.32%
-✅ SMCI 09:43→15:55  +1.66%
-❌ META 09:45→13:21  -1.05%
-✅ AAPL 11:55→15:55  +2.00%
-❌ AAPL 12:05→13:35  -1.00%
-❌ TSLA 12:45→14:00  -1.00%
-✅ NVDA 12:50→15:55  +2.00%
-❌ TSLA 12:50→14:00  -1.00%
-✅ AVGO 13:00→15:55  +0.54%
-✅ AMD 13:10→13:55  +2.00%
-❌ MSFT 13:20→14:35  -1.00%
-✅ NVDA 13:20→13:55  +2.00%
-❌ AVGO 13:40→14:35  -1.00%
-❌ AVGO 13:45→14:25  -1.00%
-❌ AMD 13:50→14:05  -1.00%
-✅ AAPL 15:00→15:40  +2.00%
-✅ AAPL 15:05→15:40  +2.00%
-✅ AMD 15:05→15:35  +2.00%
-✅ TSLA 15:45→15:55  +0.01%
+**3 trades · 0 won, 3 lost · 0% win rate**
+**-3.39%**
+❌ META 09:36→09:54  -1.04%
+❌ AMZN 09:39→09:46  -1.10%
+❌ SPY 09:46→09:54  -1.25%
 
-
-⚠️ _11 shorts within 15 min — that is one market move read several times, not several independent trades. Count it as roughly one result._
 _Paper only. No orders were placed._
 
-🔻 **SHORT AVGO**  ·  09:35 ET
-Entry `$355.87`
-🛑 SL `$361.25`
-🎯 TP `$345.12`
-3 shares · risking `$16.13`  ·  _opening range_
-❌ **CLOSED AVGO**  ·  10:30 ET
-Exit `$361.43` — hit stop
-**-1.03%**  (-$16.67)
+❌ **SHORT META**  ·  09:36 → 09:54
+Entry `721.58` · 🛑 `731.43` · 🎯 `701.88`
+Exit `731.80` — hit stop · **-1.04%** _opening range_
 
-🔻 **SHORT AMD**  ·  09:36 ET
-Entry `$608.33`
-🛑 SL `$617.27`
-🎯 TP `$590.44`
-2 shares · risking `$17.88`  ·  _opening range_
-❌ **CLOSED AMD**  ·  09:51 ET
-Exit `$617.58` — hit stop
-**-1.03%**  (-$18.50)
+🔺 **LONG MSFT**  ·  09:37 ET
+Entry `516.16` · 🛑 `510.35` · 🎯 `527.78`
+3 shares · _opening range_
 
-🔻 **SHORT NVDA**  ·  09:36 ET
-Entry `$230.20`
-🛑 SL `$232.88`
-🎯 TP `$224.85`
-7 shares · risking `$18.73`  ·  _opening range_
-✅ **CLOSED NVDA**  ·  15:55 ET
-Exit `$227.42` — closed at the bell
-**+1.04%**  (+$19.47)
+❌ **SHORT AMZN**  ·  09:39 → 09:46
+Entry `246.31` · 🛑 `247.53` · 🎯 `243.87`
+Exit `247.65` — hit stop · **-1.10%** _opening range_
 
-🔻 **SHORT TSLA**  ·  09:37 ET
-Entry `$352.43`
-🛑 SL `$358.66`
-🎯 TP `$339.97`
-3 shares · risking `$18.69`  ·  _opening range_
-❌ **CLOSED TSLA**  ·  15:55 ET
-Exit `$353.16` — closed at the bell
-**-0.12%**  (-$2.17)
+🔻 **SHORT AMD**  ·  09:40 ET
+Entry `606.55` · 🛑 `615.30` · 🎯 `589.04`
+2 shares · _opening range_
 
-🔻 **SHORT GOOGL**  ·  09:39 ET
-Entry `$340.71`
-🛑 SL `$342.83`
-🎯 TP `$336.47`
-9 shares · risking `$19.06`  ·  _opening range_
-❌ **CLOSED GOOGL**  ·  15:55 ET
-Exit `$341.33` — closed at the bell
-**-0.29%**  (-$5.59)
+🔻 **SHORT TSLA**  ·  09:45 ET
+Entry `346.15` · 🛑 `352.49` · 🎯 `333.45`
+3 shares · _opening range_
 
-🔻 **SHORT AMZN**  ·  09:40 ET
-Entry `$246.07`
-🛑 SL `$247.42`
-🎯 TP `$243.37`
-14 shares · risking `$18.91`  ·  _opening range_
-❌ **CLOSED AMZN**  ·  12:50 ET
-Exit `$247.54` — hit stop
-**-1.09%**  (-$20.64)
+❌ **SHORT SPY**  ·  09:46 → 09:54
+Entry `765.74` · 🛑 `767.28` · 🎯 `762.64`
+Exit `767.67` — hit stop · **-1.25%** _opening range_
 
-🔻 **SHORT MSFT**  ·  09:41 ET
-Entry `$504.40`
-🛑 SL `$509.22`
-🎯 TP `$494.75`
-4 shares · risking `$19.30`  ·  _opening range_
-❌ **CLOSED MSFT**  ·  10:26 ET
-Exit `$509.48` — hit stop
-**-1.05%**  (-$20.32)
+🔺 **LONG AAPL**  ·  09:49 ET
+Entry `333.53` · 🛑 `330.12` · 🎯 `340.36`
+5 shares · _opening range_
 
-🔻 **SHORT MU**  ·  09:41 ET
-Entry `$1,059.96`
-🛑 SL `$1,079.07`
-🎯 TP `$1,021.75`
-1 share · risking `$19.11`  ·  _opening range_
-❌ **CLOSED MU**  ·  10:19 ET
-Exit `$1,079.61` — hit stop
-**-1.03%**  (-$19.65)
+🔺 **LONG GOOGL**  ·  09:49 ET
+Entry `349.11` · 🛑 `344.17` · 🎯 `359.01`
+4 shares · _opening range_
 
-🔻 **SHORT PLTR**  ·  09:41 ET
-Entry `$186.20`
-🛑 SL `$188.58`
-🎯 TP `$181.44`
-8 shares · risking `$19.05`  ·  _opening range_
-❌ **CLOSED PLTR**  ·  15:55 ET
-Exit `$186.96` — closed at the bell
-**-0.32%**  (-$6.09)
+🔺 **LONG NVDA**  ·  09:59 ET
+Entry `231.52` · 🛑 `228.77` · 🎯 `237.01`
+7 shares · _opening range_
 
-🔻 **SHORT SMCI**  ·  09:43 ET
-Entry `$42.05`
-🛑 SL `$42.69`
-🎯 TP `$40.76`
-30 shares · risking `$19.38`  ·  _opening range_
-✅ **CLOSED SMCI**  ·  15:55 ET
-Exit `$40.98` — closed at the bell
-**+1.66%**  (+$32.20)
-
-🔻 **SHORT META**  ·  09:45 ET
-Entry `$720.88`
-🛑 SL `$727.65`
-🎯 TP `$707.35`
-2 shares · risking `$13.54`  ·  _opening range_
-❌ **CLOSED META**  ·  13:21 ET
-Exit `$728.02` — hit stop
-**-1.05%**  (-$14.26)
-
-🔻 **SHORT AAPL**  ·  11:55 ET
-Entry `$331.34`
-🛑 SL `$332.63`
-🎯 TP `$328.76`
-15 shares · risking `$19.37`  ·  __
-✅ **CLOSED AAPL**  ·  15:55 ET
-Exit `$328.76` — hit target
-**+2.00%**  (+$38.75)
-
-🔻 **SHORT AAPL**  ·  12:05 ET
-Entry `$330.96`
-🛑 SL `$332.03`
-🎯 TP `$328.81`
-18 shares · risking `$19.35`  ·  __
-❌ **CLOSED AAPL**  ·  13:35 ET
-Exit `$332.03` — hit stop
-**-1.00%**  (-$19.35)
-
-🔻 **SHORT TSLA**  ·  12:45 ET
-Entry `$352.46`
-🛑 SL `$353.60`
-🎯 TP `$350.20`
-17 shares · risking `$19.23`  ·  __
-❌ **CLOSED TSLA**  ·  14:00 ET
-Exit `$353.60` — hit stop
-**-1.00%**  (-$19.23)
-
-🔻 **SHORT NVDA**  ·  12:50 ET
-Entry `$229.55`
-🛑 SL `$230.59`
-🎯 TP `$227.48`
-19 shares · risking `$19.69`  ·  __
-✅ **CLOSED NVDA**  ·  15:55 ET
-Exit `$227.48` — hit target
-**+2.00%**  (+$39.38)
-
-🔻 **SHORT TSLA**  ·  12:50 ET
-Entry `$352.06`
-🛑 SL `$353.36`
-🎯 TP `$349.47`
-15 shares · risking `$19.46`  ·  __
-❌ **CLOSED TSLA**  ·  14:00 ET
-Exit `$353.36` — hit stop
-**-1.00%**  (-$19.46)
-
-🔻 **SHORT AVGO**  ·  13:00 ET
-Entry `$355.77`
-🛑 SL `$356.91`
-🎯 TP `$353.49`
-17 shares · risking `$19.38`  ·  __
-✅ **CLOSED AVGO**  ·  15:55 ET
-Exit `$355.15` — closed at the bell
-**+0.54%**  (+$10.54)
-
-🔻 **SHORT AMD**  ·  13:10 ET
-Entry `$612.09`
-🛑 SL `$613.77`
-🎯 TP `$608.72`
-11 shares · risking `$18.52`  ·  __
-✅ **CLOSED AMD**  ·  13:55 ET
-Exit `$608.72` — hit target
-**+2.00%**  (+$37.04)
-
-🔻 **SHORT MSFT**  ·  13:20 ET
-Entry `$507.00`
-🛑 SL `$508.34`
-🎯 TP `$504.33`
-14 shares · risking `$18.72`  ·  __
-❌ **CLOSED MSFT**  ·  14:35 ET
-Exit `$508.34` — hit stop
-**-1.00%**  (-$18.72)
-
-🔻 **SHORT NVDA**  ·  13:20 ET
-Entry `$229.04`
-🛑 SL `$229.53`
-🎯 TP `$228.06`
-40 shares · risking `$19.56`  ·  __
-✅ **CLOSED NVDA**  ·  13:55 ET
-Exit `$228.06` — hit target
-**+2.00%**  (+$39.11)
-
-🔻 **SHORT AVGO**  ·  13:40 ET
-Entry `$355.10`
-🛑 SL `$356.11`
-🎯 TP `$353.09`
-19 shares · risking `$19.12`  ·  __
-❌ **CLOSED AVGO**  ·  14:35 ET
-Exit `$356.11` — hit stop
-**-1.00%**  (-$19.12)
-
-🔻 **SHORT AVGO**  ·  13:45 ET
-Entry `$354.89`
-🛑 SL `$355.86`
-🎯 TP `$352.95`
-20 shares · risking `$19.39`  ·  __
-❌ **CLOSED AVGO**  ·  14:25 ET
-Exit `$355.86` — hit stop
-**-1.00%**  (-$19.39)
-
-🔻 **SHORT AMD**  ·  13:50 ET
-Entry `$609.00`
-🛑 SL `$611.31`
-🎯 TP `$604.40`
-8 shares · risking `$18.42`  ·  __
-❌ **CLOSED AMD**  ·  14:05 ET
-Exit `$611.31` — hit stop
-**-1.00%**  (-$18.42)
-
-🔻 **SHORT AAPL**  ·  15:00 ET
-Entry `$330.77`
-🛑 SL `$331.51`
-🎯 TP `$329.30`
-27 shares · risking `$19.87`  ·  __
-✅ **CLOSED AAPL**  ·  15:40 ET
-Exit `$329.30` — hit target
-**+2.00%**  (+$39.74)
-
-🔻 **SHORT AAPL**  ·  15:05 ET
-Entry `$330.64`
-🛑 SL `$331.28`
-🎯 TP `$329.37`
-31 shares · risking `$19.81`  ·  __
-✅ **CLOSED AAPL**  ·  15:40 ET
-Exit `$329.37` — hit target
-**+2.00%**  (+$39.62)
-
-🔻 **SHORT AMD**  ·  15:05 ET
-Entry `$609.59`
-🛑 SL `$610.70`
-🎯 TP `$607.38`
-18 shares · risking `$19.91`  ·  __
-✅ **CLOSED AMD**  ·  15:35 ET
-Exit `$607.38` — hit target
-**+2.00%**  (+$39.82)
-
-🔻 **SHORT TSLA**  ·  15:45 ET
-Entry `$352.95`
-🛑 SL `$353.68`
-🎯 TP `$351.49`
-27 shares · risking `$19.66`  ·  __
-✅ **CLOSED TSLA**  ·  15:55 ET
-Exit `$352.94` — closed at the bell
-**+0.01%**  (+$0.27)
+🔺 **LONG QQQ**  ·  09:59 ET
+Entry `743.80` · 🛑 `739.72` · 🎯 `751.96`
+4 shares · _opening range_
