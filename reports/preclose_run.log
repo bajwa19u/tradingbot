@@ -1,1 +1,6 @@
-2026-09-29 20:53:16,164 INFO Not the pre-close window (16:53 ET) - skipping
+**Live check — 2026-09-30 15:56 ET** · 3 min to the close
+
+⚪ above level, volume light — **CRWD** `$264.93` vs level `$263.85` (+0.4%) · volume 72% of what it needs
+
+⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
+2026-09-30 19:56:05,427 INFO Nothing meets the rule into the close.
