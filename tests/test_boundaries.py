@@ -32,7 +32,8 @@ EARNINGS = {"preearn", "preearn_screen", "fundamentals"}
 
 # Everything the intraday side is allowed to consist of.
 INTRADAY = {
-    "adaptive", "backtest", "breakout", "data", "discover", "discord_msg",
+    "adaptive", "backtest", "breakout", "confidence", "data", "discover",
+    "discord_msg",
     "forensics", "history", "holds", "indicators", "inplay", "inplay_bot",
     "inspect_symbol", "live_bot", "notify", "opening", "orb_autopsy",
     "paper", "retest", "run_backtest", "run_live", "sq_autopsy", "squeeze",
