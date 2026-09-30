@@ -42,11 +42,12 @@ from zoneinfo import ZoneInfo
 
 import pandas as pd
 
+from . import discord_msg as dm
 from . import opening as op
 from .config import REPO_ROOT, Credentials
 from .data import AlpacaError, MarketData
-from .forensics import CORE
-from .paper import notify, settings, shares
+from .forensics import LIVE as WATCHLIST
+from .paper import settings, shares
 from .retest import LIVE, SCAN, STOP_ATR, TARGET_R, breaks_in, find_retest
 from .squeeze import prepare_sq
 
@@ -168,7 +169,7 @@ def scan(cfg: dict) -> tuple[list[dict], str, bool]:
     md = MarketData(Credentials.from_env(), feed="iex")
     now = pd.Timestamp.now(tz=EASTERN)
     start = (now - pd.Timedelta(days=5)).date().isoformat()
-    data = md.intraday_bars(CORE, LIVE.get("minutes", 5) or 5, start=start)
+    data = md.intraday_bars(WATCHLIST, LIVE.get("minutes", 5) or 5, start=start)
     p = {**SCAN, "minutes": 5}
     today = now.date()
     trades, last_bar = [], None
@@ -189,11 +190,6 @@ def scan(cfg: dict) -> tuple[list[dict], str, bool]:
     return trades, stamp, closed_for_day
 
 
-def money(x: float) -> str:
-    """-$15.00, not $-15.00. The sign belongs in front of the number."""
-    return f"{'-' if x < 0 else '+'}${abs(x):,.2f}"
-
-
 LEVEL_LABEL = {"pmh": "premarket high", "pml": "premarket low",
                "pdh": "yesterday's high", "pdl": "yesterday's low",
                "pdc": "yesterday's close",
@@ -211,7 +207,7 @@ def opening_scan(cfg: dict, now: pd.Timestamp) -> list[dict]:
         return []
     md = MarketData(Credentials.from_env(), feed="iex")
     start = (now - pd.Timedelta(days=6)).date().isoformat()
-    data = md.intraday_bars(CORE, 1, start=start, extended=True)
+    data = md.intraday_bars(WATCHLIST, 1, start=start, extended=True)
     today = now.date()
     out = []
     for sym, df in data.items():
@@ -251,35 +247,41 @@ def opening_scan(cfg: dict, now: pd.Timestamp) -> list[dict]:
 SETUP = {"opening": "opening range", "retest": "break & retest"}
 
 
-def entry_msg(t: dict) -> str:
-    """One shape for every signal. Name, entry, stop, target, size.
+def card(t: dict) -> str:
+    """One trade, one message. Rendered open, then rewritten closed.
 
-    There is no second class of message. An earlier version posted the
-    opening rule under a "WATCHING" header with no size, which buried a
-    working AMD long on 29 September and made the feed something to skim
-    past rather than act on.
+    The same function draws both states so the card cannot drift between
+    them, and so the prices a trade was taken on stay visible after it has
+    finished - a result with no entry next to it is not reviewable.
     """
     short = t.get("side", "short") == "short"
-    size = (f"{t['shares']} share{'s' if t['shares'] != 1 else ''}"
-            if t["shares"] else "**0 — too small for the account**")
-    return (f"{'🔻' if short else '🔺'} **{'SHORT' if short else 'LONG'} "
-            f"{t['symbol']}**  ·  {t['entry_time']} ET\n"
-            f"Entry `${t['entry']:,.2f}`\n"
-            f"🛑 SL `${t['stop']:,.2f}`\n"
-            f"🎯 TP `${t['target']:,.2f}`\n"
-            f"{size} · risking `${t['risk']:,.2f}`"
-            f"  ·  _{SETUP.get(t.get('rule'), t.get('rule', ''))}_")
+    side = f"{'SHORT' if short else 'LONG'} {t['symbol']}"
+    levels = (f"Entry `{t['entry']:,.2f}` · 🛑 `{t['stop']:,.2f}` · "
+              f"🎯 `{t['target']:,.2f}`")
+    setup = SETUP.get(t.get("rule"), t.get("rule", ""))
 
+    if t.get("exit") is None:
+        size = (f"{t['shares']} share{'s' if t['shares'] != 1 else ''}"
+                if t["shares"] else "**0 — too small for the account**")
+        return (f"{'🔻' if short else '🔺'} **{side}**  ·  {t['entry_time']} ET\n"
+                f"{levels}\n{size} · _{setup}_")
 
-def close_msg(t: dict) -> str:
     won = (t["pct"] or 0) > 0
     why = {"target": "hit target", "stop": "hit stop",
            "bell": "closed at the bell",
            "time": "closed on the hold limit"}.get(t["reason"], t["reason"])
-    return (f"{'✅' if won else '❌'} **CLOSED {t['symbol']}**  ·  "
-            f"{t['exit_time']} ET\n"
-            f"Exit `${t['exit']:,.2f}` — {why}\n"
-            f"**{t['pct']:+.2f}%**  ({money(t.get('cash') or 0)})")
+    return (f"{'✅' if won else '❌'} **{side}**  ·  "
+            f"{t['entry_time']} → {t['exit_time']}\n"
+            f"{levels}\n"
+            f"Exit `{t['exit']:,.2f}` — {why} · **{t['pct']:+.2f}%** _{setup}_")
+
+
+def entry_msg(t: dict) -> str:
+    return card({**t, "exit": None})
+
+
+def close_msg(t: dict) -> str:
+    return card(t)
 
 
 def cluster_note(trades: list[dict]) -> str:
@@ -312,7 +314,7 @@ def block(done: list[dict], head: str, mark: tuple[str, str],
           cash: float | None = None) -> list[str]:
     won = sum(1 for t in done if (t["pct"] or 0) > 0)
     pct = sum(t["pct"] or 0 for t in done)
-    total = f"**{pct:+.2f}%**" + (f"  ({money(cash)})" if cash is not None else "")
+    total = f"**{pct:+.2f}%**"
     lines = ([head] if head else []) + [
              f"**{len(done)} trade{'s' if len(done) != 1 else ''} · "
              f"{won} won, {len(done) - won} lost · "
@@ -336,8 +338,7 @@ def summary_msg(trades: list[dict], date: str) -> str:
         return (f"📊 **{date}** — no trades today.\n"
                 "_Quiet days are normal for this setup._")
     lines = [f"📊 **{date}**", ""]
-    lines += block(done, "", ("✅", "❌"),
-                   cash=sum((t.get("cash") or 0) for t in done))
+    lines += block(done, "", ("✅", "❌"))
     note = cluster_note(done)
     if note:
         lines.append(note)
@@ -354,7 +355,12 @@ SEEN_FILE = "live_bot_seen.json"
 
 
 def load_seen(date: str) -> dict:
-    blank = {"date": date, "entries": [], "exits": [], "summary": False}
+    # `cards` maps a trade id to the Discord message posted for it, so the
+    # close can rewrite that message instead of posting a second one. A file
+    # written before this existed simply has no cards, and every close in it
+    # falls back to its own message.
+    blank = {"date": date, "entries": [], "exits": [], "summary": False,
+             "cards": {}}
     f = STATE / SEEN_FILE
     if not f.exists():
         return blank
@@ -405,34 +411,51 @@ def tick(cfg: dict, dry_run: bool) -> int:
 
     date = str(now.date())
     seen = load_seen(date)
-    msgs = []
+    # (text, trade id, is_close) — held until after the dry-run check so a
+    # dry run never touches Discord and never records anything as announced.
+    outbox: list[tuple[str, str, bool]] = []
     for t in trades:
         if not t.get("post", True):
             continue
         if t["id"] not in seen["entries"]:
-            msgs.append(entry_msg(t)); seen["entries"].append(t["id"])
+            outbox.append((card({**t, "exit": None}), t["id"], False))
         if t["exit"] is not None and t["id"] not in seen["exits"]:
-            msgs.append(close_msg(t)); seen["exits"].append(t["id"])
+            outbox.append((card(t), t["id"], True))
     if day_done and not seen["summary"]:
-        msgs.append(summary_msg(trades, now.strftime("%A %d %B")))
+        outbox.append((summary_msg(trades, now.strftime("%A %d %B")), "", False))
         seen["summary"] = True
 
     log.info("%s ET · bars through %s · %d trade(s) today · %d new message(s)",
-             now.strftime("%H:%M:%S"), stamp, len(trades), len(msgs))
-    for m in msgs:
-        print("\n" + m)
+             now.strftime("%H:%M:%S"), stamp, len(trades), len(outbox))
+    for text, _, _ in outbox:
+        print("\n" + text)
     if dry_run:
-        return len(msgs)
+        return len(outbox)
+
+    hook = Credentials.from_env().discord_webhook
+    for text, tid, is_close in outbox:
+        if is_close:
+            # Edit the card this trade already has. A missing or un-editable
+            # message means posting the result on its own - an extra message
+            # is a nuisance, a silently dropped result is not.
+            mid = seen["cards"].get(tid)
+            if not (mid and dm.edit(hook, mid, text)):
+                dm.post(hook, text)
+            seen["exits"].append(tid)
+        else:
+            mid = dm.post(hook, text)
+            if not tid:                     # the daily recap, not a trade
+                continue
+            if mid:
+                seen["cards"][tid] = mid
+            seen["entries"].append(tid)
 
     STATE.mkdir(exist_ok=True); REPORTS.mkdir(exist_ok=True)
     (STATE / SEEN_FILE).write_text(json.dumps(seen, indent=2))
     (REPORTS / "live_today.md").write_text(
         summary_msg(trades, date) + "\n\n" +
-        "\n\n".join(entry_msg(t) + ("\n" + close_msg(t) if t["exit"] else "")
-                    for t in trades))
-    for m in msgs:
-        notify(m)
-    return len(msgs)
+        "\n\n".join(card(t) for t in trades))
+    return len(outbox)
 
 
 def main(argv=None) -> int:
