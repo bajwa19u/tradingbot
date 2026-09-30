@@ -54,6 +54,7 @@ jobs:
         run: |
           set -uo pipefail
           mkdir -p reports state
+          touch /tmp/runmark
           ARGS=()
           if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
           if [ "${IN_FORCE:-false}" = "true" ]; then ARGS+=(--force); fi
@@ -66,17 +67,29 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           mkdir -p reports state
-          # Generated output always wins, source always matches the remote.
-          # A rebase is the wrong tool here: two runs touching the same log
-          # conflict, the rebase stops, and the results are lost. Take the
-          # remote as the base and lay this run's files on top instead.
+          # Take the remote as the base and lay this run's files on top: a
+          # rebase is the wrong tool for generated output, because two runs
+          # touching the same log conflict and the results are lost.
+          #
+          # ONLY files this run actually wrote. Copying the whole of state/
+          # meant a run that did nothing still laid its own stale checkout
+          # over whatever a concurrent run had just committed - on
+          # 30 September that wiped ten Discord message ids and the next run
+          # posted all ten trades a second time. The marker is dropped before
+          # the scan, so "newer than the marker" is exactly this run's output.
           rm -rf /tmp/out && mkdir -p /tmp/out
-          for d in reports state; do cp -a "$d" "/tmp/out/$d"; done
+          find reports state -type f -newer /tmp/runmark -print0 2>/dev/null \
+            | while IFS= read -r -d '' f; do
+                mkdir -p "/tmp/out/$(dirname "$f")"; cp -a "$f" "/tmp/out/$f"
+              done
+          if [ -z "$(find /tmp/out -type f 2>/dev/null)" ]; then
+            echo "this run wrote nothing — leaving the repo alone"; exit 0
+          fi
           for i in 1 2 3 4 5; do
             git fetch origin "${GITHUB_REF_NAME}" || true
             git reset --hard "origin/${GITHUB_REF_NAME}"
             mkdir -p reports state
-            for d in reports state; do cp -a "/tmp/out/$d/." "$d/"; done
+            cp -a /tmp/out/. .
             git add reports state
             if git diff --cached --quiet; then
               echo "nothing to commit"; exit 0
