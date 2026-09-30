@@ -1,7 +1,7 @@
 📊 **2026-09-30**
 
-**7 trades · 0 won, 7 lost · 0% win rate**
-**-7.42%**
+**8 trades · 1 won, 7 lost · 12% win rate**
+**-5.42%**
 ❌ META 09:36→09:54  -1.04%
 ❌ AMZN 09:39→09:46  -1.10%
 ❌ TSLA 09:45→13:33  -1.03%
@@ -9,6 +9,7 @@
 ❌ AMD 12:35→12:45  -1.00%
 ❌ MSFT 13:30→13:40  -1.00%
 ❌ QQQ 13:30→13:45  -1.00%
+✅ SPY 13:35→15:35  +2.00%
 
 
 ⚠️ _4 shorts within 15 min — that is one market move read several times, not several independent trades. Count it as roughly one result._
@@ -117,8 +118,9 @@ _Paper only. No orders were placed._
 `Exit     743.74`  hit stop
 **-1.00%** · __
 
-🔴 **SHORT SPY**  ·  13:35 ET
+✅ **SHORT SPY**  ·  13:35 → 15:35
 `Entry    767.37`
 `SL       768.17`
 `TP       765.78`
-25 shares · __
+`Exit     765.78`  hit target
+**+2.00%** · __
