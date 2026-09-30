@@ -1896,7 +1896,8 @@ def test_live_entry_message_has_the_five_things_needed_to_act():
     m = entry_msg(_live_trade())
     for piece in ("NVDA", "14:25", "182.40", "184.10", "179.00", "11 shares"):
         assert piece in m, piece
-    assert "SL" in m and "TP" in m
+    assert "🛑" in m and "🎯" in m
+    assert "$" not in m, "prices are bare numbers now"
 
 
 def test_live_close_message_states_why_and_how_much():
