@@ -1,10 +1,11 @@
 📊 **2026-09-30**
 
-**3 trades · 0 won, 3 lost · 0% win rate**
-**-3.39%**
+**4 trades · 0 won, 4 lost · 0% win rate**
+**-4.39%**
 ❌ META 09:36→09:54  -1.04%
 ❌ AMZN 09:39→09:46  -1.10%
 ❌ SPY 09:46→09:54  -1.25%
+❌ AMD 12:35→12:45  -1.00%
 
 _Paper only. No orders were placed._
 
@@ -76,3 +77,10 @@ _Paper only. No orders were placed._
 `SL       337.80`
 `TP       334.55`
 18 shares · __
+
+❌ **SHORT AMD**  ·  12:35 → 12:45
+`Entry    601.39`
+`SL       603.01`
+`TP       598.16`
+`Exit     603.01`  hit stop
+**-1.00%** · __
