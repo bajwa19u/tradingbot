@@ -34,7 +34,7 @@ EARNINGS = {"preearn", "preearn_screen", "fundamentals"}
 INTRADAY = {
     "adaptive", "backtest", "breakout", "broker", "confidence", "data",
     "discover",
-    "discord_msg",
+    "discord_msg", "exitsweep",
     "forensics", "history", "holds", "indicators", "inplay", "inplay_bot",
     "inspect_symbol", "live_bot", "notify", "opening", "orb_autopsy",
     "paper", "retest", "run_backtest", "run_live", "sq_autopsy", "squeeze",
