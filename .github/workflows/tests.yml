@@ -3,6 +3,11 @@ name: Tests
 # Every push and pull request. This is the safety net that makes editing
 # config.yaml low-risk: if a change breaks a strategy rule, this goes red
 # before any money is involved.
+#
+# Split into two jobs because there are two unrelated programs in here. A
+# broken trading rule should not hide a broken earnings screen behind it, or
+# stop work on one while the other is being fixed - so each side fails on its
+# own, and a red tick says which program is actually broken.
 on:
   push:
     branches: [main]
@@ -11,7 +16,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  boundary:
+    name: The two strategies stay separate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -20,6 +26,40 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
-      - run: python -m pytest tests/ -q
+      - run: python -m pytest tests/test_boundaries.py -q
+
+  trading-bot:
+    name: Intraday trading bot
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: |
+          python -m pytest tests/ -q \
+            --ignore=tests/test_preearn.py \
+            --ignore=tests/test_preearn_screen.py \
+            --ignore=tests/test_fundamentals.py
       - name: Validate config.yaml
-        run: python -c "from src.config import load_config; load_config(); print('config OK')"
+        run: |
+          python -c "from src.config import load_config; load_config(); \
+                     print('config OK')"
+
+  earnings-screen:
+    name: Pre-earnings screen
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: |
+          python -m pytest -q \
+            tests/test_preearn.py \
+            tests/test_preearn_screen.py \
+            tests/test_fundamentals.py
