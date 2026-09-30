@@ -1,0 +1,12 @@
+{
+  "n": 1046,
+  "or_minutes": 15,
+  "pad": 2.0,
+  "separation": {
+    "cohort": 0.05,
+    "minute": 0.034,
+    "gap": 0.009,
+    "width": 0.031,
+    "push": 0.037
+  }
+}

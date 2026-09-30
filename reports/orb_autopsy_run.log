@@ -1,0 +1,101 @@
+2026-09-30 02:36:38,122 INFO Fetching 1-minute extended-hours bars from 2026-05-12 for 13 symbols
+2026-09-30 02:36:49,026 INFO Usable: 13 symbols, 492238 bars total
+2026-09-30 02:37:11,756 INFO 1046 labelled breaks
+# Opening range autopsy — bigtech
+
+1046 breaks · 97 trading days (2026-05-12 to 2026-09-29) · 15-minute range · +2.0% stop room
+
+Every break the live rule takes, labelled at the live settings and then grouped. Nothing here is tuned; a difference between groups is a property of the market, not of a search.
+
+## Overall
+
+| group | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| all breaks | 1046 | 48.5% | 507 | 539 | -4.3% | -0.004% |
+| explore | 703 | 47.9% | 337 | 366 | -3.0% | -0.004% |
+| holdout | 343 | 49.6% | 170 | 173 | -1.3% | -0.004% |
+
+## How many names broke together
+
+Same side, within 10 minutes. This is the 29 September question: is a break the whole sector is making at once worth less than one a single name is making alone?
+
+| group | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| 1 name | 143 | 42.0% | 60 | 83 | -5.2% | -0.036% |
+| 2 name | 164 | 49.4% | 81 | 83 | -0.1% | -0.000% |
+| 3–4 names | 295 | 49.2% | 145 | 150 | -9.3% | -0.031% |
+| 5–7 names | 319 | 50.5% | 161 | 158 | +1.8% | +0.006% |
+| 8–98 names | 125 | 48.0% | 60 | 65 | +8.4% | +0.067% |
+
+| group | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| alone (cohort 1) | 143 | 42.0% | 60 | 83 | -5.2% | -0.036% |
+| with the crowd | 903 | 49.5% | 447 | 456 | +0.9% | +0.001% |
+
+## When the break came
+
+| group | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| 10–20 min after the bell | 446 | 47.8% | 213 | 233 | -6.3% | -0.014% |
+| 20–30 min after the bell | 273 | 51.3% | 140 | 133 | +1.1% | +0.004% |
+| 30–45 min after the bell | 185 | 48.6% | 90 | 95 | -1.4% | -0.007% |
+| 45–90 min after the bell | 142 | 45.1% | 64 | 78 | +2.3% | +0.016% |
+
+## Direction
+
+| group | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| long | 520 | 49.4% | 257 | 263 | +0.9% | +0.002% |
+| short | 526 | 47.5% | 250 | 276 | -5.2% | -0.010% |
+
+| group | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| with the gap | 504 | 51.8% | 261 | 243 | +17.8% | +0.035% |
+| against the gap | 542 | 45.4% | 246 | 296 | -22.1% | -0.041% |
+
+## Overnight gap
+
+| group | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| -99% to -2% | 110 | 45.5% | 50 | 60 | -3.7% | -0.034% |
+| -2% to -0.5% | 233 | 49.4% | 115 | 118 | -1.1% | -0.005% |
+| -0.5% to 0.5% | 326 | 46.9% | 153 | 173 | -9.6% | -0.030% |
+| 0.5% to 2% | 253 | 50.2% | 127 | 126 | +0.6% | +0.002% |
+| 2% to 99% | 124 | 50.0% | 62 | 62 | +9.5% | +0.077% |
+
+## How wide the range was
+
+| group | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| 0.3%–0.6% of price | 15 | 40.0% | 6 | 9 | -1.2% | -0.078% |
+| 0.6%–1% of price | 162 | 49.4% | 80 | 82 | +1.1% | +0.007% |
+| 1%–2% of price | 491 | 47.5% | 233 | 258 | -7.1% | -0.014% |
+| 2%–99% of price | 378 | 49.7% | 188 | 190 | +2.9% | +0.008% |
+
+## Volume behind the break
+
+| group | trades | win % | won | lost | profit % | avg/trade |
+|---|---|---|---|---|---|---|
+| 0x–0.8x the range average | 561 | 47.1% | 264 | 297 | -10.5% | -0.019% |
+| 0.8x–1.2x the range average | 241 | 46.9% | 113 | 128 | -8.2% | -0.034% |
+| 1.2x–2x the range average | 173 | 54.9% | 95 | 78 | +13.2% | +0.076% |
+| 2x–4x the range average | 66 | 50.0% | 33 | 33 | +0.1% | +0.001% |
+| 4x–999x the range average | 5 | 40.0% | 2 | 3 | +1.1% | +0.219% |
+
+## Which feature separates winners from losers at all
+
+Pooled standard deviations between the winning and losing groups. Under about 0.3 is noise — that threshold has already retired two feature searches in this project.
+
+| feature | separation |
+|---|---|
+| cohort | 0.050 |
+| push | 0.037 |
+| minute | 0.034 |
+| width | 0.031 |
+| gap | 0.009 |
+
+## Verdict
+
+- **Nothing separates them.** The strongest feature is cohort at 0.050 standard deviations, well inside noise. The losing trades are not distinguishable from the winning ones by anything measured here, which means no filter built from these features will help — including the cohort idea.
+- The holdout loses -1.3%, so any filter has to do more than shuffle which losses are taken.
+
