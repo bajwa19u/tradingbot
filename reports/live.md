@@ -1,7 +1,7 @@
-**Live check — 2026-09-30 11:51 ET** · 248 min to the close
+**Live check — 2026-09-30 12:25 ET** · 214 min to the close
 
-⚪ above level, volume light — **CRWD** `$267.80` vs level `$263.85` (+1.5%) · volume 36% of what it needs
-⚪ right at the level — **SHOP** `$150.79` vs level `$151.26` (-0.3%) · volume 19% of what it needs
-⚪ right at the level — **SNOW** `$347.27` vs level `$348.46` (-0.3%) · volume 55% of what it needs
+⚪ above level, volume light — **CRWD** `$266.46` vs level `$263.85` (+1.0%) · volume 41% of what it needs
+⚪ right at the level — **SNOW** `$345.32` vs level `$348.46` (-0.9%) · volume 66% of what it needs
+⚪ right at the level — **SHOP** `$149.70` vs level `$151.26` (-1.0%) · volume 22% of what it needs
 
 ⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
