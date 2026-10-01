@@ -1,1 +1,8 @@
-2026-09-30 20:53:05,240 INFO Not the pre-close window (16:53 ET) - skipping
+2026-10-01 19:55:44,660 ERROR Data fetch failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
