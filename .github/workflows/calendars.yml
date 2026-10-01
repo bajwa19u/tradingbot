@@ -1,0 +1,99 @@
+name: Calendars — shares and contracts
+
+# A month of sessions, two grids: what the shares did (measured from one-minute
+# bars) and what contracts would have done (modelled, see src/calendars.py).
+#
+# Research only. Nothing trades, nothing posts to Discord.
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "Sessions to cover"
+        required: false
+        default: "30"
+      universe:
+        description: "Symbol list (bigtech, core, live, wide)"
+        required: false
+        default: "bigtech"
+      symbols:
+        description: "Override the universe, comma separated"
+        required: false
+        default: ""
+  schedule:
+    - cron: "40 21 * * 1-5"      # after the close, so the day is complete
+
+permissions:
+  contents: write
+
+concurrency:
+  group: calendars
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: Build the calendars
+        id: run
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          IN_DAYS: ${{ inputs.days }}
+          IN_UNI: ${{ inputs.universe }}
+          IN_SYM: ${{ inputs.symbols }}
+        run: |
+          set -uo pipefail
+          mkdir -p reports
+          rm -f reports/calendars.json reports/calendars.md
+          ARGS=(--days "${IN_DAYS:-30}" --universe "${IN_UNI:-bigtech}")
+          [ -n "${IN_SYM:-}" ] && ARGS+=(--symbols "${IN_SYM}") || true
+          set +e
+          python -m src.calendars "${ARGS[@]}" 2>&1 | tee reports/calendars.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          mkdir -p reports
+          rm -rf /tmp/out && mkdir -p /tmp/out
+          cp -a reports /tmp/out/reports
+          for i in 1 2 3 4 5; do
+            git fetch origin "${GITHUB_REF_NAME}" || true
+            git reset --hard "origin/${GITHUB_REF_NAME}"
+            mkdir -p reports
+            cp -a /tmp/out/reports/. reports/
+            git add reports
+            if git diff --cached --quiet; then
+              echo "nothing to commit"; exit 0
+            fi
+            git commit -m "calendars: shares and contracts [skip ci]"
+            if git push origin "HEAD:${GITHUB_REF_NAME}"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          echo "::error::could not push results after 5 attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/calendars.md ]; then
+            cat reports/calendars.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            { echo '```'; tail -n 40 reports/calendars.log; echo '```'; } \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Fail if the run failed
+        if: always() && steps.run.outputs.code != '0'
+        run: exit 1
