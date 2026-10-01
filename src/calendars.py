@@ -194,8 +194,11 @@ def contract_days(trades: list[dict], vols: dict[str, float]) -> dict[str, dict]
 def vols_for(data: dict[str, pd.DataFrame]) -> dict[str, float]:
     out = {}
     for sym, df in data.items():
+        if not len(df):
+            continue
         closes = [float(d[1]["close"].iloc[-1]) for d in op.by_day(df)]
-        out[sym] = round(realised_vol(closes[-VOL_LOOKBACK:]), 4)
+        if closes:
+            out[sym] = round(realised_vol(closes[-VOL_LOOKBACK:]), 4)
     return out
 
 
@@ -267,12 +270,13 @@ def main(argv=None) -> int:
     symbols = ([s.strip().upper() for s in args.symbols.split(",") if s.strip()]
                or UNIVERSES.get(args.universe) or UNIVERSES["bigtech"])
     md = MarketData(Credentials.from_env(), feed="iex")
-    start = (pd.Timestamp.now(tz=EASTERN)
-             - pd.Timedelta(days=int(args.days * 1.6))).date().isoformat()
     try:
-        data = md.intraday_bars(symbols, 1, start=start, extended=True)
+        data = op.fetch(md, symbols, args.days)
     except AlpacaError as exc:
         log.error("could not fetch bars: %s", exc)
+        return 1
+    if not data:
+        log.error("no usable price history came back for %s", ", ".join(symbols))
         return 1
     blob = build(data)
     REPORTS.mkdir(exist_ok=True)
