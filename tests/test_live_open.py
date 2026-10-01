@@ -429,3 +429,22 @@ def test_a_closed_trade_shows_the_result_not_the_direction():
                          reason="stop", pct=-1.0))
     assert won.startswith("✅") and lost.startswith("❌")
     assert "🔴" not in won and "🟢" not in lost
+
+
+def test_polling_hands_over_after_its_time_limit(monkeypatch):
+    """`--for` ends a poll well before `--until`, so the all-day job exits
+    and commits inside GitHub's six-hour limit instead of being killed."""
+    import pandas as pd
+    t = [pd.Timestamp("2026-10-01 11:00", tz=lb.EASTERN)]
+
+    def now(tz=None):
+        t[0] += pd.Timedelta(minutes=1)
+        return t[0]
+    monkeypatch.setattr(pd.Timestamp, "now", staticmethod(now))
+    monkeypatch.setattr(lb, "settings", lambda: {})
+    ticks = []
+    monkeypatch.setattr(lb, "tick", lambda cfg, dry: ticks.append(t[0]) or 0)
+    monkeypatch.setattr(lb._time, "sleep", lambda s: None)
+    assert lb.main(["--until", "16:10", "--every", "60", "--for", "5"]) == 0
+    assert 2 <= len(ticks) <= 5
+    assert t[0] < pd.Timestamp("2026-10-01 11:15", tz=lb.EASTERN)

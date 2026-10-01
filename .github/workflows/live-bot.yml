@@ -2,8 +2,15 @@ name: Live bot
 
 # THE DEPLOYED BOT. Break and retest, shorts only, core watchlist.
 #
-# Every five minutes through the session: posts an entry the moment the rule
-# fires, a close when the trade ends, and one summary after the bell.
+# Through the session: posts an entry the moment the rule fires, a close when
+# the trade ends, and one summary after the bell.
+#
+# POLLS, like the opening job. Cron is only what starts it. On 1 October the
+# "every five minutes" schedule ran at 10:13 and then not again until 10:35,
+# so signals arrived too old to trade and options were sold long after their
+# stop or target. One run now checks every 60 seconds for up to 320 minutes
+# (GitHub stops any job at six hours); the next cron run waits in the
+# concurrency queue and takes over the moment this one exits.
 #
 # The cron window is wide because UTC has no daylight-saving awareness; the
 # script checks real Eastern time and exits outside 09:45-16:10.
@@ -13,7 +20,7 @@ name: Live bot
 # record - the next run recomputes the same day and posts whatever is new.
 on:
   schedule:
-    - cron: "*/5 13-21 * * 1-5"
+    - cron: "*/10 13-21 * * 1-5"
   workflow_dispatch:
     inputs:
       dry_run:
@@ -35,7 +42,7 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 345
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -57,7 +64,7 @@ jobs:
           set -uo pipefail
           mkdir -p reports state
           touch /tmp/runmark
-          ARGS=()
+          ARGS=(--until 16:10 --every 60 --for 320)
           if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
           if [ "${IN_FORCE:-false}" = "true" ]; then ARGS+=(--force); fi
           set +e

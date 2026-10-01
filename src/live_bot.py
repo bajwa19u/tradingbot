@@ -513,6 +513,9 @@ def main(argv=None) -> int:
                     help="poll until this Eastern time, e.g. 10:05")
     ap.add_argument("--every", type=int, default=45,
                     help="seconds between polls when --until is set")
+    ap.add_argument("--for", dest="minutes", type=int, default=0,
+                    help="stop polling after this many minutes, even before "
+                         "--until; GitHub kills a job at six hours")
     args = ap.parse_args(argv)
 
     now = pd.Timestamp.now(tz=EASTERN)
@@ -534,11 +537,20 @@ def main(argv=None) -> int:
     # covers the open at its own cadence. Sleeping past the bell rather than
     # scanning before it keeps the log honest about what it has seen.
     stop = pd.Timestamp(args.until).time()
-    log.info("Polling every %ds until %s ET", args.every, args.until)
+    deadline = (pd.Timestamp.now(tz=EASTERN) + pd.Timedelta(minutes=args.minutes)
+                if args.minutes else None)
+    log.info("Polling every %ds until %s ET%s", args.every, args.until,
+             f" or for {args.minutes} min" if deadline is not None else "")
     while True:
         now = pd.Timestamp.now(tz=EASTERN)
         if now.time() > stop:
             log.info("Reached %s ET — done.", args.until)
+            return 0
+        if deadline is not None and now >= deadline:
+            # The next scheduled run is already queued behind this one and
+            # starts the moment this job commits and exits.
+            log.info("Polled for %d min — handing over to the next run.",
+                     args.minutes)
             return 0
         if now.time() >= pd.Timestamp(first).time():
             try:
