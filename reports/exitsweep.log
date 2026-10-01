@@ -1,4 +1,4 @@
-2026-10-01 02:39:59,110 ERROR could not fetch bars: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+2026-10-01 02:42:41,241 ERROR could not fetch bars: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
 <head><title>401 Authorization Required</title></head>
 <body>
 <center><h1>401 Authorization Required</h1></center>
