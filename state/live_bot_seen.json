@@ -15,9 +15,13 @@
   "exits": [
     "OPEN-AMD-orl-2026-10-01",
     "OPEN-META-orh-2026-10-01",
-    "OPEN-SPY-orh-2026-10-01"
+    "OPEN-SPY-orh-2026-10-01",
+    "OPEN-TSLA-orl-2026-10-01",
+    "OPEN-NVDA-orh-2026-10-01",
+    "OPEN-AAPL-orh-2026-10-01",
+    "OPEN-GOOGL-orl-2026-10-01"
   ],
-  "summary": false,
+  "summary": true,
   "cards": {
     "OPEN-AAPL-orh-2026-10-01": "1555221051959541871",
     "OPEN-AMD-orl-2026-10-01": "1555221052739682356",
