@@ -147,13 +147,13 @@ def test_an_unposted_signal_is_not_traded():
     assert p.sent == []
 
 
-def test_the_daily_cap_holds_across_runs():
+def test_a_big_day_of_spending_does_not_stop_trading():
     spent = [{"client_order_id": f"{at.OPEN_TAG}-20261001-{i}", "symbol": f"S{i}",
               "status": "filled", "filled_qty": "10", "filled_avg_price": "1.0"}
              for i in range(6)]
     p = FakePaper(contracts=strip(), orders=spent)
     at.run([sig()], at_time("10:05"), p)
-    assert p.sent == []
+    assert len(p.sent) == 1
 
 
 def test_yesterdays_orders_do_not_count_against_today():

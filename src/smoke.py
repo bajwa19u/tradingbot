@@ -118,9 +118,9 @@ def run(on: date | None = None) -> Check:
                   f"{n * pick.ask * 100:.0f} at the ask")
 
     c.add(bk.MAX_PREMIUM_PER_TRADE == 1250.0
-          and bk.MAX_PREMIUM_PER_DAY == 6000.0
-          and bk.MAX_OPEN_POSITIONS == 8,
-          "caps unchanged", "about 1,000 a trade (1,250 max) · 6,000 a day · 8 positions")
+          and bk.MAX_PREMIUM_PER_DAY is None
+          and bk.MAX_OPEN_POSITIONS == 30,
+          "caps unchanged", "about 1,000 a trade (1,250 max) · no daily limit · 30 positions")
     return c
 
 

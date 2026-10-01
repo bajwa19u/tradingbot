@@ -45,8 +45,12 @@ DATA_URL = "https://data.alpaca.markets"
 
 TARGET_PREMIUM = 1000.0           # Uday's number, 30 September: "around 1k"
 MAX_PREMIUM_PER_TRADE = 1250.0    # hard ceiling, so "a bit more" stays a bit
-MAX_PREMIUM_PER_DAY = 6000.0      # six of those, then the bot is done
-MAX_OPEN_POSITIONS = 8
+# No daily limit: Uday, 30 September - "as long as signals are sent, keep
+# trading". A loop cannot rebuy one signal (every order carries an id Alpaca
+# will not accept twice), and the position limit below stays as the backstop
+# against anything else runaway. 30 is three per watchlist name.
+MAX_PREMIUM_PER_DAY = None
+MAX_OPEN_POSITIONS = 30
 
 MIN_DTE = 1          # 0DTE is excluded by default; see pick_contract
 MAX_DTE = 9
@@ -265,7 +269,8 @@ class Paper:
             log.warning("refused %s: %.0f over the %.0f per-trade cap",
                         c.symbol, cost, MAX_PREMIUM_PER_TRADE)
             return None
-        if self.spent_today + cost > MAX_PREMIUM_PER_DAY:
+        if (MAX_PREMIUM_PER_DAY is not None
+                and self.spent_today + cost > MAX_PREMIUM_PER_DAY):
             log.warning("refused %s: would take today to %.0f, cap is %.0f",
                         c.symbol, self.spent_today + cost, MAX_PREMIUM_PER_DAY)
             return None

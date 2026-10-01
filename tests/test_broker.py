@@ -150,13 +150,12 @@ def test_an_order_over_the_per_trade_cap_is_refused():
     assert p.http.posts == []
 
 
-def test_the_day_stops_buying_once_the_daily_cap_is_reached():
+def test_there_is_no_daily_limit_on_spending():
     p = paper()
-    c = contract(340, date(2026, 10, 2), ask=1.00)   # 100 per contract
-    for _ in range(int(bk.MAX_PREMIUM_PER_DAY // 1000)):
-        assert p.buy_to_open(c, 10) is not None      # 1000 each
-    assert p.buy_to_open(c, 10) is None
-    assert p.spent_today <= bk.MAX_PREMIUM_PER_DAY
+    exp = date(2026, 10, 2)
+    for i in range(20):                              # 20,000 in a day
+        assert p.buy_to_open(contract(300 + i, exp, ask=1.00), 10) is not None
+    assert p.spent_today == 20_000
 
 
 def test_it_will_not_hold_more_than_the_position_limit():
@@ -242,5 +241,5 @@ def test_parsing_an_occ_symbol_gives_the_strike_back(sym, strike):
 def test_the_caps_are_what_uday_asked_for():
     assert bk.TARGET_PREMIUM == 1000.0
     assert bk.MAX_PREMIUM_PER_TRADE == 1250.0
-    assert bk.MAX_PREMIUM_PER_DAY == 6000.0
-    assert bk.MAX_OPEN_POSITIONS == 8
+    assert bk.MAX_PREMIUM_PER_DAY is None
+    assert bk.MAX_OPEN_POSITIONS == 30
