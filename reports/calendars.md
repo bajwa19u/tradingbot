@@ -1,6 +1,3 @@
-2026-10-01 02:45:42,433 INFO Fetching 1-minute extended-hours bars from 2026-08-11 for 13 symbols
-2026-10-01 02:45:46,009 INFO Usable: 13 symbols, 180988 bars total
-2026-10-01 02:45:50,201 INFO 381 closed trades across 13 symbols
 # Two calendars
 
 Generated 2026-09-30 22:45 ET
