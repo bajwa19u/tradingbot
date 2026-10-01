@@ -1,1 +1,6 @@
-2026-10-01 13:29:51,617 INFO Outside market hours (09:29 ET) - nothing to do
+**Live check — 2026-10-01 09:51 ET** · 368 min to the close
+
+⚪ right at the level — **SHOP** `$151.35` vs level `$151.59` (-0.2%) · volume 6% of what it needs
+
+⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
+2026-10-01 13:51:46,480 INFO Nothing new since the last check.

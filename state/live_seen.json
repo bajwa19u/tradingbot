@@ -1,8 +1,6 @@
 {
-  "date": "2026-09-30",
+  "date": "2026-10-01",
   "seen": {
-    "CRWD": "above_light_volume",
-    "SHOP": "at_the_level",
-    "SNOW": "at_the_level"
+    "SHOP": "at_the_level"
   }
 }
