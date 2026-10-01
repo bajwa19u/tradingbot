@@ -1,20 +1,9 @@
-2026-10-01 02:45:42,433 INFO Fetching 1-minute extended-hours bars from 2026-08-11 for 13 symbols
-2026-10-01 02:45:46,009 INFO Usable: 13 symbols, 180988 bars total
-2026-10-01 02:45:50,201 INFO 381 closed trades across 13 symbols
-# Two calendars
+2026-10-01 21:49:00,082 INFO Fetching 1-minute extended-hours bars from 2026-08-12 for 13 symbols
+2026-10-01 21:49:00,123 ERROR could not fetch bars: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
 
-Generated 2026-09-30 22:45 ET
-
-## Shares — measured
-
-- 35 sessions · **12 green, 23 red**
-- 381 trades · 168 won, 213 lost · **44.1% win rate**
-- total **-16.29%** · best day +5.82% · worst -9.06%
-
-## Contracts — modelled, not measured
-
-Black-Scholes on realised volatility, 3% spread charged each way, one strike from spot, expiring that Friday. Real spreads on short-dated contracts are wider than this, so read it as the shape of the leverage rather than a profit and loss.
-
-- 35 sessions · **14 green, 21 red**
-- 381 signals priced · 135 won, 246 lost · **35.4% win rate**
-- average day **+1.13%** · best +86.90% · worst -42.67%
