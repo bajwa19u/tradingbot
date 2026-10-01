@@ -1,2 +1,2 @@
-2026-10-01 20:35:32,614 ERROR could not read the account: GET /v2/account/activities/FILL -> 401: {"message": "unauthorized."}
+2026-10-01 21:33:07,232 ERROR could not read the account: GET /v2/account/activities/FILL -> 401: {"message": "unauthorized."}
 
