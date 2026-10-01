@@ -1,0 +1,20 @@
+2026-10-01 16:33:30,542 INFO 76 fills on the account
+/home/runner/work/tradingbot/tradingbot/src/account.py:190: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+  "generated": str(pd.Timestamp.utcnow())[:16] + " UTC"}
+# The paper account, as it really traded
+
+Read from Alpaca at 2026-10-01 16:33 UTC
+
+- 5 sessions · **4 green, 1 red**
+- 31 closed trades · 26 won, 5 lost · **83.9% win rate**
+- **+88,923.00** realised
+
+Still open (no result yet): META260807C00602500 ×50, SPG260821P00200000 ×10, MET261016P00100000 ×-1, MET ×50, TSLA261002P00355000 ×1, TSLA260928P00355000 ×240, TSLA260928C00365000 ×350, AMD260928C00612500 ×20, META260928P00710000 ×60, AMD261002P00590000 ×18, META261002P00702500 ×38, NVDA260930C00237500 ×200, QQQ260930C00752000 ×80, AMD260930P00595000 ×20, AAPL261002C00342500 ×7, META261002C00730000 ×1, TSLA261005P00352500 ×1
+
+| date | trades | won | lost | P/L |
+|---|---|---|---|---|
+| 2026-08-07 | 6 | 6 | 0 | +1,207.30 |
+| 2026-09-28 | 2 | 2 | 0 | +5,017.70 |
+| 2026-09-29 | 7 | 7 | 0 | +13,719.00 |
+| 2026-09-30 | 14 | 10 | 4 | +69,265.00 |
+| 2026-10-01 | 2 | 1 | 1 | -286.00 |
