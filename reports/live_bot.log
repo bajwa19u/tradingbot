@@ -1,1 +1,100 @@
-2026-09-30 22:03:17,160 INFO Past 16:10 ET — nothing to do.
+2026-10-01 14:13:13,247 INFO 10:13:10 ET · bars through — · 10 trade(s) today · 13 new message(s)
+
+🟢 **LONG AAPL**  ·  09:35 ET
+`Entry    332.02`
+`SL       328.31`
+`TP       339.43`
+🟥 LOW · against the overnight gap
+_opening range_
+
+🔴 **SHORT AMD**  ·  09:35 ET
+`Entry    607.93`
+`SL       613.77`
+`TP       596.25`
+🟨 MED · with the gap, but only 4 names moving
+_opening range_
+
+❌ **SHORT AMD**  ·  09:35 → 09:37
+`Entry    607.93`
+`SL       613.77`
+`TP       596.25`
+`Exit     614.07`  hit stop
+**-1.05%** · 🟨 MED · _opening range_
+
+🔴 **SHORT GOOGL**  ·  09:36 ET
+`Entry    347.90`
+`SL       353.07`
+`TP       337.55`
+🟥 LOW · against the overnight gap
+_opening range_
+
+🟢 **LONG META**  ·  09:36 ET
+`Entry    732.99`
+`SL       727.96`
+`TP       743.04`
+🟨 MED · with the gap, but only 4 names moving
+_opening range_
+
+❌ **LONG META**  ·  09:36 → 09:49
+`Entry    732.99`
+`SL       727.96`
+`TP       743.04`
+`Exit     727.60`  hit stop
+**-1.07%** · 🟨 MED · _opening range_
+
+🟢 **LONG NVDA**  ·  09:37 ET
+`Entry    230.63`
+`SL       228.39`
+`TP       235.10`
+🟨 MED · with the gap, but only 4 names moving
+_opening range_
+
+🟢 **LONG SPY**  ·  09:37 ET
+`Entry    765.72`
+`SL       763.35`
+`TP       770.46`
+🟨 MED · with the gap, but only 4 names moving
+_opening range_
+
+❌ **LONG SPY**  ·  09:37 → 09:44
+`Entry    765.72`
+`SL       763.35`
+`TP       770.46`
+`Exit     762.97`  hit stop
+**-1.16%** · 🟨 MED · _opening range_
+
+🔴 **SHORT AMZN**  ·  09:40 ET
+`Entry    249.49`
+`SL       251.84`
+`TP       244.78`
+🟥 LOW · against the overnight gap
+_opening range_
+
+🔴 **SHORT QQQ**  ·  09:45 ET
+`Entry    740.76`
+`SL       743.83`
+`TP       734.62`
+🟥 LOW · against the overnight gap
+_opening range_
+
+🔴 **SHORT MSFT**  ·  09:49 ET
+`Entry    516.88`
+`SL       522.90`
+`TP       504.84`
+🟥 LOW · against the overnight gap
+_opening range_
+
+🔴 **SHORT TSLA**  ·  10:00 ET
+`Entry    354.75`
+`SL       358.44`
+`TP       347.38`
+🟥 LOW · against the overnight gap
+_opening range_
+2026-10-01 14:13:18,318 INFO skip AAPL 09:35: signal is 38 min old
+2026-10-01 14:13:18,319 INFO skip GOOGL 09:36: signal is 37 min old
+2026-10-01 14:13:18,319 INFO skip NVDA 09:37: signal is 36 min old
+2026-10-01 14:13:18,319 INFO skip AMZN 09:40: signal is 33 min old
+2026-10-01 14:13:18,319 INFO skip QQQ 09:45: signal is 28 min old
+2026-10-01 14:13:18,319 INFO skip MSFT 09:49: signal is 24 min old
+2026-10-01 14:13:18,950 INFO bought 3 TSLA261002P00352500 for about 1116
+2026-10-01 14:13:18,950 INFO paper: buy 3 TSLA261002P00352500 @~3.72
