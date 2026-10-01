@@ -13,7 +13,7 @@ on:
       days:
         description: "Calendar days of history to pull"
         required: false
-        default: "120"
+        default: "60"
       universe:
         description: "Which symbol list (bigtech, core, live, wide)"
         required: false

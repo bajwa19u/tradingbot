@@ -166,3 +166,23 @@ def test_a_row_shows_winners_and_losers_not_r_multiples():
 @pytest.mark.parametrize("win", es.WINDOWS)
 def test_every_window_is_a_minute_count_or_nothing(win):
     assert win is None or (isinstance(win, int) and 0 < win <= 390)
+
+
+# --- the failure modes that killed the first live run ------------------------
+def test_an_empty_frame_does_not_crash_the_split():
+    """One symbol returning nothing must not take the whole sweep down."""
+    import pandas as pd
+    empty = pd.DataFrame(columns=["open", "high", "low", "close", "volume"],
+                         index=pd.DatetimeIndex([], tz=es.EASTERN))
+    a, b = es.split_dates({"GOOD": frame(12), "DEAD": empty})
+    assert len(a) + len(b) == 12
+
+
+def test_too_few_days_says_so_instead_of_splitting_nothing():
+    with pytest.raises(RuntimeError, match="not enough to split"):
+        es.split_dates({"X": frame(2)})
+
+
+def test_the_default_run_is_sized_like_the_studies_that_finished():
+    """120 days of one-minute bars never came back. 60 is what works."""
+    assert es.parse_args([]).days == 60

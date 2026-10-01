@@ -95,7 +95,12 @@ def split_dates(data: dict[str, pd.DataFrame]) -> tuple[set, set]:
     Split by date rather than at random, because a random split lets a rule
     learn one morning from another morning of the same week.
     """
-    dates = sorted({d for df in data.values() for d, _ in op.by_day(df)})
+    dates = sorted({d for df in data.values() if len(df)
+                    for d, _ in op.by_day(df)})
+    if len(dates) < 4:
+        raise RuntimeError(
+            f"only {len(dates)} trading days came back - not enough to split. "
+            f"Check the symbols and the date range.")
     cut = int(len(dates) * EXPLORE_SHARE)
     return set(dates[:cut]), set(dates[cut:])
 
@@ -236,7 +241,7 @@ def sweep(data: dict[str, pd.DataFrame]) -> tuple[str, dict]:
 
 def parse_args(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--days", type=int, default=120)
+    ap.add_argument("--days", type=int, default=60)
     ap.add_argument("--universe", default="bigtech")
     ap.add_argument("--symbols", default="")
     return ap.parse_args(argv)
@@ -247,13 +252,20 @@ def main(argv=None) -> int:
     symbols = ([s.strip().upper() for s in args.symbols.split(",") if s.strip()]
                or UNIVERSES.get(args.universe) or UNIVERSES["bigtech"])
     md = MarketData(Credentials.from_env(), feed="iex")
-    start = (pd.Timestamp.now(tz=EASTERN)
-             - pd.Timedelta(days=int(args.days * 1.5))).date().isoformat()
+    # op.fetch is what every study that has actually finished uses: it drops
+    # symbols that come back empty or too thin to replay, which a direct
+    # intraday_bars call does not, and one empty frame is enough to crash the
+    # date split downstream.
     try:
-        data = md.intraday_bars(symbols, 1, start=start, extended=True)
+        data = op.fetch(md, symbols, args.days)
     except AlpacaError as exc:
         log.error("could not fetch bars: %s", exc)
         return 1
+    if not data:
+        log.error("no usable price history came back for %s", ", ".join(symbols))
+        return 1
+    log.info("usable history: %d symbols, %d bars",
+             len(data), sum(len(d) for d in data.values()))
     text, blob = sweep(data)
     REPORTS.mkdir(exist_ok=True)
     (REPORTS / "exitsweep.md").write_text(text)
