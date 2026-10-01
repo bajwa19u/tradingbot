@@ -61,6 +61,8 @@ jobs:
         env:
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          ALPACA_PAPER_KEY: ${{ secrets.ALPACA_PAPER_KEY }}
+          ALPACA_PAPER_SECRET: ${{ secrets.ALPACA_PAPER_SECRET }}
           DISCORD_WEBHOOK_INPLAY: ${{ secrets.DISCORD_WEBHOOK_INPLAY }}
           IN_DRY: ${{ inputs.dry_run }}
           IN_UNTIL: ${{ inputs.until }}
