@@ -42,6 +42,7 @@ from zoneinfo import ZoneInfo
 
 import pandas as pd
 
+from . import autotrade
 from . import confidence as conf
 from . import discord_msg as dm
 from . import opening as op
@@ -369,7 +370,9 @@ def summary_msg(trades: list[dict], date: str) -> str:
     note = cluster_note(done)
     if note:
         lines.append(note)
-    lines.append("_Paper only. No orders were placed._")
+    lines.append("_Paper account: each signal bought as a weekly option, one "
+                 "strike out of the money._" if autotrade.ENABLED
+                 else "_Paper only. No orders were placed._")
     return "\n".join(lines)
 
 
@@ -476,6 +479,16 @@ def tick(cfg: dict, dry_run: bool) -> int:
             if mid:
                 seen["cards"][tid] = mid
             seen["entries"].append(tid)
+
+    # The paper account follows the feed. It runs every tick, not only when
+    # there is news, because the pre-bell sell has no message of its own. A
+    # failure here is logged and survived: the signals matter more.
+    try:
+        p = autotrade.client() if autotrade.ENABLED else None
+        for line in (autotrade.run(trades, now, p) if p else []):
+            log.info("paper: %s", line)
+    except Exception as exc:                                   # noqa: BLE001
+        log.exception("Paper trading failed: %s", exc)
 
     STATE.mkdir(exist_ok=True); REPORTS.mkdir(exist_ok=True)
     # Only touch the record when this run actually announced something.

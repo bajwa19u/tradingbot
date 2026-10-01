@@ -177,6 +177,15 @@ class Paper:
             log.warning("could not read positions: %s", exc)
             return []
 
+    def orders_since(self, after: str) -> list[dict]:
+        """Every order placed since `after` (ISO time), any status.
+
+        Raises rather than returning nothing: a caller that reads "no orders"
+        when the truth is "could not ask" would forget what it already holds
+        and the daily cap with it."""
+        return self._get("/v2/orders", {"status": "all", "after": after,
+                                        "limit": 500, "direction": "asc"})
+
     def _get_data(self, path: str, params: dict | None = None) -> dict:
         url = DATA_URL + path
         _check_data(url)
@@ -187,20 +196,31 @@ class Paper:
         return r.json()
 
     def chain(self, underlying: str, kind: str, on: date,
-              allow_0dte: bool = False) -> list[Contract]:
+              allow_0dte: bool = False, until: date | None = None,
+              near: float | None = None) -> list[Contract]:
         """Tradable contracts for one name, with their current quotes.
 
         Two calls: the trading API lists what exists, the data API prices it.
         A contract with no quote is dropped rather than guessed at - an
         option we cannot price is one we cannot size.
+
+        `until` and `near` narrow both requests to one week and strikes
+        within 10% of `near`. SPY and TSLA list more than one page of
+        contracts across nine days, and an unfiltered page can silently miss
+        the very strike being asked for.
         """
         floor = on if allow_0dte else on + timedelta(days=MIN_DTE)
+        last = until or on + timedelta(days=MAX_DTE)
+        typ = "call" if kind.lower().startswith("c") else "put"
+        band = {}
+        if near:
+            band = {"strike_price_gte": f"{near * 0.9:.2f}",
+                    "strike_price_lte": f"{near * 1.1:.2f}"}
         listing = self._get("/v2/options/contracts", {
             "underlying_symbols": underlying.upper(),
             "expiration_date_gte": floor.isoformat(),
-            "expiration_date_lte": (on + timedelta(days=MAX_DTE)).isoformat(),
-            "type": "call" if kind.lower().startswith("c") else "put",
-            "status": "active", "limit": 1000})
+            "expiration_date_lte": last.isoformat(),
+            "type": typ, "status": "active", "limit": 1000, **band})
         rows = listing.get("option_contracts", []) or []
         if not rows:
             return []
@@ -208,7 +228,11 @@ class Paper:
         quotes: dict[str, dict] = {}
         try:
             snap = self._get_data(f"/v1beta1/options/snapshots/{underlying.upper()}",
-                                  {"feed": "indicative", "limit": 1000})
+                                  {"feed": "indicative", "limit": 1000,
+                                   "type": typ,
+                                   "expiration_date_gte": floor.isoformat(),
+                                   "expiration_date_lte": last.isoformat(),
+                                   **band})
             quotes = snap.get("snapshots", {}) or {}
         except BrokerError as exc:
             log.warning("no option quotes for %s: %s", underlying, exc)
@@ -227,8 +251,12 @@ class Paper:
         return out
 
     # -- writes --
-    def buy_to_open(self, c: Contract, qty: int) -> dict | None:
-        """Buy `qty` contracts at market. Returns None when a cap refuses it."""
+    def buy_to_open(self, c: Contract, qty: int,
+                    client_order_id: str | None = None) -> dict | None:
+        """Buy `qty` contracts at market. Returns None when a cap refuses it.
+
+        `client_order_id` makes the order idempotent: Alpaca refuses a second
+        order with the same id, so a run that repeats cannot buy twice."""
         cost = qty * c.ask * 100
         if qty <= 0:
             return None
@@ -244,20 +272,25 @@ class Paper:
             log.warning("refused %s: already holding %d positions",
                         c.symbol, len(self.opened))
             return None
-        o = self._post("/v2/orders", {
-            "symbol": c.symbol, "qty": str(qty), "side": "buy",
-            "type": "market", "time_in_force": "day"})
+        body = {"symbol": c.symbol, "qty": str(qty), "side": "buy",
+                "type": "market", "time_in_force": "day"}
+        if client_order_id:
+            body["client_order_id"] = client_order_id
+        o = self._post("/v2/orders", body)
         self.spent_today += cost
         self.opened[c.symbol] = self.opened.get(c.symbol, 0) + qty
         log.info("bought %d %s for about %.0f", qty, c.symbol, cost)
         return o
 
-    def sell_to_close(self, symbol: str, qty: int) -> dict | None:
+    def sell_to_close(self, symbol: str, qty: int,
+                      client_order_id: str | None = None) -> dict | None:
         if qty <= 0:
             return None
-        o = self._post("/v2/orders", {
-            "symbol": symbol, "qty": str(qty), "side": "sell",
-            "type": "market", "time_in_force": "day"})
+        body = {"symbol": symbol, "qty": str(qty), "side": "sell",
+                "type": "market", "time_in_force": "day"}
+        if client_order_id:
+            body["client_order_id"] = client_order_id
+        o = self._post("/v2/orders", body)
         left = self.opened.get(symbol, 0) - qty
         if left > 0:
             self.opened[symbol] = left
