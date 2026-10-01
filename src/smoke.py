@@ -29,6 +29,7 @@ import os
 import sys
 from datetime import date
 
+from . import autotrade as at
 from . import broker as bk
 from . import discord_msg as dm
 from .config import Credentials
@@ -60,8 +61,8 @@ class Check:
         lines = [f"{'✅' if ok else '❌'} {name}"
                  + (f" · _{d}_" if d else "") for ok, name, d in self.rows]
         tail = ("" if self.passed else
-                "\n\n**No orders will be placed today.** Discord signals are "
-                "unaffected.")
+                "\n\n**Paper orders may fail until this is fixed.** Discord signals "
+                "are unaffected.")
         return f"{head}  ·  {when}\n" + "\n".join(lines) + tail
 
 
@@ -98,8 +99,13 @@ def run(on: date | None = None) -> Check:
     c.add(bool(lvl) and int(lvl) >= 1, "options enabled",
           f"level {lvl}" if lvl else "no options level on this account")
 
+    # The same request, the same contract and the same sizing the auto-trader
+    # uses. On 1 October this probed a deep in-the-money call the bot would
+    # never buy, priced it over the cap, and reported "not ready" while every
+    # real check had passed.
     try:
-        chain = p.chain(PROBE, "call", on)
+        chain = p.chain(PROBE, "call", on, allow_0dte=True,
+                        until=at.this_friday(on))
     except Exception as exc:                                   # noqa: BLE001
         c.add(False, f"{PROBE} option chain", str(exc)[:120])
         return c
@@ -107,12 +113,12 @@ def run(on: date | None = None) -> Check:
           f"{len(chain)} contracts priced")
 
     if chain:
-        spot = sum(x.strike for x in chain) / len(chain)
-        pick = bk.pick_contract(chain, target=spot, on=on)
+        spot = last_price(p, PROBE) or sorted(x.strike for x in chain)[len(chain) // 2]
+        pick = at.choose(chain, "call", spot, on)
         c.add(pick is not None, "contract selection",
               f"{pick.symbol} at {pick.ask:.2f}" if pick else "nothing suitable")
         if pick:
-            n = bk.size(pick, bk.MAX_PREMIUM_PER_TRADE)
+            n = at.contracts_for(pick)
             c.add(n > 0, "sizing",
                   f"{n} contracts for about "
                   f"{n * pick.ask * 100:.0f} at the ask")
@@ -122,6 +128,15 @@ def run(on: date | None = None) -> Check:
           and bk.MAX_OPEN_POSITIONS == 30,
           "caps unchanged", "about 1,000 a trade (1,250 max) · no daily limit · 30 positions")
     return c
+
+
+def last_price(p: bk.Paper, symbol: str) -> float:
+    """The stock's last trade, or 0 when the data API will not say."""
+    try:
+        r = p._get_data(f"/v2/stocks/{symbol}/trades/latest", {"feed": "iex"})
+        return float((r.get("trade") or {}).get("p") or 0)
+    except Exception:                                          # noqa: BLE001
+        return 0.0
 
 
 def parse_args(argv=None):

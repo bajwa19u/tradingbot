@@ -126,11 +126,11 @@ def test_a_failure_exits_non_zero(env, monkeypatch):
     assert sm.main(["--dry-run"]) == 1
 
 
-def test_a_failing_message_says_no_orders_will_be_placed(env, monkeypatch):
+def test_a_failing_message_warns_orders_may_fail(env, monkeypatch):
     with_http(monkeypatch, FakeHTTP(level=0, contracts=[], quotes={}))
     msg = sm.run(TODAY).message("pre-market check")
     assert "NOT ready" in msg
-    assert "No orders will be placed" in msg
+    assert "Paper orders may fail" in msg
     assert "Discord signals are unaffected" in msg
 
 
