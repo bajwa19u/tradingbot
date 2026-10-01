@@ -240,6 +240,7 @@ def test_parsing_an_occ_symbol_gives_the_strike_back(sym, strike):
 
 # --- the caps are the numbers we agreed -------------------------------------
 def test_the_caps_are_what_uday_asked_for():
-    assert bk.MAX_PREMIUM_PER_TRADE == 1000.0
+    assert bk.TARGET_PREMIUM == 1000.0
+    assert bk.MAX_PREMIUM_PER_TRADE == 1250.0
     assert bk.MAX_PREMIUM_PER_DAY == 6000.0
     assert bk.MAX_OPEN_POSITIONS == 8

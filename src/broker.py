@@ -43,7 +43,8 @@ log = logging.getLogger("broker")
 PAPER_URL = "https://paper-api.alpaca.markets"
 DATA_URL = "https://data.alpaca.markets"
 
-MAX_PREMIUM_PER_TRADE = 1000.0    # Uday's number, 30 September
+TARGET_PREMIUM = 1000.0           # Uday's number, 30 September: "around 1k"
+MAX_PREMIUM_PER_TRADE = 1250.0    # hard ceiling, so "a bit more" stays a bit
 MAX_PREMIUM_PER_DAY = 6000.0      # six of those, then the bot is done
 MAX_OPEN_POSITIONS = 8
 

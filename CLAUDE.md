@@ -77,7 +77,7 @@ live-bot.yml         the rest of the session
 `broker.py` is paper-only by construction: the base URL is a constant, not
 config, and a test fails if a live hostname appears in the source. Caps are
 enforced inside the broker so a caller that forgets cannot spend past them:
-$1,000 a trade, $6,000 a day, 8 positions. `flatten()` closes everything
+about $1,000 a trade ($1,250 ceiling), $6,000 a day, 8 positions. `flatten()` closes everything
 before the bell — letting options expire cost $24,773 on 30 September.
 
 ## Keeping sessions cheap

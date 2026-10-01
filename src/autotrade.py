@@ -12,8 +12,9 @@ option.
     end together.
   * Everything still held is sold at PRE_BELL. Nothing is left to expire.
 
-Size is whatever MAX_PREMIUM_PER_TRADE buys at the ask, and every cap in
-`broker.py` still applies.
+Size is the whole number of contracts nearest TARGET_PREMIUM (about 1,000)
+at the ask, never past MAX_PREMIUM_PER_TRADE, and every cap in `broker.py`
+still applies.
 
 Stateless, like the bot that calls it. The account is the record: each order
 carries a client_order_id derived from the trade's id, so "have I bought this
@@ -41,7 +42,7 @@ ENABLED = True
 LAST_ENTRY = "15:30"     # no new positions after this
 PRE_BELL = "15:45"       # sell everything this module holds
 FRESH_MINUTES = 15       # a signal older than this is not chased
-BUDGET = bk.MAX_PREMIUM_PER_TRADE
+BUDGET = bk.TARGET_PREMIUM
 
 OPEN_TAG, CLOSE_TAG = "tb-o", "tb-c"
 
@@ -81,6 +82,18 @@ def choose(contracts: list[bk.Contract], kind: str, spot: float,
                  bk.MIN_PRICE, bk.MAX_PRICE)
         return None
     return c
+
+
+def contracts_for(c: bk.Contract, target: float = BUDGET,
+                  ceiling: float = bk.MAX_PREMIUM_PER_TRADE) -> int:
+    """The whole number of contracts whose cost at the ask lands nearest
+    `target`, a bit over or a bit under, never past `ceiling`."""
+    per = c.ask * 100
+    if per <= 0 or per > ceiling:
+        return 0
+    lo = max(1, int(target // per))
+    fits = [q for q in (lo, lo + 1) if q * per <= ceiling]
+    return min(fits, key=lambda q: abs(q * per - target)) if fits else 0
 
 
 def _minutes(hhmm: str) -> int:
@@ -184,7 +197,7 @@ def run(trades: list[dict], now: pd.Timestamp, p: bk.Paper) -> list[str]:
         if c is None:
             log.info("skip %s: no %s one strike out this week", t["symbol"], kind)
             continue
-        qty = bk.size(c, BUDGET)
+        qty = contracts_for(c)
         if qty <= 0:
             log.info("skip %s: one contract costs more than the cap", c.symbol)
             continue

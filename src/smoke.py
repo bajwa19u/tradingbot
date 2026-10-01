@@ -117,10 +117,10 @@ def run(on: date | None = None) -> Check:
                   f"{n} contracts for about "
                   f"{n * pick.ask * 100:.0f} at the ask")
 
-    c.add(bk.MAX_PREMIUM_PER_TRADE == 1000.0
+    c.add(bk.MAX_PREMIUM_PER_TRADE == 1250.0
           and bk.MAX_PREMIUM_PER_DAY == 6000.0
           and bk.MAX_OPEN_POSITIONS == 8,
-          "caps unchanged", "1,000 a trade · 6,000 a day · 8 positions")
+          "caps unchanged", "about 1,000 a trade (1,250 max) · 6,000 a day · 8 positions")
     return c
 
 

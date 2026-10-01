@@ -105,7 +105,19 @@ def test_a_fresh_signal_is_bought_with_its_own_order_id():
     o = p.sent[0]
     assert o["side"] == "buy" and o["symbol"] == bk.occ("AAPL", FRI, "put", 227.5)
     assert o["client_order_id"] == at.order_id(at.OPEN_TAG, THU, sig()["id"])
-    assert int(o["qty"]) * 1.5 * 100 <= bk.MAX_PREMIUM_PER_TRADE
+    assert o["qty"] == "7"                    # 7 x 150 = 1,050, nearest 1,000
+
+
+def test_size_lands_near_1000_a_bit_over_or_under():
+    def n(ask):
+        return at.contracts_for(strip(ask=ask)[0])
+    assert n(6.00) == 2        # 1,200 beats 600
+    assert n(0.30) == 33       # 990 beats 1,020
+    assert n(11.00) == 1       # 1,100, a bit over
+    assert n(13.00) == 0       # 1,300 is past the 1,250 ceiling
+    for ask in (0.07, 0.55, 1.37, 2.9, 4.1, 7.7, 9.99, 12.4):
+        q = n(ask)
+        assert 750 <= q * ask * 100 <= bk.MAX_PREMIUM_PER_TRADE
 
 
 def test_a_signal_already_bought_is_not_bought_again():
