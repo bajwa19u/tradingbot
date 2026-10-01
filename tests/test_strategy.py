@@ -1982,3 +1982,23 @@ def test_live_seen_file_survives_a_foreign_or_broken_file(tmp_path, monkeypatch)
     s = L.load_seen("2026-09-28")
     assert s["entries"] == ["a"] and s["summary"] is True
     assert L.load_seen("2026-09-29")["entries"] == []     # new day, fresh
+
+
+def test_market_data_accepts_either_alpaca_key_pair(monkeypatch):
+    """A 401 killed the first sweep because the secrets were set under the
+    paper names. Either pair reads the same bars, so either pair works."""
+    from src.config import Credentials
+    for k in ("ALPACA_API_KEY", "ALPACA_API_SECRET",
+              "ALPACA_PAPER_KEY", "ALPACA_PAPER_SECRET"):
+        monkeypatch.delenv(k, raising=False)
+
+    monkeypatch.setenv("ALPACA_PAPER_KEY", "pk")
+    monkeypatch.setenv("ALPACA_PAPER_SECRET", "ps")
+    c = Credentials.from_env()
+    assert (c.alpaca_key, c.alpaca_secret) == ("pk", "ps")
+
+    monkeypatch.setenv("ALPACA_API_KEY", "lk")
+    monkeypatch.setenv("ALPACA_API_SECRET", "ls")
+    c = Credentials.from_env()
+    assert (c.alpaca_key, c.alpaca_secret) == ("lk", "ls"), \
+        "the live pair must win when both are present"

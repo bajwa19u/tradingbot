@@ -89,9 +89,15 @@ class Credentials:
 
     @classmethod
     def from_env(cls) -> "Credentials":
+        # Either pair works for market data - Alpaca's paper keys read the
+        # same bars as the live ones. Accepting both means a run does not die
+        # with a bare 401 just because the secrets were set under the other
+        # name, which is exactly what killed the first sweep.
         return cls(
-            alpaca_key=os.environ.get("ALPACA_API_KEY", ""),
-            alpaca_secret=os.environ.get("ALPACA_API_SECRET", ""),
+            alpaca_key=(os.environ.get("ALPACA_API_KEY")
+                        or os.environ.get("ALPACA_PAPER_KEY", "")),
+            alpaca_secret=(os.environ.get("ALPACA_API_SECRET")
+                           or os.environ.get("ALPACA_PAPER_SECRET", "")),
             discord_webhook=os.environ.get("DISCORD_WEBHOOK_URL", ""),
             discord_webhook_inplay=os.environ.get("DISCORD_WEBHOOK_INPLAY", ""),
             telegram_token=os.environ.get("TELEGRAM_BOT_TOKEN", ""),

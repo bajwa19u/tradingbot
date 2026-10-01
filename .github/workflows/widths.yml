@@ -65,6 +65,8 @@ jobs:
         env:
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          ALPACA_PAPER_KEY: ${{ secrets.ALPACA_PAPER_KEY }}
+          ALPACA_PAPER_SECRET: ${{ secrets.ALPACA_PAPER_SECRET }}
           IN_DAYS: ${{ inputs.days }}
           IN_UNI: ${{ inputs.universe }}
           IN_DATE: ${{ inputs.date }}
