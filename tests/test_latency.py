@@ -166,3 +166,9 @@ def test_the_recap_reports_signal_delay(tmp_path):
         {"kind": "tick", "total": 0.4}]))
     line = lb.latency_line(f, "2026-10-02")
     assert "slowest 9s" in line and "1 expired" in line
+
+
+
+def test_the_retest_rule_is_off_live():
+    """Off on the 12-month research (-0.42R/trade on validation, -0.43R on test). Turning it on is a decision, not a default."""
+    assert lb.RETEST_ENABLED is False

@@ -41,6 +41,16 @@ shared thing belongs in its own module.
 
 ## Things that are already settled — do not re-litigate
 
+- **12-month research, 2 October 2026 (`reports/day_research.md`, `src/day_research.py`).**
+  244 sessions of IEX minute bars, train/validation/test by date. The live
+  opening-range rule: -0.13R per trade (PF 0.76; train -0.14, val -0.17,
+  test -0.08). Break & retest: -0.29 / -0.42 / -0.43R, PF 0.43-0.59 - turned
+  off. No filter, target, stop or management variant was positive on train
+  (RVOL, gap, SPY/QQQ VWAP, extension, quality score, 1-3R targets, breakeven,
+  partials, trailing, ATR/%/range/swing stops, first-of-burst, stocks only).
+  SPY is the worst name (-0.48R); range days lose -0.27R and trend days only
+  break even, so even a perfect day filter would not reach profit.
+
 - **The free IEX premarket feed is unusable.** It carries premarket bars on
   about 1% of days. Anything built on premarket highs and lows silently does
   nothing. This is a data-plan problem, not a code problem.

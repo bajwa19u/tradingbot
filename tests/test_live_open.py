@@ -153,6 +153,7 @@ def test_a_broken_rule_does_not_silence_the_other(monkeypatch):
 
 
 def test_trades_come_out_in_time_order(monkeypatch):
+    monkeypatch.setattr(lb, "RETEST_ENABLED", True)   # exercises the merge, which ships off
     monkeypatch.setattr(lb, "scan", lambda cfg: (
         [trade(id="r", rule="retest", entry_time="10:20")], "10:20", False))
     monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: [
@@ -164,6 +165,7 @@ def test_trades_come_out_in_time_order(monkeypatch):
 
 
 def test_the_retest_rule_is_not_polled_before_its_window_opens(monkeypatch):
+    monkeypatch.setattr(lb, "RETEST_ENABLED", True)   # exercises the merge, which ships off
     called = []
     monkeypatch.setattr(lb, "scan", lambda cfg: called.append(1) or ([], "", False))
     monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: [])

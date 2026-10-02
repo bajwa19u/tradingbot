@@ -119,6 +119,12 @@ OPENING = {**op.BASE, "enabled": True, "observe": False,
 # read twelve times. At 1% risk each it would have been 11% of the account on
 # a single directional bet, and in the forward record it will look like
 # twelve data points when it is worth about one.
+# Break & retest is off. 12 months of minute bars (reports/day_research.md):
+# -0.29R per trade on train, -0.42R on validation, -0.43R on the untouched
+# test dates, 95% intervals below zero in all three, and every variant tried
+# (longs, both sides, volume, range width, four confirmations, warm-up) lost
+# too. The code stays; turning it back on is a deliberate edit and a test.
+RETEST_ENABLED = False
 CLUSTER_MINUTES = 15
 CLUSTER_WARN = 4
 
@@ -550,7 +556,7 @@ def all_trades(cfg: dict, now: pd.Timestamp) -> tuple[list[dict], str, bool]:
     trades, stamp, day_done = [], "—", False
     # Before 09:45 the retest rule cannot fire by its own definition, so
     # fetching five-minute bars for it every forty-five seconds is pure waste.
-    if now.time() >= pd.Timestamp(OPEN_T).time():
+    if RETEST_ENABLED and now.time() >= pd.Timestamp(OPEN_T).time():
         try:
             trades, stamp, day_done = scan(cfg)
         except AlpacaError as exc:
