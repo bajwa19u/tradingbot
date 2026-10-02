@@ -1,38 +1,48 @@
-📊 **2026-09-30**
+📊 **2026-10-02**
 
-**4 trades · 1 won, 3 lost · 25% win rate**
-**-0.29%**
-❌ HOOD 09:35→09:38  -1.05%
-❌ NOC 09:35→09:36  -1.12%
-✅ ZM 09:36→15:55  +3.01%
-❌ LOW 09:52→10:12  -1.13%
+**5 trades · 1 won, 4 lost · 20% win rate**
+**-1.60%**
+❌ NKE 09:36→11:25  -0.74%
+✅ RIVN 09:38→11:25  +1.70%
+❌ TXN 09:42→11:25  -0.46%
+❌ WMT 09:45→10:02  -1.05%
+❌ SPGI 09:46→11:11  -1.05%
 
+
+⚠️ _4 longs within 15 min — that is one market move read several times, not several independent trades. Count it as roughly one result._
 _Paper only. No orders were placed._
 
-❌ **SHORT HOOD**  ·  09:35 → 09:38
-`Entry    113.45`
-`SL       114.58`
+❌ **LONG NKE**  ·  09:36 → 11:25
+`Entry     33.14`
+`SL        32.67`
 `TP         0.00`
-`Exit     114.64`  hit stop
+`Exit      32.79`  close
+**-0.74%** · _inplay_
+
+✅ **SHORT RIVN**  ·  09:38 → 11:25
+`Entry     14.93`
+`SL        15.24`
+`TP         0.00`
+`Exit      14.41`  close
+**+1.70%** · _inplay_
+
+❌ **LONG TXN**  ·  09:42 → 11:25
+`Entry    295.54`
+`SL       292.10`
+`TP         0.00`
+`Exit     293.97`  close
+**-0.46%** · _inplay_
+
+❌ **LONG WMT**  ·  09:45 → 10:02
+`Entry    105.18`
+`SL       104.17`
+`TP         0.00`
+`Exit     104.12`  hit stop
 **-1.05%** · _inplay_
 
-❌ **LONG NOC**  ·  09:35 → 09:36
-`Entry    487.14`
-`SL       485.10`
+❌ **LONG SPGI**  ·  09:46 → 11:11
+`Entry    387.27`
+`SL       383.44`
 `TP         0.00`
-`Exit     484.86`  hit stop
-**-1.12%** · _inplay_
-
-✅ **LONG ZM**  ·  09:36 → 15:55
-`Entry     89.39`
-`SL        88.88`
-`TP         0.00`
-`Exit      90.93`  close
-**+3.01%** · _inplay_
-
-❌ **SHORT LOW**  ·  09:52 → 10:12
-`Entry    186.30`
-`SL       187.02`
-`TP         0.00`
-`Exit     187.12`  hit stop
-**-1.13%** · _inplay_
+`Exit     383.25`  hit stop
+**-1.05%** · _inplay_
