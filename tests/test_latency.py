@@ -108,3 +108,18 @@ def test_prior_days_are_fetched_once_then_only_today(monkeypatch):
     assert calls[0] == "2026-09-25" and calls[1] == "2026-10-01"
     assert len(first["AMD"]) == 4 and len(second["AMD"]) == 5      # yesterday's 2 + today's 3, no duplicates
     assert second["AMD"].index.is_monotonic_increasing
+
+
+def test_a_rejected_key_is_reported_not_silent(monkeypatch, tmp_path):
+    """1 October: Alpaca returned 401 from 12:51 on and the bot logged it 394 times, silently."""
+    posts = []
+    wire(monkeypatch, tmp_path, [], posts)
+
+    def boom(cfg, now):
+        raise lb.AlpacaError("401 from https://data.alpaca.markets/v2/stocks/bars")
+    monkeypatch.setattr(lb, "opening_scan", boom)
+    monkeypatch.setattr(lb, "in_session", lambda now: True)
+    lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
+    lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
+    errs = [x for x in posts if "DATA ERROR" in x]
+    assert len(errs) == 1 and "unauthorized" in errs[0]

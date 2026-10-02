@@ -183,6 +183,11 @@ LATENCY_FILE = "latency.jsonl"
 _TIMES: dict = {}                              # per-tick stage timings, seconds
 _LAST_1M: dict = {}                            # newest 1-minute bar seen this tick
 _PRIOR: dict = {}                              # yesterday's minute bars, fetched once a day
+_ERRORS: list = []                             # data failures this tick (e.g. 401 after a key change)
+
+
+def in_session(now: pd.Timestamp) -> bool:
+    return pd.Timestamp("09:25").time() <= now.time() < pd.Timestamp("16:00").time()
 
 
 def seconds_to_next_poll(now: pd.Timestamp, every: int) -> float:
@@ -470,7 +475,7 @@ def load_seen(date: str) -> dict:
     # written before this existed simply has no cards, and every close in it
     # falls back to its own message.
     blank = {"date": date, "entries": [], "exits": [], "summary": False,
-             "cards": {}, "expired": [], "stale_warned": ""}
+             "cards": {}, "expired": [], "stale_warned": "", "error_warned": ""}
     f = STATE / SEEN_FILE
     if not f.exists():
         return blank
@@ -498,12 +503,14 @@ def all_trades(cfg: dict, now: pd.Timestamp) -> tuple[list[dict], str, bool]:
         try:
             trades, stamp, day_done = scan(cfg)
         except AlpacaError as exc:
+            _ERRORS.append(str(exc)[:60])
             log.error("Retest scan failed: %s", exc)
         except Exception as exc:                               # noqa: BLE001
             log.exception("Retest scan blew up: %s", exc)
     try:
         trades += opening_scan(cfg, now)
     except AlpacaError as exc:
+        _ERRORS.append(str(exc)[:60])
         log.error("Opening scan failed: %s", exc)
     except Exception as exc:                                   # noqa: BLE001
         log.exception("Opening scan blew up: %s", exc)
@@ -520,6 +527,7 @@ def tick(cfg: dict, dry_run: bool) -> int:
     now = pd.Timestamp.now(tz=EASTERN)
     _TIMES.clear()
     _LAST_1M.clear()
+    _ERRORS.clear()
     trades, stamp, day_done = all_trades(cfg, now)
     _TIMES["scan"] = round(_time.perf_counter() - t0, 3)
     detected = pd.Timestamp.now(tz=EASTERN)
@@ -552,6 +560,14 @@ def tick(cfg: dict, dry_run: bool) -> int:
                            f"new signals suppressed until data is fresh", "", False))
             seen["stale_warned"] = str(detected)
         log.warning("Stale data: newest bar %s", stale)
+    if _ERRORS and in_session(detected):
+        last_err = seen.get("error_warned") or ""
+        if not last_err or (detected - pd.Timestamp(last_err)).total_seconds() > 1800:
+            auth = any("401" in e or "403" in e for e in _ERRORS)
+            outbox.append((f"⚠️ **DATA ERROR** · market data request failed"
+                           + (" (unauthorized: the Alpaca key was rejected, check the repo secrets)" if auth else "")
+                           + " · no signals until it recovers", "", False))
+            seen["error_warned"] = str(detected)
     if day_done and not seen["summary"]:
         outbox.append((summary_msg(trades, now.strftime("%A %d %B")), "", False))
         seen["summary"] = True
