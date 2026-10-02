@@ -40,7 +40,9 @@ POST = False         # never posts to Discord until a forward record supports it
 CANDIDATE = orr.P(universe="top10", orw=(0.35, 9e9))
 MAX_AGE_S = 120      # a signal first seen later than this after its bar closed is marked expired
 BAR_LAG_S = 4        # Alpaca publishes a minute bar a few seconds after it closes
-SETTLE_AFTER = "16:00"
+# 16:12, not 16:00: real costs come from consolidated (SIP) quotes, which the
+# free plan serves 15 minutes late, and the bell exit is at 15:56.
+SETTLE_AFTER = "16:12"
 
 STATE_FILE = REPO_ROOT / "state" / "orb_paper.json"
 LEDGER = REPO_ROOT / "reports" / "orb_paper.csv"
@@ -50,7 +52,7 @@ COLUMNS = ["date", "symbol", "side", "bar", "seen_at", "latency_s", "expired", "
            "or_high", "or_low", "level", "entry", "stop", "target", "risk_pct",
            "rvol5", "or_width_atr", "displacement", "breakout_rvol", "extension", "gap_pct",
            "vwap_ok", "spy_ok", "qqq_ok", "same_side_10m", "exit_bar", "exit_reason",
-           "result_pct", "win", "backtest_agrees"]
+           "result_pct", "win", "backtest_agrees", "entry_cost_pct", "exit_cost_pct", "result_real_pct"]
 
 
 def bar_label(k: int) -> str:
@@ -67,6 +69,7 @@ class Feed:
         self.hist: dict[str, dict] = {}       # symbol -> {date: 5x390 array}, sessions before today
         self.hist_for = None
         self.newest: pd.Timestamp | None = None   # start time of the newest bar fetched today
+        self.quotes_md = None                     # SIP client for real costs at settle time (optional)
 
     # ------------------------------------------------------------------ data
     def history(self, today, symbols) -> None:
@@ -177,6 +180,8 @@ class Feed:
                 r.update(exit_bar=bar_label(j), exit_reason=why,
                          result_pct=float(round(float(R) * abs(r["entry"] - r["stop"]) / r["entry"] * 100, 3)),
                          win=bool(R > 0))
+            if x is not None and self.quotes_md is not None and r.get("exit_reason"):
+                self.real_costs(r, x, now)
             r["backtest_agrees"] = ("missed live" if r["source"] == "backtest only" else
                                     "no signal" if bt is None else
                                     "yes" if (bt["k"], bt["side"]) == (r["k"], r["side"]) else
@@ -184,6 +189,41 @@ class Feed:
             out.append(r)
         state["settled"] = True
         return out
+
+
+    def real_costs(self, r: dict, x, now: pd.Timestamp) -> None:
+        """What the trade would really have cost: the NBBO a couple of seconds
+        after it was SEEN (not after its bar closed), and at the exit. Same
+        definitions as src/orb_checks.py; a missing quote leaves the fields empty."""
+        from . import orb_checks as oc
+        sgn = 1 if r["side"] == "long" else -1
+        open_ts = now.normalize() + pd.Timedelta(hours=9, minutes=30)
+        try:
+            seen = (pd.Timestamp(f"{now.date()} {r['seen_at']}", tz=orr.EASTERN) if r.get("seen_at")
+                    else open_ts + pd.Timedelta(minutes=r["k"] + 1, seconds=4))
+            c = float(x.c[r["k"]])
+            q = oc.nbbo_at(self.quotes_md, r["symbol"], seen, (2, 15))
+            ce = sgn * ((q[1] if sgn > 0 else q[0]) - c) / c if q else None
+            j = int(r["exit_bar"][:2]) * 60 + int(r["exit_bar"][3:]) - 570      # exit minute index
+            if r["exit_reason"] == "target":
+                cx = 0.0
+            elif r["exit_reason"] == "bell":
+                q = oc.nbbo_at(self.quotes_md, r["symbol"], open_ts + pd.Timedelta(minutes=j + 1))
+                cj = float(x.c[j])
+                cx = sgn * (cj - (q[0] if sgn > 0 else q[1])) / cj if q else None
+            else:
+                q = oc.nbbo_at(self.quotes_md, r["symbol"], open_ts + pd.Timedelta(minutes=j), (0, 60))
+                cx = (q[1] - q[0]) / (q[0] + q[1]) if q else None
+        except Exception as exc:                                   # noqa: BLE001
+            log.warning("ORB paper: no quotes for %s (%s)", r["symbol"], exc)
+            return
+        if ce is not None and abs(ce) > oc.MAX_GAP:
+            ce = None
+        r["entry_cost_pct"] = None if ce is None else round(ce * 100, 3)
+        r["exit_cost_pct"] = None if cx is None else round(cx * 100, 3)
+        if ce is not None and cx is not None and r.get("result_pct") is not None:
+            # result_pct already paid 0.05% a side; swap that for what was measured
+            r["result_real_pct"] = round(r["result_pct"] + 2 * self.p.slip * 100 - (ce + cx) * 100, 3)
 
 
 def row(sym: str, x, sig: dict, today, source: str, seen_at: str, latency) -> dict:
@@ -253,6 +293,12 @@ def summary_text(df: pd.DataFrame) -> str:
           line("seen live in time", live[live.expired == False]),          # noqa: E712
           line("seen live but late (expired)", live[live.expired == True]),  # noqa: E712
           line("long", df[df.side == "long"]), line("short", df[df.side == "short"]), ""]
+    if "result_real_pct" in df and df.result_real_pct.notna().any():
+        q = df[df.result_real_pct.notna()]
+        L += [f"With real quotes (the NBBO seconds after each signal was seen, and at the exit): "
+              f"{q.result_real_pct.mean():+.2f}% per trade over {len(q)} trades, against "
+              f"{q.result_pct.mean():+.2f}% at the assumed 0.05% a side. Median entry cost "
+              f"{q.entry_cost_pct.median():.3f}%, exit {q.exit_cost_pct.median():.3f}%.", ""]
     if len(live):
         agree = (live.backtest_agrees == "yes").mean() * 100
         L += [f"Live and backtest agreed on {agree:.0f}% of live signals; "
@@ -268,7 +314,13 @@ def summary_text(df: pd.DataFrame) -> str:
 _FEED: Feed | None = None
 
 
-def tick(now: pd.Timestamp, md_factory, dry_run: bool = False) -> None:
+def _sip():
+    from .config import Credentials
+    from .data import MarketData
+    return MarketData(Credentials.from_env(), feed="sip")
+
+
+def tick(now: pd.Timestamp, md_factory, dry_run: bool = False, quotes_factory=_sip) -> None:
     """Called every loop of the in-play bot. Cheap when there is nothing to do."""
     global _FEED
     if not ENABLED or now.weekday() > 4:
@@ -283,6 +335,11 @@ def tick(now: pd.Timestamp, md_factory, dry_run: bool = False) -> None:
     if state["settled"]:
         return
     if t >= pd.Timestamp(SETTLE_AFTER).time():
+        if _FEED.quotes_md is None and quotes_factory is not None:
+            try:
+                _FEED.quotes_md = quotes_factory()
+            except Exception as exc:                               # noqa: BLE001
+                log.warning("ORB paper: no quote client (%s) - costs not measured", exc)
         rows = _FEED.settle(state, now)
         if not dry_run:
             if rows:

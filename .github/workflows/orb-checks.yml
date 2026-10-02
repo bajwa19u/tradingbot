@@ -1,0 +1,42 @@
+name: ORB open questions
+# Manual. Answers the open questions in reports/orb_research.md with data:
+# real costs from NBBO quotes, SIP instead of IEX bars, a survivorship-free
+# universe, and premarket ranking. Writes reports/orb_checks.md. Posts nothing,
+# trades nothing; the paper API is only asked for its asset list.
+on:
+  workflow_dispatch:
+    inputs:
+      days: { description: "trading sessions", default: "252" }
+      skip: { description: "comma list: costs,sip,broad,pm", default: "" }
+permissions: { contents: write }
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: cache/minute_iex_wide.pkl
+          key: minute-iex-wide-${{ github.run_id }}
+          restore-keys: minute-iex-wide-
+      - uses: actions/cache@v4
+        with:
+          path: cache/orb_checks
+          key: orb-checks-${{ github.run_id }}
+          restore-keys: orb-checks-
+      - run: python -m src.orb_checks --days "${{ inputs.days }}" --skip "${{ inputs.skip }}"
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          ALPACA_PAPER_KEY: ${{ secrets.ALPACA_PAPER_KEY }}
+          ALPACA_PAPER_SECRET: ${{ secrets.ALPACA_PAPER_SECRET }}
+      - name: commit
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"; git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/orb_checks.md reports/orb_checks.json 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "orb checks [skip ci]" && for i in 1 2 3 4 5; do git pull --rebase && git push && break; sleep 5; done)

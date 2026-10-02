@@ -101,6 +101,14 @@ class MarketData:
         return {sym: _to_frame(rows, extended=extended)
                 for sym, rows in raw.items()}
 
+    def quotes(self, symbol: str, start: str, end: str, limit: int = 200) -> list[dict]:
+        """Top-of-book quotes for one symbol between two RFC 3339 times, oldest
+        first. On the free plan the "sip" feed (the NBBO) is available for
+        anything older than 15 minutes."""
+        payload = self._get("/stocks/quotes", {"symbols": symbol, "start": start, "end": end,
+                                               "limit": limit, "feed": self.feed, "sort": "asc"})
+        return (payload.get("quotes") or {}).get(symbol, []) or []
+
     def daily_bars(self, symbols: Iterable[str], start: str,
                    end: str | None = None) -> dict[str, pd.DataFrame]:
         symbols = list(symbols)

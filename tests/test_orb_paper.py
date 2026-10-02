@@ -176,19 +176,19 @@ def test_a_day_never_watched_live_still_gets_the_backtest_view(feed):
 def test_tick_writes_the_ledger_and_a_summary_without_R(feed, monkeypatch):
     monkeypatch.setattr(op, "_FEED", feed)
     op.tick(at("09:43:05"), lambda: None)
-    op.tick(at("16:01:00"), lambda: None)
+    op.tick(at("16:13:00"), lambda: None, quotes_factory=None)
     assert op.LEDGER.exists()
     text = op.SUMMARY.read_text()
     assert "win %" in text and "100%" in text
     assert " R " not in text and "R per" not in text          # house rule: never R
-    op.tick(at("16:02:00"), lambda: None)                      # settles once
+    op.tick(at("16:14:00"), lambda: None, quotes_factory=None)                      # settles once
     assert len(pd.read_csv(op.LEDGER)) == 1
 
 
 def test_dry_run_writes_nothing(feed, monkeypatch):
     monkeypatch.setattr(op, "_FEED", feed)
     op.tick(at("09:43:05"), lambda: None, dry_run=True)
-    op.tick(at("16:01:00"), lambda: None, dry_run=True)
+    op.tick(at("16:13:00"), lambda: None, dry_run=True, quotes_factory=None)
     assert not op.LEDGER.exists() and not op.STATE_FILE.exists()
 
 
@@ -203,3 +203,42 @@ def test_a_paper_failure_never_stops_the_inplay_channel(monkeypatch):
         raise RuntimeError("no data")
     monkeypatch.setattr(op, "tick", boom)
     ib.paper_tick(at("09:43:05"), dry_run=True)               # must not raise
+
+
+# --- real costs ------------------------------------------------------------------
+class FakeQuotes:
+    """A one-cent-wide market around the bar's own price."""
+    def __init__(self, fm):
+        self.fm = fm
+
+    def quotes(self, symbol, start, end, limit=100):
+        t = pd.Timestamp(start)
+        df = self.fm.frames[symbol]
+        px = float(df[df.index <= t].close.iloc[-1])
+        return [{"bp": px - 0.005, "ap": px + 0.005}]
+
+
+def test_settle_measures_real_costs_from_quotes(feed):
+    feed.quotes_md = FakeQuotes(feed.md)
+    st = blank()
+    feed.scan(st, at("09:43:05"))
+    r = feed.settle(st, at("16:13:00"))[0]
+    assert 0 < r["entry_cost_pct"] < 0.01          # half-spread plus a few seconds of drift
+    assert r["exit_cost_pct"] is not None and r["result_real_pct"] is not None
+    # half a cent each way is far cheaper than the assumed 0.05% a side
+    assert r["result_real_pct"] > r["result_pct"]
+
+
+def test_a_quote_far_from_the_bar_is_not_a_cost(feed):
+    class Split(FakeQuotes):
+        def quotes(self, *a, **k):
+            return [{"bp": 49.99, "ap": 50.01}]            # unadjusted price after a 2-for-1 split
+    feed.quotes_md = Split(feed.md)
+    st = blank()
+    feed.scan(st, at("09:43:05"))
+    r = feed.settle(st, at("16:13:00"))[0]
+    assert r.get("entry_cost_pct") is None and r.get("result_real_pct") is None
+
+
+def test_settling_waits_for_the_quote_delay():
+    assert op.SETTLE_AFTER >= "16:12"

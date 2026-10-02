@@ -178,9 +178,13 @@ class P:
 def select(D: dict, d, universe: str) -> list[str]:
     if universe == "static10":
         return [s for s in STATIC10 if d in D.get(s, {})]
-    n = int(universe[3:])
-    cand = [(D[s][d].rvol5, s) for s in POOL if s not in ("SPY", "QQQ") and d in D.get(s, {})
-            and D[s][d].prev_c >= 5 and D[s][d].adv >= 5e7 and D[s][d].rvol5 == D[s][d].rvol5]
+    # topN: first-5-minute volume vs its 14-session average (needs 09:35)
+    # pmN:  premarket 04:00-09:15 volume vs its 14-session average (orb_checks
+    #       attaches `pm_rvol`; delayed SIP makes it known live by 09:30)
+    key, n = ("pm_rvol", int(universe[2:])) if universe.startswith("pm") else ("rvol5", int(universe[3:]))
+    cand = [(v, s) for s in POOL if s not in ("SPY", "QQQ") and d in D.get(s, {})
+            and D[s][d].prev_c >= 5 and D[s][d].adv >= 5e7
+            for v in [getattr(D[s][d], key, np.nan)] if v == v]
     return [s for _, s in sorted(cand, reverse=True)[:n]]
 
 
