@@ -64,7 +64,7 @@ jobs:
           set -uo pipefail
           mkdir -p reports state
           touch /tmp/runmark
-          ARGS=(--until 16:10 --every 60 --for 320)
+          ARGS=(--until 16:10 --every 60 --for 320 --stream)
           if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
           if [ "${IN_FORCE:-false}" = "true" ]; then ARGS+=(--force); fi
           set +e

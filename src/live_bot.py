@@ -46,6 +46,7 @@ from . import autotrade
 from . import confidence as conf
 from . import discord_msg as dm
 from . import opening as op
+from . import stream as st
 from .config import REPO_ROOT, Credentials
 from .data import AlpacaError, MarketData
 from .forensics import LIVE as WATCHLIST
@@ -184,6 +185,7 @@ _TIMES: dict = {}                              # per-tick stage timings, seconds
 _LAST_1M: dict = {}                            # newest 1-minute bar seen this tick
 _PRIOR: dict = {}                              # yesterday's minute bars, fetched once a day
 _ERRORS: list = []                             # data failures this tick (e.g. 401 after a key change)
+_STREAM: "st.BarStore | None" = None           # set while the websocket is live; scans read from it
 
 
 def in_session(now: pd.Timestamp) -> bool:
@@ -222,6 +224,9 @@ def _minute_bars(md: MarketData, now: pd.Timestamp) -> dict[str, pd.DataFrame]:
     """Yesterday's minute bars once a day; after that only today's."""
     today = now.date()
     t0 = _time.perf_counter()
+    if _STREAM is not None:                    # live stream: the day is already in memory
+        _TIMES["fetch_1m"] = 0.0
+        return _STREAM.minute_frames()
     if _PRIOR.get("date") != today:
         start = (now - pd.Timedelta(days=6)).date().isoformat()
         full = md.intraday_bars(WATCHLIST, 1, start=start, extended=True)
@@ -247,7 +252,8 @@ def scan(cfg: dict) -> tuple[list[dict], str, bool]:
     now = pd.Timestamp.now(tz=EASTERN)
     t0 = _time.perf_counter()
     # Only today's bars: everything before today is dropped below anyway.
-    data = md.intraday_bars(WATCHLIST, LIVE.get("minutes", 5) or 5, start=now.date().isoformat())
+    data = (_STREAM.five_minute_frames(now.date()) if _STREAM is not None else
+            md.intraday_bars(WATCHLIST, LIVE.get("minutes", 5) or 5, start=now.date().isoformat()))
     _TIMES["fetch_5m"] = round(_time.perf_counter() - t0, 3)
     p = {**SCAN, "minutes": 5}
     today = now.date()
@@ -641,6 +647,67 @@ def tick(cfg: dict, dry_run: bool) -> int:
     return len(outbox)
 
 
+def stream_loop(cfg: dict, dry_run: bool, stop, deadline, first, every: int) -> int:
+    """Event-driven session: tick the moment a minute's bars arrive.
+
+    The day is seeded from REST once, then extended bar by bar from the
+    websocket. While the stream is down the bot polls exactly as before, and
+    on reconnect it re-seeds from REST so the gap is filled before scanning.
+    """
+    global _STREAM
+    creds = Credentials.from_env()
+    trigger = st.MinuteTrigger(WATCHLIST)
+    ws, retry_at, last_bar_at = None, 0.0, st.now_s()
+    while True:
+        now = pd.Timestamp.now(tz=EASTERN)
+        if now.time() > stop or (deadline is not None and now >= deadline):
+            log.info("Stream session over at %s ET.", now.strftime("%H:%M:%S"))
+            if ws is not None:
+                ws.close()
+            _STREAM = None
+            return 0
+        if ws is None and st.now_s() >= retry_at:
+            try:
+                _STREAM = None
+                _PRIOR.clear()
+                seed = _minute_bars(MarketData(creds, feed="iex"), now)
+                ws = st.connect(creds.alpaca_key, creds.alpaca_secret, list(WATCHLIST))
+                _STREAM = st.BarStore(seed)
+                last_bar_at = st.now_s()
+            except Exception as exc:                           # noqa: BLE001
+                log.error("Stream unavailable (%s) - polling until it is back", exc)
+                ws, retry_at = None, st.now_s() + 60
+        if ws is None:                                         # fallback: the old polling tick
+            if now.time() >= pd.Timestamp(first).time():
+                try:
+                    tick(cfg, dry_run)
+                except Exception as exc:                       # noqa: BLE001
+                    log.exception("Tick failed, continuing: %s", exc)
+            _time.sleep(seconds_to_next_poll(pd.Timestamp.now(tz=EASTERN), every))
+            continue
+        try:
+            for m in st.read(ws):
+                trigger.arrive(m["S"], _STREAM.add(m), st.now_s())
+                last_bar_at = st.now_s()
+        except ConnectionError as exc:
+            log.error("%s - reconnecting", exc)
+            ws, _STREAM = None, None
+            continue
+        if trigger.due(st.now_s()):
+            trigger.fired()
+            if now.time() >= pd.Timestamp(first).time():
+                try:
+                    tick(cfg, dry_run)
+                except Exception as exc:                       # noqa: BLE001
+                    log.exception("Tick failed, continuing: %s", exc)
+        # A silent socket in the session means a dead connection, not a quiet market.
+        if (pd.Timestamp("09:31").time() <= now.time() < pd.Timestamp("16:00").time()
+                and st.now_s() - last_bar_at > 150):
+            log.error("No bars for 150 s - polling for 5 min, then retrying the stream")
+            ws.close()
+            ws, _STREAM, retry_at = None, None, st.now_s() + 300
+
+
 def bench(cfg: dict, n: int) -> int:
     """Stage timings over n dry-run ticks: the first is a cold start (fetches
     yesterday too), the rest are warm. Nothing is posted or traded."""
@@ -673,6 +740,8 @@ def main(argv=None) -> int:
     ap.add_argument("--for", dest="minutes", type=int, default=0,
                     help="stop polling after this many minutes, even before "
                          "--until; GitHub kills a job at six hours")
+    ap.add_argument("--stream", action="store_true",
+                    help="react to live minute bars over the websocket (falls back to polling)")
     ap.add_argument("--bench", type=int, default=0,
                     help="run N dry-run ticks back to back and report stage timings")
     args = ap.parse_args(argv)
@@ -702,6 +771,8 @@ def main(argv=None) -> int:
                 if args.minutes else None)
     log.info("Polling every %ds until %s ET%s", args.every, args.until,
              f" or for {args.minutes} min" if deadline is not None else "")
+    if args.stream:
+        return stream_loop(cfg, args.dry_run, stop, deadline, first, args.every)
     while True:
         now = pd.Timestamp.now(tz=EASTERN)
         if now.time() > stop:
