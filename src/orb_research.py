@@ -79,8 +79,9 @@ def load(days: int, refresh: bool) -> dict[str, pd.DataFrame]:
     return data
 
 
-def to_days(df: pd.DataFrame) -> dict:
-    """{date: (open, high, low, close, volume) arrays of 390 minutes}; gaps filled."""
+def to_days(df: pd.DataFrame, min_bars: int = 300) -> dict:
+    """{date: (open, high, low, close, volume) arrays of 390 minutes}; gaps filled.
+    `min_bars` drops half-empty days; the live feed passes 1 for today."""
     out = {}
     idx = df.index.tz_convert(EASTERN)
     mins = (idx.hour * 60 + idx.minute - 570).to_numpy()
@@ -88,7 +89,7 @@ def to_days(df: pd.DataFrame) -> dict:
     for d in np.unique(dates):
         m = dates == d
         k = mins[m]
-        if (k == 0).sum() == 0 or m.sum() < 300:
+        if (k == 0).sum() == 0 or m.sum() < min_bars:
             continue
         a = np.full((5, N_MIN), np.nan, dtype="float64")
         vals = df[m][["open", "high", "low", "close", "volume"]].to_numpy("float64").T
@@ -114,37 +115,41 @@ class Day:
     prev_c: float; atr: float; adv: float; gap: float
 
 
+def _true_ranges(days: dict, ds: list) -> dict:
+    tr = {}
+    for i, d in enumerate(ds):
+        hi, lo = days[d][1].max(), days[d][2].min()
+        pc = days[ds[i - 1]][3, -1] if i else days[d][3][0]
+        tr[d] = max(hi - lo, abs(hi - pc), abs(lo - pc))
+    return tr
+
+
+def make_day(days: dict, ds: list, i: int, tr: dict) -> Day:
+    """Day ds[i] with every baseline taken from the LOOKBACK sessions before it."""
+    d, prev = ds[i], ds[i - LOOKBACK:i]
+    a = days[d]
+    base5 = np.mean([days[x][4, :5].sum() for x in prev])
+    pc = days[ds[i - 1]][3, -1]
+    tp = (a[1] + a[2] + a[3]) / 3
+    cv = np.cumsum(a[4])
+    vwap = np.where(cv > 0, np.cumsum(tp * a[4]) / np.maximum(cv, 1e-9), a[3])
+    or_h, or_l = float(a[1, :5].max()), float(a[2, :5].min())
+    return Day(a[0], a[1], a[2], a[3], a[4], vwap, or_h, or_l, or_h - or_l,
+               float(a[4, :5].sum() / base5) if base5 > 0 else np.nan,
+               np.mean([days[x][4] for x in prev], axis=0) + 1e-9,
+               float(pc), float(np.mean([tr[x] for x in prev])),
+               float(np.mean([float((days[x][3] * days[x][4]).sum()) for x in prev])),
+               float(a[0, 0] / pc - 1) if pc else np.nan)
+
+
 def build(data: dict) -> tuple[dict, list]:
     """Per symbol, per day: arrays plus everything known by 09:35."""
     D = {}
     for s, df in data.items():
         days = to_days(df)
         ds = sorted(days)
-        f5 = {d: days[d][4, :5].sum() for d in ds}
-        closes = {d: days[d][3, -1] for d in ds}
-        tr = {}
-        for i, d in enumerate(ds):
-            hi, lo = days[d][1].max(), days[d][2].min()
-            pc = closes[ds[i - 1]] if i else days[d][3][0]
-            tr[d] = max(hi - lo, abs(hi - pc), abs(lo - pc))
-        dv = {d: float((days[d][3] * days[d][4]).sum()) for d in ds}
-        out = {}
-        for i in range(LOOKBACK + 1, len(ds)):
-            d, prev = ds[i], ds[i - LOOKBACK:i]
-            a = days[d]
-            base5 = np.mean([f5[x] for x in prev])
-            pc = closes[ds[i - 1]]
-            trs = [tr[x] for x in prev]
-            tp = (a[1] + a[2] + a[3]) / 3
-            cv = np.cumsum(a[4])
-            vwap = np.where(cv > 0, np.cumsum(tp * a[4]) / np.maximum(cv, 1e-9), a[3])
-            or_h, or_l = float(a[1, :5].max()), float(a[2, :5].min())
-            out[d] = Day(a[0], a[1], a[2], a[3], a[4], vwap, or_h, or_l, or_h - or_l,
-                         float(a[4, :5].sum() / base5) if base5 > 0 else np.nan,
-                         np.mean([days[x][4] for x in prev], axis=0) + 1e-9,
-                         float(pc), float(np.mean(trs)), float(np.mean([dv[x] for x in prev])),
-                         float(a[0, 0] / pc - 1) if pc else np.nan)
-        D[s] = out
+        tr = _true_ranges(days, ds)
+        D[s] = {ds[i]: make_day(days, ds, i, tr) for i in range(LOOKBACK + 1, len(ds))}
     common = sorted(set.intersection(*(set(D[m]) for m in ("SPY", "QQQ"))))
     return D, common
 
@@ -212,6 +217,50 @@ def exit_r(x: Day, k: int, side: int, entry: float, stop: float, p: P) -> tuple[
     return banked + w * r_of(x.c[-1]), N_MIN - 1, "bell"
 
 
+def first_signal(x: Day, sa: np.ndarray, qa: np.ndarray, p: P, k_end: int) -> dict | None:
+    """The day's one trade for this stock: the first completed 1-minute close
+    outside the opening range, before minute `k_end`, that passes every filter.
+    `sa`/`qa` say whether SPY/QQQ closed above their VWAP each minute. The live
+    paper feed passes k_end = the minutes completed so far."""
+    if not (x.or_w > 0 and x.atr > 0):
+        return None
+    ratio = x.or_w / x.atr
+    if not (p.orw[0] <= ratio < p.orw[1]):
+        return None
+    for k in range(5, min(p.window_end, FLAT_IDX - 1, k_end)):
+        c = x.c[k]
+        side = 1 if c > x.or_h else -1 if c < x.or_l else 0
+        if side == 0 or (p.sides == "long" and side < 0) or (p.sides == "short" and side > 0):
+            continue
+        level = x.or_h if side > 0 else x.or_l
+        disp = abs(c - level) / x.or_w
+        bv = x.v[k] / x.vol_base[k]
+        vw_ok = (c > x.vwap[k]) == (side > 0)
+        mk_ok = (bool(sa[k]) == (side > 0)) and (bool(qa[k]) == (side > 0))
+        if disp < p.disp or bv < p.bvol:
+            continue
+        if p.market in ("vwap", "all") and not vw_ok:
+            continue
+        if p.market in ("idx", "all") and not mk_ok:
+            continue
+        ext = abs(c - x.vwap[k]) / x.atr
+        if ext > p.ext:
+            continue
+        kk = k + p.delay
+        if kk >= FLAT_IDX:
+            return None
+        raw = x.c[k] if p.delay == 0 else x.o[kk]
+        entry = raw * (1 + side * p.slip)
+        stop = stop_for(x, k, side, p.stop, level)
+        if side * (entry - stop) <= 0 or abs(entry - stop) / entry > 0.10:
+            return None
+        return dict(k=k, kk=kk, sign=side, side="long" if side > 0 else "short", level=level,
+                    entry=entry, stop=stop, target=entry + side * p.target * abs(entry - stop),
+                    orw=ratio, disp=disp, bvol=bv, ext=ext, vwap_ok=vw_ok,
+                    spy_ok=bool(sa[k]) == (side > 0), qqq_ok=bool(qa[k]) == (side > 0), spy_above=bool(sa[k]))
+    return None
+
+
 def trades(D: dict, dates: list, lab: dict, p: P) -> pd.DataFrame:
     rows = []
     spy, qqq = D["SPY"], D["QQQ"]
@@ -223,47 +272,17 @@ def trades(D: dict, dates: list, lab: dict, p: P) -> pd.DataFrame:
         day_rows = []
         for s in select(D, d, p.universe):
             x = D[s][d]
-            if not (x.or_w > 0 and x.atr > 0):
+            sig = first_signal(x, sa, qa, p, FLAT_IDX - 1)
+            if sig is None:
                 continue
-            ratio = x.or_w / x.atr
-            if not (p.orw[0] <= ratio < p.orw[1]):
-                continue
-            for k in range(5, min(p.window_end, FLAT_IDX - 1)):
-                c = x.c[k]
-                side = 1 if c > x.or_h else -1 if c < x.or_l else 0
-                if side == 0 or (p.sides == "long" and side < 0) or (p.sides == "short" and side > 0):
-                    continue
-                level = x.or_h if side > 0 else x.or_l
-                disp = abs(c - level) / x.or_w
-                bv = x.v[k] / x.vol_base[k]
-                vw_ok = (c > x.vwap[k]) == (side > 0)
-                mk_ok = (bool(sa[k]) == (side > 0)) and (bool(qa[k]) == (side > 0))
-                if disp < p.disp or bv < p.bvol:
-                    continue
-                if p.market in ("vwap", "all") and not vw_ok:
-                    continue
-                if p.market in ("idx", "all") and not mk_ok:
-                    continue
-                ext = abs(c - x.vwap[k]) / x.atr
-                if ext > p.ext:
-                    continue
-                kk = k + p.delay
-                if kk >= FLAT_IDX:
-                    break
-                raw = x.c[k] if p.delay == 0 else x.o[kk]
-                entry = raw * (1 + side * p.slip)
-                stop = stop_for(x, k, side, p.stop, level)
-                rps = abs(entry - stop)
-                if side * (entry - stop) <= 0 or rps / entry > 0.10:
-                    break
-                r, j, why = exit_r(x, kk, side, entry, stop, p)
-                day_rows.append(dict(
-                    sym=s, date=d, period=lab[d], side="long" if side > 0 else "short", k=k, R=float(r),
-                    hold=j - kk, why=why, pct=float(r) * rps / entry * 100, risk_pct=rps / entry * 100,
-                    rvol5=x.rvol5, orw=ratio, disp=disp, bvol=bv, ext=ext, gap=x.gap,
-                    vwap_ok=vw_ok, spy_ok=bool(sa[k]) == (side > 0), qqq_ok=bool(qa[k]) == (side > 0),
-                    spy_above=bool(sa[k]), spy_orw=spy[d].or_w / spy[d].atr if spy[d].atr else np.nan))
-                break                                           # one trade per stock per day
+            r, j, why = exit_r(x, sig["kk"], sig["sign"], sig["entry"], sig["stop"], p)
+            rps = abs(sig["entry"] - sig["stop"])
+            day_rows.append(dict(
+                sym=s, date=d, period=lab[d], side=sig["side"], k=sig["k"], R=float(r),
+                hold=j - sig["kk"], why=why, pct=float(r) * rps / sig["entry"] * 100, risk_pct=rps / sig["entry"] * 100,
+                rvol5=x.rvol5, orw=sig["orw"], disp=sig["disp"], bvol=sig["bvol"], ext=sig["ext"], gap=x.gap,
+                vwap_ok=sig["vwap_ok"], spy_ok=sig["spy_ok"], qqq_ok=sig["qqq_ok"],
+                spy_above=sig["spy_above"], spy_orw=spy[d].or_w / spy[d].atr if spy[d].atr else np.nan))
         # correlated-signal control: count same-side signals in the prior 10 minutes
         day_rows.sort(key=lambda r: r["k"])
         kept = []

@@ -49,6 +49,7 @@ from .live_bot import seconds_to_next_poll
 from . import discord_msg as dm
 from . import inplay as ip
 from . import opening as op
+from . import orb_paper
 from .config import REPO_ROOT, Credentials
 from .data import AlpacaError, MarketData
 from .forensics import UNIVERSES
@@ -241,6 +242,15 @@ def tick(cfg: dict, dry_run: bool, now: pd.Timestamp | None = None) -> int:
     return len(outbox)
 
 
+def paper_tick(now: pd.Timestamp, dry_run: bool) -> None:
+    """The ORB paper record rides along in this loop. It posts nothing, and a
+    failure there must never stop the in-play channel."""
+    try:
+        orb_paper.tick(now, lambda: MarketData(Credentials.from_env(), feed="iex"), dry_run)
+    except Exception as exc:                                   # noqa: BLE001
+        log.warning("ORB paper feed failed (in-play unaffected): %s", exc)
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--dry-run", action="store_true")
@@ -273,6 +283,7 @@ def main(argv=None) -> int:
             log.info("Reached %s ET — done.", args.until); return 0
         if deadline is not None and now >= deadline:
             log.info("Polled for %d min — handing over to the next run.", args.minutes); return 0
+        paper_tick(now, args.dry_run)
         if now.time() >= pd.Timestamp(BELL).time():
             try:
                 tick(cfg, args.dry_run)

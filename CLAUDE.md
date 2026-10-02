@@ -51,6 +51,20 @@ shared thing belongs in its own module.
   SPY is the worst name (-0.48R); range days lose -0.27R and trend days only
   break even, so even a perfect day filter would not reach profit.
 
+- **ORB on stocks in play, 2 October 2026 (`reports/orb_research.md`, `src/orb_research.py`).**
+  252 sessions, 108 names, staged search on train/val, test run once. Only two
+  changes passed the adoption rule: trade the day's top 10 by first-5-minute
+  relative volume instead of the static 10, and only when the opening range is
+  >= 0.35 of daily ATR. Candidate: train -0.004R, val +0.03R, test +0.14R
+  (CI +0.04 to +0.26), t = 2.56 against a 2.72 noise floor for 40 variants.
+  Beats the static 10 in 11 of 13 months, but is only clearly positive from
+  August 2026. 63-78% of its trades end at the bell (the gain is all-day
+  drift, not targets). Narrow ranges have a gross edge that slippage eats in
+  R terms. Breaks even at about 0.12% slippage per side. Every market, VWAP,
+  displacement, volume, extension, window, stop, target, management and
+  cluster filter failed. NOT proven: it runs as a paper record only
+  (`src/orb_paper.py`, inside the in-play job, POST = False, writes
+  `reports/orb_paper.csv` / `.md`). Decide on it from that forward record.
 - **The free IEX premarket feed is unusable.** It carries premarket bars on
   about 1% of days. Anything built on premarket highs and lows silently does
   nothing. This is a data-plan problem, not a code problem.
