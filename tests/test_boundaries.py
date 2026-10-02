@@ -35,7 +35,7 @@ INTRADAY = {
     "account", "adaptive", "autotrade", "backtest", "breakout", "broker", "calendars",
     "confidence", "data",
     "discover",
-    "discord_msg", "exitsweep", "smoke", "stream",
+    "discord_msg", "exitsweep", "smoke", "stream", "day_research",
     "forensics", "history", "holds", "indicators", "inplay", "inplay_bot",
     "inspect_symbol", "live_bot", "notify", "opening", "orb_autopsy",
     "paper", "retest", "run_backtest", "run_live", "sq_autopsy", "squeeze",
