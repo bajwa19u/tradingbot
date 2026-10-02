@@ -1,6 +1,6 @@
 {
  "sessions": 252,
- "candidate": "P(universe='top10', window_end=30, orw=(0.35, 9000000000.0), market='none', disp=0.0, bvol=0.0, sides='both', ext=9000000000.0, stop='D', target=2.0, manage='fixed', cluster_max=99, slip=0.0005, delay=0)",
+ "candidate": "P(universe='top10', window_end=30, orw=(0.35, 9000000000.0), market='none', disp=0.0, bvol=0.0, sides='both', ext=9000000000.0, stop='D', target=2.0, manage='fixed', cluster_max=99, slip=0.0005, delay=0, gap='any', crowd=0)",
  "decisions": [
   "Universe: stocks in play vs the static 10: **top 10 by opening relative volume** (validation expectancy -0.166R -> -0.043R)",
   "OR width / daily ATR: **0.35-9e+09** (validation expectancy -0.043R -> +0.030R)",
@@ -13,8 +13,19 @@
   "Stop (live: D, session extreme): no change",
   "Target: no change",
   "Trade management: no change",
-  "Correlated signals (max same-side signals in 10 min): no change"
+  "Correlated signals (max same-side signals in 10 min): no change",
+  "Overnight gap direction (follow-up): no change",
+  "Crowd, prior-only (follow-up): no change"
  ],
+ "gate_passed": false,
+ "gate": {
+  "test expectancy > 0 at 0.05%": true,
+  "test 95% interval above zero at 0.05%": true,
+  "test expectancy > 0 at 0.10%": true,
+  "validation expectancy > 0 at 0.10%": false,
+  "test > 0 without its best 3 stocks": true,
+  "beats the live rule on train, validation and test": true
+ },
  "test": {
   "n": 218,
   "win": 54.58715596330275,
@@ -31,7 +42,7 @@
   "no_top2": 0.1267754601974509
  },
  "test_ci": [
-  0.03531490750488221,
-  0.25894627080206517
+  0.041986130188324214,
+  0.25321865622465245
  ]
 }

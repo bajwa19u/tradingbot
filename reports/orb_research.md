@@ -127,6 +127,21 @@ Fixed buckets, not fitted percentiles.
 | max 2 | no validation gain | 486 | 48% | -0.016 | 0.96 | -0.10 to +0.07 | 167 | 46% | +0.050 | 1.13 | -0.09 to +0.20 |
 | max 3 | no validation gain | 562 | 49% | +0.018 | 1.05 | -0.06 to +0.10 | 193 | 46% | +0.024 | 1.06 | -0.11 to +0.16 |
 
+### Overnight gap direction (follow-up)
+
+| variant | verdict | train: n | win | avg R | PF | 95% CI | val: n | win | avg R | PF | 95% CI |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| current | incumbent | 609 | 48% | -0.004 | 0.99 | -0.08 to +0.07 | 202 | 45% | +0.030 | 1.08 | -0.09 to +0.17 |
+| only breaks with the gap | no validation gain | 341 | 46% | -0.062 | 0.85 | -0.16 to +0.03 | 117 | 44% | +0.027 | 1.07 | -0.12 to +0.21 |
+
+### Crowd, prior-only (follow-up)
+
+| variant | verdict | train: n | win | avg R | PF | 95% CI | val: n | win | avg R | PF | 95% CI |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| current | incumbent | 609 | 48% | -0.004 | 0.99 | -0.08 to +0.07 | 202 | 45% | +0.030 | 1.08 | -0.09 to +0.17 |
+| 5+ same-side signals in the last 10 min | too few validation trades (3) | 17 | 24% | -0.329 | 0.39 | -0.70 to +0.11 | 3 | 33% | +0.315 | 1.91 | +nan to +nan |
+| gap AND 5+ crowd | too few validation trades (1) | 5 | 20% | -0.621 | 0.00 | -0.96 to -0.27 | 1 | 100% | +1.985 | inf | +nan to +nan |
+
 ## 3. Decisions
 
 - Universe: stocks in play vs the static 10: **top 10 by opening relative volume** (validation expectancy -0.166R -> -0.043R)
@@ -141,8 +156,10 @@ Fixed buckets, not fitted percentiles.
 - Target: no change
 - Trade management: no change
 - Correlated signals (max same-side signals in 10 min): no change
+- Overnight gap direction (follow-up): no change
+- Crowd, prior-only (follow-up): no change
 
-Final candidate: `P(universe='top10', window_end=30, orw=(0.35, 9000000000.0), market='none', disp=0.0, bvol=0.0, sides='both', ext=9000000000.0, stop='D', target=2.0, manage='fixed', cluster_max=99, slip=0.0005, delay=0)`
+Final candidate: `P(universe='top10', window_end=30, orw=(0.35, 9000000000.0), market='none', disp=0.0, bvol=0.0, sides='both', ext=9000000000.0, stop='D', target=2.0, manage='fixed', cluster_max=99, slip=0.0005, delay=0, gap='any', crowd=0)`
 
 ## 4. Train, validation and the untouched test
 
@@ -151,11 +168,43 @@ Final candidate: `P(universe='top10', window_end=30, orw=(0.35, 9000000000.0), m
 | baseline (static 10, live rule) - train | 1398 | 39.7% | +1.07 | -0.94 | -0.142 | 0.75 | -198.3 | 199.9 | -4.28 | -8.51 | 201 | 175 | -0.20 to -0.09 |
 | baseline (static 10, live rule) - val | 444 | 36.3% | +1.14 | -0.91 | -0.166 | 0.71 | -73.5 | 75.0 | -5.32 | -10.34 | 199 | 144 | -0.27 to -0.06 |
 | baseline (static 10, live rule) - test | 442 | 43.2% | +0.92 | -0.87 | -0.094 | 0.81 | -41.7 | 64.1 | -3.51 | -6.02 | 234 | 360 | -0.18 to +0.00 |
-| candidate - train | 609 | 48.4% | +0.81 | -0.76 | -0.004 | 0.99 | -2.3 | 34.0 | -0.11 | -0.21 | 282 | 369 | -0.08 to +0.07 |
-| candidate - val | 202 | 45.0% | +0.91 | -0.69 | +0.030 | 1.08 | +6.0 | 20.2 | 0.99 | 1.73 | 276 | 369 | -0.10 to +0.16 |
-| candidate - test | 218 | 54.6% | +0.74 | -0.57 | +0.144 | 1.55 | +31.4 | 5.3 | 7.11 | 16.04 | 323 | 375 | +0.04 to +0.26 |
+| candidate - train | 609 | 48.4% | +0.81 | -0.76 | -0.004 | 0.99 | -2.3 | 34.0 | -0.11 | -0.21 | 282 | 369 | -0.08 to +0.08 |
+| candidate - val | 202 | 45.0% | +0.91 | -0.69 | +0.030 | 1.08 | +6.0 | 20.2 | 0.99 | 1.73 | 276 | 369 | -0.11 to +0.16 |
+| candidate - test | 218 | 54.6% | +0.74 | -0.57 | +0.144 | 1.55 | +31.4 | 5.3 | 7.11 | 16.04 | 323 | 375 | +0.04 to +0.25 |
 
-Test-period verdict: candidate expectancy +0.144R (95% CI +0.04 to +0.26) on 218 trades; positive and its interval excludes zero.
+Test-period verdict: candidate expectancy +0.144R (95% CI +0.04 to +0.25) on 218 trades; positive and its interval excludes zero.
+
+## 4b. The autopsy's filters, re-run the production way (diagnostic)
+
+Live rule, 5-minute range. Not used to choose anything; shows whether the autopsy's result carries over.
+
+| variant | verdict | train: n | win | avg R | PF | 95% CI | val: n | win | avg R | PF | 95% CI | test: n | win | avg R | PF | 95% CI |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| static 10, no filter |  | 1398 | 40% | -0.142 | 0.75 | -0.20 to -0.09 | 444 | 36% | -0.166 | 0.71 | -0.27 to -0.06 | 442 | 43% | -0.094 | 0.81 | -0.19 to +0.00 |
+| static 10, with the gap |  | 807 | 39% | -0.162 | 0.72 | -0.23 to -0.09 | 229 | 36% | -0.184 | 0.69 | -0.32 to -0.05 | 243 | 44% | -0.063 | 0.87 | -0.20 to +0.09 |
+| static 10, crowd 5+ (prior-only) |  | 493 | 41% | -0.105 | 0.81 | -0.20 to -0.01 | 128 | 27% | -0.359 | 0.48 | -0.53 to -0.16 | 115 | 53% | +0.113 | 1.29 | -0.07 to +0.30 |
+| static 10, gap AND crowd 5+ |  | 168 | 40% | -0.106 | 0.81 | -0.28 to +0.06 | 26 | 27% | -0.451 | 0.30 | -0.74 to -0.11 | 37 | 62% | +0.388 | 2.29 | +0.06 to +0.72 |
+| top 10 in play, with the gap |  | 777 | 44% | -0.059 | 0.88 | -0.13 to +0.02 | 260 | 43% | -0.017 | 0.96 | -0.14 to +0.11 | 238 | 47% | +0.040 | 1.10 | -0.08 to +0.17 |
+| final candidate, with the gap |  | 341 | 46% | -0.062 | 0.85 | -0.16 to +0.04 | 117 | 44% | +0.027 | 1.07 | -0.14 to +0.20 | 113 | 55% | +0.128 | 1.47 | -0.02 to +0.29 |
+
+## 4c. Slippage by period (final candidate)
+
+| slippage per side | train avg R | train PF | val avg R | val PF | test avg R | test PF | test win % |
+|---|---|---|---|---|---|---|---|
+| 0.05% | -0.004 | 0.99 | +0.030 | 1.08 | +0.144 | 1.55 | 54.6% |
+| 0.10% | -0.060 | 0.86 | -0.021 | 0.95 | +0.083 | 1.30 | 52.3% |
+| 0.15% | -0.117 | 0.73 | -0.073 | 0.83 | +0.026 | 1.09 | 49.5% |
+
+### Go-live gate (fixed before the run)
+
+- PASS: test expectancy > 0 at 0.05%
+- PASS: test 95% interval above zero at 0.05%
+- PASS: test expectancy > 0 at 0.10%
+- FAIL: validation expectancy > 0 at 0.10%
+- PASS: test > 0 without its best 3 stocks
+- PASS: beats the live rule on train, validation and test
+
+**Gate: FAILED.** 0.15% is reported, not gated: it is the stress case.
 
 ## 5. Execution sensitivity (candidate, validation + test)
 
@@ -280,7 +329,7 @@ Max drawdown 34.0R; longest losing streak 8 trades.
 
 ## 8. Source of the result (diagnostics, run after the test; not used to choose rules)
 
-Variants tried in the staged search: 40. Noise floor sqrt(2 ln N) = 2.72 standard errors.
+Variants tried in the staged search: 43. Noise floor sqrt(2 ln N) = 2.74 standard errors.
 
 - candidate train: t = -0.10 (below the noise floor)
 - candidate val: t = +0.44 (below the noise floor)
