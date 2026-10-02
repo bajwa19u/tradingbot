@@ -14,6 +14,20 @@ import pandas as pd
 
 from src import autotrade as at
 from src import broker as bk
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def _trading_on(monkeypatch):
+    """These tests exercise the trading mechanics, which ship switched off."""
+    monkeypatch.setattr(at, "ENABLED", True)
+
+
+def test_automatic_trading_is_off_live():
+    """Signals only, by the owner's decision on 1 October. Turning it back on is a code change."""
+    import importlib
+    import src.autotrade as fresh
+    assert importlib.reload(fresh).ENABLED is False
 
 THU = date(2026, 10, 1)
 FRI = date(2026, 10, 2)

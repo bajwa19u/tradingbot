@@ -74,6 +74,11 @@ live-bot.yml         the rest of the session
 
 ## Alpaca
 
+**Signals only since 2026-10-01.** The owner turned automatic trading off:
+`autotrade.ENABLED = False` (a test pins it), and the smoke and account jobs
+are unscheduled. The live bot posts to Discord and places no orders. Only the
+market-data key matters now.
+
 `broker.py` is paper-only by construction: the base URL is a constant, not
 config, and a test fails if a live hostname appears in the source. Caps are
 enforced inside the broker so a caller that forgets cannot spend past them:

@@ -10,8 +10,8 @@ name: Paper account — what actually filled
 # bot's paper record, and once more after the close.
 
 on:
-  schedule:
-    - cron: "20 14-21 * * 1-5"
+  # schedule off: automatic trading turned off 2026-10-01 (signals only)
+  # - cron: "20 14-21 * * 1-5"
   workflow_dispatch:
     inputs:
       after:

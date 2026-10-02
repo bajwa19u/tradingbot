@@ -37,7 +37,7 @@ log = logging.getLogger("autotrade")
 # Uday asked for this on 30 September, to start trading the next session.
 # The house rule is that new behaviour ships switched off until a holdout
 # supports it; this one was switched on by explicit request, on paper only.
-ENABLED = True
+ENABLED = False          # signals only: the owner turned automatic trading off on 2026-10-01
 
 LAST_ENTRY = "15:30"     # no new positions after this
 PRE_BELL = "15:45"       # sell everything this module holds
