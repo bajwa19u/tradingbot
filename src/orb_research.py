@@ -171,6 +171,8 @@ class P:
     cluster_max: int = 99          # same-side signals allowed in any 10-minute span
     slip: float = 0.0005
     delay: int = 0                 # 1 = fill at the next minute's open
+    gap: str = "any"               # any | with: only breaks in the direction of the overnight gap
+    crowd: int = 0                 # min same-side signals in the last 10 min, itself included (prior-only)
 
 
 def select(D: dict, d, universe: str) -> list[str]:
@@ -232,6 +234,8 @@ def first_signal(x: Day, sa: np.ndarray, qa: np.ndarray, p: P, k_end: int) -> di
         side = 1 if c > x.or_h else -1 if c < x.or_l else 0
         if side == 0 or (p.sides == "long" and side < 0) or (p.sides == "short" and side > 0):
             continue
+        if p.gap == "with" and not (x.gap == x.gap and x.gap * side > 0):
+            continue
         level = x.or_h if side > 0 else x.or_l
         disp = abs(c - level) / x.or_w
         bv = x.v[k] / x.vol_base[k]
@@ -285,6 +289,11 @@ def trades(D: dict, dates: list, lab: dict, p: P) -> pd.DataFrame:
                 spy_above=sig["spy_above"], spy_orw=spy[d].or_w / spy[d].atr if spy[d].atr else np.nan))
         # correlated-signal control: count same-side signals in the prior 10 minutes
         day_rows.sort(key=lambda r: r["k"])
+        for r in day_rows:
+            # the crowd as it can be known live: this signal plus same-side ones already seen
+            r["crowd"] = sum(1 for q in day_rows if q["side"] == r["side"] and r["k"] - 10 <= q["k"] <= r["k"])
+        if p.crowd:
+            day_rows = [r for r in day_rows if r["crowd"] >= p.crowd]
         kept = []
         for r in day_rows:
             r["cluster"] = sum(1 for q in day_rows if q["side"] == r["side"] and r["k"] - 10 <= q["k"] < r["k"])
@@ -532,6 +541,15 @@ def main(argv=None) -> int:
                                ("trail 1R behind the best close after 1R", replace(cur, manage="ctrail"))])
     stage("Correlated signals (max same-side signals in 10 min)", [(f"max {x}", replace(cur, cluster_max=x)) for x in (1, 2, 3)])
 
+    # Follow-up, pre-registered 3 Oct 2026. The opening-range autopsy (15-minute
+    # range, static names, a crowd count that also used LATER breaks) found
+    # "with the gap" and "gap + crowd of 5+" positive on both its splits. Tested
+    # here the production way: 5-minute range, the adopted selection, and a crowd
+    # counted only from signals already seen. Same adoption rule as every stage.
+    stage("Overnight gap direction (follow-up)", [("only breaks with the gap", replace(cur, gap="with"))])
+    stage("Crowd, prior-only (follow-up)", [("5+ same-side signals in the last 10 min", replace(cur, crowd=5)),
+                                            ("gap AND 5+ crowd", replace(cur, gap="with", crowd=5))])
+
     # ---------------------------------------------------------------- final: test once
     tf = run(cur)
     fin = per(tf)
@@ -545,6 +563,40 @@ def main(argv=None) -> int:
           + ("positive and its interval excludes zero." if fin['test']['ci'][0] > 0 else
              "positive, but the interval includes zero - not proven." if fin['test']['avg'] > 0 else
              "NOT positive. No robust edge found."), ""]
+
+    # ---------------------------------------------------------------- autopsy replication
+    L += ["## 4b. The autopsy's filters, re-run the production way (diagnostic)", "",
+          "Live rule, 5-minute range. Not used to choose anything; shows whether the autopsy's result carries over.", ""]
+    L += fam_table([(nm, per(run(pp)), "") for nm, pp in (
+        ("static 10, no filter", p0), ("static 10, with the gap", replace(p0, gap="with")),
+        ("static 10, crowd 5+ (prior-only)", replace(p0, crowd=5)),
+        ("static 10, gap AND crowd 5+", replace(p0, gap="with", crowd=5)),
+        ("top 10 in play, with the gap", replace(p0, universe="top10", gap="with")),
+        ("final candidate, with the gap", replace(cur, gap="with")))], show_test=True) + [""]
+
+    # ---------------------------------------------------------------- slippage per period + gate
+    L += ["## 4c. Slippage by period (final candidate)", "",
+          "| slippage per side | train avg R | train PF | val avg R | val PF | test avg R | test PF | test win % |", "|---|---|---|---|---|---|---|---|"]
+    by_slip = {}
+    for sl in (0.0005, 0.001, 0.0015):
+        st = per(run(replace(cur, slip=sl)))
+        by_slip[sl] = st
+        L.append(f"| {sl * 100:.2f}% | {st['train']['avg']:+.3f} | {st['train']['pf']:.2f} | {st['val']['avg']:+.3f} | "
+                 f"{st['val']['pf']:.2f} | {st['test']['avg']:+.3f} | {st['test']['pf']:.2f} | {st['test']['win']:.1f}% |")
+    te = tf[tf.period == "test"]
+    top3 = te.groupby("sym").R.sum().sort_values().index[-3:] if len(te) else []
+    gate = [
+        ("test expectancy > 0 at 0.05%", fin["test"]["avg"] > 0),
+        ("test 95% interval above zero at 0.05%", fin["test"]["ci"][0] > 0),
+        ("test expectancy > 0 at 0.10%", by_slip[0.001]["test"]["avg"] > 0),
+        ("validation expectancy > 0 at 0.10%", by_slip[0.001]["val"]["avg"] > 0),
+        ("test > 0 without its best 3 stocks", len(te) > 0 and te[~te.sym.isin(top3)].R.mean() > 0),
+        ("beats the live rule on train, validation and test",
+         all(fin[k]["avg"] > base[k]["avg"] for k in ("train", "val", "test"))),
+    ]
+    passed = all(ok for _, ok in gate)
+    L += ["", "### Go-live gate (fixed before the run)", ""] + [f"- {'PASS' if ok else 'FAIL'}: {nm}" for nm, ok in gate]
+    L += ["", f"**Gate: {'PASSED' if passed else 'FAILED'}.** 0.15% is reported, not gated: it is the stress case.", ""]
 
     # ---------------------------------------------------------------- slippage / delay
     L += ["## 5. Execution sensitivity (candidate, validation + test)", "", "| slippage per side | delay | trades | expectancy R | PF |", "|---|---|---|---|---|"]
@@ -589,7 +641,8 @@ def main(argv=None) -> int:
     REPORT.parent.mkdir(exist_ok=True)
     REPORT.write_text(out)
     REPORT.with_suffix(".json").write_text(json.dumps(
-        {"sessions": len(dates), "candidate": str(cur), "decisions": log,
+        {"sessions": len(dates), "candidate": str(cur), "decisions": log, "gate_passed": passed,
+         "gate": {nm: bool(ok) for nm, ok in gate},
          "test": {k: v for k, v in fin["test"].items() if k != "ci"}, "test_ci": fin["test"].get("ci")}, indent=1, default=str))
     print(out[:6000])
     return 0
