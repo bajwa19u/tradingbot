@@ -1,8 +1,4 @@
-2026-10-01 21:42:56,325 ERROR Data fetch failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
-<head><title>401 Authorization Required</title></head>
-<body>
-<center><h1>401 Authorization Required</h1></center>
-<hr><center>nginx</center>
-</body>
-</html>
-
+2026-10-02 21:42:04,685 INFO Screen >= 3.0%: kept 35 of 36
+2026-10-02 21:42:04,906 INFO 0 closed, 1 open, +0.0%, worst drop 0.0%
+2026-10-02 21:42:04,907 INFO Logged 1 event(s) to trade_log.jsonl
+2026-10-02 21:42:05,238 INFO Alert sent.

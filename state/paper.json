@@ -1,6 +1,6 @@
 {
-  "generated": "2026-09-29 21:40",
-  "as_of": "2026-09-29",
+  "generated": "2026-10-02 21:42",
+  "as_of": "2026-10-02",
   "settings": {
     "start": "2026-09-28",
     "equity": 2000.0,
@@ -9,7 +9,21 @@
   },
   "symbols": 35,
   "trades": [],
-  "open": [],
+  "open": [
+    {
+      "symbol": "ZM",
+      "entry_date": "2026-10-01",
+      "entry": 93.87,
+      "stop": 84.47,
+      "risk_per_share": 9.39,
+      "bars_held": 1,
+      "best_R": 0.13,
+      "target": 122.05,
+      "trailing": false,
+      "shares": 2,
+      "why": "Coiled 10 days inside $85.41\u2013$93.33 (2.5x ATR, tight), then closed above $93.33 on 1.7x normal volume. Daily range 3.3% \u2014 volatile enough to move."
+    }
+  ],
   "n": 0,
   "wins": 0,
   "losses": 0,
