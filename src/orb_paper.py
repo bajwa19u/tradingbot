@@ -66,6 +66,7 @@ class Feed:
         self.md, self.p = md, p
         self.hist: dict[str, dict] = {}       # symbol -> {date: 5x390 array}, sessions before today
         self.hist_for = None
+        self.newest: pd.Timestamp | None = None   # start time of the newest bar fetched today
 
     # ------------------------------------------------------------------ data
     def history(self, today, symbols) -> None:
@@ -89,6 +90,8 @@ class Feed:
         today = now.date()
         got = self.md.intraday_bars(list(symbols), 1, start=str(today))
         open_ts = now.normalize() + pd.Timedelta(hours=9, minutes=30)
+        stamps = [df.index[-1].tz_convert(orr.EASTERN) for df in got.values() if df is not None and len(df)]
+        self.newest = max(stamps) if stamps else None
         out = {}
         for s in symbols:
             df = got.get(s)

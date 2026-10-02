@@ -44,6 +44,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
 import sys
 import time as _time
 from datetime import datetime
@@ -55,6 +56,7 @@ from . import autotrade
 from . import confidence as conf
 from . import discord_msg as dm
 from . import opening as op
+from . import orb_live
 from . import stream as st
 from .config import REPO_ROOT, Credentials
 from .data import AlpacaError, MarketData
@@ -125,6 +127,32 @@ OPENING = {**op.BASE, "enabled": True, "observe": False,
 # (longs, both sides, volume, range width, four confirmations, warm-up) lost
 # too. The code stays; turning it back on is a deliberate edit and a test.
 RETEST_ENABLED = False
+
+# Which opening strategy the day-trade channel runs. A feature flag, read from
+# the DAYTRADE_STRATEGY environment variable (a GitHub repository variable of
+# the same name sets it for the live jobs), default "classic".
+#
+#   classic     the opening-range rule above on the fixed ten megacaps
+#   inplay_orb  ORB on the day's ten most in-play names with a wide range
+#               (src/orb_live.py; rules from reports/orb_research.md)
+#
+# inplay_orb beat classic on train, validation and test, and is positive on
+# the untouched test (+0.14R, 95% CI above zero). It stays OFF by default
+# because it failed the go-live gate fixed before that run: at 0.10% slippage
+# per side its validation result turns negative. Its forward record is kept
+# by src/orb_paper.py either way. A test pins the default.
+STRATEGIES = ("classic", "inplay_orb")
+
+
+def strategy() -> str:
+    s = (os.environ.get("DAYTRADE_STRATEGY") or "classic").strip().lower()
+    if s not in STRATEGIES:
+        log.warning("Unknown DAYTRADE_STRATEGY %r - using classic", s)
+        return "classic"
+    return s
+
+
+STRATEGY = strategy()
 CLUSTER_MINUTES = 15
 CLUSTER_WARN = 4
 
@@ -193,8 +221,8 @@ def simulate_day(day: pd.DataFrame, sym: str, p: dict, cfg: dict) -> list[dict]:
 # and mark anything older than its setup allows as EXPIRED instead of posting
 # it as a fresh entry.
 BAR_LAG_S = 4                                  # IEX publishes a minute bar ~1-3 s after it closes
-BAR_MIN = {"opening": 1, "retest": 5}          # bar length each rule enters on
-MAX_AGE_S = {"opening": 120, "retest": 360}    # older than this at first sight = expired
+BAR_MIN = {"opening": 1, "retest": 5, "inplay_orb": 1}          # bar length each rule enters on
+MAX_AGE_S = {"opening": 120, "retest": 360, "inplay_orb": 120}  # older than this at first sight = expired
 STALE_AFTER_S = 180                            # newest 1-minute bar older than this = stale data
 LATENCY_FILE = "latency.jsonl"
 _TIMES: dict = {}                              # per-tick stage timings, seconds
@@ -202,6 +230,7 @@ _LAST_1M: dict = {}                            # newest 1-minute bar seen this t
 _PRIOR: dict = {}                              # yesterday's minute bars, fetched once a day
 _ERRORS: list = []                             # data failures this tick (e.g. 401 after a key change)
 _STREAM: "st.BarStore | None" = None           # set while the websocket is live; scans read from it
+_DRY: list = [False]                           # this tick is a dry run (nothing may be written)
 
 
 def clean_bars(df: pd.DataFrame) -> pd.DataFrame:
@@ -394,7 +423,23 @@ def opening_scan(cfg: dict, now: pd.Timestamp) -> list[dict]:
     return out
 
 
-SETUP = {"opening": "Opening Range Breakout", "retest": "Break & Retest"}
+def _md() -> MarketData:
+    return MarketData(Credentials.from_env(), feed="iex")
+
+
+def inplay_orb_scan(cfg: dict, now: pd.Timestamp) -> list[dict]:
+    """The in-play ORB rule, live (STRATEGY = "inplay_orb"). The rule lives in
+    orb_live / orb_research; this only feeds the bot's freshness checks."""
+    t0 = _time.perf_counter()
+    out, newest = orb_live.scan(now, _md, cfg["risk_pct"], dry_run=_DRY[0])
+    _TIMES["fetch_1m"] = round(_time.perf_counter() - t0, 3)
+    if newest is not None:
+        _LAST_1M["ts"] = newest
+    return out
+
+
+SETUP = {"opening": "Opening Range Breakout", "retest": "Break & Retest",
+         "inplay_orb": orb_live.SETUP_NAME}
 
 
 def card(t: dict) -> str:
@@ -427,6 +472,15 @@ def card(t: dict) -> str:
         else:
             head = (f"{'🔴' if short else '🟢'} **{side}**  ·  {t['entry_time']} ET"
                     + (f"  ·  ⏱ {age:.0f}s" if age is not None else "") + "\n")
+        if t.get("rule") == "inplay_orb":
+            # Signal time = the close of the breakout bar; age = how long ago that was.
+            hh, mm = int(t["entry_time"][:2]), int(t["entry_time"][3:5]) + 1
+            closed = f"{hh + mm // 60:02d}:{mm % 60:02d}"
+            rr = abs(t["target"] - t["entry"]) / max(abs(t["entry"] - t["stop"]), 1e-9)
+            return (head + f"{levels}\n"
+                    + f"R:R 1:{rr:.1f} · risk {t.get('risk_pct_price', 0):.2f}% of price · signal {closed}:00 ET\n"
+                    + f"{orb_live.features_line(t)}\n"
+                    + f"_{setup} · out by 15:55_")
         return (head + f"{levels}\n"
                 + (f"{why}\n" if why else "")
                 + f"_{setup}_")
@@ -565,7 +619,7 @@ def all_trades(cfg: dict, now: pd.Timestamp) -> tuple[list[dict], str, bool]:
         except Exception as exc:                               # noqa: BLE001
             log.exception("Retest scan blew up: %s", exc)
     try:
-        trades += opening_scan(cfg, now)
+        trades += inplay_orb_scan(cfg, now) if STRATEGY == "inplay_orb" else opening_scan(cfg, now)
     except AlpacaError as exc:
         _ERRORS.append(str(exc)[:60])
         log.error("Opening scan failed: %s", exc)
@@ -585,6 +639,7 @@ def tick(cfg: dict, dry_run: bool) -> int:
     _TIMES.clear()
     _LAST_1M.clear()
     _ERRORS.clear()
+    _DRY[0] = dry_run
     trades, stamp, day_done = all_trades(cfg, now)
     _TIMES["scan"] = round(_time.perf_counter() - t0, 3)
     detected = pd.Timestamp.now(tz=EASTERN)
@@ -812,6 +867,12 @@ def main(argv=None) -> int:
             log.info("Before %s ET — nothing to do.", first); return 0
 
     cfg = settings()
+    log.info("Day-trade strategy: %s", STRATEGY)
+    if STRATEGY == "inplay_orb":
+        try:                       # the wide history, before the bell, so 09:35 is one request
+            orb_live.warm(now, _md)
+        except Exception as exc:                               # noqa: BLE001
+            log.error("In-play warm-up failed (%s) - will retry on the first scan", exc)
     if not args.until:
         return 0 if tick(cfg, args.dry_run) >= 0 else 1
 

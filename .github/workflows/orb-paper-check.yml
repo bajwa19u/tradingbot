@@ -27,3 +27,9 @@ jobs:
           ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
           D: ${{ inputs.date }}
         run: python -m src.orb_paper --check ${D:+--date "$D"}
+      - name: Live bot with the in-play ORB flag on (dry run, posts nothing)
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          DAYTRADE_STRATEGY: inplay_orb
+        run: python -m src.live_bot --dry-run --force

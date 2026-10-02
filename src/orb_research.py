@@ -196,13 +196,16 @@ def stop_for(x: Day, k: int, side: int, kind: str, level: float) -> float:
     return (x.l[:k + 1].min() - 0.02 * a) if side > 0 else (x.h[:k + 1].max() + 0.02 * a)
 
 
-def exit_r(x: Day, k: int, side: int, entry: float, stop: float, p: P) -> tuple[float, int, str]:
+def exit_r(x: Day, k: int, side: int, entry: float, stop: float, p: P,
+           j_end: int = N_MIN) -> tuple[float, int, str]:
+    """(R, exit minute, why). Live passes `j_end` = minutes completed so far; a
+    trade still running then returns (nan, last minute, "open")."""
     rps = abs(entry - stop)
     fill = lambda px: px * (1 - side * p.slip)
     r_of = lambda px: side * (fill(px) - entry) / rps
     tgt = entry + side * p.target * rps
     cur, best, banked, w = stop, entry, 0.0, 1.0
-    for j in range(k + 1, N_MIN):
+    for j in range(k + 1, min(j_end, N_MIN)):
         if (x.l[j] <= cur) if side > 0 else (x.h[j] >= cur):
             return banked + w * r_of(min(x.o[j], cur) if side > 0 else max(x.o[j], cur)), j, "stop"
         if p.manage == "partial" and w == 1.0 and ((x.h[j] >= entry + rps) if side > 0 else (x.l[j] <= entry - rps)):
@@ -216,6 +219,8 @@ def exit_r(x: Day, k: int, side: int, entry: float, stop: float, p: P) -> tuple[
                 min(best, x.l[j] if p.manage == "trail" else x.c[j])
             if side * (best - entry) >= rps:
                 cur = max(cur, best - rps) if side > 0 else min(cur, best + rps)
+    if j_end < N_MIN:
+        return float("nan"), j_end - 1, "open"
     return banked + w * r_of(x.c[-1]), N_MIN - 1, "bell"
 
 

@@ -79,6 +79,8 @@ jobs:
           ALPACA_PAPER_KEY: ${{ secrets.ALPACA_PAPER_KEY }}
           ALPACA_PAPER_SECRET: ${{ secrets.ALPACA_PAPER_SECRET }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          # Feature flag: classic (default) or inplay_orb. Set as a repository variable.
+          DAYTRADE_STRATEGY: ${{ vars.DAYTRADE_STRATEGY }}
           IN_DRY: ${{ inputs.dry_run }}
           IN_UNTIL: ${{ inputs.until }}
           IN_EVERY: ${{ inputs.every }}
