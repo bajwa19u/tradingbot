@@ -295,3 +295,31 @@ def tick(now: pd.Timestamp, md_factory, dry_run: bool = False) -> None:
                  r["entry"], r["bar"], r["latency_s"], " (expired)" if r["expired"] else "")
     if not dry_run and (len(state["picks"]), len(state["signals"])) != before:
         save_state(state)
+
+
+def main(argv=None) -> int:
+    """`python -m src.orb_paper --check [--date YYYY-MM-DD]`: settle one past
+    session from scratch and print it, writing nothing. Proves the data path."""
+    import argparse
+    from .config import Credentials
+    from .data import MarketData
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--check", action="store_true")
+    ap.add_argument("--date", default="")
+    args = ap.parse_args(argv)
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
+    day = pd.Timestamp(args.date or pd.Timestamp.now(tz=orr.EASTERN).date()).date()
+    now = pd.Timestamp(f"{day} 16:01", tz=orr.EASTERN)
+    feed = Feed(MarketData(Credentials.from_env(), feed="iex"))
+    state = {"date": str(day), "picks": [], "picked_at": "", "signals": [], "settled": False}
+    rows = feed.settle(state, now)
+    print(f"{day}: picks {state['picks']}")
+    for r in rows:
+        print({k: r.get(k) for k in ("symbol", "side", "bar", "entry", "stop", "target", "or_width_atr",
+                                     "exit_reason", "exit_bar", "result_pct", "backtest_agrees")})
+    print(summary_text(pd.DataFrame(rows)) if rows else "no signals")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
