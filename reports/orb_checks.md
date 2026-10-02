@@ -61,6 +61,15 @@ Version tested: `top10` with range >= 0.35 ATR.
 
 Same names picked from IEX and SIP volume: 2.9 of 10 on average.
 
+### What live does: picks from IEX volume, prices from the consolidated tape
+
+| version | train n | win | per trade | PF | total | val n | win | per trade | PF | total | test n | win | per trade | PF | total |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| IEX picks, SIP prices, 0.025% a side | 816 | 47.2% | +0.023% | 1.06 | +19.1% | 264 | 45.1% | +0.022% | 1.06 | +5.8% | 294 | 52.7% | +0.055% | 1.18 | +16.2% |
+| IEX picks, SIP prices, 0.050% a side | 816 | 46.1% | +0.001% | 1.00 | +0.6% | 264 | 44.3% | -0.007% | 0.98 | -1.8% | 294 | 50.7% | +0.030% | 1.09 | +8.8% |
+| IEX picks, SIP prices, 0.100% a side | 816 | 44.1% | -0.047% | 0.89 | -38.2% | 264 | 43.2% | -0.051% | 0.88 | -13.4% | 294 | 48.0% | -0.016% | 0.95 | -4.6% |
+0.025% a side is about the measured median round trip (section 1).
+
 ## 3. Survivorship-free universe (every listed and delisted US equity)
 
 Alpaca lists 14592 US equity tickers on the main exchanges (1870 delisted or inactive). On an average day 1869 pass price >= 5 and 14-day dollar volume >= 50M as known that morning. Ranked the same way, SIP data.
