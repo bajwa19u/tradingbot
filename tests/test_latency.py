@@ -123,3 +123,25 @@ def test_a_rejected_key_is_reported_not_silent(monkeypatch, tmp_path):
     lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
     errs = [x for x in posts if "DATA ERROR" in x]
     assert len(errs) == 1 and "unauthorized" in errs[0]
+
+
+def test_a_retest_card_names_its_setup():
+    """Bug: retest cards showed a blank setup because the trade had no rule."""
+    m = lb.card(trade(rule="retest", entry_time="13:30"))
+    assert "Break & Retest" in m
+
+
+def test_the_live_break_scan_sees_the_newest_bar():
+    """Bug: the shared scanner skipped the last 6 bars, so live breaks surfaced ~30 min late."""
+    import numpy as np
+    from src.retest import breaks_in
+    n = 40
+    idx = pd.date_range("2026-10-02 09:30", periods=n, freq="5min", tz=ET)
+    day = pd.DataFrame({"open": 100.0, "high": 100.2, "low": 99.8, "close": 100.0, "volume": 100.0,
+                        "atr": 0.5, "coil_high": 100.2, "coil_low": 99.8, "coil_vol": 100.0}, index=idx)
+    day.iloc[-1, day.columns.get_loc("open")] = 100.0
+    day.iloc[-1, day.columns.get_loc("close")] = 99.5          # last bar breaks the coil low on a red candle
+    p = {"squeeze_atr": 3.0, "vol_mult": 1.0, "no_entry_before": "09:45", "no_entry_after": "15:55",
+         "base_len": 12, "atr_len": 14}
+    assert not breaks_in(day, p)                                # backtest default still skips the tail
+    assert breaks_in(day, {**p, "tail": 0})[-1][0] == n - 1     # live sees it immediately

@@ -117,7 +117,7 @@ def test_the_open_card_shows_the_level():
 
 def test_the_open_card_still_shows_the_prices():
     text = lb.card(trade(with_gap=True, cohort=8))
-    for want in ("LONG AAPL", "333.53", "330.12", "340.36", "opening range"):
+    for want in ("LONG AAPL", "333.53", "330.12", "340.36", "Opening Range Breakout"):
         assert want in text
 
 

@@ -62,7 +62,10 @@ def breaks_in(day: pd.DataFrame, p: dict) -> list[tuple[int, str, float]]:
     hi_t = pd.Timestamp(p["no_entry_after"]).time()
     times = day.index.tz_convert(EASTERN).time
     out = []
-    for i in range(p["base_len"] + p["atr_len"], len(day) - 6):
+    # `tail` bars at the end are skipped: backtests that label each break with
+    # what came after need them. The live bot passes 0 - skipping them there
+    # meant every live break was first seen ~30 minutes late.
+    for i in range(p["base_len"] + p["atr_len"], len(day) - p.get("tail", 6)):
         if not (lo_t <= times[i] <= hi_t):
             continue
         if bool(up.iloc[i]):

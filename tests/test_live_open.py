@@ -54,7 +54,7 @@ def test_close_message_is_a_percentage_not_a_multiple():
     m = lb.close_msg(trade(exit=611.78, exit_time="10:45", reason="target",
                            pct=2.0, cash=31.2))
     assert "+2.00%" in m and "✅" in m
-    assert "R" not in m.replace("SHORT", "").replace("AMD", "")
+    assert not __import__("re").search(r"\d\s*R\b", m)        # no R multiples on cards
 
 
 def test_no_message_carries_a_dollar_figure():
@@ -203,8 +203,8 @@ def test_every_signal_has_the_same_shape():
 
 
 def test_the_entry_says_which_setup_it_came_from():
-    assert "break & retest" in lb.entry_msg(trade(rule="retest"))
-    assert "opening range" in lb.entry_msg(trade(rule="opening"))
+    assert "Break & Retest" in lb.entry_msg(trade(rule="retest"))
+    assert "Opening Range Breakout" in lb.entry_msg(trade(rule="opening"))
 
 
 def test_an_opening_trade_is_sized_like_any_other():
@@ -260,7 +260,7 @@ def test_longs_are_posted_now():
 
 def test_a_long_entry_renders():
     m = lb.entry_msg(trade(side="long", rule="opening", level_name="orh"))
-    assert "LONG" in m and "🟢" in m and "opening range" in m
+    assert "LONG" in m and "🟢" in m and "Opening Range Breakout" in m
 
 
 # --- correlated entries are one result, not many -----------------------------

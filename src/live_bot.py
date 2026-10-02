@@ -1,12 +1,21 @@
 """The live bot. Two rules, one watchlist, one Discord feed.
 
-  * OPENING DRIVE, 09:30-10:00, one-minute bars. Breaks of prices that
-    already existed before the bell - yesterday's high, low and close, and
-    the premarket high and low. No warmup, no pullback required. This is the
-    rule that exists because the bot sat out AMD's 2.5% opening drop on
-    28 September.
-  * BREAK AND RETEST, 09:45-15:30, five-minute bars. The original rule,
-    unchanged.
+  * OPENING RANGE BREAK, one-minute bars. The range is the high and low of
+    the first five regular-session candles (09:30-09:34). The first candle
+    that CLOSES above the range high is a long, below the range low a short;
+    breaks count from 09:30 to 10:00, first break of each level only, one
+    trade per stock per day. Entry at that close (+0.05% slippage), stop past
+    the session's extreme so far plus a small buffer from yesterday's opening
+    half hour, target twice the stop distance, else out at 15:55.
+    (`OPENING["levels"] == "or"`. The opening module can also trade
+    yesterday's and the premarket's levels; the live bot does not.)
+  * BREAK AND RETEST, five-minute bars, SHORTS ONLY. A tight one-hour coil
+    (12 bars, width <= 3 average 5-minute moves) breaks on a red candle with
+    at least average volume; price comes back within a quarter of an average
+    move of the level inside 12 bars; entry at that close, stop one average
+    move past the level, target twice the stop distance, else out at 15:55.
+    The window is 09:45-15:30 on paper, but the indicators warm up on today's
+    bars alone, so the first possible break is about 11:40.
 
 Posts an entry the moment either rule fires, a close when the trade ends,
 and one summary at the bell.
@@ -121,7 +130,7 @@ def simulate_day(day: pd.DataFrame, sym: str, p: dict, cfg: dict) -> list[dict]:
     alert possible: the next run finds it finished and announces it.
     """
     out = []
-    for i, side, level in breaks_in(day, p):
+    for i, side, level in breaks_in(day, {**p, "tail": 0}):
         if side != LIVE["side"]:
             continue
         j = find_retest(day, i, side, level, LIVE["wait"], LIVE["depth"],
@@ -140,6 +149,7 @@ def simulate_day(day: pd.DataFrame, sym: str, p: dict, cfg: dict) -> list[dict]:
         # that happen to enter on the same bar collide, and the second is
         # counted in the recap but never announced.
         t = {"id": f"{sym}-{str(day.index[j])[:16]}-{level:.2f}", "symbol": sym,
+             "rule": "retest",
              "entry_time": str(day.index[j].tz_convert(EASTERN))[11:16],
              "entry": round(entry, 2), "stop": round(stop, 2),
              "target": round(target, 2), "shares": n,
@@ -343,7 +353,7 @@ def opening_scan(cfg: dict, now: pd.Timestamp) -> list[dict]:
     return out
 
 
-SETUP = {"opening": "opening range", "retest": "break & retest"}
+SETUP = {"opening": "Opening Range Breakout", "retest": "Break & Retest"}
 
 
 def card(t: dict) -> str:
