@@ -12,12 +12,15 @@ name: In play — live
 # Its own concurrency group. It writes its own record and posts to its own
 # webhook, so it has no reason to queue behind the main bot.
 #
-# PARKED 30 September. The webhook this job was pointed at belongs to the
-# channel Uday made for the swing / pre-earnings idea, so an intraday scanner
-# was posting day trades into a channel meant for a strategy we have not
-# built yet. The schedule is off until this has a channel of its own; manual
-# dispatch still works for testing against a dry run.
+# Back on 2 October at the owner's request: it posts to its own channel
+# (DISCORD_WEBHOOK_INPLAY). Signals only. Entries first seen more than two
+# minutes after their bar closed post as EXPIRED.
 on:
+  schedule:
+    # Before the bell in both EDT and EST, plus afternoon takeovers: each run
+    # hands over after --for minutes and the queued run continues to the close.
+    - cron: "20 13,14 * * 1-5"
+    - cron: "0,20 18,19 * * 1-5"
   workflow_dispatch:
     inputs:
       dry_run:
@@ -72,7 +75,7 @@ jobs:
           set -uo pipefail
           mkdir -p reports state
           touch /tmp/runmark
-          ARGS=(--until "${IN_UNTIL:-13:30}" --every "${IN_EVERY:-60}")
+          ARGS=(--until "${IN_UNTIL:-16:05}" --every "${IN_EVERY:-60}" --for 310)
           if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
           if [ "${IN_FORCE:-false}" = "true" ]; then ARGS+=(--force); fi
           set +e

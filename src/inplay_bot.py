@@ -71,7 +71,7 @@ BELL, LAST = "09:30", "15:58"
 # The wide stop on purpose. The tight one measured better and dies the moment
 # real execution costs show up, which is the trap the source paper warns
 # about for its own tightest variant.
-RULE = {**ip.BASE, "select_top": TOP_N, "atr_frac": 0.20, "exit_mode": "close",
+RULE = {**ip.BASE, "select_top": TOP_N, "atr_frac": 0.50, "exit_mode": "close",
         "side": "both", "max_per_symbol": 1, "or_minutes": 5, "risk_pct": 1.0}
 
 
@@ -159,6 +159,19 @@ def load_seen(date: str) -> dict:
     return {**blank, **{k: s.get(k, blank[k]) for k in blank}}
 
 
+MAX_AGE_S = 120   # an entry first seen later than this after its 1-minute bar closed is expired
+
+
+def entry_age(t: dict, now: pd.Timestamp) -> float | None:
+    """Seconds since the close of the 1-minute bar the trade entered on."""
+    try:
+        hh, mm = int(t["entry_time"][:2]), int(t["entry_time"][3:5])
+    except (KeyError, ValueError, TypeError):
+        return None
+    close = now.normalize() + pd.Timedelta(hours=hh, minutes=mm + 1)
+    return (now - close).total_seconds()
+
+
 def tick(cfg: dict, dry_run: bool, now: pd.Timestamp | None = None) -> int:
     # `now` is injectable so tests can pin the clock. They used to read the
     # real one, which meant every test that reached the end-of-day summary
@@ -180,7 +193,13 @@ def tick(cfg: dict, dry_run: bool, now: pd.Timestamp | None = None) -> int:
         seen["picks"] = True
     for t in trades:
         if t["id"] not in seen["entries"]:
-            outbox.append((card({**t, "exit": None}), t["id"], False))
+            text = card({**t, "exit": None})
+            age = entry_age(t, now)
+            if age is not None and age > MAX_AGE_S:
+                # First seen too late to act on (a restart, a late start, a data gap).
+                late = f"{age / 60:.0f} min" if age >= 90 else f"{age:.0f}s"
+                text = f"⚪ **EXPIRED** · seen {late} late, do not chase\n" + text
+            outbox.append((text, t["id"], False))
         if t["exit"] is not None and t["id"] not in seen["exits"]:
             outbox.append((card(t), t["id"], True))
     if now.time() >= pd.Timestamp("16:00").time() and not seen["summary"]:
@@ -228,6 +247,8 @@ def main(argv=None) -> int:
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--until", default="", help="poll until this Eastern time")
     ap.add_argument("--every", type=int, default=60)
+    ap.add_argument("--for", dest="minutes", type=int, default=0,
+                    help="hand over to the next run after this many minutes (GitHub stops jobs at 6 h)")
     args = ap.parse_args(argv)
 
     now = pd.Timestamp.now(tz=EASTERN)
@@ -244,11 +265,14 @@ def main(argv=None) -> int:
         return 0
 
     stop = pd.Timestamp(args.until).time()
+    deadline = now + pd.Timedelta(minutes=args.minutes) if args.minutes else None
     log.info("Polling every %ds until %s ET", args.every, args.until)
     while True:
         now = pd.Timestamp.now(tz=EASTERN)
         if now.time() > stop:
             log.info("Reached %s ET — done.", args.until); return 0
+        if deadline is not None and now >= deadline:
+            log.info("Polled for %d min — handing over to the next run.", args.minutes); return 0
         if now.time() >= pd.Timestamp(BELL).time():
             try:
                 tick(cfg, args.dry_run)

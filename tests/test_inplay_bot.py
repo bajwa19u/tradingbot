@@ -83,7 +83,7 @@ def test_a_run_that_sent_nothing_leaves_the_record_alone(monkeypatch, tmp_path):
 def test_a_close_edits_the_card(monkeypatch, tmp_path):
     monkeypatch.setattr(b, "STATE", tmp_path)
     monkeypatch.setattr(b, "REPORTS", tmp_path)
-    today = str(pd.Timestamp.now(tz=b.EASTERN).date())
+    today = str(MIDDAY.date())   # the pinned clock's day, not the machine's
     (tmp_path / b.SEEN_FILE).write_text(json.dumps(
         {"date": today, "entries": ["IP-NVDA-orl-2026-10-01"], "exits": [],
          "summary": True, "picks": True,
@@ -136,3 +136,27 @@ def test_a_dry_run_sends_nothing(monkeypatch, tmp_path):
     monkeypatch.setattr(b.dm, "post", lambda u, t: sent.append(t) or "m")
     b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=True, now=MIDDAY)
     assert not sent
+
+
+
+def test_an_entry_first_seen_late_is_marked_expired(monkeypatch, tmp_path):
+    monkeypatch.setattr(b, "STATE", tmp_path)
+    monkeypatch.setattr(b, "REPORTS", tmp_path)
+    monkeypatch.setattr(b, "scan", lambda cfg, now: ([trade(id="late-1", entry_time="09:36")], [], "11:00"))
+    posts = []
+    monkeypatch.setattr(b.dm, "post", lambda u, txt: posts.append(txt) or "m")
+    monkeypatch.setenv("DISCORD_WEBHOOK_INPLAY", "https://second")
+    b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False, now=MIDDAY)
+    assert posts and posts[0].startswith("⚪ **EXPIRED**")
+
+
+def test_a_fresh_entry_is_not_marked(monkeypatch, tmp_path):
+    monkeypatch.setattr(b, "STATE", tmp_path)
+    monkeypatch.setattr(b, "REPORTS", tmp_path)
+    now = pd.Timestamp("2026-09-30 09:37:05", tz=b.EASTERN)
+    monkeypatch.setattr(b, "scan", lambda cfg, n: ([trade(id="fresh-1", entry_time="09:36")], [], "09:36"))
+    posts = []
+    monkeypatch.setattr(b.dm, "post", lambda u, txt: posts.append(txt) or "m")
+    monkeypatch.setenv("DISCORD_WEBHOOK_INPLAY", "https://second")
+    b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False, now=now)
+    assert posts and "EXPIRED" not in posts[0]
