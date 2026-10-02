@@ -1,8 +1,11 @@
 {
-  "date": "2026-10-01",
+  "date": "2026-10-02",
   "seen": {
-    "SHOP": "at_the_level",
-    "CRWD": "at_the_level",
+    "SMCI": "above_light_volume",
+    "CRWD": "above_light_volume",
+    "RKLB": "above_light_volume",
+    "U": "at_the_level",
+    "PLTR": "at_the_level",
     "ZM": "at_the_level"
   }
 }
