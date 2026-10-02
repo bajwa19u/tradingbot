@@ -172,7 +172,7 @@ class Feed:
                 sign = 1 if r["side"] == "long" else -1
                 R, j, why = orr.exit_r(x, r["k"], sign, r["entry"], r["stop"], self.p)
                 r.update(exit_bar=bar_label(j), exit_reason=why,
-                         result_pct=round(float(R) * abs(r["entry"] - r["stop"]) / r["entry"] * 100, 3),
+                         result_pct=float(round(float(R) * abs(r["entry"] - r["stop"]) / r["entry"] * 100, 3)),
                          win=bool(R > 0))
             r["backtest_agrees"] = ("missed live" if r["source"] == "backtest only" else
                                     "no signal" if bt is None else
@@ -184,7 +184,7 @@ class Feed:
 
 
 def row(sym: str, x, sig: dict, today, source: str, seen_at: str, latency) -> dict:
-    return dict(
+    r = dict(
         date=str(today), symbol=sym, side=sig["side"], k=sig["k"], bar=bar_label(sig["k"]),
         seen_at=seen_at, latency_s=None if latency is None else round(latency, 1),
         expired=None if latency is None else bool(latency > MAX_AGE_S), source=source,
@@ -195,6 +195,7 @@ def row(sym: str, x, sig: dict, today, source: str, seen_at: str, latency) -> di
         breakout_rvol=round(sig["bvol"], 2), extension=round(sig["ext"], 3),
         gap_pct=round(x.gap * 100, 2) if x.gap == x.gap else None,
         vwap_ok=bool(sig["vwap_ok"]), spy_ok=bool(sig["spy_ok"]), qqq_ok=bool(sig["qqq_ok"]), same_side_10m=0)
+    return {k: (v.item() if isinstance(v, np.generic) else v) for k, v in r.items()}
 
 
 # ---------------------------------------------------------------------- files
