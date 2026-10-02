@@ -62,9 +62,15 @@ shared thing belongs in its own module.
   drift, not targets). Narrow ranges have a gross edge that slippage eats in
   R terms. Breaks even at about 0.12% slippage per side. Every market, VWAP,
   displacement, volume, extension, window, stop, target, management and
-  cluster filter failed. NOT proven: it runs as a paper record only
-  (`src/orb_paper.py`, inside the in-play job, POST = False, writes
-  `reports/orb_paper.csv` / `.md`). Decide on it from that forward record.
+  cluster filter failed. Follow-up (3 Oct): "with the gap" and the crowd
+  filter from `orb_autopsy` do NOT carry over to the production method (gap
+  hurts train; the autopsy's crowd counted later breaks, i.e. lookahead).
+  Go-live gate FAILED on one line: validation turns negative at 0.10%
+  slippage (train -0.06, val -0.02, test +0.08R). So it is implemented
+  (`src/orb_live.py`) behind `DAYTRADE_STRATEGY=inplay_orb` (repo variable;
+  default `classic`, a test pins it) and recorded forward by
+  `src/orb_paper.py` (in-play job, posts nothing, `reports/orb_paper.*`).
+  Turn it on from the forward record, not from another backtest.
 - **The free IEX premarket feed is unusable.** It carries premarket bars on
   about 1% of days. Anything built on premarket highs and lows silently does
   nothing. This is a data-plan problem, not a code problem.
