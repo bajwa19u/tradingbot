@@ -14,7 +14,7 @@
     "IP-WMT-orh-2026-10-02",
     "IP-SPGI-orh-2026-10-02"
   ],
-  "summary": false,
+  "summary": true,
   "picks": true,
   "cards": {
     "IP-NKE-orh-2026-10-02": "1555602077651050627",
