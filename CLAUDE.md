@@ -71,6 +71,16 @@ shared thing belongs in its own module.
   default `classic`, a test pins it) and recorded forward by
   `src/orb_paper.py` (in-play job, posts nothing, `reports/orb_paper.*`).
   Turn it on from the forward record, not from another backtest.
+- **ORB open questions answered, 3 Oct 2026 (`reports/orb_checks.md`, `src/orb_checks.py`).**
+  Real costs (SIP NBBO a few seconds after the bar, 1,018 of 1,029 trades):
+  median round trip 0.045%, mean 0.054%, 90th pct 0.18% - half the 0.10%
+  assumed. Premarket ranking (delayed SIP, live-usable): not adopted, worse on
+  train. But the edge is fragile: SIP volume picks only 2.9 of IEX's 10
+  names; a mechanical universe of every listed ticker (14,592, 1,870
+  inactive) loses on train (-0.05R) - most of the old result came from the
+  hand-made pool. The live-faithful case (IEX picks, SIP prices) is
+  +0.02 / +0.02 / +0.06R at 0.025% a side, ~0 at 0.05%, negative at 0.10%.
+  A thin edge at best. Gate failed on the stress line again; flag stays off.
 - **The free IEX premarket feed is unusable.** It carries premarket bars on
   about 1% of days. Anything built on premarket highs and lows silently does
   nothing. This is a data-plan problem, not a code problem.
