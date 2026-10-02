@@ -1,1 +1,291 @@
-2026-10-01 21:53:05,906 INFO Past 16:10 ET — nothing to do.
+2026-10-02 14:14:54,040 INFO Polling every 60s until 16:10 ET or for 320 min
+2026-10-02 14:14:54,257 ERROR Stream unavailable (401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+) - polling until it is back
+2026-10-02 14:14:54,451 ERROR Retest scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:14:54,645 ERROR Opening scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:14:54,647 INFO 10:14:54 ET · bars through — · 0 trade(s) today · 0 new message(s)
+2026-10-02 14:14:54,647 INFO timings {'scan': 0.388, 'discord': 0.0, 'total': 0.389}
+2026-10-02 14:15:04,180 ERROR Retest scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:15:04,369 ERROR Opening scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:15:04,371 INFO 10:15:04 ET · bars through — · 0 trade(s) today · 0 new message(s)
+2026-10-02 14:15:04,371 INFO timings {'scan': 0.37, 'discord': 0.0, 'total': 0.371}
+2026-10-02 14:16:04,199 ERROR Stream unavailable (401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+) - polling until it is back
+2026-10-02 14:16:04,381 ERROR Retest scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:16:04,571 ERROR Opening scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:16:04,573 INFO 10:16:04 ET · bars through — · 0 trade(s) today · 0 new message(s)
+2026-10-02 14:16:04,573 INFO timings {'scan': 0.372, 'discord': 0.0, 'total': 0.372}
+2026-10-02 14:17:04,179 ERROR Retest scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:17:04,367 ERROR Opening scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:17:04,369 INFO 10:17:04 ET · bars through — · 0 trade(s) today · 0 new message(s)
+2026-10-02 14:17:04,369 INFO timings {'scan': 0.368, 'discord': 0.0, 'total': 0.369}
+2026-10-02 14:18:04,190 ERROR Stream unavailable (401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+) - polling until it is back
+2026-10-02 14:18:04,422 ERROR Retest scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:18:04,624 ERROR Opening scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:18:04,625 INFO 10:18:04 ET · bars through — · 0 trade(s) today · 0 new message(s)
+2026-10-02 14:18:04,626 INFO timings {'scan': 0.434, 'discord': 0.0, 'total': 0.435}
+2026-10-02 14:19:04,201 ERROR Retest scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:19:04,389 ERROR Opening scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:19:04,391 INFO 10:19:04 ET · bars through — · 0 trade(s) today · 0 new message(s)
+2026-10-02 14:19:04,391 INFO timings {'scan': 0.39, 'discord': 0.0, 'total': 0.391}
+2026-10-02 14:20:04,198 ERROR Stream unavailable (401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+) - polling until it is back
+2026-10-02 14:20:04,462 ERROR Retest scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:20:04,658 ERROR Opening scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:20:04,660 INFO 10:20:04 ET · bars through — · 0 trade(s) today · 0 new message(s)
+2026-10-02 14:20:04,660 INFO timings {'scan': 0.46, 'discord': 0.0, 'total': 0.461}
+2026-10-02 14:21:04,190 ERROR Retest scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:21:04,388 ERROR Opening scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:21:04,389 INFO 10:21:04 ET · bars through — · 0 trade(s) today · 0 new message(s)
+2026-10-02 14:21:04,390 INFO timings {'scan': 0.389, 'discord': 0.0, 'total': 0.389}
+2026-10-02 14:22:04,364 ERROR Stream unavailable (401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+) - polling until it is back
+2026-10-02 14:22:04,562 ERROR Retest scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:22:04,771 ERROR Opening scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:22:04,773 INFO 10:22:04 ET · bars through — · 0 trade(s) today · 0 new message(s)
+2026-10-02 14:22:04,773 INFO timings {'scan': 0.408, 'discord': 0.0, 'total': 0.408}
+2026-10-02 14:23:04,186 ERROR Retest scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:23:04,364 ERROR Opening scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:23:04,366 INFO 10:23:04 ET · bars through — · 0 trade(s) today · 0 new message(s)
+2026-10-02 14:23:04,366 INFO timings {'scan': 0.365, 'discord': 0.0, 'total': 0.366}
+2026-10-02 14:24:04,189 ERROR Stream unavailable (401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+) - polling until it is back
+2026-10-02 14:24:04,375 ERROR Retest scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:24:04,630 ERROR Opening scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:24:04,631 INFO 10:24:04 ET · bars through — · 0 trade(s) today · 0 new message(s)
+2026-10-02 14:24:04,631 INFO timings {'scan': 0.441, 'discord': 0.0, 'total': 0.442}
+2026-10-02 14:25:04,202 ERROR Retest scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:25:04,411 ERROR Opening scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:25:04,413 INFO 10:25:04 ET · bars through — · 0 trade(s) today · 0 new message(s)
+2026-10-02 14:25:04,413 INFO timings {'scan': 0.412, 'discord': 0.0, 'total': 0.413}
+2026-10-02 14:26:04,233 ERROR Stream unavailable (401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+) - polling until it is back
+2026-10-02 14:26:04,420 ERROR Retest scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:26:04,625 ERROR Opening scan failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2026-10-02 14:26:04,626 INFO 10:26:04 ET · bars through — · 0 trade(s) today · 0 new message(s)
+2026-10-02 14:26:04,627 INFO timings {'scan': 0.392, 'discord': 0.0, 'total': 0.393}
