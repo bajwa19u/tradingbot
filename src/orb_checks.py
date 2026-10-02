@@ -447,6 +447,18 @@ def main(argv=None) -> int:
             ov = [len(set(orr.select(D, d, final.universe)) & set(orr.select(D_sip, d, final.universe)))
                   for d in ds]
             sec2.append(f"Same names picked from IEX and SIP volume: {np.mean(ov):.1f} of 10 on average.")
+            # What live actually does: rank on IEX volume (the only real-time feed), but the
+            # trade happens at real prices. Same picks as the IEX study, SIP price path.
+            D_h = {s: {d: replace(x, rvol5=D[s][d].rvol5) for d, x in days.items() if d in D.get(s, {})}
+                   for s, days in D_sip.items()}
+            for s in ("SPY", "QQQ"):
+                D_h[s] = D_sip[s]
+            sec2 += ["", "### What live does: picks from IEX volume, prices from the consolidated tape", "", H3]
+            for sl in (0.00025, 0.0005, 0.001):
+                st_h = per3(run(replace(final, slip=sl), D_h, ds))
+                sec2.append(row3(f"IEX picks, SIP prices, {sl * 100:.3f}% a side", st_h))
+                res[f"hybrid_{sl}"] = {k: st_h[k]["avg"] for k in st_h}
+            sec2.append("0.025% a side is about the measured median round trip (section 1).")
             gate[6] = st_f["test"]["avg"] > 0
             res["sip_test"] = st_f["test"]["avg"]
         except Exception as exc:                                # noqa: BLE001
