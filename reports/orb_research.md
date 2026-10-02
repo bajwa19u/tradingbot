@@ -278,3 +278,102 @@ Max drawdown 34.0R; longest losing streak 8 trades.
 | KO | 21 | +0.451 | +9.5 |
 | INTC | 37 | +0.377 | +13.9 |
 
+## 8. Source of the result (diagnostics, run after the test; not used to choose rules)
+
+Variants tried in the staged search: 40. Noise floor sqrt(2 ln N) = 2.72 standard errors.
+
+- candidate train: t = -0.10 (below the noise floor)
+- candidate val: t = +0.44 (below the noise floor)
+- candidate test: t = +2.56 (below the noise floor)
+
+### Month by month (all periods)
+
+| month / version | trades | win % | avg % per trade (price) | expectancy R | PF |
+|---|---|---|---|---|---|
+| 2025-09 static 10 | 9 | 11% | -0.371% | -0.643 | 0.25 |
+| 2025-09 candidate | 3 | 33% | -0.634% | -0.455 | 0.34 |
+| 2025-10 static 10 | 206 | 31% | -0.204% | -0.328 | 0.51 |
+| 2025-10 candidate | 94 | 40% | -0.198% | -0.149 | 0.69 |
+| 2025-11 static 10 | 174 | 39% | -0.143% | -0.096 | 0.84 |
+| 2025-11 candidate | 67 | 42% | -0.486% | -0.167 | 0.67 |
+| 2025-12 static 10 | 197 | 37% | -0.154% | -0.199 | 0.64 |
+| 2025-12 candidate | 52 | 52% | +0.251% | +0.167 | 1.51 |
+| 2026-01 static 10 | 190 | 42% | +0.014% | -0.079 | 0.85 |
+| 2026-01 candidate | 114 | 52% | +0.242% | +0.038 | 1.10 |
+| 2026-02 static 10 | 177 | 53% | +0.213% | +0.159 | 1.36 |
+| 2026-02 candidate | 77 | 52% | +0.354% | +0.136 | 1.39 |
+| 2026-03 static 10 | 201 | 41% | -0.046% | -0.136 | 0.77 |
+| 2026-03 candidate | 75 | 57% | +0.115% | +0.100 | 1.30 |
+| 2026-04 static 10 | 186 | 37% | -0.220% | -0.269 | 0.55 |
+| 2026-04 candidate | 95 | 47% | -0.164% | -0.030 | 0.92 |
+| 2026-05 static 10 | 184 | 36% | -0.208% | -0.229 | 0.61 |
+| 2026-05 candidate | 96 | 50% | +0.376% | +0.141 | 1.39 |
+| 2026-06 static 10 | 180 | 39% | -0.114% | -0.062 | 0.89 |
+| 2026-06 candidate | 83 | 43% | -0.156% | -0.061 | 0.85 |
+| 2026-07 static 10 | 202 | 39% | -0.022% | -0.111 | 0.80 |
+| 2026-07 candidate | 79 | 46% | -0.036% | -0.032 | 0.90 |
+| 2026-08 static 10 | 179 | 50% | +0.115% | +0.020 | 1.05 |
+| 2026-08 candidate | 84 | 56% | +0.400% | +0.210 | 2.08 |
+| 2026-09 static 10 | 181 | 36% | -0.136% | -0.217 | 0.60 |
+| 2026-09 candidate | 101 | 52% | +0.277% | +0.104 | 1.32 |
+| 2026-10 static 10 | 18 | 33% | -0.221% | -0.471 | 0.30 |
+| 2026-10 candidate | 9 | 44% | +0.121% | -0.068 | 0.88 |
+
+### How trades end
+
+| version | period | stop % | target % | bell % | avg R at stop | avg R at target | avg R at bell |
+|---|---|---|---|---|---|---|---|
+| static 10 | train | 48 | 13 | 39 | -1.09 | +1.92 | +0.32 |
+| static 10 | val | 49 | 14 | 38 | -1.07 | +1.94 | +0.26 |
+| static 10 | test | 39 | 12 | 50 | -1.09 | +1.92 | +0.22 |
+| candidate | train | 30 | 6 | 63 | -1.04 | +1.96 | +0.29 |
+| candidate | val | 29 | 9 | 62 | -1.04 | +1.97 | +0.25 |
+| candidate | test | 16 | 6 | 78 | -1.04 | +1.97 | +0.26 |
+
+### OR width: real effect or just smaller costs in R?
+
+Top 10 by opening volume, no width filter, all periods.
+
+| OR width / ATR | trades | median stop distance % | gross R (no slippage) | net R | win % gross |
+|---|---|---|---|---|---|
+| 0-0.2 | 290 | 0.85% | +0.110 | -0.060 | 43% |
+| 0.2-0.35 | 888 | 1.08% | -0.024 | -0.125 | 41% |
+| 0.35-0.5 | 587 | 1.55% | +0.073 | +0.002 | 49% |
+| 0.5-0.75 | 305 | 2.07% | +0.172 | +0.111 | 53% |
+| 0.75-9e+09 | 137 | 3.11% | +0.043 | +0.002 | 55% |
+
+### Neighbours of the chosen settings (plateau check, every period)
+
+| universe | min OR width / ATR | train avg R | val avg R | test avg R | test trades |
+|---|---|---|---|---|---|
+| top5 | 0.25 | -0.060 | -0.020 | +0.072 | 166 |
+| top5 | 0.30 | -0.041 | +0.015 | +0.142 | 144 |
+| top5 | 0.35 | -0.030 | +0.015 | +0.154 | 119 |
+| top5 | 0.40 | -0.033 | -0.039 | +0.231 | 99 |
+| top5 | 0.50 | +0.045 | -0.089 | +0.289 | 68 |
+| top10 | 0.25 | -0.026 | -0.037 | +0.043 | 338 |
+| top10 | 0.30 | -0.018 | +0.010 | +0.063 | 276 |
+| top10 | 0.35 | -0.004 | +0.030 | +0.144 | 218 |
+| top10 | 0.40 | +0.002 | +0.049 | +0.210 | 178 |
+| top10 | 0.50 | +0.067 | +0.016 | +0.150 | 104 |
+| top20 | 0.25 | -0.023 | -0.043 | -0.002 | 626 |
+| top20 | 0.30 | -0.012 | -0.001 | +0.020 | 497 |
+| top20 | 0.35 | +0.019 | -0.002 | +0.110 | 373 |
+| top20 | 0.40 | +0.021 | +0.024 | +0.151 | 280 |
+| top20 | 0.50 | +0.062 | +0.049 | +0.084 | 146 |
+
+### How concentrated is the test result?
+
+- Test total +31.4R over 50 days and 218 trades.
+- Without the best 2 days: +0.113R per trade.
+- Without the best 5 trades: +0.101R per trade.
+- Best 3 stocks (CRM, TSLA, CRWD) made +18.1R; without them +0.071R per trade.
+- Winning days 66% of 50.
+
+#### Test by side
+
+| side | trades | win % | avg % per trade (price) | expectancy R | PF |
+|---|---|---|---|---|---|
+| long | 116 | 53% | +0.335% | +0.127 | 1.50 |
+| short | 102 | 57% | +0.350% | +0.163 | 1.61 |
+
