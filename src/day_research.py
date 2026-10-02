@@ -561,7 +561,7 @@ def main(argv=None) -> int:
     out = "\n".join(L) + "\n"
     REPORT.parent.mkdir(exist_ok=True)
     REPORT.write_text(out)
-    (REPO_ROOT / "reports" / "day_research.json").write_text(json.dumps(
+    REPORT.with_suffix(".json").write_text(json.dumps(
         {"sessions": len(lab), "span": span, "orb_trades": int(len(orb)), "retest_trades": int(len(rb)),
          "adopted": list(adopted), "resim_match": match}, indent=1, default=str))
     print(out[:4000])
