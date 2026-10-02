@@ -1,5 +1,6 @@
-**Live check — 2026-09-30 15:56 ET** · 3 min to the close
+**Live check — 2026-10-02 15:57 ET** · 2 min to the close
 
-⚪ above level, volume light — **CRWD** `$264.93` vs level `$263.85` (+0.4%) · volume 72% of what it needs
+⚪ right at the level — **CRWD** `$269.54` vs level `$269.20` (+0.1%) · volume 57% of what it needs
+⚪ right at the level — **SMCI** `$43.63` vs level `$43.76` (-0.3%) · volume 96% of what it needs
 
 ⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
