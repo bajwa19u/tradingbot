@@ -1,9 +1,47 @@
-2026-10-01 21:20:42,319 INFO Fetching 12 symbols, 5-min bars from 2026-08-02
-2026-10-01 21:20:42,577 ERROR Fetch failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
-<head><title>401 Authorization Required</title></head>
-<body>
-<center><h1>401 Authorization Required</h1></center>
-<hr><center>nginx</center>
-</body>
-</html>
+2026-10-02 21:20:23,366 INFO Fetching 12 symbols, 5-min bars from 2026-08-03
+🔁 **REPLAY — 2026-10-02 · 12 symbols** · 5 setups
+_What the rule would have sent today, at the times it would have sent them. The session is closed - none of this is actionable now._
 
+🔻 **SHORT AVGO** — 13:10 ET
+Broke `$354.04` at 13:05, retested it, entered `$353.19`
+Stop `$354.88` · target `$349.79` · 11 shares
+→ **LOST -1.00%** ($-18.69)
+
+🔻 **SHORT PLTR** — 14:05 ET
+Broke `$189.63` at 13:20, retested it, entered `$189.40`
+Stop `$190.09` · target `$188.02` · 29 shares
+→ **UNFINISHED +0.87%** ($+17.40)  _(still open at the bell, closed at the last price)_
+
+🔻 **SHORT MU** — 14:25 ET
+Broke `$1,076.04` at 14:20, retested it, entered `$1,074.87`
+Stop `$1,078.59` · target `$1,067.44` · 5 shares
+→ **UNFINISHED +0.04%** ($+0.74)  _(still open at the bell, closed at the last price)_
+
+🔻 **SHORT NVDA** — 15:25 ET
+Broke `$233.98` at 15:20, retested it, entered `$233.75`
+Stop `$234.30` · target `$232.64` · 36 shares
+→ **LOST -1.00%** ($-19.91)
+
+🔻 **SHORT PLTR** — 15:35 ET
+Broke `$189.25` at 15:25, retested it, entered `$189.23`
+Stop `$189.51` · target `$188.67` · 71 shares
+→ **WON +2.00%** ($+39.84)
+
+**Today: 1 won, 2 lost · 33% win rate · +0.91% ($+19.38)** · 2 still open at the bell
+
+---
+
+**Last 4 days — core**
+
+| Day | Trades | Won | Lost | Win % | Profit |
+|---|---|---|---|---|---|
+| 09-28 | 13 | 4 | 3 | 57.1% | **+7.43%** |
+| 09-29 | 16 | 7 | 7 | 50.0% | **+7.55%** |
+| 09-30 | 9 | 6 | 3 | 66.7% | **+9.00%** |
+| 10-02 | 5 | 1 | 2 | 33.3% | **+0.91%** |
+
+**Running total: 43 trades · 18 won, 25 lost · 41.9% win rate · +24.89% ($+482.78)**
+_4 of 4 days green._
+_43 trades so far. The backtest needed about fifty before the numbers stopped moving around._
+_Paper only. No orders were placed._
+2026-10-02 21:20:28,449 INFO Replay sent: 5 signal(s)

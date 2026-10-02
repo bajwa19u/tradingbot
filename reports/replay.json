@@ -1,33 +1,17 @@
 {
-  "date": "2026-09-30",
+  "date": "2026-10-02",
   "signals": [
     {
-      "symbol": "AAPL",
+      "symbol": "AVGO",
       "side": "short",
-      "break_time": "12:10",
-      "entry_time": "12:15",
-      "level": 336.93,
-      "entry": 336.71,
-      "stop": 337.8,
-      "target": 334.55,
-      "shares": 18,
-      "risk": 19.45,
-      "outcome": {
-        "won": 1,
-        "r": 2.0
-      }
-    },
-    {
-      "symbol": "AMD",
-      "side": "short",
-      "break_time": "12:30",
-      "entry_time": "12:35",
-      "level": 601.42,
-      "entry": 601.39,
-      "stop": 603.01,
-      "target": 598.16,
-      "shares": 12,
-      "risk": 19.44,
+      "break_time": "13:05",
+      "entry_time": "13:10",
+      "level": 354.04,
+      "entry": 353.19,
+      "stop": 354.88,
+      "target": 349.79,
+      "shares": 11,
+      "risk": 18.69,
       "outcome": {
         "won": 0,
         "r": -1.0
@@ -36,113 +20,67 @@
     {
       "symbol": "PLTR",
       "side": "short",
-      "break_time": "12:45",
-      "entry_time": "12:50",
-      "level": 189.47,
-      "entry": 189.26,
-      "stop": 189.93,
-      "target": 187.92,
-      "shares": 29,
-      "risk": 19.39,
-      "outcome": {
-        "won": 1,
-        "r": 2.0
-      }
-    },
-    {
-      "symbol": "MU",
-      "side": "short",
-      "break_time": "13:10",
-      "entry_time": "13:15",
-      "level": 1070.59,
-      "entry": 1070.18,
-      "stop": 1073.05,
-      "target": 1064.44,
-      "shares": 6,
-      "risk": 17.22,
-      "outcome": {
-        "won": 1,
-        "r": 2.0
-      }
-    },
-    {
-      "symbol": "META",
-      "side": "short",
-      "break_time": "13:15",
-      "entry_time": "13:20",
-      "level": 735.12,
-      "entry": 734.64,
-      "stop": 736.82,
-      "target": 730.27,
-      "shares": 9,
-      "risk": 19.65,
-      "outcome": {
-        "won": 1,
-        "r": 2.0
-      }
-    },
-    {
-      "symbol": "MU",
-      "side": "short",
       "break_time": "13:20",
-      "entry_time": "13:25",
-      "level": 1069.45,
-      "entry": 1069.23,
-      "stop": 1071.74,
-      "target": 1064.23,
-      "shares": 7,
-      "risk": 17.53,
+      "entry_time": "14:05",
+      "level": 189.63,
+      "entry": 189.4,
+      "stop": 190.09,
+      "target": 188.02,
+      "shares": 29,
+      "risk": 20.0,
       "outcome": {
         "won": 1,
-        "r": 2.0
-      }
-    },
-    {
-      "symbol": "MSFT",
-      "side": "short",
-      "break_time": "13:15",
-      "entry_time": "13:30",
-      "level": 517.27,
-      "entry": 517.19,
-      "stop": 518.18,
-      "target": 515.2,
-      "shares": 20,
-      "risk": 19.87,
-      "outcome": {
-        "won": 0,
-        "r": -1.0
-      }
-    },
-    {
-      "symbol": "META",
-      "side": "short",
-      "break_time": "13:25",
-      "entry_time": "13:30",
-      "level": 733.99,
-      "entry": 733.24,
-      "stop": 735.65,
-      "target": 728.41,
-      "shares": 8,
-      "risk": 19.3,
-      "outcome": {
-        "won": 1,
-        "r": 2.0
+        "r": 0.87,
+        "unfinished": true
       }
     },
     {
       "symbol": "MU",
       "side": "short",
-      "break_time": "13:35",
-      "entry_time": "13:40",
-      "level": 1068.33,
-      "entry": 1067.21,
-      "stop": 1070.41,
-      "target": 1060.81,
-      "shares": 6,
-      "risk": 19.2,
+      "break_time": "14:20",
+      "entry_time": "14:25",
+      "level": 1076.04,
+      "entry": 1074.87,
+      "stop": 1078.59,
+      "target": 1067.44,
+      "shares": 5,
+      "risk": 18.58,
+      "outcome": {
+        "won": 1,
+        "r": 0.04,
+        "unfinished": true
+      }
+    },
+    {
+      "symbol": "NVDA",
+      "side": "short",
+      "break_time": "15:20",
+      "entry_time": "15:25",
+      "level": 233.98,
+      "entry": 233.75,
+      "stop": 234.3,
+      "target": 232.64,
+      "shares": 36,
+      "risk": 19.91,
       "outcome": {
         "won": 0,
         "r": -1.0
+      }
+    },
+    {
+      "symbol": "PLTR",
+      "side": "short",
+      "break_time": "15:25",
+      "entry_time": "15:35",
+      "level": 189.25,
+      "entry": 189.23,
+      "stop": 189.51,
+      "target": 188.67,
+      "shares": 71,
+      "risk": 19.92,
+      "outcome": {
+        "won": 1,
+        "r": 2.0
       }
     }
   ]

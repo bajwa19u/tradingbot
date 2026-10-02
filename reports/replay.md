@@ -1,64 +1,45 @@
-🔁 **REPLAY — 2026-09-30 · 12 symbols** · 9 setups
+🔁 **REPLAY — 2026-10-02 · 12 symbols** · 5 setups
 _What the rule would have sent today, at the times it would have sent them. The session is closed - none of this is actionable now._
 
-🔻 **SHORT AAPL** — 12:15 ET
-Broke `$336.93` at 12:10, retested it, entered `$336.71`
-Stop `$337.80` · target `$334.55` · 18 shares
-→ **WON +2.00%** ($+38.90)
+🔻 **SHORT AVGO** — 13:10 ET
+Broke `$354.04` at 13:05, retested it, entered `$353.19`
+Stop `$354.88` · target `$349.79` · 11 shares
+→ **LOST -1.00%** ($-18.69)
 
-🔻 **SHORT AMD** — 12:35 ET
-Broke `$601.42` at 12:30, retested it, entered `$601.39`
-Stop `$603.01` · target `$598.16` · 12 shares
-→ **LOST -1.00%** ($-19.44)
+🔻 **SHORT PLTR** — 14:05 ET
+Broke `$189.63` at 13:20, retested it, entered `$189.40`
+Stop `$190.09` · target `$188.02` · 29 shares
+→ **UNFINISHED +0.87%** ($+17.40)  _(still open at the bell, closed at the last price)_
 
-🔻 **SHORT PLTR** — 12:50 ET
-Broke `$189.47` at 12:45, retested it, entered `$189.26`
-Stop `$189.93` · target `$187.92` · 29 shares
-→ **WON +2.00%** ($+38.78)
+🔻 **SHORT MU** — 14:25 ET
+Broke `$1,076.04` at 14:20, retested it, entered `$1,074.87`
+Stop `$1,078.59` · target `$1,067.44` · 5 shares
+→ **UNFINISHED +0.04%** ($+0.74)  _(still open at the bell, closed at the last price)_
 
-🔻 **SHORT MU** — 13:15 ET
-Broke `$1,070.59` at 13:10, retested it, entered `$1,070.18`
-Stop `$1,073.05` · target `$1,064.44` · 6 shares
-→ **WON +2.00%** ($+34.44)
+🔻 **SHORT NVDA** — 15:25 ET
+Broke `$233.98` at 15:20, retested it, entered `$233.75`
+Stop `$234.30` · target `$232.64` · 36 shares
+→ **LOST -1.00%** ($-19.91)
 
-🔻 **SHORT META** — 13:20 ET
-Broke `$735.12` at 13:15, retested it, entered `$734.64`
-Stop `$736.82` · target `$730.27` · 9 shares
-→ **WON +2.00%** ($+39.30)
+🔻 **SHORT PLTR** — 15:35 ET
+Broke `$189.25` at 15:25, retested it, entered `$189.23`
+Stop `$189.51` · target `$188.67` · 71 shares
+→ **WON +2.00%** ($+39.84)
 
-🔻 **SHORT MU** — 13:25 ET
-Broke `$1,069.45` at 13:20, retested it, entered `$1,069.23`
-Stop `$1,071.74` · target `$1,064.23` · 7 shares
-→ **WON +2.00%** ($+35.06)
-
-🔻 **SHORT MSFT** — 13:30 ET
-Broke `$517.27` at 13:15, retested it, entered `$517.19`
-Stop `$518.18` · target `$515.20` · 20 shares
-→ **LOST -1.00%** ($-19.87)
-
-🔻 **SHORT META** — 13:30 ET
-Broke `$733.99` at 13:25, retested it, entered `$733.24`
-Stop `$735.65` · target `$728.41` · 8 shares
-→ **WON +2.00%** ($+38.60)
-
-🔻 **SHORT MU** — 13:40 ET
-Broke `$1,068.33` at 13:35, retested it, entered `$1,067.21`
-Stop `$1,070.41` · target `$1,060.81` · 6 shares
-→ **LOST -1.00%** ($-19.20)
-
-**Today: 6 won, 3 lost · 67% win rate · +9.00% ($+166.57)**
+**Today: 1 won, 2 lost · 33% win rate · +0.91% ($+19.38)** · 2 still open at the bell
 
 ---
 
-**Last 3 days — core**
+**Last 4 days — core**
 
 | Day | Trades | Won | Lost | Win % | Profit |
 |---|---|---|---|---|---|
 | 09-28 | 13 | 4 | 3 | 57.1% | **+7.43%** |
 | 09-29 | 16 | 7 | 7 | 50.0% | **+7.55%** |
 | 09-30 | 9 | 6 | 3 | 66.7% | **+9.00%** |
+| 10-02 | 5 | 1 | 2 | 33.3% | **+0.91%** |
 
-**Running total: 38 trades · 17 won, 21 lost · 44.7% win rate · +23.98% ($+463.40)**
-_3 of 3 days green._
-_38 trades so far. The backtest needed about fifty before the numbers stopped moving around._
+**Running total: 43 trades · 18 won, 25 lost · 41.9% win rate · +24.89% ($+482.78)**
+_4 of 4 days green._
+_43 trades so far. The backtest needed about fifty before the numbers stopped moving around._
 _Paper only. No orders were placed._
