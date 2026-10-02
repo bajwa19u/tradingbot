@@ -1,0 +1,37 @@
+{
+ "sessions": 252,
+ "candidate": "P(universe='top10', window_end=30, orw=(0.35, 9000000000.0), market='none', disp=0.0, bvol=0.0, sides='both', ext=9000000000.0, stop='D', target=2.0, manage='fixed', cluster_max=99, slip=0.0005, delay=0)",
+ "decisions": [
+  "Universe: stocks in play vs the static 10: **top 10 by opening relative volume** (validation expectancy -0.166R -> -0.043R)",
+  "OR width / daily ATR: **0.35-9e+09** (validation expectancy -0.043R -> +0.030R)",
+  "Market / VWAP confirmation: no change",
+  "Breakout displacement (close past the level / OR width): no change",
+  "Breakout-minute relative volume (vs that minute's 14-day average): no change",
+  "Direction: no change",
+  "Extension (|close - VWAP| / daily ATR): no change",
+  "Entry window: no change",
+  "Stop (live: D, session extreme): no change",
+  "Target: no change",
+  "Trade management: no change",
+  "Correlated signals (max same-side signals in 10 min): no change"
+ ],
+ "test": {
+  "n": 218,
+  "win": 54.58715596330275,
+  "avg_w": 0.7402692816100684,
+  "avg_l": -0.5731438446238896,
+  "avg": 0.1438110270359315,
+  "total": 31.350803893833067,
+  "pf": 1.552522355036726,
+  "dd": 5.274831257304779,
+  "sharpe": 7.107894017968171,
+  "sortino": 16.043506764535852,
+  "hold": 322.8211009174312,
+  "hold_med": 375.0,
+  "no_top2": 0.1267754601974509
+ },
+ "test_ci": [
+  0.03531490750488221,
+  0.25894627080206517
+ ]
+}
