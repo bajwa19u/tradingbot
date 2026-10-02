@@ -1,1 +1,8 @@
-2026-10-02 13:24:22,020 INFO Outside market hours (09:24 ET) - nothing to do
+2026-10-02 13:51:15,484 ERROR Data fetch failed: 401 from https://data.alpaca.markets/v2/stocks/bars: <html>
+<head><title>401 Authorization Required</title></head>
+<body>
+<center><h1>401 Authorization Required</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
