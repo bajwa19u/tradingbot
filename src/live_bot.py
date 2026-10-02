@@ -167,11 +167,83 @@ def simulate_day(day: pd.DataFrame, sym: str, p: dict, cfg: dict) -> list[dict]:
     return out
 
 
+# --- latency ------------------------------------------------------------------
+# A signal is only worth posting while its setup is still there. The bot used
+# to sleep a fixed 45-60 s between polls and re-download five days of bars
+# each time; on 1 October all ten opening signals reached Discord together at
+# 10:13, 13-43 minutes after their bars closed. Now: poll a few seconds after
+# each minute closes, fetch only what changed, stamp every signal with its age,
+# and mark anything older than its setup allows as EXPIRED instead of posting
+# it as a fresh entry.
+BAR_LAG_S = 4                                  # IEX publishes a minute bar ~1-3 s after it closes
+BAR_MIN = {"opening": 1, "retest": 5}          # bar length each rule enters on
+MAX_AGE_S = {"opening": 120, "retest": 360}    # older than this at first sight = expired
+STALE_AFTER_S = 180                            # newest 1-minute bar older than this = stale data
+LATENCY_FILE = "latency.jsonl"
+_TIMES: dict = {}                              # per-tick stage timings, seconds
+_LAST_1M: dict = {}                            # newest 1-minute bar seen this tick
+_PRIOR: dict = {}                              # yesterday's minute bars, fetched once a day
+
+
+def seconds_to_next_poll(now: pd.Timestamp, every: int) -> float:
+    """Sleep until just after the next bar boundary, not a fixed interval, so
+    a closed bar is seen within seconds instead of up to `every` later."""
+    period = 60 if every <= 60 else int(every)
+    nxt = now.floor(f"{period}s") + pd.Timedelta(seconds=period + BAR_LAG_S)
+    return max(1.0, (nxt - now).total_seconds())
+
+
+def signal_age(t: dict, now: pd.Timestamp) -> float | None:
+    """Seconds between the close of the bar a signal entered on and `now`."""
+    try:
+        hh, mm = int(t["entry_time"][:2]), int(t["entry_time"][3:5])
+    except (KeyError, ValueError, TypeError):
+        return None
+    start = now.normalize() + pd.Timedelta(hours=hh, minutes=mm)
+    return (now - (start + pd.Timedelta(minutes=BAR_MIN.get(t.get("rule"), 5)))).total_seconds()
+
+
+def stale_since(now: pd.Timestamp) -> pd.Timestamp | None:
+    """The newest bar's time if market data has gone stale during the session."""
+    if not (pd.Timestamp("09:33").time() <= now.time() < pd.Timestamp("16:00").time()):
+        return None
+    last = _LAST_1M.get("ts")
+    if last is None:
+        return None                      # no bars at all: a failed fetch, already logged as an error
+    return last if (now - last).total_seconds() > STALE_AFTER_S else None
+
+
+def _minute_bars(md: MarketData, now: pd.Timestamp) -> dict[str, pd.DataFrame]:
+    """Yesterday's minute bars once a day; after that only today's."""
+    today = now.date()
+    t0 = _time.perf_counter()
+    if _PRIOR.get("date") != today:
+        start = (now - pd.Timedelta(days=6)).date().isoformat()
+        full = md.intraday_bars(WATCHLIST, 1, start=start, extended=True)
+        _PRIOR.update(date=today, data={s: df[df.index.tz_convert(EASTERN).date < today]
+                                        for s, df in full.items()})
+        out = full
+    else:
+        fresh = md.intraday_bars(WATCHLIST, 1, start=today.isoformat(), extended=True)
+        out = {}
+        for s in set(_PRIOR["data"]) | set(fresh):
+            parts = [x for x in (_PRIOR["data"].get(s), fresh.get(s)) if x is not None and len(x)]
+            if not parts:
+                out[s] = fresh.get(s, pd.DataFrame())
+                continue
+            df = pd.concat(parts)
+            out[s] = df[~df.index.duplicated(keep="last")].sort_index()
+    _TIMES["fetch_1m"] = round(_time.perf_counter() - t0, 3)
+    return out
+
+
 def scan(cfg: dict) -> tuple[list[dict], str, bool]:
     md = MarketData(Credentials.from_env(), feed="iex")
     now = pd.Timestamp.now(tz=EASTERN)
-    start = (now - pd.Timedelta(days=5)).date().isoformat()
-    data = md.intraday_bars(WATCHLIST, LIVE.get("minutes", 5) or 5, start=start)
+    t0 = _time.perf_counter()
+    # Only today's bars: everything before today is dropped below anyway.
+    data = md.intraday_bars(WATCHLIST, LIVE.get("minutes", 5) or 5, start=now.date().isoformat())
+    _TIMES["fetch_5m"] = round(_time.perf_counter() - t0, 3)
     p = {**SCAN, "minutes": 5}
     today = now.date()
     trades, last_bar = [], None
@@ -208,9 +280,11 @@ def opening_scan(cfg: dict, now: pd.Timestamp) -> list[dict]:
     if not OPENING["enabled"]:
         return []
     md = MarketData(Credentials.from_env(), feed="iex")
-    start = (now - pd.Timedelta(days=6)).date().isoformat()
-    data = md.intraday_bars(WATCHLIST, 1, start=start, extended=True)
+    data = _minute_bars(md, now)
     today = now.date()
+    newest = [df.index[-1].tz_convert(EASTERN) for df in data.values() if len(df)]
+    if newest:
+        _LAST_1M["ts"] = max(newest)
     out = []
     for sym, df in data.items():
         if df.empty:
@@ -284,8 +358,14 @@ def card(t: dict) -> str:
     # that prints it reads like an instruction to buy that many.
     if t.get("exit") is None:
         why = conf.note(t)
-        return (f"{'🔴' if short else '🟢'} **{side}**  ·  {t['entry_time']} ET\n"
-                f"{levels}\n"
+        age = t.get("age_s")
+        if t.get("expired"):
+            late = f"{age / 60:.0f} min" if age and age >= 90 else f"{age:.0f}s" if age else "too"
+            head = f"⚪ **EXPIRED · {side}**  ·  {t['entry_time']} ET  ·  seen {late} late, do not chase\n"
+        else:
+            head = (f"{'🔴' if short else '🟢'} **{side}**  ·  {t['entry_time']} ET"
+                    + (f"  ·  ⏱ {age:.0f}s" if age is not None else "") + "\n")
+        return (head + f"{levels}\n"
                 + (f"{why}\n" if why else "")
                 + f"_{setup}_")
 
@@ -390,7 +470,7 @@ def load_seen(date: str) -> dict:
     # written before this existed simply has no cards, and every close in it
     # falls back to its own message.
     blank = {"date": date, "entries": [], "exits": [], "summary": False,
-             "cards": {}}
+             "cards": {}, "expired": [], "stale_warned": ""}
     f = STATE / SEEN_FILE
     if not f.exists():
         return blank
@@ -436,21 +516,42 @@ def all_trades(cfg: dict, now: pd.Timestamp) -> tuple[list[dict], str, bool]:
 def tick(cfg: dict, dry_run: bool) -> int:
     """One pass: recompute the day, announce whatever is new. Returns the
     number of messages sent."""
+    t0 = _time.perf_counter()
     now = pd.Timestamp.now(tz=EASTERN)
+    _TIMES.clear()
+    _LAST_1M.clear()
     trades, stamp, day_done = all_trades(cfg, now)
+    _TIMES["scan"] = round(_time.perf_counter() - t0, 3)
+    detected = pd.Timestamp.now(tz=EASTERN)
 
     date = str(now.date())
     seen = load_seen(date)
+    stale = stale_since(detected)
     # (text, trade id, is_close) — held until after the dry-run check so a
     # dry run never touches Discord and never records anything as announced.
     outbox: list[tuple[str, str, bool]] = []
     for t in trades:
+        if t["id"] in seen["expired"]:
+            t["expired"] = True            # the auto-trader must not chase it either
         if not t.get("post", True):
             continue
         if t["id"] not in seen["entries"]:
+            if stale is not None:
+                continue                   # never announce on stale data
+            t["age_s"] = signal_age(t, detected)
+            if t["age_s"] is not None and t["age_s"] > MAX_AGE_S.get(t.get("rule"), 360):
+                t["expired"] = True
+                seen["expired"].append(t["id"])
             outbox.append((card({**t, "exit": None}), t["id"], False))
         if t["exit"] is not None and t["id"] not in seen["exits"]:
             outbox.append((card(t), t["id"], True))
+    if stale is not None:
+        last_warn = seen.get("stale_warned") or ""
+        if not last_warn or (detected - pd.Timestamp(last_warn)).total_seconds() > 1800:
+            outbox.append((f"⚠️ **DATA WARNING** · newest market data {stale.strftime('%H:%M')} ET · "
+                           f"new signals suppressed until data is fresh", "", False))
+            seen["stale_warned"] = str(detected)
+        log.warning("Stale data: newest bar %s", stale)
     if day_done and not seen["summary"]:
         outbox.append((summary_msg(trades, now.strftime("%A %d %B")), "", False))
         seen["summary"] = True
@@ -460,9 +561,13 @@ def tick(cfg: dict, dry_run: bool) -> int:
     for text, _, _ in outbox:
         print("\n" + text)
     if dry_run:
+        _TIMES["total"] = round(_time.perf_counter() - t0, 3)
         return len(outbox)
 
     hook = Credentials.from_env().discord_webhook
+    t_send = _time.perf_counter()
+    lat_rows = []
+    by_id = {t["id"]: t for t in trades}
     for text, tid, is_close in outbox:
         if is_close:
             # Edit the card this trade already has. A missing or un-editable
@@ -476,9 +581,17 @@ def tick(cfg: dict, dry_run: bool) -> int:
             mid = dm.post(hook, text)
             if not tid:                     # the daily recap, not a trade
                 continue
+            t = by_id.get(tid, {})
+            posted = pd.Timestamp.now(tz=EASTERN)
+            lat_rows.append({"id": tid, "rule": t.get("rule"), "entry_bar": t.get("entry_time"),
+                             "detected_age_s": t.get("age_s"),
+                             "posted_age_s": signal_age(t, posted) if t else None,
+                             "expired": bool(t.get("expired")), "posted_at": str(posted)})
             if mid:
                 seen["cards"][tid] = mid
             seen["entries"].append(tid)
+
+    _TIMES["discord"] = round(_time.perf_counter() - t_send, 3)
 
     # The paper account follows the feed. It runs every tick, not only when
     # there is news, because the pre-bell sell has no message of its own. A
@@ -491,6 +604,14 @@ def tick(cfg: dict, dry_run: bool) -> int:
         log.exception("Paper trading failed: %s", exc)
 
     STATE.mkdir(exist_ok=True); REPORTS.mkdir(exist_ok=True)
+    _TIMES["total"] = round(_time.perf_counter() - t0, 3)
+    log.info("timings %s", _TIMES)
+    # Latency audit trail: one line per signal posted, plus one per tick.
+    with open(STATE / LATENCY_FILE, "a") as f:
+        for r in lat_rows:
+            f.write(json.dumps({"kind": "signal", **r}) + "\n")
+        f.write(json.dumps({"kind": "tick", "at": str(detected), "newest_bar": str(_LAST_1M.get("ts")),
+                            "stale": stale is not None, "new_messages": len(outbox), **_TIMES}) + "\n")
     # Only touch the record when this run actually announced something.
     # A run that did nothing must leave the file completely alone, mtime
     # included: on 30 September a run that exited with "nothing to do"
@@ -502,6 +623,26 @@ def tick(cfg: dict, dry_run: bool) -> int:
         summary_msg(trades, date) + "\n\n" +
         "\n\n".join(card(t) for t in trades))
     return len(outbox)
+
+
+def bench(cfg: dict, n: int) -> int:
+    """Stage timings over n dry-run ticks: the first is a cold start (fetches
+    yesterday too), the rest are warm. Nothing is posted or traded."""
+    rows = []
+    for _ in range(n):
+        tick(cfg, dry_run=True)
+        rows.append(dict(_TIMES))
+    df = pd.DataFrame(rows)
+    lines = ["# Live bot latency benchmark", "", f"{n} dry-run ticks · {pd.Timestamp.now(tz=EASTERN):%Y-%m-%d %H:%M} ET", "",
+             "| stage | cold start s | warm median s | warm p95 s | warm max s |", "|---|---|---|---|---|"]
+    warm = df.iloc[1:] if len(df) > 1 else df
+    for c in df.columns:
+        lines.append(f"| {c} | {df[c].iloc[0]:.2f} | {warm[c].median():.2f} | {warm[c].quantile(.95):.2f} | {warm[c].max():.2f} |")
+    out = "\n".join(lines)
+    print(out)
+    REPORTS.mkdir(exist_ok=True)
+    (REPORTS / "latency.md").write_text(out + "\n")
+    return 0
 
 
 def main(argv=None) -> int:
@@ -516,7 +657,11 @@ def main(argv=None) -> int:
     ap.add_argument("--for", dest="minutes", type=int, default=0,
                     help="stop polling after this many minutes, even before "
                          "--until; GitHub kills a job at six hours")
+    ap.add_argument("--bench", type=int, default=0,
+                    help="run N dry-run ticks back to back and report stage timings")
     args = ap.parse_args(argv)
+    if args.bench:
+        return bench(settings(), args.bench)
 
     now = pd.Timestamp.now(tz=EASTERN)
     first = BELL if OPENING["enabled"] else OPEN_T
@@ -559,7 +704,7 @@ def main(argv=None) -> int:
                 log.exception("Tick failed, continuing: %s", exc)
         else:
             log.info("%s ET — waiting for %s", now.strftime("%H:%M:%S"), first)
-        _time.sleep(max(5, args.every))
+        _time.sleep(seconds_to_next_poll(pd.Timestamp.now(tz=EASTERN), args.every))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,22 @@
+name: Latency benchmark
+# Manual: time each stage of the live bot over several dry-run ticks
+# (cold start + warm). Nothing is posted to Discord and nothing is traded.
+on:
+  workflow_dispatch:
+    inputs:
+      ticks: { description: "dry-run ticks", default: "8" }
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - run: python -m src.live_bot --bench "${{ inputs.ticks }}"
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          ALPACA_PAPER_KEY: ${{ secrets.ALPACA_PAPER_KEY }}
+          ALPACA_PAPER_SECRET: ${{ secrets.ALPACA_PAPER_SECRET }}

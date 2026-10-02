@@ -178,6 +178,8 @@ def run(trades: list[dict], now: pd.Timestamp, p: bk.Paper) -> list[str]:
 
         if oid in opens:
             continue
+        if t.get("expired"):          # the feed marked it too old to act on
+            continue
         if t_now > _minutes(LAST_ENTRY):
             continue
         age = t_now - _minutes(t["entry_time"])

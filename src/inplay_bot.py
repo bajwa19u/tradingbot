@@ -45,6 +45,7 @@ from zoneinfo import ZoneInfo
 
 import pandas as pd
 
+from .live_bot import seconds_to_next_poll
 from . import discord_msg as dm
 from . import inplay as ip
 from . import opening as op
@@ -255,7 +256,8 @@ def main(argv=None) -> int:
                 log.exception("Tick failed, continuing: %s", exc)
         else:
             log.info("%s ET — waiting for %s", now.strftime("%H:%M:%S"), BELL)
-        _time.sleep(max(5, args.every))
+        # wake just after the next bar closes instead of a fixed interval
+        _time.sleep(seconds_to_next_poll(pd.Timestamp.now(tz=EASTERN), args.every))
 
 
 if __name__ == "__main__":
