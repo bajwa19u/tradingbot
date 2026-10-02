@@ -189,7 +189,7 @@ def stop_for(x: Day, k: int, side: int, kind: str, level: float) -> float:
     return (x.l[:k + 1].min() - 0.02 * a) if side > 0 else (x.h[:k + 1].max() + 0.02 * a)
 
 
-def exit_r(x: Day, k: int, side: int, entry: float, stop: float, p: P) -> tuple[float, int]:
+def exit_r(x: Day, k: int, side: int, entry: float, stop: float, p: P) -> tuple[float, int, str]:
     rps = abs(entry - stop)
     fill = lambda px: px * (1 - side * p.slip)
     r_of = lambda px: side * (fill(px) - entry) / rps
@@ -197,19 +197,19 @@ def exit_r(x: Day, k: int, side: int, entry: float, stop: float, p: P) -> tuple[
     cur, best, banked, w = stop, entry, 0.0, 1.0
     for j in range(k + 1, N_MIN):
         if (x.l[j] <= cur) if side > 0 else (x.h[j] >= cur):
-            return banked + w * r_of(min(x.o[j], cur) if side > 0 else max(x.o[j], cur)), j
+            return banked + w * r_of(min(x.o[j], cur) if side > 0 else max(x.o[j], cur)), j, "stop"
         if p.manage == "partial" and w == 1.0 and ((x.h[j] >= entry + rps) if side > 0 else (x.l[j] <= entry - rps)):
             banked, w, cur, tgt = 0.5 * r_of(entry + side * rps), 0.5, entry, entry + side * 3 * rps
         if p.manage in ("fixed", "partial") and ((x.h[j] >= tgt) if side > 0 else (x.l[j] <= tgt)):
-            return banked + w * r_of(tgt), j
+            return banked + w * r_of(tgt), j, "target"
         if j >= FLAT_IDX:
-            return banked + w * r_of(x.c[j]), j
+            return banked + w * r_of(x.c[j]), j, "bell"
         if p.manage in ("trail", "ctrail"):
             best = max(best, x.h[j] if p.manage == "trail" else x.c[j]) if side > 0 else \
                 min(best, x.l[j] if p.manage == "trail" else x.c[j])
             if side * (best - entry) >= rps:
                 cur = max(cur, best - rps) if side > 0 else min(cur, best + rps)
-    return banked + w * r_of(x.c[-1]), N_MIN - 1
+    return banked + w * r_of(x.c[-1]), N_MIN - 1, "bell"
 
 
 def trades(D: dict, dates: list, lab: dict, p: P) -> pd.DataFrame:
@@ -256,10 +256,11 @@ def trades(D: dict, dates: list, lab: dict, p: P) -> pd.DataFrame:
                 rps = abs(entry - stop)
                 if side * (entry - stop) <= 0 or rps / entry > 0.10:
                     break
-                r, j = exit_r(x, kk, side, entry, stop, p)
+                r, j, why = exit_r(x, kk, side, entry, stop, p)
                 day_rows.append(dict(
                     sym=s, date=d, period=lab[d], side="long" if side > 0 else "short", k=k, R=float(r),
-                    hold=j - kk, rvol5=x.rvol5, orw=ratio, disp=disp, bvol=bv, ext=ext, gap=x.gap,
+                    hold=j - kk, why=why, pct=float(r) * rps / entry * 100, risk_pct=rps / entry * 100,
+                    rvol5=x.rvol5, orw=ratio, disp=disp, bvol=bv, ext=ext, gap=x.gap,
                     vwap_ok=vw_ok, spy_ok=bool(sa[k]) == (side > 0), qqq_ok=bool(qa[k]) == (side > 0),
                     spy_above=bool(sa[k]), spy_orw=spy[d].or_w / spy[d].atr if spy[d].atr else np.nan))
                 break                                           # one trade per stock per day
@@ -356,6 +357,87 @@ def buckets(df: pd.DataFrame, col: str, edges: list, title: str) -> list[str]:
     return L + [""]
 
 
+def _row(name: str, df: pd.DataFrame) -> str:
+    s = stats(df)
+    if s["n"] == 0:
+        return f"| {name} | 0 | | | | |"
+    return (f"| {name} | {s['n']} | {s['win']:.0f}% | {df.pct.mean():+.3f}% | {s['avg']:+.3f} | {s['pf']:.2f} |")
+
+
+def diagnose(run, cur: P, t0: pd.DataFrame, tf: pd.DataFrame, tried: int) -> list[str]:
+    """Is the candidate real or a lucky stretch? Run after the test was seen,
+    so nothing here may be used to pick rules - it is for judging them."""
+    H = "| {} | trades | win % | avg % per trade (price) | expectancy R | PF |\n|---|---|---|---|---|---|"
+    L = ["## 8. Source of the result (diagnostics, run after the test; not used to choose rules)", ""]
+
+    se = math.sqrt(2 * math.log(max(tried, 2)))
+    L += [f"Variants tried in the staged search: {tried}. Noise floor sqrt(2 ln N) = {se:.2f} standard errors.", ""]
+    for nm, df in (("candidate", tf),):
+        for k in ("train", "val", "test"):
+            r = df[df.period == k].R
+            if len(r) > 2:
+                t = r.mean() / (r.std() / math.sqrt(len(r)))
+                L.append(f"- {nm} {k}: t = {t:+.2f} ({'above' if t > se else 'below'} the noise floor)")
+    L += [""]
+
+    L += ["### Month by month (all periods)", "", H.format("month / version")]
+    for m in sorted(set(pd.to_datetime(tf.date).dt.to_period("M")) | set(pd.to_datetime(t0.date).dt.to_period("M"))):
+        for nm, df in (("static 10", t0), ("candidate", tf)):
+            g = df[pd.to_datetime(df.date).dt.to_period("M") == m]
+            L.append(_row(f"{m} {nm}", g))
+    L += [""]
+
+    L += ["### How trades end", "", "| version | period | stop % | target % | bell % | avg R at stop | avg R at target | avg R at bell |", "|---|---|---|---|---|---|---|---|"]
+    for nm, df in (("static 10", t0), ("candidate", tf)):
+        for k in ("train", "val", "test"):
+            g = df[df.period == k]
+            if not len(g):
+                continue
+            sh = g.why.value_counts(normalize=True) * 100
+            av = g.groupby("why").R.mean()
+            L.append(f"| {nm} | {k} | {sh.get('stop', 0):.0f} | {sh.get('target', 0):.0f} | {sh.get('bell', 0):.0f} | "
+                     f"{av.get('stop', float('nan')):+.2f} | {av.get('target', float('nan')):+.2f} | {av.get('bell', float('nan')):+.2f} |")
+    L += [""]
+
+    # Is the OR-width gain a real effect, or only cheaper costs? A wide range means a
+    # wide stop, so the same 0.05% slippage is a smaller slice of 1R.
+    L += ["### OR width: real effect or just smaller costs in R?", "",
+          "Top 10 by opening volume, no width filter, all periods.", "",
+          "| OR width / ATR | trades | median stop distance % | gross R (no slippage) | net R | win % gross |", "|---|---|---|---|---|---|"]
+    base_u = replace(cur, orw=(0.0, 9e9))
+    net, gross = run(base_u), run(replace(base_u, slip=0.0))
+    for lo, hi in ((0, 0.2), (0.2, 0.35), (0.35, 0.5), (0.5, 0.75), (0.75, 9e9)):
+        n_ = net[(net.orw >= lo) & (net.orw < hi)]
+        g_ = gross[(gross.orw >= lo) & (gross.orw < hi)]
+        if len(n_):
+            L.append(f"| {lo:g}-{hi:g} | {len(n_)} | {n_.risk_pct.median():.2f}% | {g_.R.mean():+.3f} | {n_.R.mean():+.3f} | {100 * (g_.R > 0).mean():.0f}% |")
+    L += [""]
+
+    L += ["### Neighbours of the chosen settings (plateau check, every period)", "",
+          "| universe | min OR width / ATR | train avg R | val avg R | test avg R | test trades |", "|---|---|---|---|---|---|"]
+    for u in ("top5", "top10", "top20"):
+        for lo in (0.25, 0.30, 0.35, 0.40, 0.50):
+            st = per(run(replace(cur, universe=u, orw=(lo, 9e9))))
+            L.append(f"| {u} | {lo:.2f} | {st['train']['avg']:+.3f} | {st['val']['avg']:+.3f} | {st['test']['avg']:+.3f} | {st['test']['n']} |")
+    L += [""]
+
+    te = tf[tf.period == "test"]
+    if len(te) > 10:
+        days = te.groupby("date").R.sum().sort_values()
+        syms = te.groupby("sym").R.sum().sort_values()
+        L += ["### How concentrated is the test result?", "",
+              f"- Test total {te.R.sum():+.1f}R over {te.date.nunique()} days and {len(te)} trades.",
+              f"- Without the best 2 days: {te[~te.date.isin(days.index[-2:])].R.mean():+.3f}R per trade.",
+              f"- Without the best 5 trades: {np.sort(te.R.to_numpy())[:-5].mean():+.3f}R per trade.",
+              f"- Best 3 stocks ({', '.join(syms.index[-3:])}) made {syms.iloc[-3:].sum():+.1f}R; without them {te[~te.sym.isin(syms.index[-3:])].R.mean():+.3f}R per trade.",
+              f"- Winning days {100 * (days > 0).mean():.0f}% of {len(days)}.", ""]
+        L += ["#### Test by side", "", H.format("side")]
+        for sd, g in te.groupby("side"):
+            L.append(_row(sd, g))
+        L += [""]
+    return L
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=252)
@@ -384,10 +466,12 @@ def main(argv=None) -> int:
     # ---------------------------------------------------------------- staged search
     cur, cur_st = p0, base
     log = []
+    tried = [0]
 
     def stage(title: str, cands: list[tuple[str, P]], note: str = ""):
         nonlocal cur, cur_st
         rows, best = [("current", cur_st, "incumbent")], None
+        tried[0] += len(cands)
         for nm, p in cands:
             t = run(p)
             st = per(t)
@@ -478,6 +562,9 @@ def main(argv=None) -> int:
         for s, r in pd.concat([bys.head(10), bys.tail(10)]).iterrows():
             L.append(f"| {s} | {int(r['count'])} | {r['mean']:+.3f} | {r['sum']:+.1f} |")
         L += [""]
+
+    if len(tf):
+        L += diagnose(run, cur, t0, tf, tried[0])
 
     out = "\n".join(L) + "\n"
     REPORT.parent.mkdir(exist_ok=True)
