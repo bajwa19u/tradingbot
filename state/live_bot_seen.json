@@ -1,10 +1,50 @@
 {
   "date": "2026-10-02",
-  "entries": [],
-  "exits": [],
+  "entries": [
+    "OPEN-META-orl-2026-10-02",
+    "OPEN-MSFT-orl-2026-10-02",
+    "OPEN-SPY-orh-2026-10-02",
+    "OPEN-NVDA-orh-2026-10-02",
+    "OPEN-TSLA-orh-2026-10-02",
+    "OPEN-AMD-orh-2026-10-02",
+    "OPEN-QQQ-orh-2026-10-02",
+    "OPEN-AAPL-orl-2026-10-02",
+    "OPEN-AMZN-orl-2026-10-02",
+    "QQQ-2026-10-02 13:30-748.91"
+  ],
+  "exits": [
+    "OPEN-SPY-orh-2026-10-02",
+    "OPEN-AAPL-orl-2026-10-02",
+    "OPEN-QQQ-orh-2026-10-02",
+    "OPEN-NVDA-orh-2026-10-02",
+    "OPEN-AMD-orh-2026-10-02",
+    "QQQ-2026-10-02 13:30-748.91"
+  ],
   "summary": false,
-  "cards": {},
-  "expired": [],
+  "cards": {
+    "OPEN-META-orl-2026-10-02": "1555586909248553042",
+    "OPEN-MSFT-orl-2026-10-02": "1555586910393598073",
+    "OPEN-SPY-orh-2026-10-02": "1555586911727390895",
+    "OPEN-NVDA-orh-2026-10-02": "1555586914323533834",
+    "OPEN-TSLA-orh-2026-10-02": "1555586915128967303",
+    "OPEN-AMD-orh-2026-10-02": "1555586916718616627",
+    "OPEN-QQQ-orh-2026-10-02": "1555586917800611941",
+    "OPEN-AAPL-orl-2026-10-02": "1555586918744457260",
+    "OPEN-AMZN-orl-2026-10-02": "1555586922787905559",
+    "QQQ-2026-10-02 13:30-748.91": "1555639254900674601"
+  },
+  "expired": [
+    "OPEN-META-orl-2026-10-02",
+    "OPEN-MSFT-orl-2026-10-02",
+    "OPEN-SPY-orh-2026-10-02",
+    "OPEN-NVDA-orh-2026-10-02",
+    "OPEN-TSLA-orh-2026-10-02",
+    "OPEN-AMD-orh-2026-10-02",
+    "OPEN-QQQ-orh-2026-10-02",
+    "OPEN-AAPL-orl-2026-10-02",
+    "OPEN-AMZN-orl-2026-10-02",
+    "QQQ-2026-10-02 13:30-748.91"
+  ],
   "stale_warned": "",
   "error_warned": "2026-10-02 10:00:04.731745-04:00"
 }
