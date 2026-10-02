@@ -145,3 +145,24 @@ def test_the_live_break_scan_sees_the_newest_bar():
          "base_len": 12, "atr_len": 14}
     assert not breaks_in(day, p)                                # backtest default still skips the tail
     assert breaks_in(day, {**p, "tail": 0})[-1][0] == n - 1     # live sees it immediately
+
+
+def test_impossible_bars_never_reach_the_rules():
+    idx = pd.date_range("2026-10-02 09:30", periods=5, freq="1min", tz=ET)
+    df = pd.DataFrame({"open": [10, 10, 0, 10, 10], "high": [11, 9, 11, 11, 11],
+                       "low": [9, 10, 9, 9, 9], "close": [10, 10, 10, 10, 10], "volume": [1, 1, 1, 1, 1]},
+                      index=idx).astype(float)
+    df = pd.concat([df, df.iloc[[3]]])                            # duplicate timestamp
+    out = lb.clean_bars(df)
+    assert len(out) == 3 and out.index.is_monotonic_increasing    # bad high<low, zero open, dup removed
+
+
+def test_the_recap_reports_signal_delay(tmp_path):
+    f = tmp_path / "lat.jsonl"
+    f.write_text("\n".join(json.dumps(r) for r in [
+        {"kind": "signal", "posted_age_s": 2.0, "posted_at": "2026-10-02 09:36:02", "expired": False},
+        {"kind": "signal", "posted_age_s": 9.0, "posted_at": "2026-10-02 09:41:09", "expired": False},
+        {"kind": "signal", "posted_age_s": 600.0, "posted_at": "2026-10-02 10:20:00", "expired": True},
+        {"kind": "tick", "total": 0.4}]))
+    line = lb.latency_line(f, "2026-10-02")
+    assert "slowest 9s" in line and "1 expired" in line

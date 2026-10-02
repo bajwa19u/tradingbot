@@ -198,6 +198,41 @@ _ERRORS: list = []                             # data failures this tick (e.g. 4
 _STREAM: "st.BarStore | None" = None           # set while the websocket is live; scans read from it
 
 
+def clean_bars(df: pd.DataFrame) -> pd.DataFrame:
+    """Never signal off impossible data: drop non-positive or missing prices,
+    bars whose high is below their low or outside open/close, duplicate and
+    out-of-order timestamps. Counts what it dropped in _TIMES["bad_bars"]."""
+    if df is None or df.empty:
+        return df
+    px = df[["open", "high", "low", "close"]]
+    ok = (px > 0).all(axis=1) & px.notna().all(axis=1) & (df["high"] >= df["low"]) \
+        & (df["high"] >= px[["open", "close"]].max(axis=1)) & (df["low"] <= px[["open", "close"]].min(axis=1)) \
+        & (df["volume"].fillna(0) >= 0)
+    out = df[ok]
+    out = out[~out.index.duplicated(keep="last")].sort_index()
+    bad = len(df) - len(out)
+    if bad:
+        _TIMES["bad_bars"] = _TIMES.get("bad_bars", 0) + bad
+    return out
+
+
+def latency_line(path, date: str) -> str:
+    """Median and slowest posting delay for today's signals, for the recap."""
+    try:
+        rows = [json.loads(x) for x in open(path)]
+    except OSError:
+        return ""
+    ages = [r["posted_age_s"] for r in rows if r.get("kind") == "signal" and r.get("posted_age_s") is not None
+            and str(r.get("posted_at", "")).startswith(date) and not r.get("expired")]
+    exp = sum(1 for r in rows if r.get("kind") == "signal" and r.get("expired") and str(r.get("posted_at", "")).startswith(date))
+    if not ages and not exp:
+        return ""
+    ages.sort()
+    med = ages[len(ages) // 2] if ages else None
+    return ("⏱ Signal delay: " + (f"median {med:.0f}s, slowest {ages[-1]:.0f}s" if ages else "no live signals")
+            + (f" · {exp} expired" if exp else ""))
+
+
 def in_session(now: pd.Timestamp) -> bool:
     return pd.Timestamp("09:25").time() <= now.time() < pd.Timestamp("16:00").time()
 
@@ -242,7 +277,7 @@ def _minute_bars(md: MarketData, now: pd.Timestamp) -> dict[str, pd.DataFrame]:
         full = md.intraday_bars(WATCHLIST, 1, start=start, extended=True)
         _PRIOR.update(date=today, data={s: df[df.index.tz_convert(EASTERN).date < today]
                                         for s, df in full.items()})
-        out = full
+        out = {k: clean_bars(v) for k, v in full.items()}
     else:
         fresh = md.intraday_bars(WATCHLIST, 1, start=today.isoformat(), extended=True)
         out = {}
@@ -251,8 +286,7 @@ def _minute_bars(md: MarketData, now: pd.Timestamp) -> dict[str, pd.DataFrame]:
             if not parts:
                 out[s] = fresh.get(s, pd.DataFrame())
                 continue
-            df = pd.concat(parts)
-            out[s] = df[~df.index.duplicated(keep="last")].sort_index()
+            out[s] = clean_bars(pd.concat(parts))
     _TIMES["fetch_1m"] = round(_time.perf_counter() - t0, 3)
     return out
 
@@ -264,6 +298,7 @@ def scan(cfg: dict) -> tuple[list[dict], str, bool]:
     # Only today's bars: everything before today is dropped below anyway.
     data = (_STREAM.five_minute_frames(now.date()) if _STREAM is not None else
             md.intraday_bars(WATCHLIST, LIVE.get("minutes", 5) or 5, start=now.date().isoformat()))
+    data = {k: clean_bars(v) for k, v in data.items()}
     _TIMES["fetch_5m"] = round(_time.perf_counter() - t0, 3)
     p = {**SCAN, "minutes": 5}
     today = now.date()
@@ -585,7 +620,8 @@ def tick(cfg: dict, dry_run: bool) -> int:
                            + " · no signals until it recovers", "", False))
             seen["error_warned"] = str(detected)
     if day_done and not seen["summary"]:
-        outbox.append((summary_msg(trades, now.strftime("%A %d %B")), "", False))
+        lat = latency_line(STATE / LATENCY_FILE, date)
+        outbox.append((summary_msg(trades, now.strftime("%A %d %B")) + (f"\n{lat}" if lat else ""), "", False))
         seen["summary"] = True
 
     log.info("%s ET · bars through %s · %d trade(s) today · %d new message(s)",
