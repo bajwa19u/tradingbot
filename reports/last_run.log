@@ -1,37 +1,37 @@
 ==============================================================
 ALPACA DIAGNOSTIC
 ==============================================================
-ALPACA_API_KEY    : PKSG…SQ (len 26)
-ALPACA_API_SECRET : ED5A…nm (len 44)
+ALPACA_API_KEY    : PKQ6…VA (len 26)
+ALPACA_API_SECRET : 5cge…e9 (len 44)
 
 --- daily bars, iex ---
-    params: {"symbols": "AAPL", "timeframe": "1Day", "start": "2026-09-06", "limit": 5, "feed": "iex"}
+    params: {"symbols": "AAPL", "timeframe": "1Day", "start": "2026-09-13", "limit": 5, "feed": "iex"}
     HTTP 200
-    body: {"bars":{"AAPL":[{"c":316.26,"h":320.7,"l":314.9,"n":21818,"o":317.24,"t":"2026-09-08T04:00:00Z","v":1126523,"vw":316.268959},{"c":315.42,"h":319.12,"l":309.92,"n":40824,"o":315.59,"t":"2026-09-09T04:00:00Z","v":2458568,"vw":313.953332},{"c":326.615,"h":326.66,"l":316.635,"n":41969,"o":316.76,"t":"2026-09-10T04:00:00Z","v":2202355,"vw":323.072279},{"c":332.245,"h":336.21,"l":326.57,"n":30142,"o":327.45,"t":"2026-09-11T04:00:00Z","v":1563982,"vw":333.431583},{"c":333,"h":335.5,"l":331.35,"n":26530,"o":334.7,"t":"2026-09-14T04:00:00Z","v":1335636,"vw":333.718123}]},"next_page_token":"QUFQTHxEfDE
+    body: {"bars":{"AAPL":[{"c":333,"h":335.5,"l":331.35,"n":26530,"o":334.7,"t":"2026-09-14T04:00:00Z","v":1335636,"vw":333.718123},{"c":331.335,"h":331.78,"l":328.41,"n":23921,"o":330.445,"t":"2026-09-15T04:00:00Z","v":930284,"vw":330.277368},{"c":332.49,"h":335.47,"l":330.71,"n":17726,"o":332.44,"t":"2026-09-16T04:00:00Z","v":903206,"vw":333.18772},{"c":337.09,"h":338.31,"l":330.23,"n":21262,"o":334.805,"t":"2026-09-17T04:00:00Z","v":894177,"vw":334.916974},{"c":335.73,"h":338.41,"l":332.545,"n":23581,"o":337.96,"t":"2026-09-18T04:00:00Z","v":1141511,"vw":335.289865}]},"next_page_token":"QUFQTHxEfDE3
     -> 5 AAPL bars returned
 
 --- 5-minute bars, iex ---
-    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-06", "limit": 5, "feed": "iex"}
+    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-13", "limit": 5, "feed": "iex"}
     HTTP 200
-    body: {"bars":{"AAPL":[{"c":318.7,"h":318.7,"l":318.51,"n":5,"o":318.51,"t":"2026-09-08T12:00:00Z","v":250,"vw":318.612857},{"c":318.05,"h":318.05,"l":318.05,"n":1,"o":318.05,"t":"2026-09-08T12:35:00Z","v":40,"vw":318.05},{"c":318.25,"h":318.25,"l":318.12,"n":2,"o":318.12,"t":"2026-09-08T12:45:00Z","v":143,"vw":318.177273},{"c":317.72,"h":317.96,"l":317.72,"n":4,"o":317.96,"t":"2026-09-08T12:50:00Z","v":140,"vw":317.88},{"c":317.77,"h":317.77,"l":317.75,"n":2,"o":317.75,"t":"2026-09-08T12:55:00Z","v":130,"vw":317.757692}]},"next_page_token":"QUFQTHxNfDE3ODg4NzMzNjAwMDAwMDAwMDA="}
+    body: {"bars":{"AAPL":[{"c":332.6,"h":333.01,"l":332.59,"n":13,"o":333.01,"t":"2026-09-14T12:00:00Z","v":390,"vw":332.754286},{"c":332.5,"h":332.59,"l":332.4,"n":11,"o":332.4,"t":"2026-09-14T12:05:00Z","v":410,"vw":332.506667},{"c":332.5,"h":332.68,"l":332.5,"n":6,"o":332.66,"t":"2026-09-14T12:10:00Z","v":410,"vw":332.586341},{"c":332.73,"h":332.73,"l":332.53,"n":17,"o":332.6,"t":"2026-09-14T12:15:00Z","v":875,"vw":332.630915},{"c":332.8,"h":332.87,"l":332.68,"n":5,"o":332.68,"t":"2026-09-14T12:20:00Z","v":350,"vw":332.759143}]},"next_page_token":"QUFQTHxNfDE3ODkzODg3MDAwMDAwMDAwMDA="}
     -> 5 AAPL bars returned
 
 --- 5-minute bars, sip ---
-    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-06", "limit": 5, "feed": "sip"}
+    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-13", "limit": 5, "feed": "sip"}
     HTTP 200
-    body: {"bars":{"AAPL":[{"c":318.6,"h":319.58,"l":318.25,"n":5668,"o":319,"t":"2026-09-08T08:00:00Z","v":96535,"vw":318.945595},{"c":318.74,"h":319.52,"l":318.5,"n":243,"o":318.5,"t":"2026-09-08T08:05:00Z","v":5419,"vw":318.820505},{"c":318.92,"h":318.92,"l":318.69,"n":43,"o":318.77,"t":"2026-09-08T08:10:00Z","v":1566,"vw":318.780733},{"c":318.57,"h":318.81,"l":318.49,"n":223,"o":318.73,"t":"2026-09-08T08:15:00Z","v":7426,"vw":318.692637},{"c":318.65,"h":318.78,"l":318.63,"n":116,"o":318.7001,"t":"2026-09-08T08:20:00Z","v":1986,"vw":318.697185}]},"next_page_token":"QUFQTHxNfDE3ODg4NTU5MDAwMDAwMDAwMDA
+    body: {"bars":{"AAPL":[{"c":331.46,"h":331.46,"l":328.75,"n":4735,"o":330.01,"t":"2026-09-14T08:00:00Z","v":87298,"vw":329.781501},{"c":331.72,"h":332,"l":329.37,"n":520,"o":331.5,"t":"2026-09-14T08:05:00Z","v":16688,"vw":331.787028},{"c":331.71,"h":331.9803,"l":331.4323,"n":220,"o":331.6753,"t":"2026-09-14T08:10:00Z","v":8621,"vw":331.704234},{"c":331.48,"h":331.9,"l":331.365,"n":228,"o":331.8,"t":"2026-09-14T08:15:00Z","v":9757,"vw":331.683635},{"c":331.34,"h":331.5,"l":331.2518,"n":68,"o":331.5,"t":"2026-09-14T08:20:00Z","v":1234,"vw":331.338944}]},"next_page_token":"QUFQTHxNfDE3ODkzNzQzMDAwMDAwM
     -> 5 AAPL bars returned
 
 --- 5-minute bars, no feed param ---
-    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-06", "limit": 5}
+    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-13", "limit": 5}
     HTTP 200
-    body: {"bars":{"AAPL":[{"c":318.6,"h":319.58,"l":318.25,"n":5668,"o":319,"t":"2026-09-08T08:00:00Z","v":96535,"vw":318.945595},{"c":318.74,"h":319.52,"l":318.5,"n":243,"o":318.5,"t":"2026-09-08T08:05:00Z","v":5419,"vw":318.820505},{"c":318.92,"h":318.92,"l":318.69,"n":43,"o":318.77,"t":"2026-09-08T08:10:00Z","v":1566,"vw":318.780733},{"c":318.57,"h":318.81,"l":318.49,"n":223,"o":318.73,"t":"2026-09-08T08:15:00Z","v":7426,"vw":318.692637},{"c":318.65,"h":318.78,"l":318.63,"n":116,"o":318.7001,"t":"2026-09-08T08:20:00Z","v":1986,"vw":318.697185}]},"next_page_token":"QUFQTHxNfDE3ODg4NTU5MDAwMDAwMDAwMDA
+    body: {"bars":{"AAPL":[{"c":331.46,"h":331.46,"l":328.75,"n":4735,"o":330.01,"t":"2026-09-14T08:00:00Z","v":87298,"vw":329.781501},{"c":331.72,"h":332,"l":329.37,"n":520,"o":331.5,"t":"2026-09-14T08:05:00Z","v":16688,"vw":331.787028},{"c":331.71,"h":331.9803,"l":331.4323,"n":220,"o":331.6753,"t":"2026-09-14T08:10:00Z","v":8621,"vw":331.704234},{"c":331.48,"h":331.9,"l":331.365,"n":228,"o":331.8,"t":"2026-09-14T08:15:00Z","v":9757,"vw":331.683635},{"c":331.34,"h":331.5,"l":331.2518,"n":68,"o":331.5,"t":"2026-09-14T08:20:00Z","v":1234,"vw":331.338944}]},"next_page_token":"QUFQTHxNfDE3ODkzNzQzMDAwMDAwM
     -> 5 AAPL bars returned
 
 --- most-active screener ---
     params: {"by": "volume", "top": 3}
     HTTP 200
-    body: {"last_updated":"2026-09-25T23:59:00.278906851Z","most_actives":[{"symbol":"GPUS","trade_count":162628,"volume":228803443},{"symbol":"AIFF","trade_count":466458,"volume":143720663},{"symbol":"GLND","trade_count":639384,"volume":120048263}]}
+    body: {"last_updated":"2026-10-02T23:59:00.136979231Z","most_actives":[{"symbol":"NIVF","trade_count":289262,"volume":303219873},{"symbol":"FNGR","trade_count":203621,"volume":253381339},{"symbol":"AMOD","trade_count":1084761,"volume":194430485}]}
 
 ==============================================================
 RESULT: at least one bars request returned data.
@@ -40,11 +40,11 @@ RESULT: at least one bars request returned data.
 BACKTEST
 ============================================================
 args: (config defaults)
-2026-09-26 13:07:59,562 INFO Backtesting TSLA, NVDA, AAPL, AMD from 2023-01-01 to now
-2026-09-26 13:08:25,153 INFO   TSLA: 72582 intraday bars
-2026-09-26 13:08:25,153 INFO   NVDA: 72579 intraday bars
-2026-09-26 13:08:25,153 INFO   AAPL: 72578 intraday bars
-2026-09-26 13:08:25,153 INFO   AMD: 72567 intraday bars
+2026-10-03 18:17:59,408 INFO Backtesting TSLA, NVDA, AAPL, AMD from 2023-01-01 to now
+2026-10-03 18:18:18,033 INFO   TSLA: 72972 intraday bars
+2026-10-03 18:18:18,033 INFO   NVDA: 72969 intraday bars
+2026-10-03 18:18:18,033 INFO   AAPL: 72968 intraday bars
+2026-10-03 18:18:18,033 INFO   AMD: 72957 intraday bars
 
 # Break-and-retest backtest
 
@@ -52,26 +52,26 @@ args: (config defaults)
 **Symbols:** TSLA, NVDA, AAPL, AMD  
 **Timeframe:** 5-minute  
 **Target:** 2.0R, risking 1.0% of $10,000  
-**Generated:** 2026-09-26 13:09
+**Generated:** 2026-10-03 18:19
 
 ## Headline
 
 | Metric | Value |
 |---|---|
-| Trades | 405 over 935 days (0.43/day) |
-| Win rate | 21.0% |
-| Expectancy | -0.036R per trade |
-| Total | -14.58R · $-283.62 (-2.84%) |
-| Profit factor | 0.97 |
-| Max drawdown | -10.41% |
-| Avg win / avg loss | 1.412R / -0.421R |
+| Trades | 407 over 940 days (0.43/day) |
+| Win rate | 20.9% |
+| Expectancy | -0.041R per trade |
+| Total | -16.68R · $-413.88 (-4.14%) |
+| Profit factor | 0.95 |
+| Max drawdown | -10.64% |
+| Avg win / avg loss | 1.412R / -0.425R |
 | Worst losing streak | 15 |
-| Avg hold | 10.7 bars |
+| Avg hold | 10.6 bars |
 
 ## How trades ended
 
 - **breakeven** — 199 (49%)
-- **stop** — 118 (29%)
+- **stop** — 120 (29%)
 - **target** — 66 (16%)
 - **time_stop** — 15 (4%)
 - **trail** — 7 (2%)
@@ -80,14 +80,14 @@ args: (config defaults)
 
 _This is the filter doing its job — high counts here are healthy._
 
-- `break_volume_too_low` — 8217
-- `no_confirmation_candle` — 3937
-- `no_displacement_before_retest` — 1362
-- `entry_window_closed` — 1074
-- `failed_break` — 906
-- `retest_never_came` — 825
-- `opening_range_too_wide` — 418
-- `below_vwap_for_long` — 15
+- `break_volume_too_low` — 8273
+- `no_confirmation_candle` — 3950
+- `no_displacement_before_retest` — 1365
+- `entry_window_closed` — 1081
+- `failed_break` — 910
+- `retest_never_came` — 828
+- `opening_range_too_wide` — 422
+- `below_vwap_for_long` — 16
 - `above_vwap_for_short` — 15
 
 ## Was the stop in the right place?
@@ -100,8 +100,8 @@ _MAE = how far a trade went against you before resolving. It is the standard way
 | Winners' typical heat | 0.199R | half of winners never went further against you than this |
 | Winners' worst heat (90th pct) | 0.781R | 9 in 10 winners stayed inside this |
 | Deepest winner | 0.961R | the single winner that came closest to being stopped |
-| Losers' best moment (median) | 0.433R | how far losers got in your favour before failing |
-| Losers' best moment (75th pct) | 0.677R | a quarter of losers got at least this far |
+| Losers' best moment (median) | 0.43R | how far losers got in your favour before failing |
+| Losers' best moment (75th pct) | 0.676R | a quarter of losers got at least this far |
 
 **Tightening the stop would have cost you:**
 
@@ -120,15 +120,15 @@ _Buckets with n < 20 are marked unreliable - slicing enough ways always finds a 
 
 | Bucket | n | Expectancy | Win rate | Total R | |
 |---|---|---|---|---|---|
-| 10:00-10:59 | 220 | -0.021R | 21.4% | -4.6 |  |
+| 10:00-10:59 | 221 | -0.025R | 21.3% | -5.6 |  |
 | 11:00-11:59 | 16 | -0.323R | 25.0% | -5.2 | low n |
-| 09:00-09:59 | 169 | -0.029R | 20.1% | -4.8 |  |
+| 09:00-09:59 | 170 | -0.035R | 20.0% | -5.9 |  |
 
 ### By direction
 
 | Bucket | n | Expectancy | Win rate | Total R | |
 |---|---|---|---|---|---|
-| long | 203 | -0.036R | 19.7% | -7.2 |  |
+| long | 205 | -0.046R | 19.5% | -9.3 |  |
 | short | 202 | -0.036R | 22.3% | -7.3 |  |
 
 ### By confirmation pattern
@@ -138,7 +138,7 @@ _Buckets with n < 20 are marked unreliable - slicing enough ways always finds a 
 | bearish_engulfing@fvg | 23 | +0.264R | 39.1% | +6.1 |  |
 | bearish_engulfing@level | 89 | -0.098R | 18.0% | -8.8 |  |
 | bullish_engulfing@fvg | 25 | +0.037R | 24.0% | +0.9 |  |
-| bullish_engulfing@level | 82 | -0.017R | 22.0% | -1.4 |  |
+| bullish_engulfing@level | 84 | -0.042R | 21.4% | -3.5 |  |
 | hammer@fvg | 15 | +0.158R | 26.7% | +2.4 | low n |
 | hammer@level | 81 | -0.113R | 14.8% | -9.1 |  |
 | shooting_star@fvg | 28 | -0.039R | 21.4% | -1.1 |  |
@@ -150,8 +150,8 @@ _Buckets with n < 20 are marked unreliable - slicing enough ways always finds a 
 |---|---|---|---|---|---|
 | 1 | 51 | -0.137R | 13.7% | -7.0 |  |
 | 2 | 112 | +0.004R | 22.3% | +0.4 |  |
-| 3 | 66 | -0.091R | 19.7% | -6.0 |  |
-| 4 | 50 | -0.042R | 22.0% | -2.1 |  |
+| 3 | 67 | -0.105R | 19.4% | -7.0 |  |
+| 4 | 51 | -0.062R | 21.6% | -3.1 |  |
 | 5 | 49 | +0.179R | 28.6% | +8.8 |  |
 | 6+ | 77 | -0.112R | 19.5% | -8.7 |  |
 
@@ -160,8 +160,8 @@ _Buckets with n < 20 are marked unreliable - slicing enough ways always finds a 
 | Bucket | n | Expectancy | Win rate | Total R | |
 |---|---|---|---|---|---|
 | AAPL | 95 | -0.113R | 17.9% | -10.7 |  |
-| AMD | 105 | +0.187R | 31.4% | +19.7 |  |
-| NVDA | 103 | -0.165R | 17.5% | -17.0 |  |
+| AMD | 106 | +0.176R | 31.1% | +18.6 |  |
+| NVDA | 104 | -0.174R | 17.3% | -18.1 |  |
 | TSLA | 102 | -0.064R | 16.7% | -6.5 |  |
 
 
@@ -169,8 +169,6 @@ _Buckets with n < 20 are marked unreliable - slicing enough ways always finds a 
 
 | Symbol | Dir | Entry time | Entry | Exit | R | Exit reason |
 |---|---|---|---|---|---|---|
-| TSLA | long | 2026-08-06T10:00 | 320.17 | 320.07 | -0.04 | breakeven |
-| NVDA | short | 2026-08-11T10:15 | 219.28 | 219.35 | -0.04 | breakeven |
 | TSLA | long | 2026-08-13T09:45 | 330.74 | 334.24 | +1.46 | target |
 | TSLA | long | 2026-08-14T09:40 | 347.71 | 347.61 | -0.04 | breakeven |
 | AAPL | long | 2026-08-18T10:25 | 309.74 | 309.65 | -0.05 | breakeven |
@@ -184,6 +182,8 @@ _Buckets with n < 20 are marked unreliable - slicing enough ways always finds a 
 | TSLA | long | 2026-09-11T09:45 | 367.64 | 363.26 | -1.03 | stop |
 | AMD | long | 2026-09-15T10:20 | 508.91 | 506.10 | -1.06 | stop |
 | AMD | long | 2026-09-22T10:20 | 617.37 | 617.18 | -0.05 | breakeven |
-2026-09-26 13:09:10,585 INFO Wrote backtest_20260926_130910.json and reports/latest.md
+| NVDA | long | 2026-10-01T09:50 | 231.72 | 230.19 | -1.05 | stop |
+| AMD | long | 2026-10-02T10:45 | 640.41 | 636.10 | -1.05 | stop |
+2026-10-03 18:19:02,430 INFO Wrote backtest_20261003_181902.json and reports/latest.md
 
 exit code: 0
