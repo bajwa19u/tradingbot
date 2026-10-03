@@ -1,0 +1,152 @@
+{
+ "last_session": "2026-10-02",
+ "windows": {
+  "week": {
+   "from": "2026-09-28",
+   "to": "2026-10-02",
+   "day_trade_current": {
+    "sessions": 5,
+    "trades": 27,
+    "won": 13,
+    "lost": 14,
+    "win_pct": 48.1,
+    "avg_pct": -0.044,
+    "total_pct": -1.2,
+    "best_pct": 1.98,
+    "worst_pct": -1.08,
+    "profit_factor": 0.9,
+    "green_days": 1,
+    "days_traded": 5,
+    "max_drawdown_pct": 3.65
+   },
+   "day_trade_previous": {
+    "sessions": 5,
+    "trades": 46,
+    "won": 13,
+    "lost": 33,
+    "win_pct": 28.3,
+    "avg_pct": -0.473,
+    "total_pct": -21.75,
+    "best_pct": 1.97,
+    "worst_pct": -1.23,
+    "profit_factor": 0.27,
+    "green_days": 0,
+    "days_traded": 5,
+    "max_drawdown_pct": 21.75
+   },
+   "inplay": {
+    "sessions": 5,
+    "trades": 23,
+    "won": 10,
+    "lost": 13,
+    "win_pct": 43.5,
+    "avg_pct": -0.036,
+    "total_pct": -0.82,
+    "best_pct": 2.35,
+    "worst_pct": -1.06,
+    "profit_factor": 0.92,
+    "green_days": 2,
+    "days_traded": 5,
+    "max_drawdown_pct": 4.87
+   }
+  },
+  "month": {
+   "from": "2026-09-03",
+   "to": "2026-10-02",
+   "day_trade_current": {
+    "sessions": 21,
+    "trades": 100,
+    "won": 53,
+    "lost": 47,
+    "win_pct": 53.0,
+    "avg_pct": 0.118,
+    "total_pct": 11.78,
+    "best_pct": 1.98,
+    "worst_pct": -1.08,
+    "profit_factor": 1.35,
+    "green_days": 11,
+    "days_traded": 20,
+    "max_drawdown_pct": 3.65
+   },
+   "day_trade_previous": {
+    "sessions": 21,
+    "trades": 180,
+    "won": 65,
+    "lost": 115,
+    "win_pct": 36.1,
+    "avg_pct": -0.262,
+    "total_pct": -47.11,
+    "best_pct": 1.97,
+    "worst_pct": -1.36,
+    "profit_factor": 0.53,
+    "green_days": 6,
+    "days_traded": 21,
+    "max_drawdown_pct": 47.11
+   },
+   "inplay": {
+    "sessions": 21,
+    "trades": 88,
+    "won": 48,
+    "lost": 40,
+    "win_pct": 54.5,
+    "avg_pct": 0.183,
+    "total_pct": 16.1,
+    "best_pct": 3.56,
+    "worst_pct": -1.07,
+    "profit_factor": 1.49,
+    "green_days": 12,
+    "days_traded": 21,
+    "max_drawdown_pct": 4.87
+   }
+  },
+  "3 months": {
+   "from": "2026-07-07",
+   "to": "2026-10-02",
+   "day_trade_current": {
+    "sessions": 63,
+    "trades": 257,
+    "won": 136,
+    "lost": 121,
+    "win_pct": 52.9,
+    "avg_pct": 0.119,
+    "total_pct": 30.46,
+    "best_pct": 1.98,
+    "worst_pct": -1.11,
+    "profit_factor": 1.42,
+    "green_days": 38,
+    "days_traded": 62,
+    "max_drawdown_pct": 4.41
+   },
+   "day_trade_previous": {
+    "sessions": 63,
+    "trades": 551,
+    "won": 231,
+    "lost": 320,
+    "win_pct": 41.9,
+    "avg_pct": -0.104,
+    "total_pct": -57.29,
+    "best_pct": 1.98,
+    "worst_pct": -1.41,
+    "profit_factor": 0.79,
+    "green_days": 27,
+    "days_traded": 63,
+    "max_drawdown_pct": 64.13
+   },
+   "inplay": {
+    "sessions": 63,
+    "trades": 242,
+    "won": 119,
+    "lost": 123,
+    "win_pct": 49.2,
+    "avg_pct": 0.119,
+    "total_pct": 28.84,
+    "best_pct": 4.96,
+    "worst_pct": -1.11,
+    "profit_factor": 1.28,
+    "green_days": 30,
+    "days_traded": 63,
+    "max_drawdown_pct": 9.71
+   }
+  }
+ }
+}
