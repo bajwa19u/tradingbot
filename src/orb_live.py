@@ -104,7 +104,7 @@ def scan(now: pd.Timestamp, md_factory, risk_pct: float, dry_run: bool = False
         x = D.get(s)
         if x is None:
             continue
-        sig = orr.first_signal(x, sa, qa, RULE, k_end)
+        sig = orr.first_signal(x, sa, qa, RULE, k_end, D["SPY"])
         if sig is None:
             continue
         R, j, why = orr.exit_r(x, sig["kk"], sig["sign"], sig["entry"], sig["stop"], RULE, j_end=k_end)

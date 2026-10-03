@@ -299,7 +299,7 @@ def broad_trades(p: orr.P, dates: list, lab: dict, D_sip: dict, days: int) -> tu
             or_h, or_l = float(arr[1, :5].max()), float(arr[2, :5].min())
             x = orr.Day(arr[0], arr[1], arr[2], arr[3], arr[4], vwap, or_h, or_l, or_h - or_l, rv[s],
                         np.ones(orr.N_MIN), float(row.prev_c), float(row.atr), float(row.adv), float(row.gap))
-            sig = orr.first_signal(x, sa, qa, p, orr.FLAT_IDX - 1)
+            sig = orr.first_signal(x, sa, qa, p, orr.FLAT_IDX - 1, D_sip["SPY"][d])
             if sig is None:
                 continue
             R, j, why = orr.exit_r(x, sig["kk"], sig["sign"], sig["entry"], sig["stop"], p)

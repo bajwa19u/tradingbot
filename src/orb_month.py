@@ -34,7 +34,7 @@ def day_rows(D: dict, d, p: orr.P = CANDIDATE) -> tuple[list[dict], list[dict]]:
         ratio = x.or_w / x.atr if x.atr > 0 else 0.0
         pick = {"symbol": s, "rank": rank, "rvol5": round(float(x.rvol5), 2), "or_width_atr": round(ratio, 2),
                 "gap_pct": round(float(x.gap) * 100, 2) if x.gap == x.gap else None}
-        sig = orr.first_signal(x, sa, qa, p, orr.FLAT_IDX - 1)
+        sig = orr.first_signal(x, sa, qa, p, orr.FLAT_IDX - 1, spy)
         if sig is None:
             pick["outcome"] = ("range too narrow" if ratio < p.orw[0] else "no breakout before 10:00")
             picks.append(pick)

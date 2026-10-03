@@ -25,6 +25,7 @@ from __future__ import annotations
 import csv
 import json
 import logging
+from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
 import pandas as pd
@@ -43,6 +44,7 @@ BAR_LAG_S = 4        # Alpaca publishes a minute bar a few seconds after it clos
 # 16:12, not 16:00: real costs come from consolidated (SIP) quotes, which the
 # free plan serves 15 minutes late, and the bell exit is at 15:56.
 SETTLE_AFTER = "16:12"
+CHUNK, WORKERS = 15, 3     # history download: symbols per request, requests in flight
 
 STATE_FILE = REPO_ROOT / "state" / "orb_paper.json"
 LEDGER = REPO_ROOT / "reports" / "orb_paper.csv"
@@ -80,13 +82,20 @@ class Feed:
         if not need:
             return
         start = (pd.Timestamp(today) - pd.Timedelta(days=int((orr.LOOKBACK + 6) * 1.6))).date()
-        for i in range(0, len(need), 25):
-            chunk = need[i:i + 25]
-            got = self.md.intraday_bars(chunk, 1, start=start.isoformat(), end=str(today))
-            for s in chunk:
-                df = got.get(s)
-                days = orr.to_days(df) if df is not None and len(df) else {}
-                self.hist[s] = {d: a for d, a in days.items() if d < today}
+        chunks = [need[i:i + CHUNK] for i in range(0, len(need), CHUNK)]
+
+        def fetch(chunk):
+            return chunk, self.md.intraday_bars(chunk, 1, start=start.isoformat(), end=str(today))
+
+        # A few chunks at once: the warm-up is ~90 paged requests, and done one
+        # after another it took most of a minute. Three workers stay inside
+        # Alpaca's 200-a-minute limit; the client retries a 429 anyway.
+        with ThreadPoolExecutor(max_workers=min(WORKERS, len(chunks))) as pool:
+            for chunk, got in pool.map(fetch, chunks):
+                for s in chunk:
+                    df = got.get(s)
+                    days = orr.to_days(df) if df is not None and len(df) else {}
+                    self.hist[s] = {d: a for d, a in days.items() if d < today}
 
     def today_days(self, symbols, now: pd.Timestamp, k_end: int) -> dict:
         """{symbol: Day} for today, built only from bars that have closed."""
@@ -137,7 +146,7 @@ class Feed:
         for s in state["picks"]:
             if s in done or s not in D:
                 continue
-            sig = orr.first_signal(D[s], sa, qa, self.p, k_end)
+            sig = orr.first_signal(D[s], sa, qa, self.p, k_end, D["SPY"])
             if sig is None:
                 continue
             close = open_ts + pd.Timedelta(minutes=sig["k"] + 1)
@@ -168,7 +177,7 @@ class Feed:
         out = []
         for s in state["picks"]:
             x = D.get(s)
-            bt = orr.first_signal(x, sa, qa, self.p, orr.FLAT_IDX - 1) if x is not None else None
+            bt = orr.first_signal(x, sa, qa, self.p, orr.FLAT_IDX - 1, D["SPY"]) if x is not None else None
             r = live.get(s)
             if r is None and bt is None:
                 continue

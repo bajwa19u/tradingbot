@@ -173,6 +173,9 @@ class P:
     delay: int = 0                 # 1 = fill at the next minute's open
     gap: str = "any"               # any | with: only breaks in the direction of the overnight gap
     crowd: int = 0                 # min same-side signals in the last 10 min, itself included (prior-only)
+    spy_trend: bool = False        # SPY's move since its open must agree with the trade's direction
+    spy_vol: float = 0.0           # skip the day unless SPY's own opening range >= this share of its ATR
+    max_risk: float = 0.10         # skip if the stop is further than this share of the entry price
 
 
 def select(D: dict, d, universe: str) -> list[str]:
@@ -212,9 +215,11 @@ def exit_r(x: Day, k: int, side: int, entry: float, stop: float, p: P,
     for j in range(k + 1, min(j_end, N_MIN)):
         if (x.l[j] <= cur) if side > 0 else (x.h[j] >= cur):
             return banked + w * r_of(min(x.o[j], cur) if side > 0 else max(x.o[j], cur)), j, "stop"
+        if p.manage == "be" and cur != entry and ((x.h[j] >= entry + rps) if side > 0 else (x.l[j] <= entry - rps)):
+            cur = entry                                # from the next minute on, the stop sits at entry
         if p.manage == "partial" and w == 1.0 and ((x.h[j] >= entry + rps) if side > 0 else (x.l[j] <= entry - rps)):
             banked, w, cur, tgt = 0.5 * r_of(entry + side * rps), 0.5, entry, entry + side * 3 * rps
-        if p.manage in ("fixed", "partial") and ((x.h[j] >= tgt) if side > 0 else (x.l[j] <= tgt)):
+        if p.manage in ("fixed", "partial", "be") and ((x.h[j] >= tgt) if side > 0 else (x.l[j] <= tgt)):
             return banked + w * r_of(tgt), j, "target"
         if j >= FLAT_IDX:
             return banked + w * r_of(x.c[j]), j, "bell"
@@ -228,7 +233,7 @@ def exit_r(x: Day, k: int, side: int, entry: float, stop: float, p: P,
     return banked + w * r_of(x.c[-1]), N_MIN - 1, "bell"
 
 
-def first_signal(x: Day, sa: np.ndarray, qa: np.ndarray, p: P, k_end: int) -> dict | None:
+def first_signal(x: Day, sa: np.ndarray, qa: np.ndarray, p: P, k_end: int, spy: Day | None = None) -> dict | None:
     """The day's one trade for this stock: the first completed 1-minute close
     outside the opening range, before minute `k_end`, that passes every filter.
     `sa`/`qa` say whether SPY/QQQ closed above their VWAP each minute. The live
@@ -238,12 +243,18 @@ def first_signal(x: Day, sa: np.ndarray, qa: np.ndarray, p: P, k_end: int) -> di
     ratio = x.or_w / x.atr
     if not (p.orw[0] <= ratio < p.orw[1]):
         return None
+    if (p.spy_vol or p.spy_trend) and spy is None:
+        return None                                   # a market filter with no market data takes nothing
+    if p.spy_vol and not (spy.atr > 0 and spy.or_w / spy.atr >= p.spy_vol):
+        return None
     for k in range(5, min(p.window_end, FLAT_IDX - 1, k_end)):
         c = x.c[k]
         side = 1 if c > x.or_h else -1 if c < x.or_l else 0
         if side == 0 or (p.sides == "long" and side < 0) or (p.sides == "short" and side > 0):
             continue
         if p.gap == "with" and not (x.gap == x.gap and x.gap * side > 0):
+            continue
+        if p.spy_trend and not ((spy.c[k] - spy.o[0]) * side > 0):
             continue
         level = x.or_h if side > 0 else x.or_l
         disp = abs(c - level) / x.or_w
@@ -265,7 +276,7 @@ def first_signal(x: Day, sa: np.ndarray, qa: np.ndarray, p: P, k_end: int) -> di
         raw = x.c[k] if p.delay == 0 else x.o[kk]
         entry = raw * (1 + side * p.slip)
         stop = stop_for(x, k, side, p.stop, level)
-        if side * (entry - stop) <= 0 or abs(entry - stop) / entry > 0.10:
+        if side * (entry - stop) <= 0 or abs(entry - stop) / entry > p.max_risk:
             return None
         return dict(k=k, kk=kk, sign=side, side="long" if side > 0 else "short", level=level,
                     entry=entry, stop=stop, target=entry + side * p.target * abs(entry - stop),
@@ -285,7 +296,7 @@ def trades(D: dict, dates: list, lab: dict, p: P) -> pd.DataFrame:
         day_rows = []
         for s in select(D, d, p.universe):
             x = D[s][d]
-            sig = first_signal(x, sa, qa, p, FLAT_IDX - 1)
+            sig = first_signal(x, sa, qa, p, FLAT_IDX - 1, spy[d])
             if sig is None:
                 continue
             r, j, why = exit_r(x, sig["kk"], sig["sign"], sig["entry"], sig["stop"], p)

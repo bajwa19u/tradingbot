@@ -1,0 +1,31 @@
+name: ORB improvement study
+# Manual. Trade-level analysis of the current day-trade rule, candidate
+# improvements tested on two date ranges, and a speed benchmark of the live
+# signal path. Writes reports/orb_improve.md, orb_improve_trades.csv,
+# orb_bench.md. Posts nothing, trades nothing.
+on: workflow_dispatch
+permissions: { contents: write }
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: cache/minute_iex_wide.pkl
+          key: minute-iex-wide-${{ github.run_id }}
+          restore-keys: minute-iex-wide-
+      - run: python -m src.orb_improve
+        env: { ALPACA_API_KEY: "${{ secrets.ALPACA_API_KEY }}", ALPACA_API_SECRET: "${{ secrets.ALPACA_API_SECRET }}" }
+      - run: python -m src.orb_bench --date 2026-10-02
+        env: { ALPACA_API_KEY: "${{ secrets.ALPACA_API_KEY }}", ALPACA_API_SECRET: "${{ secrets.ALPACA_API_SECRET }}" }
+      - name: commit
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"; git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/orb_improve.md reports/orb_improve.json reports/orb_improve_trades.csv reports/orb_bench.md 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "orb improve [skip ci]" && for i in 1 2 3 4 5; do git pull --rebase && git push && break; sleep 5; done)
