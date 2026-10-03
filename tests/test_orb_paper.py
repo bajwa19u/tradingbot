@@ -109,8 +109,8 @@ def test_it_imports_nothing_that_posts_or_trades():
 
 
 def test_the_candidate_is_the_one_the_research_chose():
-    assert op.CANDIDATE == orr.P(universe="top10", orw=(0.35, 9e9))
-    assert (op.CANDIDATE.window_end, op.CANDIDATE.stop, op.CANDIDATE.target) == (30, "D", 2.0)
+    assert op.CANDIDATE == orr.P(universe="top10", orw=(0.35, 9e9), window_end=15, manage="be")
+    assert (op.CANDIDATE.window_end, op.CANDIDATE.stop, op.CANDIDATE.target, op.CANDIDATE.manage) == (15, "D", 2.0, "be")
 
 
 # --- live detection -----------------------------------------------------------

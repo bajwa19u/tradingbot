@@ -3,7 +3,8 @@
 The 252-session study (reports/orb_research.md) ended with one candidate:
 the five-minute opening range on the day's ten most in-play names, only when
 that range is at least 0.35 of the stock's daily ATR, first completed
-1-minute close outside it before 10:00, stop at the session extreme, target
+1-minute close outside it before 09:45, stop at the session extreme (moved to
+entry at +1x risk), target
 2x the risk, out at 15:55. It was flat on training dates, barely positive on
 validation, and positive on the untouched test. That is not enough to post
 it as a signal, so this records it instead: what it would have said, when we
@@ -38,7 +39,11 @@ log = logging.getLogger("orb_paper")
 ENABLED = True       # record the candidate every session
 POST = False         # never posts to Discord until a forward record supports it
 
-CANDIDATE = orr.P(universe="top10", orw=(0.35, 9e9))
+# The research candidate (reports/orb_research.md) plus the two changes that
+# passed on both date ranges in reports/orb_improve.md (3 Oct 2026): no entries
+# after 09:44 - the 09:45-09:59 breaks lost on the earlier nine months - and
+# the stop moves to the entry price once a trade is +1x its risk.
+CANDIDATE = orr.P(universe="top10", orw=(0.35, 9e9), window_end=15, manage="be")
 MAX_AGE_S = 120      # a signal first seen later than this after its bar closed is marked expired
 BAR_LAG_S = 4        # Alpaca publishes a minute bar a few seconds after it closes
 # 16:12, not 16:00: real costs come from consolidated (SIP) quotes, which the
@@ -125,7 +130,7 @@ class Feed:
         """New signals since the last call. Picks are fixed at 09:35 and kept."""
         open_ts = now.normalize() + pd.Timedelta(hours=9, minutes=30)
         k_end = int((now - open_ts - pd.Timedelta(seconds=BAR_LAG_S)).total_seconds() // 60)
-        if k_end < 5 or k_end > self.p.window_end + 3:
+        if k_end < 5 or k_end > self.p.window_end + 10:   # keep looking a while so late sightings are logged (as expired)
             return []
         today = now.date()
         k_end = min(k_end, self.p.window_end)
@@ -280,7 +285,7 @@ def summary_text(df: pd.DataFrame) -> str:
     L = ["# ORB on stocks in play - forward paper record", "",
          "Observation only: nothing is posted or traded. Rule: the 10 names with the most abnormal "
          "first-five-minute volume, range at least 0.35 of daily ATR, first 1-minute close outside "
-         "the 09:30-09:34 range before 10:00, stop at the session extreme, target 2x the risk, out at 15:55. "
+         "the 09:30-09:34 range before 09:45, stop at the session extreme (moved to entry once +1x risk), target 2x the risk, out at 15:55. "
          "Results are the stock's move from entry to exit after 0.05% slippage each way.", ""]
     df = df[df.result_pct.notna()] if len(df) else df
     if not len(df):

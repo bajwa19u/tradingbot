@@ -36,7 +36,7 @@ def day_rows(D: dict, d, p: orr.P = CANDIDATE) -> tuple[list[dict], list[dict]]:
                 "gap_pct": round(float(x.gap) * 100, 2) if x.gap == x.gap else None}
         sig = orr.first_signal(x, sa, qa, p, orr.FLAT_IDX - 1, spy)
         if sig is None:
-            pick["outcome"] = ("range too narrow" if ratio < p.orw[0] else "no breakout before 10:00")
+            pick["outcome"] = ("range too narrow" if ratio < p.orw[0] else "no breakout before 09:45")
             picks.append(pick)
             continue
         R, j, why = orr.exit_r(x, sig["kk"], sig["sign"], sig["entry"], sig["stop"], p)
@@ -71,8 +71,8 @@ def main(argv=None) -> int:
         trades += ts
     out = {"strategy": "ORB · Stocks in Play",
            "rules": "Top 10 by first-5-minute volume vs normal (of ~105 liquid names), opening range "
-                    "09:30-09:34 at least 0.35 of daily ATR, first 1-minute close outside it before 10:00, "
-                    "stop at the session extreme, target 2x risk, out by 15:55. 0.05% slippage a side.",
+                    "09:30-09:34 at least 0.35 of daily ATR, first 1-minute close outside it before 09:45, "
+                    "stop at the session extreme (moved to entry at +1x risk), target 2x risk, out by 15:55. 0.05% slippage a side.",
            "sizing": "Results are % of the account with a full stop costing 1%.",
            "from": str(dates[0]), "to": str(dates[-1]), "days": days, "trades": trades}
     OUT.parent.mkdir(exist_ok=True)

@@ -85,6 +85,13 @@ shared thing belongs in its own module.
   variable `DAYTRADE_STRATEGY`, set by the owner; the code default stays `classic`).
   First live session 5 Oct. Set it to `classic` or delete it to switch back.
   Month replay for the desk page: `src/orb_month.py` / `orb-month.yml`.
+- **Improvements, 3 Oct 2026 (`reports/orb_improve.md`).** 13 pre-listed changes, each
+  tested on the recent 63 sessions AND the earlier 189. Two passed and are now in
+  `orb_paper.CANDIDATE` (live + paper): no entries after 09:44, and stop to entry at
+  +1x risk. Everything else failed on one range or both - including every SPY/market
+  filter (trades WITH SPY did worse), longs/shorts only, top 5, breakout strength and
+  volume, wide-stop cap, 3x target. The rule is near break-even on the earlier nine
+  months (+0.002R -> about +0.02R); the edge is mostly recent.
 - **The free IEX premarket feed is unusable.** It carries premarket bars on
   about 1% of days. Anything built on premarket highs and lows silently does
   nothing. This is a data-plan problem, not a code problem.

@@ -13,9 +13,10 @@ the paper record and the backtest cannot disagree about what a signal is.
              against their own 14-session average, ranked once at 09:35
   range      09:30-09:34 one-minute high and low
   filter     range at least 0.35 of the 14-day average daily true range
-  entry      first completed 1-minute close outside the range, bars 09:35-09:59;
+  entry      first completed 1-minute close outside the range, bars 09:35-09:44;
              one trade per stock per day; both directions
-  stop       the session low (long) / high (short) so far, 0.02 ATR beyond it
+  stop       the session low (long) / high (short) so far, 0.02 ATR beyond it;
+             moved to the entry price once the trade is +1x its risk
   target     2x the risk; otherwise out at the 15:55 bar's close
   costs      researched at 0.05% slippage per side
 

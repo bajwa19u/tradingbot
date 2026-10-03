@@ -66,7 +66,7 @@ def test_the_live_bot_runs_the_rule_the_flag_names(monkeypatch):
 
 
 def test_the_live_rule_is_the_research_candidate():
-    assert ol.RULE == orr.P(universe="top10", orw=(0.35, 9e9))
+    assert ol.RULE == orr.P(universe="top10", orw=(0.35, 9e9), window_end=15, manage="be")
 
 
 # --- the scan ---------------------------------------------------------------------
