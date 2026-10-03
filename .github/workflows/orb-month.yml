@@ -1,0 +1,32 @@
+name: ORB month replay
+# Manual. The day-trade channel's in-play ORB strategy over the last N
+# sessions, every pick and trade, for the Trading Bot Desk page.
+# Writes reports/orb_month.json. Posts nothing, trades nothing.
+on:
+  workflow_dispatch:
+    inputs:
+      sessions: { description: "trading sessions", default: "21" }
+permissions: { contents: write }
+jobs:
+  month:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: cache/minute_iex_wide.pkl
+          key: minute-iex-wide-${{ github.run_id }}
+          restore-keys: minute-iex-wide-
+      - run: python -m src.orb_month --sessions "${{ inputs.sessions }}"
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+      - name: commit
+        run: |
+          git config user.name "github-actions[bot]"; git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/orb_month.json
+          git diff --cached --quiet || (git commit -m "orb month [skip ci]" && for i in 1 2 3 4 5; do git pull --rebase && git push && break; sleep 5; done)

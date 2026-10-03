@@ -88,6 +88,9 @@ def test_everything_healthy_passes_and_says_ready(env, monkeypatch):
 def test_a_healthy_check_exits_zero(env, monkeypatch):
     cs, qs = chain_of([330, 340, 350])
     with_http(monkeypatch, FakeHTTP(contracts=cs, quotes=qs))
+    # main() checks today's date; pin it, or this fails every weekend
+    real_run = sm.run
+    monkeypatch.setattr(sm, "run", lambda on=None: real_run(TODAY))
     assert sm.main(["--dry-run"]) == 0
 
 
