@@ -80,7 +80,11 @@ shared thing belongs in its own module.
   inactive) loses on train (-0.05R) - most of the old result came from the
   hand-made pool. The live-faithful case (IEX picks, SIP prices) is
   +0.02 / +0.02 / +0.06R at 0.025% a side, ~0 at 0.05%, negative at 0.10%.
-  A thin edge at best. Gate failed on the stress line again; flag stays off.
+  A thin edge at best. Gate failed on the stress line again.
+- **The owner switched the day-trade channel to `inplay_orb` on 3 Oct 2026** (repo
+  variable `DAYTRADE_STRATEGY`, set by the owner; the code default stays `classic`).
+  First live session 5 Oct. Set it to `classic` or delete it to switch back.
+  Month replay for the desk page: `src/orb_month.py` / `orb-month.yml`.
 - **The free IEX premarket feed is unusable.** It carries premarket bars on
   about 1% of days. Anything built on premarket highs and lows silently does
   nothing. This is a data-plan problem, not a code problem.
