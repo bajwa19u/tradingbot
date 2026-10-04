@@ -26,6 +26,7 @@ from .inplay_bot import RULE as INPLAY_RULE
 from .orb_month import day_rows
 
 OUT = REPO_ROOT / "reports" / "channel_stats.json"
+TRADES = REPO_ROOT / "reports" / "channel_trades.json"     # every trade, for the full report
 WINDOWS = {"week": 5, "month": 21, "3 months": 63}
 
 
@@ -54,9 +55,11 @@ def main(argv=None) -> int:
     lab = {d: "test" for d in dates}
 
     # day-trade channel, current rule
-    cur = []
+    cur, picks = [], {}
     for d in dates:
-        cur += [{"date": t["date"], "pct": t["result_pct"], "symbol": t["symbol"]} for t in day_rows(D, d)[1]]
+        pk, ts = day_rows(D, d)
+        picks[str(d)] = pk
+        cur += [{**t, "pct": t["result_pct"]} for t in ts]
     # day-trade channel, previous rule
     prev = orr.trades(D, dates, lab, orr.P())
     prev = [{"date": str(r.date), "pct": float(r.R), "symbol": r.sym} for r in prev.sort_values(["date", "k"]).itertuples()]
@@ -64,7 +67,9 @@ def main(argv=None) -> int:
     wide = {s: df for s, df in data.items() if s in ip.UNIVERSES["wide"]}
     dailies = ip.build(wide)
     inp = ip.run(wide, dailies, INPLAY_RULE, set(dates))
-    inp = sorted(({"date": t["date"], "pct": float(t["pct"]), "symbol": t["symbol"], "t": t["entry_time"]} for t in inp),
+    inp = sorted(({"date": t["date"], "pct": float(t["pct"]), "symbol": t["symbol"], "t": t["entry_time"],
+                   "side": t["side"], "entry_time": t["entry_time"], "exit_time": t["exit_time"], "exit_reason": t["reason"],
+                   "entry": t["entry"], "stop": t["stop"], "exit": t["exit"], "rvol5": t.get("rvol")} for t in inp),
                  key=lambda t: (t["date"], t["t"]))
 
     out = {"last_session": str(dates[-1]), "windows": {}}
@@ -77,6 +82,8 @@ def main(argv=None) -> int:
                                 "inplay": summarize(keep(inp), ds)}
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(json.dumps(out, indent=1))
+    TRADES.write_text(json.dumps({"sessions": [str(d) for d in dates], "day_trade": cur, "day_trade_picks": picks,
+                                  "inplay": inp, "old_rule": prev}, default=float))
     print(json.dumps(out, indent=1))
     return 0
 

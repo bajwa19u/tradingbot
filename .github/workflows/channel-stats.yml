@@ -25,5 +25,5 @@ jobs:
       - name: commit
         run: |
           git config user.name "github-actions[bot]"; git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add reports/channel_stats.json
+          git add reports/channel_stats.json reports/channel_trades.json
           git diff --cached --quiet || (git commit -m "channel stats [skip ci]" && for i in 1 2 3 4 5; do git pull --rebase && git push && break; sleep 5; done)
