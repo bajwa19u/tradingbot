@@ -3,7 +3,7 @@
   "seen": {
     "U": "above_light_volume",
     "CRWD": "at_the_level",
-    "AFRM": "at_the_level",
+    "AFRM": "above_light_volume",
     "ZM": "at_the_level",
     "NET": "at_the_level"
   }
