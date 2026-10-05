@@ -33,14 +33,33 @@ import pandas as pd
 
 from . import orb_research as orr
 from .config import REPO_ROOT
+from dataclasses import replace
+
 from .orb_paper import CANDIDATE, Feed, bar_label
 
 log = logging.getLogger("orb_live")
 
-RULE = CANDIDATE
+# Which list the rule trades is chosen by live_bot's DAYTRADE_STRATEGY:
+#   inplay_orb  the day's 10 most active names
+#   bigtech     the owner's fixed big tech list (orb_research.BIG_TECH), every day
+RULES = {"inplay_orb": (CANDIDATE, "ORB · Stocks in Play"),
+         "bigtech": (replace(CANDIDATE, universe="bigtech"), "ORB · Big Tech")}
+RULE, SETUP_NAME = RULES["inplay_orb"]
 PICKS_FILE = REPO_ROOT / "state" / "orb_live_picks.json"
-SETUP_NAME = "ORB · Stocks in Play"
 _FEED: Feed | None = None
+
+
+def use(strategy: str) -> None:
+    """Point the live rule at one of RULES."""
+    global RULE, SETUP_NAME, _FEED
+    RULE, SETUP_NAME = RULES[strategy]
+    _FEED = None
+
+
+def names() -> list[str]:
+    """What has to be downloaded: the fixed list, or the whole pool to rank."""
+    fixed = {"bigtech": orr.BIG_TECH, "static10": list(orr.STATIC10)}.get(RULE.universe)
+    return list(dict.fromkeys(fixed + ["SPY", "QQQ"])) if fixed else orr.POOL
 
 
 def feed(md_factory) -> Feed:
@@ -52,7 +71,7 @@ def feed(md_factory) -> Feed:
 
 def warm(now: pd.Timestamp, md_factory) -> None:
     """Fetch the wide history before the bell so 09:35 costs one request."""
-    feed(md_factory).history(now.date(), orr.POOL)
+    feed(md_factory).history(now.date(), names())
 
 
 def completed_minutes(now: pd.Timestamp) -> int:
@@ -68,17 +87,17 @@ def picks(f: Feed, now: pd.Timestamp, dry_run: bool) -> list[tuple[str, float]]:
     today = str(now.date())
     try:
         saved = json.loads(PICKS_FILE.read_text())
-        if saved.get("date") == today:
+        if saved.get("date") == today and saved.get("universe", "top10") == RULE.universe:
             return [tuple(x) for x in saved["picks"]]
     except (OSError, json.JSONDecodeError, KeyError):
         pass
-    f.history(now.date(), orr.POOL)
-    D = f.today_days(orr.POOL, now, 5)
+    f.history(now.date(), names())
+    D = f.today_days(names(), now, 5)
     chosen = orr.select({s: {now.date(): x} for s, x in D.items()}, now.date(), RULE.universe)
     out = [(s, round(float(D[s].rvol5), 2)) for s in chosen]
     if out and not dry_run:
         PICKS_FILE.parent.mkdir(exist_ok=True)
-        PICKS_FILE.write_text(json.dumps({"date": today, "at": now.strftime("%H:%M:%S"), "picks": out}))
+        PICKS_FILE.write_text(json.dumps({"date": today, "at": now.strftime("%H:%M:%S"), "universe": RULE.universe, "picks": out}))
     log.info("In play today: %s", out)
     return out
 
@@ -126,6 +145,7 @@ def scan(now: pd.Timestamp, md_factory, risk_pct: float, dry_run: bool = False
             "exit": None if live else round(exit_px, 2),
             "exit_time": None if live else bar_label(j), "reason": None if live else why,
             "pct": None if live or not np.isfinite(R) else round(float(R) * risk_pct, 2),
+            "setup": SETUP_NAME, "ranked": RULE.universe.startswith("top"),
             "post": True})
     out.sort(key=lambda t: (t["minute"], t["symbol"]))
     return out, f.newest
@@ -133,7 +153,7 @@ def scan(now: pd.Timestamp, md_factory, risk_pct: float, dry_run: bool = False
 
 def features_line(t: dict) -> str:
     """The setup, in one line: why this name, how big the range, which way it gapped."""
-    bits = [f"#{t['rank']} in play · opening volume {t['rvol5']:.1f}x normal",
+    bits = [(f"#{t['rank']} in play · " if t.get("ranked", True) else "") + f"opening volume {t['rvol5']:.1f}x normal",
             f"range {t['or_width_atr']:.2f} of daily ATR"]
     if t.get("gap") is not None:
         bits.append(f"gap {t['gap']:+.1f}%")

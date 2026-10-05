@@ -1,8 +1,7 @@
 name: ORB big tech study
-# Manual. Trade-level analysis of the current day-trade rule, candidate
-# improvements tested on two date ranges, and a speed benchmark of the live
-# signal path. Writes reports/orb_bigtech.md, orb_bigtech_trades.csv,
-# orb_bench.md. Posts nothing, trades nothing.
+# Manual. The current day-trade rule on the big tech list against the old
+# big-tech rule and the in-play version, on two date ranges. Writes
+# reports/orb_bigtech.md. Posts nothing, trades nothing.
 on: workflow_dispatch
 permissions: { contents: write }
 jobs:

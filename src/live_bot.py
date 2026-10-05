@@ -135,13 +135,16 @@ RETEST_ENABLED = False
 #   classic     the opening-range rule above on the fixed ten megacaps
 #   inplay_orb  ORB on the day's ten most in-play names with a wide range
 #               (src/orb_live.py; rules from reports/orb_research.md)
+#   bigtech     the same ORB rule on the owner's fixed big tech list
+#               (orb_research.BIG_TECH; reports/orb_bigtech.md)
 #
 # inplay_orb beat classic on train, validation and test, and is positive on
 # the untouched test (+0.14R, 95% CI above zero). It stays OFF by default
 # because it failed the go-live gate fixed before that run: at 0.10% slippage
 # per side its validation result turns negative. Its forward record is kept
 # by src/orb_paper.py either way. A test pins the default.
-STRATEGIES = ("classic", "inplay_orb")
+STRATEGIES = ("classic", "inplay_orb", "bigtech")
+ORB_STRATEGIES = ("inplay_orb", "bigtech")     # both run src/orb_live.py, on different lists
 
 
 def strategy() -> str:
@@ -153,6 +156,8 @@ def strategy() -> str:
 
 
 STRATEGY = strategy()
+if STRATEGY in ORB_STRATEGIES:
+    orb_live.use(STRATEGY)
 CLUSTER_MINUTES = 15
 CLUSTER_WARN = 4
 
@@ -456,7 +461,7 @@ def card(t: dict) -> str:
     levels = (f"`Entry {t['entry']:>9,.2f}`\n"
               f"`SL    {t['stop']:>9,.2f}`\n"
               f"{tp}")
-    setup = SETUP.get(t.get("rule"), t.get("rule", ""))
+    setup = t.get("setup") or SETUP.get(t.get("rule"), t.get("rule", ""))
 
     # Colour carries the direction while a trade is open and the RESULT once
     # it closes, because those are the two things worth seeing at a glance.
@@ -623,7 +628,7 @@ def all_trades(cfg: dict, now: pd.Timestamp) -> tuple[list[dict], str, bool]:
         except Exception as exc:                               # noqa: BLE001
             log.exception("Retest scan blew up: %s", exc)
     try:
-        trades += inplay_orb_scan(cfg, now) if STRATEGY == "inplay_orb" else opening_scan(cfg, now)
+        trades += inplay_orb_scan(cfg, now) if STRATEGY in ORB_STRATEGIES else opening_scan(cfg, now)
     except AlpacaError as exc:
         _ERRORS.append(str(exc)[:60])
         log.error("Opening scan failed: %s", exc)
@@ -872,8 +877,8 @@ def main(argv=None) -> int:
 
     cfg = settings()
     log.info("Day-trade strategy: %s", STRATEGY)
-    if STRATEGY == "inplay_orb":
-        try:                       # the wide history, before the bell, so 09:35 is one request
+    if STRATEGY in ORB_STRATEGIES:
+        try:                       # the history, before the bell, so 09:35 is one request
             orb_live.warm(now, _md)
         except Exception as exc:                               # noqa: BLE001
             log.error("In-play warm-up failed (%s) - will retry on the first scan", exc)

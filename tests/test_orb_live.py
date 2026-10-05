@@ -147,3 +147,41 @@ def test_a_late_breakout_is_never_posted_as_fresh(market, monkeypatch, tmp_path)
     lb.tick({"risk_pct": 1.0, "equity": 100000}, dry_run=True)
     entry = [m for m in sent if "AAA" in m]
     assert entry and "EXPIRED" in entry[0]
+
+
+# --- the big tech list (5 Oct 2026) ------------------------------------------------
+def test_bigtech_is_a_strategy_the_flag_accepts(monkeypatch):
+    monkeypatch.setenv("DAYTRADE_STRATEGY", "bigtech")
+    assert lb.strategy() == "bigtech"
+
+
+def test_bigtech_trades_the_fixed_list_with_the_same_rule():
+    ol.use("bigtech")
+    try:
+        assert ol.RULE.universe == "bigtech" and ol.SETUP_NAME == "ORB · Big Tech"
+        assert {f: getattr(ol.RULE, f) for f in ol.RULE.__dataclass_fields__ if f != "universe"} == \
+               {f: getattr(ol.CANDIDATE, f) for f in ol.CANDIDATE.__dataclass_fields__ if f != "universe"}
+        assert set(ol.names()) == set(orr.BIG_TECH) | {"SPY", "QQQ"}
+        assert {"TSLA", "AMD"} <= set(orr.BIG_TECH)
+    finally:
+        ol.use("inplay_orb")
+
+
+def test_the_bot_runs_the_orb_scan_for_bigtech(monkeypatch):
+    called = []
+    monkeypatch.setattr(lb, "inplay_orb_scan", lambda cfg, now: called.append(1) or [])
+    monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: called.append(0) or [])
+    monkeypatch.setattr(lb, "STRATEGY", "bigtech")
+    lb.all_trades({"risk_pct": 1.0}, at("09:43:05"))
+    assert called == [1]
+
+
+def test_a_bigtech_card_names_its_setup_and_no_in_play_rank(market, monkeypatch):
+    monkeypatch.setattr(orr, "BIG_TECH", ["AAA", "BBB"])
+    ol.use("bigtech")
+    try:
+        t = scan(market, "09:43:05")[0][0]
+        text = lb.card(t)
+        assert "ORB · Big Tech" in text and "in play" not in text
+    finally:
+        ol.use("inplay_orb")
