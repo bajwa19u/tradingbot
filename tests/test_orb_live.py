@@ -185,3 +185,23 @@ def test_a_bigtech_card_names_its_setup_and_no_in_play_rank(market, monkeypatch)
         assert "ORB · Big Tech" in text and "in play" not in text
     finally:
         ol.use("inplay_orb")
+
+
+def test_a_day_is_finished_on_the_rule_it_started_with(monkeypatch, tmp_path):
+    """5 Oct 2026: the switch changed mid-day; a late job must not close the
+    morning's cards with another rule's trades."""
+    import json as _json
+    today = str(lb.pd.Timestamp.now(tz=lb.EASTERN).date())
+    (tmp_path / lb.SEEN_FILE).write_text(_json.dumps({"date": today, "entries": ["ORB-MSFT"], "exits": [],
+                                                      "summary": False, "strategy": "inplay_orb"}))
+    monkeypatch.setattr(lb, "STATE", tmp_path)
+    monkeypatch.setattr(lb, "STRATEGY", "bigtech")
+    seen = []
+    monkeypatch.setattr(lb, "tick", lambda cfg, dry: seen.append((lb.STRATEGY, ol.RULE.universe)) or 0)
+    monkeypatch.setattr(lb, "settings", lambda: {"equity": 1e5, "risk_pct": 1.0})
+    monkeypatch.setattr(ol, "warm", lambda now, md: None)
+    try:
+        lb.main(["--force", "--dry-run"])
+    finally:
+        ol.use("inplay_orb")
+    assert seen == [("inplay_orb", "top10")]

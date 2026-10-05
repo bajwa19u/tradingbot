@@ -278,6 +278,7 @@ def main(argv=None) -> int:
     cfg = settings()
     if not args.until:
         tick(cfg, args.dry_run)
+        paper_tick(pd.Timestamp.now(tz=EASTERN), args.dry_run)    # settles the paper record after the close
         return 0
 
     stop = pd.Timestamp(args.until).time()

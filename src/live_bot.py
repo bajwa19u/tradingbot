@@ -594,7 +594,7 @@ def load_seen(date: str) -> dict:
     # close can rewrite that message instead of posting a second one. A file
     # written before this existed simply has no cards, and every close in it
     # falls back to its own message.
-    blank = {"date": date, "entries": [], "exits": [], "summary": False,
+    blank = {"date": date, "entries": [], "exits": [], "summary": False, "strategy": "",
              "cards": {}, "expired": [], "stale_warned": "", "error_warned": ""}
     f = STATE / SEEN_FILE
     if not f.exists():
@@ -655,6 +655,7 @@ def tick(cfg: dict, dry_run: bool) -> int:
 
     date = str(now.date())
     seen = load_seen(date)
+    seen["strategy"] = seen.get("strategy") or STRATEGY      # the rule that started the day finishes it
     stale = stale_since(detected)
     # (text, trade id, is_close) — held until after the dry-run check so a
     # dry run never touches Discord and never records anything as announced.
@@ -876,6 +877,16 @@ def main(argv=None) -> int:
             log.info("Before %s ET — nothing to do.", first); return 0
 
     cfg = settings()
+    # A day is finished on the rule it started with, even if the switch was
+    # changed mid-session (5 Oct 2026): otherwise a late job would close the
+    # morning's cards with a different rule's trades.
+    global STRATEGY
+    recorded = load_seen(str(now.date())).get("strategy")
+    if recorded in STRATEGIES and recorded != STRATEGY:
+        log.info("Today started on %s; finishing it on that rule (switch says %s)", recorded, STRATEGY)
+        STRATEGY = recorded
+    if STRATEGY in ORB_STRATEGIES:
+        orb_live.use(STRATEGY)
     log.info("Day-trade strategy: %s", STRATEGY)
     if STRATEGY in ORB_STRATEGIES:
         try:                       # the history, before the bell, so 09:35 is one request
