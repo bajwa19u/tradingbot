@@ -160,3 +160,64 @@ def test_a_fresh_entry_is_not_marked(monkeypatch, tmp_path):
     monkeypatch.setenv("DISCORD_WEBHOOK_INPLAY", "https://second")
     b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False, now=now)
     assert posts and "EXPIRED" not in posts[0]
+
+
+# --- 5 Oct 2026: live trades were closed the minute they opened ---------------
+def _session(minutes: int, break_at: int = 12) -> pd.DataFrame:
+    """09:30 onward, `minutes` one-minute bars: a 5-minute range of 99-101,
+    then a close below 99 at minute `break_at`, then drifting lower."""
+    idx = pd.date_range("2026-10-05 09:30", periods=minutes, freq="min", tz=b.EASTERN)
+    close = [100.0] * minutes
+    for i in range(5):
+        close[i] = 99.2 + 0.4 * (i % 5)
+    for i in range(break_at, minutes):
+        close[i] = 98.6 - 0.01 * (i - break_at)
+    df = pd.DataFrame({"open": close, "close": close, "volume": 1e5}, index=idx)
+    df["high"], df["low"] = df.close + 0.05, df.close - 0.05
+    df.iloc[0, df.columns.get_loc("high")], df.iloc[1, df.columns.get_loc("low")] = 101.0, 99.0
+    return df
+
+
+def test_a_live_trade_with_no_exit_yet_stays_open():
+    """Mid-session the bars simply run out. That is not the closing bell."""
+    from src import inplay as ip
+    ts = ip.trade_day(_session(16), atr=2.0, p={**b.RULE, "live": True})
+    assert len(ts) == 1
+    assert ts[0]["reason"] == "open" and ts[0]["exit"] is None and ts[0]["pct"] is None
+
+
+def test_the_backtest_still_closes_at_the_bell():
+    from src import inplay as ip
+    ts = ip.trade_day(_session(390), atr=2.0, p=b.RULE)
+    assert ts[0]["reason"] == "close" and ts[0]["exit"] is not None
+
+
+def test_the_bot_scans_as_a_live_session(monkeypatch):
+    seen = {}
+    real = b.ip.trade_day
+    monkeypatch.setattr(b.ip, "trade_day", lambda rth, atr, p: seen.update(p) or [])
+    import inspect
+    assert '"live": True' in inspect.getsource(b.scan)
+
+
+def test_a_card_with_no_target_says_so_instead_of_zero():
+    from src import live_bot as lb
+    text = lb.card(trade(target=None))
+    assert "0.00" not in text and "none" in text and "15:55" in text
+    assert "In-play" in text
+
+
+def test_a_card_closed_by_mistake_is_reopened(monkeypatch, tmp_path):
+    monkeypatch.setattr(b, "STATE", tmp_path)
+    monkeypatch.setattr(b, "REPORTS", tmp_path)
+    (tmp_path / b.SEEN_FILE).write_text(json.dumps({
+        "date": "2026-09-30", "entries": [trade()["id"]], "exits": [trade()["id"]],
+        "summary": False, "picks": True, "cards": {trade()["id"]: "m1"}}))
+    monkeypatch.setattr(b, "scan", lambda cfg, now: ([trade()], [], "11:00"))
+    monkeypatch.setenv("DISCORD_WEBHOOK_INPLAY", "https://example.invalid/hook")
+    edits = []
+    monkeypatch.setattr(b.dm, "edit", lambda u, m, t: edits.append((m, t)) or True)
+    monkeypatch.setattr(b.dm, "post", lambda u, t: "m2")
+    b.tick({"equity": 100000, "risk_pct": 1.0}, dry_run=False, now=MIDDAY)
+    assert edits and edits[0][0] == "m1" and "❌" not in edits[0][1] and "✅" not in edits[0][1]
+    assert trade()["id"] not in json.loads((tmp_path / b.SEEN_FILE).read_text())["exits"]

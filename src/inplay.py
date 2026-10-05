@@ -222,6 +222,14 @@ def simulate(rth: pd.DataFrame, j: int, side: str, atr: float,
         if px is not None:
             break
     if px is None:
+        if p.get("live") and times[-1].time() < flat:
+            # The session isn't over: running out of bars means "no exit yet",
+            # not "closed at the bell". Without this every live trade was
+            # closed on the minute it opened (5 Oct 2026).
+            return {"side": side, "entry": round(entry, 4), "stop": round(stop, 4),
+                    "exit": None, "reason": "open", "r": None, "pct": None,
+                    "entry_time": str(times[j])[11:16], "exit_time": None,
+                    "rps": round(rps, 4), "target": target}
         px, why = float(rth["close"].iloc[-1]), "close"
 
     exit_px = px * (1 + slip) if side == "short" else px * (1 - slip)

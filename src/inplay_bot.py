@@ -113,7 +113,7 @@ def scan(cfg: dict, now: pd.Timestamp) -> tuple[list[dict], list[tuple], str]:
             continue
         d = dailies[sym]
         atr = ip.atr14(d, d.index.get_loc(today))
-        for t in ip.trade_day(rth, atr, RULE):
+        for t in ip.trade_day(rth, atr, {**RULE, "live": True}):
             live = t["reason"] == "open"
             rps = t["rps"]
             n = shares(t["entry"], rps, cfg["equity"], cfg["risk_pct"])
@@ -122,7 +122,7 @@ def scan(cfg: dict, now: pd.Timestamp) -> tuple[list[dict], list[tuple], str]:
                 "rule": "inplay", "symbol": sym, "side": t["side"],
                 "entry_time": t["entry_time"], "entry": round(t["entry"], 2),
                 "stop": round(t["stop"], 2),
-                "target": round(t.get("target") or 0.0, 2),
+                "target": round(t["target"], 2) if t.get("target") else None,   # this rule has no target
                 "shares": n, "risk": round(n * rps, 2), "rvol": round(rvol, 1),
                 "level": t["level"], "level_name": t["level_name"],
                 "exit": None if live else round(t["exit"], 2),
@@ -193,6 +193,10 @@ def tick(cfg: dict, dry_run: bool, now: pd.Timestamp | None = None) -> int:
         outbox.append((picks_msg(picks, now.strftime("%A %d %B")), "", False))
         seen["picks"] = True
     for t in trades:
+        if t["exit"] is None and t["id"] in seen["exits"]:
+            # recorded as closed but still running (the 5 Oct bug): put the card back
+            seen["exits"].remove(t["id"])
+            outbox.append((card({**t, "exit": None}), t["id"], True))
         if t["id"] not in seen["entries"]:
             text = card({**t, "exit": None})
             age = entry_age(t, now)
@@ -219,12 +223,14 @@ def tick(cfg: dict, dry_run: bool, now: pd.Timestamp | None = None) -> int:
     if not hook:
         log.error("DISCORD_WEBHOOK_INPLAY is not set — nothing sent")
         return 0
+    open_ids = {t["id"] for t in trades if t["exit"] is None}
     for text, tid, is_close in outbox:
         if is_close:
             mid = seen["cards"].get(tid)
             if not (mid and dm.edit(hook, mid, text)):
                 dm.post(hook, text)
-            seen["exits"].append(tid)
+            if tid not in open_ids:
+                seen["exits"].append(tid)
         else:
             mid = dm.post(hook, text)
             if not tid:

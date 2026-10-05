@@ -438,7 +438,7 @@ def inplay_orb_scan(cfg: dict, now: pd.Timestamp) -> list[dict]:
     return out
 
 
-SETUP = {"opening": "Opening Range Breakout", "retest": "Break & Retest",
+SETUP = {"opening": "Opening Range Breakout", "retest": "Break & Retest", "inplay": "In-play · opening range",
          "inplay_orb": orb_live.SETUP_NAME}
 
 
@@ -451,9 +451,11 @@ def card(t: dict) -> str:
     """
     short = t.get("side", "short") == "short"
     side = f"{'SHORT' if short else 'LONG'} {t['symbol']}"
+    tp = (f"`TP    {t['target']:>9,.2f}`" if t.get("target")
+          else "`TP         none`  held until the stop or 15:55")
     levels = (f"`Entry {t['entry']:>9,.2f}`\n"
               f"`SL    {t['stop']:>9,.2f}`\n"
-              f"`TP    {t['target']:>9,.2f}`")
+              f"{tp}")
     setup = SETUP.get(t.get("rule"), t.get("rule", ""))
 
     # Colour carries the direction while a trade is open and the RESULT once
