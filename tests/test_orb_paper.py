@@ -249,3 +249,8 @@ def test_why_not_explains_a_symbol_in_plain_words(feed):
     assert "PICKED" in text and "09:42" in text and "inside the 09:35-09:44 entry window" in text
     assert "Previous day high" in text
     assert "not in the" in op.why_not(feed, TODAY, "ZZZZ", at("12:00:00"))
+
+
+def test_enough_history_is_fetched_to_rank_the_whole_list():
+    """5 Oct 2026: a 32-day window left only 31 of ~105 stocks with 14 clean sessions."""
+    assert op.HISTORY_DAYS >= 90

@@ -50,6 +50,11 @@ BAR_LAG_S = 4        # Alpaca publishes a minute bar a few seconds after it clos
 # free plan serves 15 minutes late, and the bell exit is at 15:56.
 SETTLE_AFTER = "16:12"
 CHUNK, WORKERS = 15, 3     # history download: symbols per request, requests in flight
+# Calendar days of minute history fetched before the bell. Days with patchy IEX
+# data (< 300 bars) are dropped, and a stock needs 14 clean ones to be ranked.
+# 32 days left about 31 of ~105 stocks rankable on 5 Oct 2026; the research
+# never had that limit. 120 days gives every regularly traded name its 14.
+HISTORY_DAYS = 120
 
 STATE_FILE = REPO_ROOT / "state" / "orb_paper.json"
 LEDGER = REPO_ROOT / "reports" / "orb_paper.csv"
@@ -86,7 +91,7 @@ class Feed:
         need = [s for s in symbols if s not in self.hist]
         if not need:
             return
-        start = (pd.Timestamp(today) - pd.Timedelta(days=int((orr.LOOKBACK + 6) * 1.6))).date()
+        start = (pd.Timestamp(today) - pd.Timedelta(days=HISTORY_DAYS)).date()
         chunks = [need[i:i + CHUNK] for i in range(0, len(need), CHUNK)]
 
         def fetch(chunk):
