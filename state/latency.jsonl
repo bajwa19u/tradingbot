@@ -70,3 +70,40 @@
 {"kind": "tick", "at": "2026-10-02 15:58:01.019978-04:00", "newest_bar": "2026-10-02 15:57:00-04:00", "stale": false, "new_messages": 0, "fetch_5m": 0.029, "fetch_1m": 0.0, "scan": 0.351, "discord": 0.0, "total": 0.351}
 {"kind": "tick", "at": "2026-10-02 15:59:01.074620-04:00", "newest_bar": "2026-10-02 15:58:00-04:00", "stale": false, "new_messages": 0, "fetch_5m": 0.029, "fetch_1m": 0.0, "scan": 0.342, "discord": 0.0, "total": 0.343}
 {"kind": "tick", "at": "2026-10-02 16:00:32.461867-04:00", "newest_bar": "2026-10-02 15:59:00-04:00", "stale": false, "new_messages": 1, "fetch_5m": 0.03, "fetch_1m": 0.0, "scan": 0.345, "discord": 0.256, "total": 0.602}
+{"kind": "tick", "at": "2026-10-05 09:31:00.097276-04:00", "newest_bar": "None", "stale": false, "new_messages": 0, "fetch_1m": 0.0, "scan": 0.0, "discord": 0.0, "total": 0.001}
+{"kind": "tick", "at": "2026-10-05 09:32:00.233223-04:00", "newest_bar": "None", "stale": false, "new_messages": 0, "fetch_1m": 0.0, "scan": 0.0, "discord": 0.0, "total": 0.001}
+{"kind": "tick", "at": "2026-10-05 09:33:00.236489-04:00", "newest_bar": "None", "stale": false, "new_messages": 0, "fetch_1m": 0.0, "scan": 0.0, "discord": 0.0, "total": 0.001}
+{"kind": "tick", "at": "2026-10-05 09:34:00.247133-04:00", "newest_bar": "None", "stale": false, "new_messages": 0, "fetch_1m": 0.0, "scan": 0.0, "discord": 0.0, "total": 0.001}
+{"kind": "tick", "at": "2026-10-05 09:35:00.323457-04:00", "newest_bar": "None", "stale": false, "new_messages": 0, "fetch_1m": 0.0, "scan": 0.0, "discord": 0.0, "total": 0.001}
+{"kind": "tick", "at": "2026-10-05 09:36:04.422639-04:00", "newest_bar": "2026-10-05 09:35:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 4.173, "scan": 4.173, "discord": 0.0, "total": 4.174}
+{"kind": "tick", "at": "2026-10-05 09:37:00.867196-04:00", "newest_bar": "2026-10-05 09:36:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.634, "scan": 0.634, "discord": 0.0, "total": 0.634}
+{"kind": "tick", "at": "2026-10-05 09:38:00.904762-04:00", "newest_bar": "2026-10-05 09:37:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.67, "scan": 0.67, "discord": 0.0, "total": 0.671}
+{"kind": "signal", "id": "ORB-MSFT-2026-10-05", "rule": "inplay_orb", "entry_bar": "09:38", "detected_age_s": 0.645575, "posted_age_s": 1.447168, "expired": false, "posted_at": "2026-10-05 09:39:01.447168-04:00"}
+{"kind": "tick", "at": "2026-10-05 09:39:00.645575-04:00", "newest_bar": "2026-10-05 09:38:00-04:00", "stale": false, "new_messages": 1, "fetch_1m": 0.562, "scan": 0.562, "discord": 0.802, "total": 1.364}
+{"kind": "tick", "at": "2026-10-05 09:40:00.879955-04:00", "newest_bar": "2026-10-05 09:39:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.644, "scan": 0.645, "discord": 0.0, "total": 0.645}
+{"kind": "tick", "at": "2026-10-05 09:41:00.941564-04:00", "newest_bar": "2026-10-05 09:40:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.706, "scan": 0.706, "discord": 0.0, "total": 0.706}
+{"kind": "signal", "id": "ORB-BAC-2026-10-05", "rule": "inplay_orb", "entry_bar": "09:40", "detected_age_s": 60.802966, "posted_age_s": 61.098783, "expired": false, "posted_at": "2026-10-05 09:42:01.098783-04:00"}
+{"kind": "tick", "at": "2026-10-05 09:42:00.802966-04:00", "newest_bar": "2026-10-05 09:41:00-04:00", "stale": false, "new_messages": 1, "fetch_1m": 0.567, "scan": 0.567, "discord": 0.296, "total": 0.864}
+{"kind": "signal", "id": "ORB-NVDA-2026-10-05", "rule": "inplay_orb", "entry_bar": "09:41", "detected_age_s": 60.75, "posted_age_s": 60.999774, "expired": false, "posted_at": "2026-10-05 09:43:00.999774-04:00"}
+{"kind": "tick", "at": "2026-10-05 09:43:00.750000-04:00", "newest_bar": "2026-10-05 09:42:00-04:00", "stale": false, "new_messages": 1, "fetch_1m": 0.504, "scan": 0.504, "discord": 0.25, "total": 0.754}
+{"kind": "tick", "at": "2026-10-05 09:44:00.639394-04:00", "newest_bar": "2026-10-05 09:43:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.557, "scan": 0.557, "discord": 0.0, "total": 0.558}
+{"kind": "tick", "at": "2026-10-05 09:45:00.796440-04:00", "newest_bar": "2026-10-05 09:44:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.563, "scan": 0.563, "discord": 0.0, "total": 0.564}
+{"kind": "tick", "at": "2026-10-05 09:46:01.425820-04:00", "newest_bar": "2026-10-05 09:45:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 1.148, "scan": 1.149, "discord": 0.0, "total": 1.149}
+{"kind": "tick", "at": "2026-10-05 09:47:00.806554-04:00", "newest_bar": "2026-10-05 09:46:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.558, "scan": 0.558, "discord": 0.0, "total": 0.559}
+{"kind": "tick", "at": "2026-10-05 09:48:00.711536-04:00", "newest_bar": "2026-10-05 09:47:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.471, "scan": 0.471, "discord": 0.0, "total": 0.471}
+{"kind": "tick", "at": "2026-10-05 09:49:00.643820-04:00", "newest_bar": "2026-10-05 09:48:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.417, "scan": 0.417, "discord": 0.0, "total": 0.417}
+{"kind": "tick", "at": "2026-10-05 09:50:00.630322-04:00", "newest_bar": "2026-10-05 09:49:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.396, "scan": 0.396, "discord": 0.0, "total": 0.396}
+{"kind": "tick", "at": "2026-10-05 09:51:00.811782-04:00", "newest_bar": "2026-10-05 09:50:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.576, "scan": 0.576, "discord": 0.0, "total": 0.577}
+{"kind": "tick", "at": "2026-10-05 09:52:00.763798-04:00", "newest_bar": "2026-10-05 09:51:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.545, "scan": 0.545, "discord": 0.0, "total": 0.546}
+{"kind": "tick", "at": "2026-10-05 09:53:00.637230-04:00", "newest_bar": "2026-10-05 09:52:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.404, "scan": 0.404, "discord": 0.0, "total": 0.405}
+{"kind": "tick", "at": "2026-10-05 09:54:00.705742-04:00", "newest_bar": "2026-10-05 09:53:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.467, "scan": 0.468, "discord": 0.0, "total": 0.468}
+{"kind": "tick", "at": "2026-10-05 09:55:00.552317-04:00", "newest_bar": "2026-10-05 09:54:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.468, "scan": 0.468, "discord": 0.0, "total": 0.469}
+{"kind": "tick", "at": "2026-10-05 09:56:00.838288-04:00", "newest_bar": "2026-10-05 09:55:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.604, "scan": 0.604, "discord": 0.0, "total": 0.605}
+{"kind": "tick", "at": "2026-10-05 09:57:00.681077-04:00", "newest_bar": "2026-10-05 09:56:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.453, "scan": 0.453, "discord": 0.0, "total": 0.453}
+{"kind": "tick", "at": "2026-10-05 09:58:02.717640-04:00", "newest_bar": "2026-10-05 09:57:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.49, "scan": 0.491, "discord": 0.0, "total": 0.491}
+{"kind": "tick", "at": "2026-10-05 09:59:00.726653-04:00", "newest_bar": "2026-10-05 09:58:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.48, "scan": 0.48, "discord": 0.0, "total": 0.48}
+{"kind": "tick", "at": "2026-10-05 10:00:00.484636-04:00", "newest_bar": "2026-10-05 09:59:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.407, "scan": 0.407, "discord": 0.0, "total": 0.408}
+{"kind": "tick", "at": "2026-10-05 10:01:01.396216-04:00", "newest_bar": "2026-10-05 10:00:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 1.311, "scan": 1.311, "discord": 0.0, "total": 1.311}
+{"kind": "tick", "at": "2026-10-05 10:02:01.097214-04:00", "newest_bar": "2026-10-05 10:01:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.854, "scan": 0.854, "discord": 0.0, "total": 0.854}
+{"kind": "tick", "at": "2026-10-05 10:03:00.777050-04:00", "newest_bar": "2026-10-05 10:02:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.694, "scan": 0.694, "discord": 0.0, "total": 0.695}
+{"kind": "tick", "at": "2026-10-05 10:04:00.939256-04:00", "newest_bar": "2026-10-05 10:03:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.699, "scan": 0.699, "discord": 0.0, "total": 0.699}
