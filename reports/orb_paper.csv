@@ -1,0 +1,4 @@
+date,symbol,side,bar,seen_at,latency_s,expired,source,or_high,or_low,level,entry,stop,target,risk_pct,rvol5,or_width_atr,displacement,breakout_rvol,extension,gap_pct,vwap_ok,spy_ok,qqq_ok,same_side_10m,exit_bar,exit_reason,result_pct,win,backtest_agrees,entry_cost_pct,exit_cost_pct,result_real_pct
+2026-10-05,BAC,short,09:40,,,,backtest only,54.165,53.76,53.76,53.6931,54.1869,52.7056,0.92,2.61,0.37,0.099,2.0,0.181,0.47,True,False,False,0,10:19,stop,-0.97,False,missed live,0.037,0.009,-0.916
+2026-10-05,NVDA,long,09:41,,,,backtest only,237.47,235.2,237.47,237.7688,235.0978,243.1108,1.123,1.66,0.444,0.079,1.48,0.232,0.92,True,True,True,0,15:55,bell,0.392,True,missed live,0.021,-0.013,0.484
+2026-10-05,MSFT,long,09:38,,,,backtest only,528.66,521.91,528.66,528.9944,521.6766,543.63,1.383,1.62,0.578,0.01,0.7,0.183,0.9,True,True,True,0,15:55,bell,-0.952,False,missed live,0.068,0.013,-0.933
