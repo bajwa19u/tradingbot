@@ -178,9 +178,15 @@ class P:
     max_risk: float = 0.10         # skip if the stop is further than this share of the entry price
 
 
+# The owner's day-trade list (5 Oct 2026): the big tech names, traded every day.
+BIG_TECH = ["TSLA", "AMD", "NVDA", "META", "AAPL", "MSFT"]
+
+
 def select(D: dict, d, universe: str) -> list[str]:
     if universe == "static10":
         return [s for s in STATIC10 if d in D.get(s, {})]
+    if universe == "bigtech":
+        return [s for s in BIG_TECH if d in D.get(s, {})]
     # topN: first-5-minute volume vs its 14-session average (needs 09:35)
     # pmN:  premarket 04:00-09:15 volume vs its 14-session average (orb_checks
     #       attaches `pm_rvol`; delayed SIP makes it known live by 09:30)
