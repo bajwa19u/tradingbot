@@ -472,7 +472,9 @@ def card(t: dict) -> str:
             late = f"{age / 60:.0f} min" if age and age >= 90 else f"{age:.0f}s" if age else "too"
             head = f"⚪ **EXPIRED · {side}**  ·  {t['entry_time']} ET  ·  seen {late} late, do not chase\n"
         else:
-            head = (f"{'🔴' if short else '🟢'} **{side}**  ·  {t['entry_time']} ET"
+            # Words, not just colour: a reader scrolling back must see at once
+            # whether a card is a live entry or a finished trade (5 Oct 2026).
+            head = (f"{'🔴' if short else '🟢'} **NEW SIGNAL · {side}**  ·  {t['entry_time']} ET"
                     + (f"  ·  ⏱ {age:.0f}s" if age is not None else "") + "\n")
         if t.get("rule") == "inplay_orb":
             # Signal time = the close of the breakout bar; age = how long ago that was.
@@ -495,7 +497,7 @@ def card(t: dict) -> str:
     # scheme nobody can audit after the fact is decoration.
     lv = conf.level(t)
     badge = f"{conf.LABEL[lv]} · " if lv else ""
-    return (f"{'✅' if won else '❌'} **{side}**  ·  "
+    return (f"{'✅' if won else '❌'} **CLOSED · {'WIN' if won else 'LOSS'} · {side}**  ·  "
             f"{t['entry_time']} → {t['exit_time']}\n"
             f"{levels}\n"
             f"`Exit  {t['exit']:>9,.2f}`  {why}\n"

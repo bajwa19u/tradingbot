@@ -221,3 +221,13 @@ def test_a_card_closed_by_mistake_is_reopened(monkeypatch, tmp_path):
     b.tick({"equity": 100000, "risk_pct": 1.0}, dry_run=False, now=MIDDAY)
     assert edits and edits[0][0] == "m1" and "❌" not in edits[0][1] and "✅" not in edits[0][1]
     assert trade()["id"] not in json.loads((tmp_path / b.SEEN_FILE).read_text())["exits"]
+
+
+def test_a_card_says_in_words_whether_it_is_live_or_finished():
+    """5 Oct 2026: readers took a ❌ for 'this signal is a loss before it starts'."""
+    from src import live_bot as lb
+    assert "NEW SIGNAL · SHORT NVDA" in lb.card(trade())
+    lost = lb.card(trade(exit=184.2, exit_time="10:05", reason="stop", pct=-1.04))
+    won = lb.card(trade(exit=179.0, exit_time="11:30", reason="target", pct=2.0))
+    assert "CLOSED · LOSS · SHORT NVDA" in lost and "CLOSED · WIN · SHORT NVDA" in won
+    assert "NEW SIGNAL" not in lost
