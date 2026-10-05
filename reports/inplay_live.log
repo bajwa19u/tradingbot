@@ -1,1 +1,195 @@
-2026-10-02 20:05:30,383 INFO Past 16:05 ET — nothing to do.
+2026-10-05 13:40:45,669 INFO Polling every 60s until 16:15 ET
+2026-10-05 13:41:02,817 INFO ORB paper picks: ['BAC', 'GE', 'NKE', 'NVDA', 'MSFT', 'UNH', 'PEP', 'AAPL', 'INTC', 'MCD']
+2026-10-05 13:41:02,818 INFO ORB paper: MSFT long 528.9944 at 09:38, seen 105.7s after the close
+2026-10-05 13:41:47,399 INFO 09:41:02 ET · bars through 09:40 · 5 in play · 2 trade(s) · 5 new
+
+📡 **In play · Monday 05 October**
+`DKNG    11.3x`
+`GD       6.5x`
+`LIN      2.7x`
+`BAC      2.6x`
+`GE       2.1x`
+_ranked by opening volume against their own normal_
+
+🔴 **SHORT LIN**  ·  09:39 ET
+`Entry    479.65`
+`SL       483.35`
+`TP         0.00`
+_inplay_
+
+❌ **SHORT LIN**  ·  09:39 → 09:40
+`Entry    479.65`
+`SL       483.35`
+`TP         0.00`
+`Exit     479.80`  close
+**-0.04%** · _inplay_
+
+🔴 **SHORT BAC**  ·  09:40 ET
+`Entry     53.69`
+`SL        54.24`
+`TP         0.00`
+_inplay_
+
+❌ **SHORT BAC**  ·  09:40 → 09:40
+`Entry     53.69`
+`SL        54.24`
+`TP         0.00`
+`Exit      53.75`  close
+**-0.10%** · _inplay_
+2026-10-05 13:42:04,650 INFO ORB paper: BAC short 53.6931 at 09:40, seen 64.0s after the close
+2026-10-05 13:42:04,650 INFO ORB paper: NVDA long 237.7688 at 09:41, seen 4.0s after the close
+2026-10-05 13:42:46,382 INFO 09:42:04 ET · bars through 09:41 · 5 in play · 2 trade(s) · 0 new
+2026-10-05 13:43:45,643 INFO 09:43:04 ET · bars through 09:42 · 5 in play · 3 trade(s) · 2 new
+
+🟢 **LONG DKNG**  ·  09:42 ET
+`Entry     19.59`
+`SL        19.00`
+`TP         0.00`
+_inplay_
+
+❌ **LONG DKNG**  ·  09:42 → 09:42
+`Entry     19.59`
+`SL        19.00`
+`TP         0.00`
+`Exit      19.57`  close
+**-0.03%** · _inplay_
+2026-10-05 13:44:41,756 INFO 09:44:04 ET · bars through 09:43 · 5 in play · 3 trade(s) · 0 new
+2026-10-05 13:46:16,541 INFO 09:45:04 ET · bars through 09:44 · 5 in play · 3 trade(s) · 0 new
+2026-10-05 13:47:45,632 INFO 09:47:04 ET · bars through 09:46 · 5 in play · 3 trade(s) · 0 new
+2026-10-05 13:48:42,918 INFO 09:48:04 ET · bars through 09:47 · 5 in play · 3 trade(s) · 0 new
+2026-10-05 13:49:38,248 INFO 09:49:04 ET · bars through 09:48 · 5 in play · 3 trade(s) · 0 new
+2026-10-05 13:50:57,741 INFO 09:50:04 ET · bars through 09:49 · 5 in play · 3 trade(s) · 0 new
+2026-10-05 13:51:47,072 INFO 09:51:04 ET · bars through 09:50 · 5 in play · 4 trade(s) · 2 new
+
+⚪ **EXPIRED** · seen 4 min late, do not chase
+🔴 **SHORT DE**  ·  09:46 ET
+`Entry    677.41`
+`SL       685.20`
+`TP         0.00`
+_inplay_
+
+❌ **SHORT DE**  ·  09:46 → 09:50
+`Entry    677.41`
+`SL       685.20`
+`TP         0.00`
+`Exit     680.48`  close
+**-0.39%** · _inplay_
+2026-10-05 13:52:46,949 INFO 09:52:04 ET · bars through 09:51 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 13:53:38,140 INFO 09:53:04 ET · bars through 09:52 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 13:54:43,999 INFO 09:54:04 ET · bars through 09:53 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 13:55:55,883 INFO 09:55:04 ET · bars through 09:54 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 13:56:48,240 INFO 09:56:04 ET · bars through 09:55 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 13:57:36,385 INFO 09:57:04 ET · bars through 09:56 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 13:58:36,168 INFO 09:58:04 ET · bars through 09:57 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 13:59:37,309 INFO 09:59:04 ET · bars through 09:58 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:01:46,024 INFO 10:00:04 ET · bars through 09:59 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:03:14,496 INFO 10:02:04 ET · bars through 10:01 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:05:12,650 INFO 10:04:04 ET · bars through 10:03 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:07:03,047 INFO 10:06:04 ET · bars through 10:05 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:08:52,894 INFO 10:08:04 ET · bars through 10:07 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:09:48,678 INFO 10:09:04 ET · bars through 10:08 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:10:59,838 INFO 10:10:04 ET · bars through 10:09 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:11:49,339 INFO 10:11:04 ET · bars through 10:10 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:12:48,349 INFO 10:12:04 ET · bars through 10:11 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:13:34,037 INFO 10:13:04 ET · bars through 10:12 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:14:27,834 INFO 10:14:04 ET · bars through 10:13 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:15:45,702 INFO 10:15:04 ET · bars through 10:14 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:16:42,704 INFO 10:16:04 ET · bars through 10:15 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:17:34,904 INFO 10:17:04 ET · bars through 10:16 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:18:32,964 INFO 10:18:04 ET · bars through 10:17 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:19:31,308 INFO 10:19:04 ET · bars through 10:18 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:20:41,779 INFO 10:20:04 ET · bars through 10:19 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:21:40,687 INFO 10:21:04 ET · bars through 10:20 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:22:38,841 INFO 10:22:04 ET · bars through 10:21 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:23:31,870 INFO 10:23:04 ET · bars through 10:22 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:24:31,363 INFO 10:24:04 ET · bars through 10:23 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:25:39,835 INFO 10:25:04 ET · bars through 10:24 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:26:34,365 INFO 10:26:04 ET · bars through 10:25 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:27:28,859 INFO 10:27:04 ET · bars through 10:26 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:28:30,355 INFO 10:28:04 ET · bars through 10:27 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:29:29,174 INFO 10:29:04 ET · bars through 10:28 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:31:04,040 INFO 10:30:04 ET · bars through 10:29 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:33:01,067 INFO 10:32:04 ET · bars through 10:31 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:34:40,418 INFO 10:34:04 ET · bars through 10:33 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:35:44,963 INFO 10:35:04 ET · bars through 10:34 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:36:42,266 INFO 10:36:04 ET · bars through 10:35 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:37:40,097 INFO 10:37:04 ET · bars through 10:36 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:38:44,249 INFO 10:38:04 ET · bars through 10:37 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:39:34,092 INFO 10:39:04 ET · bars through 10:38 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:40:53,026 INFO 10:40:04 ET · bars through 10:39 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:41:36,573 INFO 10:41:04 ET · bars through 10:40 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:42:35,678 INFO 10:42:04 ET · bars through 10:41 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:43:30,870 INFO 10:43:04 ET · bars through 10:42 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:44:33,496 INFO 10:44:04 ET · bars through 10:43 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:46:00,813 INFO 10:45:04 ET · bars through 10:44 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:47:39,835 INFO 10:47:04 ET · bars through 10:46 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:48:35,308 INFO 10:48:04 ET · bars through 10:47 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:49:29,102 INFO 10:49:04 ET · bars through 10:48 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:50:38,900 INFO 10:50:04 ET · bars through 10:49 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:51:42,257 INFO 10:51:04 ET · bars through 10:50 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:52:29,163 INFO 10:52:04 ET · bars through 10:51 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:53:28,458 INFO 10:53:04 ET · bars through 10:52 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:54:33,502 INFO 10:54:04 ET · bars through 10:53 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:55:40,129 INFO 10:55:04 ET · bars through 10:54 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:56:35,067 INFO 10:56:04 ET · bars through 10:55 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:57:27,199 INFO 10:57:04 ET · bars through 10:56 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:58:28,551 INFO 10:58:04 ET · bars through 10:57 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 14:59:26,940 INFO 10:59:04 ET · bars through 10:58 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:01:12,668 INFO 11:00:04 ET · bars through 10:59 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:02:56,295 INFO 11:02:04 ET · bars through 11:01 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:03:44,367 INFO 11:03:04 ET · bars through 11:02 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:04:40,521 INFO 11:04:04 ET · bars through 11:03 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:05:55,790 INFO 11:05:04 ET · bars through 11:04 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:06:44,328 INFO 11:06:04 ET · bars through 11:05 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:07:32,396 INFO 11:07:04 ET · bars through 11:06 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:08:31,579 INFO 11:08:04 ET · bars through 11:07 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:09:33,578 INFO 11:09:04 ET · bars through 11:08 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:10:45,477 INFO 11:10:04 ET · bars through 11:09 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:11:31,628 INFO 11:11:04 ET · bars through 11:10 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:12:30,084 INFO 11:12:04 ET · bars through 11:11 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:13:35,450 INFO 11:13:04 ET · bars through 11:12 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:14:29,543 INFO 11:14:04 ET · bars through 11:13 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:15:50,136 INFO 11:15:04 ET · bars through 11:14 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:16:41,162 INFO 11:16:04 ET · bars through 11:15 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:17:42,491 INFO 11:17:04 ET · bars through 11:16 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:18:35,376 INFO 11:18:04 ET · bars through 11:17 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:19:38,876 INFO 11:19:04 ET · bars through 11:18 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:20:53,127 INFO 11:20:04 ET · bars through 11:19 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:21:44,008 INFO 11:21:04 ET · bars through 11:20 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:22:40,548 INFO 11:22:04 ET · bars through 11:21 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:23:32,507 INFO 11:23:04 ET · bars through 11:22 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:24:33,209 INFO 11:24:04 ET · bars through 11:23 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:25:47,850 INFO 11:25:04 ET · bars through 11:24 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:26:31,292 INFO 11:26:04 ET · bars through 11:25 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:27:30,128 INFO 11:27:04 ET · bars through 11:26 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:28:28,598 INFO 11:28:04 ET · bars through 11:27 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:29:28,873 INFO 11:29:04 ET · bars through 11:28 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:31:14,261 INFO 11:30:04 ET · bars through 11:29 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:32:55,714 INFO 11:32:04 ET · bars through 11:31 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:33:55,261 INFO 11:33:04 ET · bars through 11:32 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:34:49,135 INFO 11:34:04 ET · bars through 11:33 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:36:02,232 INFO 11:35:04 ET · bars through 11:34 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:37:45,605 INFO 11:37:04 ET · bars through 11:36 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:38:37,810 INFO 11:38:04 ET · bars through 11:37 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:39:41,348 INFO 11:39:04 ET · bars through 11:38 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:41:00,295 INFO 11:40:04 ET · bars through 11:39 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:42:41,039 INFO 11:42:04 ET · bars through 11:41 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:43:36,477 INFO 11:43:04 ET · bars through 11:42 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:44:37,714 INFO 11:44:04 ET · bars through 11:43 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:46:04,926 INFO 11:45:04 ET · bars through 11:44 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:47:44,149 INFO 11:47:04 ET · bars through 11:46 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:48:43,561 INFO 11:48:04 ET · bars through 11:47 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:49:38,499 INFO 11:49:04 ET · bars through 11:48 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:50:48,699 INFO 11:50:04 ET · bars through 11:49 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:51:41,069 INFO 11:51:04 ET · bars through 11:50 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:52:41,579 INFO 11:52:04 ET · bars through 11:51 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:53:40,554 INFO 11:53:04 ET · bars through 11:52 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:54:40,530 INFO 11:54:04 ET · bars through 11:53 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:55:52,168 INFO 11:55:04 ET · bars through 11:54 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:56:43,429 INFO 11:56:04 ET · bars through 11:55 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:57:35,744 INFO 11:57:04 ET · bars through 11:56 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:58:35,529 INFO 11:58:04 ET · bars through 11:57 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 15:59:36,763 INFO 11:59:04 ET · bars through 11:58 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 16:01:28,956 INFO 12:00:04 ET · bars through 11:59 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 16:03:05,398 INFO 12:02:04 ET · bars through 12:01 · 5 in play · 4 trade(s) · 0 new
+2026-10-05 16:04:48,906 INFO 12:04:04 ET · bars through 12:03 · 5 in play · 4 trade(s) · 0 new
