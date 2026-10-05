@@ -9,6 +9,10 @@ on:
         description: "Session (YYYY-MM-DD); blank = today"
         required: false
         default: ""
+      why:
+        description: "Explain one symbol (e.g. TSLA) instead of settling the day"
+        required: false
+        default: ""
 
 jobs:
   check:
@@ -26,8 +30,10 @@ jobs:
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
           D: ${{ inputs.date }}
-        run: python -m src.orb_paper --check ${D:+--date "$D"}
+          WHY: ${{ inputs.why }}
+        run: python -m src.orb_paper --check ${D:+--date "$D"} ${WHY:+--why "$WHY"}
       - name: Live bot with the in-play ORB flag on (dry run, posts nothing)
+        if: ${{ inputs.why == '' }}
         env:
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}

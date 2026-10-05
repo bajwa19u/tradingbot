@@ -242,3 +242,10 @@ def test_a_quote_far_from_the_bar_is_not_a_cost(feed):
 
 def test_settling_waits_for_the_quote_delay():
     assert op.SETTLE_AFTER >= "16:12"
+
+
+def test_why_not_explains_a_symbol_in_plain_words(feed):
+    text = op.why_not(feed, TODAY, "AAA", at("12:00:00"))
+    assert "PICKED" in text and "09:42" in text and "inside the 09:35-09:44 entry window" in text
+    assert "Previous day high" in text
+    assert "not in the" in op.why_not(feed, TODAY, "ZZZZ", at("12:00:00"))

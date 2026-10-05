@@ -372,6 +372,45 @@ def tick(now: pd.Timestamp, md_factory, dry_run: bool = False, quotes_factory=_s
         save_state(state)
 
 
+def why_not(feed: Feed, day, sym: str, now: pd.Timestamp) -> str:
+    """Plain-English account of one symbol on one day under the live rule:
+    was it picked, did its range qualify, did it break, and when."""
+    open_ts = now.normalize() + pd.Timedelta(hours=9, minutes=30)
+    k_end = int(min(orr.N_MIN, max(6, (now - open_ts).total_seconds() // 60)))
+    feed.history(day, orr.POOL)
+    D = feed.today_days(orr.POOL, now, k_end)
+    p, L = feed.p, [f"{sym} on {day} under the day-trade rule (bars through minute {k_end}):"]
+    if sym not in orr.POOL:
+        return L[0] + f"\n- {sym} is not in the ~105-stock list the rule chooses from."
+    ranked = sorted(((x.rvol5, s) for s, x in D.items() if s not in ("SPY", "QQQ") and x.rvol5 == x.rvol5
+                     and x.prev_c >= 5 and x.adv >= 5e7), reverse=True)
+    picks = orr.select({s: {day: x} for s, x in D.items()}, day, p.universe)
+    x = D.get(sym)
+    if x is None:
+        return L[0] + "\n- No usable data for it that day."
+    pos = next((i + 1 for i, (_, s) in enumerate(ranked) if s == sym), None)
+    L.append(f"- Opening volume {x.rvol5:.2f}x its normal: rank {pos} of {len(ranked)}. "
+             + ("PICKED (top 10)." if sym in picks else f"NOT picked: the 10th pick was at {ranked[9][0]:.2f}x."))
+    ratio = x.or_w / x.atr if x.atr else 0
+    L.append(f"- Opening range 09:30-09:34: {x.or_l:.2f} - {x.or_h:.2f}, {ratio:.2f} of its daily ATR "
+             + ("(wide enough)." if ratio >= p.orw[0] else f"(too narrow; needs {p.orw[0]})."))
+    first = next((k for k in range(5, k_end) if x.c[k] > x.or_h or x.c[k] < x.or_l), None)
+    if first is None:
+        L.append("- Never closed outside its opening range.")
+    else:
+        side = "above" if x.c[first] > x.or_h else "below"
+        L.append(f"- First 1-minute close {side} the range: {bar_label(first)} at {x.c[first]:.2f}"
+                 + (" (inside the 09:35-09:44 entry window)." if first < p.window_end else " (after the 09:44 entry cutoff)."))
+    prev = sorted(feed.hist.get(sym, {}))
+    if prev:
+        pdh, pdl = float(feed.hist[sym][prev[-1]][1].max()), float(feed.hist[sym][prev[-1]][2].min())
+        up = next((k for k in range(0, k_end) if x.c[k] > pdh), None)
+        L.append(f"- Previous day high {pdh:.2f}, low {pdl:.2f}. "
+                 + (f"First close above the previous high: {bar_label(up)} at {x.c[up]:.2f} (not a setup this rule trades)." if up is not None
+                    else "Never closed above the previous high."))
+    return "\n".join(L)
+
+
 def main(argv=None) -> int:
     """`python -m src.orb_paper --check [--date YYYY-MM-DD]`: settle one past
     session from scratch and print it, writing nothing. Proves the data path."""
@@ -381,11 +420,15 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--date", default="")
+    ap.add_argument("--why", default="", help="explain why this symbol was or wasn't traded that day")
     args = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
     day = pd.Timestamp(args.date or pd.Timestamp.now(tz=orr.EASTERN).date()).date()
     now = pd.Timestamp(f"{day} 16:01", tz=orr.EASTERN)
     feed = Feed(MarketData(Credentials.from_env(), feed="iex"))
+    if args.why:
+        print(why_not(feed, day, args.why.upper(), min(now, pd.Timestamp.now(tz=orr.EASTERN) - pd.Timedelta(minutes=1))))
+        return 0
     state = {"date": str(day), "picks": [], "picked_at": "", "signals": [], "settled": False}
     rows = feed.settle(state, now)
     print(f"{day}: picks {state['picks']}")
