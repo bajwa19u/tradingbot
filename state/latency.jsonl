@@ -393,3 +393,5 @@
 {"kind": "tick", "at": "2026-10-05 15:23:00.352472-04:00", "newest_bar": "2026-10-05 15:22:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.315, "scan": 0.316, "discord": 0.0, "total": 0.316}
 {"kind": "tick", "at": "2026-10-05 15:24:00.210991-04:00", "newest_bar": "2026-10-05 15:23:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.172, "scan": 0.172, "discord": 0.0, "total": 0.172}
 {"kind": "tick", "at": "2026-10-05 15:25:02.766391-04:00", "newest_bar": "2026-10-05 15:24:00-04:00", "stale": false, "new_messages": 0, "fetch_1m": 0.546, "scan": 0.546, "discord": 0.0, "total": 0.547}
+{"kind": "signal", "id": "ORB-AMD-2026-10-05", "rule": "inplay_orb", "entry_bar": "09:44", "detected_age_s": 47948.798514, "posted_age_s": 47949.722406, "expired": true, "posted_at": "2026-10-05 23:04:09.722406-04:00"}
+{"kind": "tick", "at": "2026-10-05 23:04:08.798514-04:00", "newest_bar": "2026-10-05 15:59:00-04:00", "stale": false, "new_messages": 5, "fetch_1m": 0.407, "scan": 0.407, "discord": 1.408, "total": 1.817}

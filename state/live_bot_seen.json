@@ -3,21 +3,28 @@
   "entries": [
     "ORB-MSFT-2026-10-05",
     "ORB-BAC-2026-10-05",
-    "ORB-NVDA-2026-10-05"
+    "ORB-NVDA-2026-10-05",
+    "ORB-AMD-2026-10-05"
   ],
   "exits": [
-    "ORB-BAC-2026-10-05"
+    "ORB-BAC-2026-10-05",
+    "ORB-MSFT-2026-10-05",
+    "ORB-NVDA-2026-10-05",
+    "ORB-AMD-2026-10-05"
   ],
-  "summary": false,
+  "summary": true,
+  "strategy": "bigtech",
   "cards": {
     "ORB-MSFT-2026-10-05": "1556668802643660861",
     "ORB-BAC-2026-10-05": "1556668803906273312",
-    "ORB-NVDA-2026-10-05": "1556668804279574691"
+    "ORB-NVDA-2026-10-05": "1556668804279574691",
+    "ORB-AMD-2026-10-05": "1556864615441240147"
   },
   "expired": [
     "ORB-MSFT-2026-10-05",
     "ORB-BAC-2026-10-05",
-    "ORB-NVDA-2026-10-05"
+    "ORB-NVDA-2026-10-05",
+    "ORB-AMD-2026-10-05"
   ],
   "stale_warned": "",
   "error_warned": ""
