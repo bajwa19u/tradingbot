@@ -1,12 +1,12 @@
-**Live check — 2026-10-06 11:23 ET** · 276 min to the close
+**Live check — 2026-10-06 11:51 ET** · 248 min to the close
 
-⚪ above level, volume light — **CRWD** `$281.63` vs level `$274.14` (+2.7%) · volume 60% of what it needs
-⚪ above level, volume light — **AMD** `$657.05` vs level `$645.37` (+1.8%) · volume 51% of what it needs
-⚪ right at the level — **AFRM** `$75.57` vs level `$74.92` (+0.9%) · volume 29% of what it needs
-⚪ right at the level — **RKLB** `$75.56` vs level `$76.08` (-0.7%) · volume 57% of what it needs
-⚪ right at the level — **DDOG** `$279.54` vs level `$281.64` (-0.8%) · volume 10% of what it needs
-⚪ right at the level — **PLTR** `$193.11` vs level `$194.72` (-0.8%) · volume 40% of what it needs
-⚪ right at the level — **ZM** `$94.27` vs level `$95.12` (-0.9%) · volume 20% of what it needs
-⚪ right at the level — **SNAP** `$5.75` vs level `$5.83` (-1.5%) · volume 23% of what it needs
+⚪ above level, volume light — **CRWD** `$281.45` vs level `$274.14` (+2.7%) · volume 66% of what it needs
+⚪ above level, volume light — **AMD** `$656.05` vs level `$645.37` (+1.6%) · volume 56% of what it needs
+⚪ above level, volume light — **AFRM** `$75.92` vs level `$74.92` (+1.3%) · volume 33% of what it needs
+⚪ right at the level — **RKLB** `$75.51` vs level `$76.08` (-0.8%) · volume 61% of what it needs
+⚪ right at the level — **ZM** `$94.33` vs level `$95.12` (-0.8%) · volume 23% of what it needs
+⚪ right at the level — **PLTR** `$192.46` vs level `$194.72` (-1.2%) · volume 43% of what it needs
+⚪ right at the level — **DDOG** `$277.87` vs level `$281.64` (-1.3%) · volume 13% of what it needs
+⚪ right at the level — **TSLA** `$380.93` vs level `$386.67` (-1.5%) · volume 27% of what it needs
 
 ⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
