@@ -1,6 +1,10 @@
-**Live check — 2026-10-02 15:57 ET** · 2 min to the close
+🔔 **TAKE THESE AT THE CLOSE — 2026-10-06 15:56 ET**
+_3 minutes left. These meet the rule right now: coiled base, price above it, volume confirming._
 
-⚪ right at the level — **CRWD** `$269.54` vs level `$269.20` (+0.1%) · volume 57% of what it needs
-⚪ right at the level — **SMCI** `$43.63` vs level `$43.76` (-0.3%) · volume 96% of what it needs
+**CRWD** — **skip — one share risks more than the budget**
+Entry `~$278.99` · stop `$241.60` (13.4% below) · target `$391.13`
+No size that fits the risk budget
+Broke `$274.14` on 131% of the volume it needs
 
-⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
+_Enter near the close — the tested entry IS the closing price, so the longer you wait after this, the less the numbers apply._
+_Paper only. No orders are being placed._
