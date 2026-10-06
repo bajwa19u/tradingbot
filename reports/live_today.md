@@ -1,10 +1,14 @@
-📊 **2026-10-06** — no trades today.
-_Quiet days are normal for this setup._
+📊 **2026-10-06**
 
-🔴 **NEW SIGNAL · SHORT AMD**  ·  09:35 ET
+**1 trade · 0 won, 1 lost · 0% win rate**
+**-1.02%**
+❌ AMD 09:35→10:35  -1.02%
+
+_Paper only. No orders were placed._
+
+❌ **CLOSED · LOSS · SHORT AMD**  ·  09:35 → 10:35
 `Entry    629.71`
 `SL       650.23`
 `TP       588.68`
-R:R 1:2.0 · risk 3.26% of price · signal 09:36:00 ET
-opening volume 1.1x normal · range 0.77 of daily ATR · gap +2.7% · break-minute volume 1.8x
-_ORB · Big Tech · out by 15:55_
+`Exit     650.23`  hit stop
+**-1.02%** · _ORB · Big Tech_

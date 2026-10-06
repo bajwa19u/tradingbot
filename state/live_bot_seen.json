@@ -3,7 +3,9 @@
   "entries": [
     "ORB-AMD-2026-10-06"
   ],
-  "exits": [],
+  "exits": [
+    "ORB-AMD-2026-10-06"
+  ],
   "summary": false,
   "strategy": "bigtech",
   "cards": {
