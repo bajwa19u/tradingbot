@@ -1,37 +1,77 @@
-2026-10-02 21:20:23,366 INFO Fetching 12 symbols, 5-min bars from 2026-08-03
-🔁 **REPLAY — 2026-10-02 · 12 symbols** · 5 setups
+2026-10-06 21:20:15,871 INFO Fetching 12 symbols, 5-min bars from 2026-08-07
+🔁 **REPLAY — 2026-10-06 · 12 symbols** · 13 setups
 _What the rule would have sent today, at the times it would have sent them. The session is closed - none of this is actionable now._
 
-🔻 **SHORT AVGO** — 13:10 ET
-Broke `$354.04` at 13:05, retested it, entered `$353.19`
-Stop `$354.88` · target `$349.79` · 11 shares
-→ **LOST -1.00%** ($-18.69)
+🔻 **SHORT MSFT** — 12:00 ET
+Broke `$532.26` at 11:55, retested it, entered `$531.88`
+Stop `$533.31` · target `$529.02` · 14 shares
+→ **UNFINISHED +1.75%** ($+34.98)  _(still open at the bell, closed at the last price)_
 
-🔻 **SHORT PLTR** — 14:05 ET
-Broke `$189.63` at 13:20, retested it, entered `$189.40`
-Stop `$190.09` · target `$188.02` · 29 shares
-→ **UNFINISHED +0.87%** ($+17.40)  _(still open at the bell, closed at the last price)_
+🔻 **SHORT SMCI** — 12:10 ET
+Broke `$43.16` at 12:05, retested it, entered `$43.16`
+Stop `$43.41` · target `$42.64` · 78 shares
+→ **LOST -1.00%** ($-19.97)
+
+🔻 **SHORT NVDA** — 12:15 ET
+Broke `$241.36` at 12:10, retested it, entered `$241.13`
+Stop `$241.92` · target `$239.54` · 25 shares
+→ **WON +2.00%** ($+39.64)
+
+🔻 **SHORT NVDA** — 12:20 ET
+Broke `$241.24` at 12:15, retested it, entered `$241.19`
+Stop `$241.78` · target `$240.01` · 33 shares
+→ **WON +2.00%** ($+38.92)
+
+🔻 **SHORT SMCI** — 12:25 ET
+Broke `$43.28` at 12:00, retested it, entered `$43.28`
+Stop `$43.54` · target `$42.76` · 76 shares
+→ **LOST -1.00%** ($-19.76)
+
+🔻 **SHORT NVDA** — 12:30 ET
+Broke `$241.03` at 12:25, retested it, entered `$240.71`
+Stop `$241.55` · target `$239.03` · 23 shares
+→ **WON +2.00%** ($+38.60)
+
+🔻 **SHORT NVDA** — 12:35 ET
+Broke `$240.80` at 12:30, retested it, entered `$240.50`
+Stop `$241.30` · target `$238.91` · 25 shares
+→ **UNFINISHED +1.67%** ($+33.27)  _(still open at the bell, closed at the last price)_
+
+🔻 **SHORT NVDA** — 12:40 ET
+Broke `$240.59` at 12:35, retested it, entered `$240.53`
+Stop `$241.07` · target `$239.44` · 36 shares
+→ **WON +2.00%** ($+39.08)
+
+🔻 **SHORT AAPL** — 12:45 ET
+Broke `$332.75` at 12:25, retested it, entered `$332.48`
+Stop `$333.31` · target `$330.82` · 24 shares
+→ **LOST -1.00%** ($-19.89)
+
+🔻 **SHORT MSFT** — 13:45 ET
+Broke `$531.46` at 13:40, retested it, entered `$531.35`
+Stop `$532.10` · target `$529.85` · 26 shares
+→ **WON +2.00%** ($+39.02)
 
 🔻 **SHORT MU** — 14:25 ET
-Broke `$1,076.04` at 14:20, retested it, entered `$1,074.87`
-Stop `$1,078.59` · target `$1,067.44` · 5 shares
-→ **UNFINISHED +0.04%** ($+0.74)  _(still open at the bell, closed at the last price)_
+Broke `$1,062.30` at 14:20, retested it, entered `$1,060.36`
+Stop `$1,064.38` · target `$1,052.31` · 4 shares
+→ **WON +2.00%** ($+32.18)
 
-🔻 **SHORT NVDA** — 15:25 ET
-Broke `$233.98` at 15:20, retested it, entered `$233.75`
-Stop `$234.30` · target `$232.64` · 36 shares
-→ **LOST -1.00%** ($-19.91)
+🔻 **SHORT NVDA** — 15:10 ET
+Broke `$240.03` at 15:05, retested it, entered `$239.85`
+Stop `$240.31` · target `$238.94` · 43 shares
+→ **UNFINISHED +1.48%** ($+29.17)  _(still open at the bell, closed at the last price)_
 
-🔻 **SHORT PLTR** — 15:35 ET
-Broke `$189.25` at 15:25, retested it, entered `$189.23`
-Stop `$189.51` · target `$188.67` · 71 shares
-→ **WON +2.00%** ($+39.84)
+🔻 **SHORT SMCI** — 15:30 ET
+Broke `$43.55` at 15:25, retested it, entered `$43.51`
+Stop `$43.65` · target `$43.23` · 145 shares
+→ **WON +2.00%** ($+39.96)
 
-**Today: 1 won, 2 lost · 33% win rate · +0.91% ($+19.38)** · 2 still open at the bell
+**Today: 7 won, 3 lost · 70% win rate · +15.90% ($+305.20)** · 3 still open at the bell
 
 ---
 
-**Last 4 days — core**
+**Last 5 days — core**
 
 | Day | Trades | Won | Lost | Win % | Profit |
 |---|---|---|---|---|---|
@@ -39,9 +79,9 @@ Stop `$189.51` · target `$188.67` · 71 shares
 | 09-29 | 16 | 7 | 7 | 50.0% | **+7.55%** |
 | 09-30 | 9 | 6 | 3 | 66.7% | **+9.00%** |
 | 10-02 | 5 | 1 | 2 | 33.3% | **+0.91%** |
+| 10-06 | 13 | 7 | 3 | 70.0% | **+15.90%** |
 
-**Running total: 43 trades · 18 won, 25 lost · 41.9% win rate · +24.89% ($+482.78)**
-_4 of 4 days green._
-_43 trades so far. The backtest needed about fifty before the numbers stopped moving around._
+**Running total: 56 trades · 25 won, 31 lost · 44.6% win rate · +40.79% ($+787.98)**
+_5 of 5 days green._
 _Paper only. No orders were placed._
-2026-10-02 21:20:28,449 INFO Replay sent: 5 signal(s)
+2026-10-06 21:20:19,814 INFO Replay sent: 13 signal(s)
