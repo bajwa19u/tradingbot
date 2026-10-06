@@ -1,15 +1,13 @@
-**Live check — 2026-10-06 10:24 ET** · 335 min to the close
+**Live check — 2026-10-06 10:51 ET** · 308 min to the close
 
-⚪ above level, volume light — **CRWD** `$281.83` vs level `$274.14` (+2.8%) · volume 38% of what it needs
-⚪ above level, volume light — **RKLB** `$76.29` vs level `$76.08` (+0.3%) · volume 39% of what it needs
-⚪ right at the level — **AFRM** `$74.96` vs level `$74.92` (+0.1%) · volume 19% of what it needs
-⚪ right at the level — **AMD** `$645.31` vs level `$645.37` (-0.0%) · volume 31% of what it needs
-⚪ right at the level — **DDOG** `$279.41` vs level `$281.64` (-0.8%) · volume 5% of what it needs
-⚪ right at the level — **PLTR** `$192.84` vs level `$194.72` (-1.0%) · volume 29% of what it needs
-⚪ right at the level — **ZM** `$94.02` vs level `$95.12` (-1.2%) · volume 9% of what it needs
-⚪ right at the level — **TSLA** `$381.40` vs level `$386.67` (-1.4%) · volume 18% of what it needs
-⚪ right at the level — **SMCI** `$43.94` vs level `$44.59` (-1.4%) · volume 21% of what it needs
-⚪ right at the level — **NET** `$361.94` vs level `$367.31` (-1.5%) · volume 9% of what it needs
+⚪ above level, volume light — **CRWD** `$280.81` vs level `$274.14` (+2.4%) · volume 49% of what it needs
+⚪ above level, volume light — **AMD** `$651.06` vs level `$645.37` (+0.9%) · volume 41% of what it needs
+⚪ right at the level — **AFRM** `$75.49` vs level `$74.92` (+0.8%) · volume 24% of what it needs
+⚪ right at the level — **ZM** `$94.44` vs level `$95.12` (-0.7%) · volume 15% of what it needs
+⚪ right at the level — **DDOG** `$278.96` vs level `$281.64` (-0.9%) · volume 7% of what it needs
+⚪ right at the level — **PLTR** `$192.41` vs level `$194.72` (-1.2%) · volume 35% of what it needs
+⚪ right at the level — **RKLB** `$75.09` vs level `$76.08` (-1.3%) · volume 51% of what it needs
+⚪ right at the level — **SNAP** `$5.75` vs level `$5.83` (-1.4%) · volume 17% of what it needs
 
 ⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
-2026-10-06 14:24:32,844 INFO Nothing new since the last check.
+2026-10-06 14:51:47,493 INFO Nothing new since the last check.
