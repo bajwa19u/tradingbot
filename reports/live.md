@@ -1,9 +1,13 @@
-**Live check — 2026-10-05 14:28 ET** · 92 min to the close
+**Live check — 2026-10-06 09:51 ET** · 368 min to the close
 
-⚪ above level, volume light — **AFRM** `$74.72` vs level `$73.23` (+2.0%) · volume 60% of what it needs
-⚪ above level, volume light — **U** `$46.03` vs level `$45.31` (+1.6%) · volume 69% of what it needs
-⚪ right at the level — **CRWD** `$272.50` vs level `$273.43` (-0.3%) · volume 41% of what it needs
-⚪ right at the level — **ZM** `$93.89` vs level `$95.12` (-1.3%) · volume 57% of what it needs
-⚪ right at the level — **NET** `$362.51` vs level `$367.31` (-1.3%) · volume 73% of what it needs
+⚪ above level, volume light — **CRWD** `$285.63` vs level `$274.14` (+4.2%) · volume 21% of what it needs
+⚪ above level, volume light — **RKLB** `$77.35` vs level `$76.08` (+1.7%) · volume 18% of what it needs
+⚪ above level, volume light — **DDOG** `$281.88` vs level `$281.64` (+0.1%) · volume 2% of what it needs
+⚪ right at the level — **AFRM** `$74.84` vs level `$74.92` (-0.1%) · volume 6% of what it needs
+⚪ right at the level — **NET** `$366.72` vs level `$367.31` (-0.2%) · volume 5% of what it needs
+⚪ right at the level — **PLTR** `$194.05` vs level `$194.72` (-0.3%) · volume 16% of what it needs
+⚪ right at the level — **SNOW** `$347.24` vs level `$348.46` (-0.3%) · volume 13% of what it needs
+⚪ right at the level — **AMD** `$638.21` vs level `$645.37` (-1.1%) · volume 16% of what it needs
+⚪ right at the level — **LCID** `$4.33` vs level `$4.38` (-1.1%) · volume 5% of what it needs
 
 ⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.

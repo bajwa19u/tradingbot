@@ -1,10 +1,14 @@
 {
-  "date": "2026-10-05",
+  "date": "2026-10-06",
   "seen": {
-    "U": "above_light_volume",
-    "CRWD": "at_the_level",
-    "AFRM": "above_light_volume",
-    "ZM": "at_the_level",
-    "NET": "at_the_level"
+    "CRWD": "above_light_volume",
+    "RKLB": "above_light_volume",
+    "DDOG": "above_light_volume",
+    "AFRM": "at_the_level",
+    "NET": "at_the_level",
+    "PLTR": "at_the_level",
+    "SNOW": "at_the_level",
+    "AMD": "at_the_level",
+    "LCID": "at_the_level"
   }
 }
