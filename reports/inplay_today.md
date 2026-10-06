@@ -1,38 +1,26 @@
-📊 **2026-10-05**
+📊 **2026-10-06** — no trades today.
+_Quiet days are normal for this setup._
 
-**4 trades · 0 won, 4 lost · 0% win rate**
-**-4.18%**
-❌ LIN 09:39→11:05  -1.07%
-❌ BAC 09:40→10:20  -1.05%
-❌ DKNG 09:42→09:58  -1.02%
-❌ DE 09:46→10:03  -1.04%
-
-_Paper only. No orders were placed._
-
-❌ **SHORT LIN**  ·  09:39 → 11:05
-`Entry    479.65`
-`SL       483.35`
+🔴 **NEW SIGNAL · SHORT CVS**  ·  09:35 ET
+`Entry     86.42`
+`SL        87.44`
 `TP         none`  held until the stop or 15:55
-`Exit     483.59`  hit stop
-**-1.07%** · _In-play · opening range_
+_In-play · opening range_
 
-❌ **SHORT BAC**  ·  09:40 → 10:20
-`Entry     53.69`
-`SL        54.24`
+🟢 **NEW SIGNAL · LONG GD**  ·  09:37 ET
+`Entry    329.07`
+`SL       326.25`
 `TP         none`  held until the stop or 15:55
-`Exit      54.27`  hit stop
-**-1.05%** · _In-play · opening range_
+_In-play · opening range_
 
-❌ **LONG DKNG**  ·  09:42 → 09:58
-`Entry     19.59`
-`SL        19.00`
+🟢 **NEW SIGNAL · LONG UPS**  ·  09:44 ET
+`Entry     93.31`
+`SL        92.25`
 `TP         none`  held until the stop or 15:55
-`Exit      18.99`  hit stop
-**-1.02%** · _In-play · opening range_
+_In-play · opening range_
 
-❌ **SHORT DE**  ·  09:46 → 10:03
-`Entry    677.41`
-`SL       685.20`
+🟢 **NEW SIGNAL · LONG ECL**  ·  09:54 ET
+`Entry    280.73`
+`SL       278.31`
 `TP         none`  held until the stop or 15:55
-`Exit     685.55`  hit stop
-**-1.04%** · _In-play · opening range_
+_In-play · opening range_
