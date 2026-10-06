@@ -1,9 +1,10 @@
-**Live check — 2026-10-06 13:20 ET** · 159 min to the close
+**Live check — 2026-10-06 13:49 ET** · 130 min to the close
 
-⚪ above level, volume light — **CRWD** `$279.00` vs level `$274.14` (+1.8%) · volume 99% of what it needs
-⚪ above level, volume light — **AMD** `$654.59` vs level `$645.37` (+1.4%) · volume 71% of what it needs
-⚪ right at the level — **AFRM** `$75.30` vs level `$74.92` (+0.5%) · volume 41% of what it needs
-⚪ right at the level — **PLTR** `$192.62` vs level `$194.72` (-1.1%) · volume 53% of what it needs
-⚪ right at the level — **ZM** `$93.88` vs level `$95.12` (-1.3%) · volume 33% of what it needs
+🟡 **AT LEVEL, VOLUME CONFIRMS** — **CRWD** `$278.58` vs level `$274.14` (+1.6%) · volume 105% of what it needs
+   → if it closes here: stop `$241.60`, target `$389.51`, **0 — too small for this account**
+⚪ above level, volume light — **AMD** `$654.29` vs level `$645.37` (+1.4%) · volume 74% of what it needs
+⚪ right at the level — **AFRM** `$75.11` vs level `$74.92` (+0.3%) · volume 44% of what it needs
+⚪ right at the level — **PLTR** `$192.26` vs level `$194.72` (-1.3%) · volume 56% of what it needs
+⚪ right at the level — **SNAP** `$5.76` vs level `$5.83` (-1.3%) · volume 36% of what it needs
 
 ⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
