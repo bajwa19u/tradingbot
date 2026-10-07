@@ -1,15 +1,17 @@
 {
-  "date": "2026-10-06",
+  "date": "2026-10-07",
   "entries": [
-    "ORB-AMD-2026-10-06"
+    "ORB-AAPL-2026-10-07",
+    "ORB-MSFT-2026-10-07",
+    "ORB-TSLA-2026-10-07"
   ],
-  "exits": [
-    "ORB-AMD-2026-10-06"
-  ],
-  "summary": true,
+  "exits": [],
+  "summary": false,
   "strategy": "bigtech",
   "cards": {
-    "ORB-AMD-2026-10-06": "1557023636337074270"
+    "ORB-AAPL-2026-10-07": "1557386018876035117",
+    "ORB-MSFT-2026-10-07": "1557387523809083556",
+    "ORB-TSLA-2026-10-07": "1557387775882428577"
   },
   "expired": [],
   "stale_warned": "",
