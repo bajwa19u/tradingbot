@@ -22,7 +22,7 @@ Average R 95% bootstrap interval, all sessions: -0.069 to +0.004. Expectancy -$3
 |---|---|
 | breakouts (close beyond a level) | 35034 |
 | ... of which retested | 27674 |
-| ... of which confirmed | 18678 |
+| ... of which confirmed | 18507 |
 | ended as `failed_breakout` | 8756 |
 | ended as `retest_timeout` | 3140 |
 | ended as `window_closed` | 883 |
@@ -190,7 +190,7 @@ Stops hit: **3147** of 5403 trades.
 
 ### The same entries with other stops (each with its own 2R target)
 
-Exploratory. 12 alternative exits are listed across this and the next table; with that many looks, a difference smaller than about 2.2 standard errors is noise. Judge on out-of-sample, and expect the best in-sample row to shrink.
+Exploratory. 21 alternative exits are listed across this and the next table; with that many looks, a difference smaller than about 2.5 standard errors is noise. Judge on out-of-sample, and expect the best in-sample row to shrink.
 
 | stop | period | trades | win % | profit | avg R | PF |
 |---|---|---|---|---|---|---|
@@ -272,15 +272,15 @@ Rules flagged for review (blocked complete setups beat the trades taken, 20+ set
 | 2026-07-15 | 09:59 | AMZN | long | swing_high@09:51 251.96 | position_open | +2.00 |
 | 2025-12-03 | 09:48 | HOOD | long | pdc 125.95 | max_signals_per_day | +2.00 |
 | 2026-06-29 | 10:56 | AMD | long | swing_high@10:50 508.87 | max_signals_per_day | +2.00 |
-| 2026-05-28 | 10:37 | AMD | long | swing_high@09:36 507.00 | max_signals_per_day | +2.00 |
 | 2026-06-15 | 10:02 | SNDK | long | pdh 2021.65 | gap_beyond_level | +2.00 |
-| 2026-07-24 | 09:47 | AAPL | long | swing_high@09:41 325.99 | position_open | +2.00 |
-| 2026-07-24 | 10:18 | TSLA | short | swing_low@09:59 314.83 | position_open | +2.00 |
-| 2026-07-24 | 10:06 | AAPL | long | swing_high@09:49 327.51 | position_open | +2.00 |
-| 2026-07-24 | 09:33 | AAPL | long | pmh 322.97 | inactive_level | +2.00 |
-| 2026-07-24 | 09:42 | AMD | short | pml 537.61 | inactive_level | +2.00 |
-| 2026-07-24 | 09:40 | TSLA | short | pdc 319.35 | position_open | +2.00 |
-| 2026-07-24 | 09:52 | MU | short | swing_low@09:42 941.62 | position_open | +2.00 |
+| 2026-05-28 | 10:37 | AMD | long | swing_high@09:36 507.00 | max_signals_per_day | +2.00 |
+| 2026-07-29 | 10:17 | COIN | short | swing_low@09:52 166.68 | position_open | +2.00 |
+| 2026-04-23 | 10:15 | NVDA | short | pdh 202.50 | position_open | +2.00 |
+| 2026-04-23 | 10:01 | NVDA | short | swing_low@09:51 203.15 | position_open | +2.00 |
+| 2026-03-11 | 10:45 | AMZN | short | swing_low@09:52 214.62 | position_open | +2.00 |
+| 2026-04-23 | 09:50 | SPY | short | pdh 711.45 | gap_beyond_level | +2.00 |
+| 2026-07-30 | 09:36 | MU | long | pmh 794.97 | inactive_level | +2.00 |
+| 2026-04-23 | 09:32 | HOOD | short | pdl 87.48 | gap_beyond_level | +2.00 |
 
 ## SNDK — benchmark ticker
 
