@@ -18,8 +18,8 @@
    "dur": 101.48362021099389,
    "exp_usd": -33.09475597059318,
    "ci": [
-    -0.06690306583107464,
-    0.0032512964238415273
+    -0.06702843550841799,
+    0.0010018399097170183
    ]
   },
   "1m only": {
@@ -37,8 +37,8 @@
    "dur": 100.52568143890228,
    "exp_usd": -39.22076167071416,
    "ci": [
-    -0.07384794401750228,
-    -0.0046787032457781185
+    -0.07359537871941013,
+    -0.003294411071192595
    ]
   },
   "3m only": {
@@ -56,8 +56,8 @@
    "dur": 135.89602833291173,
    "exp_usd": -31.488787850612535,
    "ci": [
-    -0.06907826449601409,
-    0.008936304836265207
+    -0.06932686663021481,
+    0.00925715055844688
    ]
   },
   "5m only": {
@@ -75,8 +75,8 @@
    "dur": 158.41940035273367,
    "exp_usd": -9.873307446842096,
    "ci": [
-    -0.05547251145691215,
-    0.03416243565132363
+    -0.05398162138045198,
+    0.032965568743431296
    ]
   }
  },
@@ -96,8 +96,8 @@
    "dur": 100.14741406008052,
    "exp_usd": -13.156766504504365,
    "ci": [
-    -0.057859994973495234,
-    0.03202109954096659
+    -0.05746574414925074,
+    0.029701597038457494
    ]
   },
   "out-of-sample": {
@@ -115,8 +115,8 @@
    "dur": 103.46826126954922,
    "exp_usd": -62.708264703804225,
    "ci": [
-    -0.1205301064283151,
-    -0.006626348112837723
+    -0.11722684590812452,
+    -0.011564498435269726
    ]
   }
  },
@@ -146,24 +146,24 @@
   "reports/br_v1/charts/2026-02-18_AAPL_long_1023_stop.png",
   "reports/br_v1/charts/2026-07-13_AMZN_short_1022_signal.png",
   "reports/br_v1/charts/2026-07-13_AMZN_short_1022_stop.png",
-  "reports/br_v1/charts/2026-04-15_TSLA_long_0947_signal.png",
-  "reports/br_v1/charts/2026-04-15_TSLA_long_0947_target.png",
-  "reports/br_v1/charts/2026-06-30_SNDK_long_0946_signal.png",
-  "reports/br_v1/charts/2026-06-30_SNDK_long_0946_target.png",
-  "reports/br_v1/charts/2026-06-29_SNDK_short_0932_signal.png",
-  "reports/br_v1/charts/2026-06-29_SNDK_short_0932_target.png",
-  "reports/br_v1/charts/2026-06-26_HOOD_long_1114_signal.png",
-  "reports/br_v1/charts/2026-06-26_HOOD_long_1114_target.png",
-  "reports/br_v1/charts/2026-06-26_MU_short_1035_signal.png",
-  "reports/br_v1/charts/2026-06-26_MU_short_1035_target.png",
-  "reports/br_v1/charts/2026-06-26_SNDK_short_1029_signal.png",
-  "reports/br_v1/charts/2026-06-26_SNDK_short_1029_target.png",
-  "reports/br_v1/charts/2026-07-31_SHOP_short_1016_signal.png",
-  "reports/br_v1/charts/2026-07-31_SHOP_short_1016_target.png",
-  "reports/br_v1/charts/2026-04-15_TSLA_long_1031_signal.png",
-  "reports/br_v1/charts/2026-04-15_TSLA_long_1031_target.png",
-  "reports/br_v1/charts/2026-04-15_SNDK_short_1002_signal.png",
-  "reports/br_v1/charts/2026-04-15_SNDK_short_1002_target.png",
+  "reports/br_v1/charts/2026-07-29_COIN_short_1014_signal.png",
+  "reports/br_v1/charts/2026-07-29_COIN_short_1014_target.png",
+  "reports/br_v1/charts/2026-05-05_SHOP_short_1040_signal.png",
+  "reports/br_v1/charts/2026-05-05_SHOP_short_1040_target.png",
+  "reports/br_v1/charts/2026-05-06_AMD_short_0954_signal.png",
+  "reports/br_v1/charts/2026-05-06_AMD_short_0954_target.png",
+  "reports/br_v1/charts/2026-05-05_COIN_short_0942_signal.png",
+  "reports/br_v1/charts/2026-05-05_COIN_short_0942_target.png",
+  "reports/br_v1/charts/2026-05-05_AMD_long_1035_signal.png",
+  "reports/br_v1/charts/2026-05-05_AMD_long_1035_target.png",
+  "reports/br_v1/charts/2026-06-24_SHOP_long_0959_signal.png",
+  "reports/br_v1/charts/2026-06-24_SHOP_long_0959_target.png",
+  "reports/br_v1/charts/2026-05-04_SNDK_long_0944_signal.png",
+  "reports/br_v1/charts/2026-05-04_SNDK_long_0944_target.png",
+  "reports/br_v1/charts/2026-05-04_MU_long_0932_signal.png",
+  "reports/br_v1/charts/2026-05-04_MU_long_0932_target.png",
+  "reports/br_v1/charts/2025-11-10_GOOGL_long_0935_signal.png",
+  "reports/br_v1/charts/2025-11-10_GOOGL_long_0935_target.png",
   "reports/br_v1/charts/2026-09-11_AMD_long_0939_signal.png",
   "reports/br_v1/charts/2026-09-11_AMD_long_0939_target.png",
   "reports/br_v1/charts/2026-09-15_AMD_long_0939_signal.png",

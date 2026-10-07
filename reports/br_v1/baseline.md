@@ -22,7 +22,7 @@ Average R 95% bootstrap interval, all sessions: -0.069 to +0.004. Expectancy -$3
 |---|---|
 | breakouts (close beyond a level) | 35034 |
 | ... of which retested | 27674 |
-| ... of which confirmed | 18507 |
+| ... of which confirmed | 18678 |
 | ended as `failed_breakout` | 8756 |
 | ended as `retest_timeout` | 3140 |
 | ended as `window_closed` | 883 |
@@ -129,14 +129,15 @@ Market bias = SPY + QQQ context at the signal (known then). SPY day = how SPY's 
 
 | market bias at signal | trades | won | lost | win % | profit | avg R | median R | total R | PF | max DD | avg min |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Bullish | 4444 | 1616 | 2828 | 36.4% | -$182,885 | -0.041 | -1.02 | -182.9 | 0.93 | -$208,908 | 104 |
-| Neutral | 959 | 355 | 604 | 37.0% | $4,074 | +0.004 | -1.02 | +4.1 | 1.01 | -$46,945 | 90 |
+| Bullish | 2423 | 909 | 1514 | 37.5% | -$63,420 | -0.026 | -1.02 | -63.4 | 0.96 | -$82,631 | 109 |
+| Neutral | 1636 | 580 | 1056 | 35.5% | -$75,249 | -0.046 | -1.03 | -75.2 | 0.93 | -$87,241 | 95 |
+| Bearish | 1344 | 482 | 862 | 35.9% | -$40,141 | -0.030 | -1.03 | -40.1 | 0.95 | -$60,713 | 96 |
 
 | trade vs market bias | trades | won | lost | win % | profit | avg R | median R | total R | PF | max DD | avg min |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| against the market | 1967 | 731 | 1236 | 37.2% | -$15,738 | -0.008 | -1.03 | -15.7 | 0.99 | -$92,675 | 99 |
-| market neutral | 959 | 355 | 604 | 37.0% | $4,074 | +0.004 | -1.02 | +4.1 | 1.01 | -$46,945 | 90 |
-| with the market | 2477 | 885 | 1592 | 35.7% | -$167,147 | -0.067 | -1.02 | -167.1 | 0.89 | -$181,245 | 108 |
+| against the market | 1493 | 567 | 926 | 38.0% | $31,523 | +0.021 | -1.02 | +31.5 | 1.03 | -$67,003 | 99 |
+| market neutral | 1636 | 580 | 1056 | 35.5% | -$75,249 | -0.046 | -1.03 | -75.2 | 0.93 | -$87,241 | 95 |
+| with the market | 2274 | 824 | 1450 | 36.2% | -$135,085 | -0.059 | -1.02 | -135.1 | 0.90 | -$145,413 | 108 |
 
 | SPY morning (hindsight) | trades | won | lost | win % | profit | avg R | median R | total R | PF | max DD | avg min |
 |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -148,15 +149,15 @@ Market bias = SPY + QQQ context at the signal (known then). SPY day = how SPY's 
 
 | confidence | trades | won | lost | win % | profit | avg R | median R | total R | PF | max DD | avg min |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| HIGH | 1602 | 603 | 999 | 37.6% | -$78,356 | -0.049 | -1.02 | -78.4 | 0.92 | -$97,586 | 135 |
-| MEDIUM | 921 | 292 | 629 | 31.7% | -$106,133 | -0.115 | -1.03 | -106.1 | 0.83 | -$108,131 | 64 |
-| LOW | 2880 | 1076 | 1804 | 37.4% | $5,678 | +0.002 | -1.03 | +5.7 | 1.00 | -$72,028 | 95 |
+| HIGH | 1508 | 552 | 956 | 36.6% | -$98,760 | -0.065 | -1.02 | -98.8 | 0.89 | -$110,197 | 117 |
+| MEDIUM | 1194 | 419 | 775 | 35.1% | -$52,413 | -0.044 | -1.03 | -52.4 | 0.93 | -$71,896 | 86 |
+| LOW | 2701 | 1000 | 1701 | 37.0% | -$27,638 | -0.010 | -1.02 | -27.6 | 0.98 | -$109,368 | 100 |
 
 | stock bias at signal | trades | won | lost | win % | profit | avg R | median R | total R | PF | max DD | avg min |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Bullish | 2652 | 994 | 1658 | 37.5% | -$121,625 | -0.046 | -1.02 | -121.6 | 0.92 | -$160,750 | 129 |
-| Neutral | 1727 | 602 | 1125 | 34.9% | -$84,642 | -0.049 | -1.03 | -84.6 | 0.92 | -$89,567 | 84 |
-| Bearish | 1024 | 375 | 649 | 36.6% | $27,457 | +0.027 | -1.03 | +27.5 | 1.04 | -$30,166 | 60 |
+| Bullish | 1831 | 681 | 1150 | 37.2% | -$63,585 | -0.035 | -1.02 | -63.6 | 0.94 | -$94,876 | 106 |
+| Neutral | 2191 | 807 | 1384 | 36.8% | -$39,548 | -0.018 | -1.02 | -39.5 | 0.97 | -$96,907 | 106 |
+| Bearish | 1381 | 483 | 898 | 35.0% | -$75,678 | -0.055 | -1.03 | -75.7 | 0.91 | -$87,777 | 88 |
 
 | VWAP | trades | won | lost | win % | profit | avg R | median R | total R | PF | max DD | avg min |
 |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -241,38 +242,45 @@ Trades that reached 2R at any point before the bell: 39%; average best R before 
 
 ## Missed and rejected setups
 
-Rules flagged for review (their rejects beat the trades taken, 20+ setups): `retest_timeout`, `window_closed`
+Rules flagged for review (blocked complete setups beat the trades taken, 20+ setups): none
 
 | rejected by | stage | setups | would-win % | would-profit | avg R | vs trades taken |
 |---|---|---|---|---|---|---|
-| confirm_timeout | never completed (entered at the break) | 108 | 26.9% | -$31,000 | -0.287 |  |
-| failed_breakout | never completed (entered at the break) | 11790 | 12.2% | -$8,192,549 | -0.695 |  |
+| confirm_timeout | never completed (at the break, hindsight-selected) | 108 | 26.9% | -$31,000 | -0.287 | not evidence (selected by outcome) |
+| failed_breakout | never completed (at the break, hindsight-selected) | 11790 | 12.2% | -$8,192,549 | -0.695 | not evidence (selected by outcome) |
 | gap_beyond_level | blocked | 1274 | 36.3% | -$91,176 | -0.072 |  |
 | inactive_level | blocked | 1552 | 36.9% | -$74,117 | -0.048 |  |
 | max_signals_per_day | blocked | 4205 | 34.3% | -$133,685 | -0.032 |  |
 | position_open | blocked | 9290 | 36.9% | -$448,063 | -0.048 |  |
-| retest_timeout | never completed (entered at the break) | 3844 | 70.1% | $2,912,426 | +0.758 | **REVIEW: rejects beat trades** |
-| window_closed | never completed (entered at the break) | 1495 | 45.8% | $360,826 | +0.241 | **REVIEW: rejects beat trades** |
+| retest_timeout | never completed (at the break, hindsight-selected) | 3844 | 70.1% | $2,912,426 | +0.758 | not evidence (selected by outcome) |
+| window_closed | never completed (at the break, hindsight-selected) | 1495 | 45.8% | $360,826 | +0.241 | not evidence (selected by outcome) |
 
-**Most profitable setups the strategy did not take (top 15):**
+**Is waiting for the retest worth it?** The same breakouts, every one bought at the breakout candle's close with the same stop and target:
 
-| date | time | symbol | side | level | rejected by | would-R | note |
-|---|---|---|---|---|---|---|---|
-| 2026-06-02 | 10:46 | AMD | long | swing_high@10:34 508.33 | failed_breakout | +2.00 | entered at break |
-| 2026-03-09 | 09:48 | AAPL | long | swing_high@09:43 255.64 | failed_breakout | +2.00 | entered at break |
-| 2026-09-10 | 09:50 | SHOP | long | pmh 127.50 | failed_breakout | +2.00 | entered at break |
-| 2026-04-30 | 11:21 | MU | long | swing_high@11:11 509.32 | failed_breakout | +2.00 | entered at break |
-| 2026-06-01 | 11:03 | AMD | long | swing_high@10:55 509.90 | failed_breakout | +2.00 | entered at break |
-| 2026-06-01 | 11:07 | AMD | long | swing_high@10:55 509.90 | max_signals_per_day | +2.00 | complete setup, blocked |
-| 2026-07-01 | 11:15 | SNDK | long | swing_high@11:04 2043.99 | max_signals_per_day | +2.00 | complete setup, blocked |
-| 2025-12-10 | 10:24 | MU | long | swing_high@10:06 253.60 | failed_breakout | +2.00 | entered at break |
-| 2025-11-26 | 09:58 | COIN | long | pdh 254.37 | gap_beyond_level | +2.00 | complete setup, blocked |
-| 2026-03-13 | 09:39 | SHOP | long | pdc 126.22 | retest_timeout | +2.00 | entered at break |
-| 2026-07-15 | 09:59 | AMZN | long | swing_high@09:51 251.96 | position_open | +2.00 | complete setup, blocked |
-| 2025-12-03 | 09:48 | HOOD | long | pdc 125.95 | max_signals_per_day | +2.00 | complete setup, blocked |
-| 2026-06-23 | 10:15 | SNDK | long | swing_high@09:54 2012.00 | failed_breakout | +2.00 | entered at break |
-| 2026-09-11 | 09:31 | AMD | long | pdc 503.47 | failed_breakout | +2.00 | entered at break |
-| 2026-06-29 | 10:56 | AMD | long | swing_high@10:50 508.87 | max_signals_per_day | +2.00 | complete setup, blocked |
+| entry | trades | won | lost | win % | profit | avg R | median R | total R | PF | max DD | avg min |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| every breakout, at the break | 38961 | 13420 | 25541 | 34.4% | -$3,408,725 | -0.087 | -1.03 | -3408.7 | 0.86 | -$5,081,584 |  |
+| V1 (break, retest, confirm) | 5403 | 1971 | 3432 | 36.5% | -$178,811 | -0.033 | -1.02 | -178.8 | 0.95 | -$203,296 | 101 |
+
+**Most profitable complete setups that a rule blocked (top 15):**
+
+| date | time | symbol | side | level | blocked by | would-R |
+|---|---|---|---|---|---|---|
+| 2026-06-01 | 11:07 | AMD | long | swing_high@10:55 509.90 | max_signals_per_day | +2.00 |
+| 2026-07-01 | 11:15 | SNDK | long | swing_high@11:04 2043.99 | max_signals_per_day | +2.00 |
+| 2025-11-26 | 09:58 | COIN | long | pdh 254.37 | gap_beyond_level | +2.00 |
+| 2026-07-15 | 09:59 | AMZN | long | swing_high@09:51 251.96 | position_open | +2.00 |
+| 2025-12-03 | 09:48 | HOOD | long | pdc 125.95 | max_signals_per_day | +2.00 |
+| 2026-06-29 | 10:56 | AMD | long | swing_high@10:50 508.87 | max_signals_per_day | +2.00 |
+| 2026-05-28 | 10:37 | AMD | long | swing_high@09:36 507.00 | max_signals_per_day | +2.00 |
+| 2026-06-15 | 10:02 | SNDK | long | pdh 2021.65 | gap_beyond_level | +2.00 |
+| 2026-07-24 | 09:47 | AAPL | long | swing_high@09:41 325.99 | position_open | +2.00 |
+| 2026-07-24 | 10:18 | TSLA | short | swing_low@09:59 314.83 | position_open | +2.00 |
+| 2026-07-24 | 10:06 | AAPL | long | swing_high@09:49 327.51 | position_open | +2.00 |
+| 2026-07-24 | 09:33 | AAPL | long | pmh 322.97 | inactive_level | +2.00 |
+| 2026-07-24 | 09:42 | AMD | short | pml 537.61 | inactive_level | +2.00 |
+| 2026-07-24 | 09:40 | TSLA | short | pdc 319.35 | position_open | +2.00 |
+| 2026-07-24 | 09:52 | MU | short | swing_low@09:42 941.62 | position_open | +2.00 |
 
 ## SNDK — benchmark ticker
 
