@@ -57,7 +57,7 @@ class Book:
             b = pd.concat(parts) if parts else pd.DataFrame(columns=list(OHLCV))
             ends = (b.index + pd.Timedelta(rule)).tz_convert("UTC").asi8 if len(b) else np.array([])
             close = b.close.to_numpy(float)
-            ema = b.close.ewm(span=n, adjust=False).mean().to_numpy(float)
+            ema = np.array(b.close.ewm(span=n, adjust=False).mean(), dtype=float)   # writable copy
             if len(ema) >= n:
                 ema[:n - 1] = np.nan
             else:
