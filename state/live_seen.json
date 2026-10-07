@@ -5,6 +5,7 @@
     "SMCI": "above_light_volume",
     "PLTR": "at_the_level",
     "AFRM": "at_the_level",
-    "SNAP": "at_the_level"
+    "SNAP": "at_the_level",
+    "U": "at_the_level"
   }
 }
