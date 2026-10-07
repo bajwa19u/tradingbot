@@ -1,12 +1,6 @@
 {
   "stock": {
     "days": {
-      "2026-08-18": {
-        "pct": -1.95,
-        "n": 8,
-        "won": 4,
-        "lost": 4
-      },
       "2026-08-19": {
         "pct": 5.82,
         "n": 13,
@@ -210,277 +204,283 @@
         "n": 9,
         "won": 0,
         "lost": 9
+      },
+      "2026-10-07": {
+        "pct": -4.06,
+        "n": 12,
+        "won": 3,
+        "lost": 9
       }
     },
     "summary": {
       "days": 35,
       "green": 10,
       "red": 25,
-      "total": -29.7,
+      "total": -31.81,
       "best": 5.82,
       "worst": -9.06,
-      "trades": 384,
-      "won": 167,
-      "lost": 217
+      "trades": 388,
+      "won": 166,
+      "lost": 222
     }
   },
   "contract": {
     "days": {
-      "2026-08-18": {
-        "pct": -15.37,
-        "n": 8,
-        "won": 2,
-        "lost": 6,
-        "modelled": true
-      },
       "2026-08-19": {
-        "pct": 21.28,
+        "pct": 28.71,
         "n": 13,
         "won": 6,
         "lost": 7,
         "modelled": true
       },
       "2026-08-20": {
-        "pct": -46.64,
+        "pct": -47.81,
         "n": 10,
         "won": 1,
         "lost": 9,
         "modelled": true
       },
       "2026-08-21": {
-        "pct": 65.28,
+        "pct": 70.01,
         "n": 10,
-        "won": 3,
-        "lost": 7,
+        "won": 4,
+        "lost": 6,
         "modelled": true
       },
       "2026-08-24": {
-        "pct": 0.35,
+        "pct": 0.47,
         "n": 12,
         "won": 4,
         "lost": 8,
         "modelled": true
       },
       "2026-08-25": {
-        "pct": -0.22,
+        "pct": -0.69,
         "n": 11,
         "won": 5,
         "lost": 6,
         "modelled": true
       },
       "2026-08-26": {
-        "pct": 1.36,
+        "pct": 6.29,
         "n": 12,
         "won": 4,
         "lost": 8,
         "modelled": true
       },
       "2026-08-27": {
-        "pct": 56.33,
+        "pct": 64.9,
         "n": 11,
         "won": 6,
         "lost": 5,
         "modelled": true
       },
       "2026-08-28": {
-        "pct": 133.83,
+        "pct": 134.39,
         "n": 12,
         "won": 7,
         "lost": 5,
         "modelled": true
       },
       "2026-08-31": {
-        "pct": 9.95,
+        "pct": 9.88,
         "n": 9,
         "won": 5,
         "lost": 4,
         "modelled": true
       },
       "2026-09-01": {
-        "pct": -5.89,
+        "pct": 0.55,
         "n": 9,
         "won": 2,
         "lost": 7,
         "modelled": true
       },
       "2026-09-02": {
-        "pct": 16.48,
+        "pct": 19.7,
         "n": 13,
         "won": 6,
         "lost": 7,
         "modelled": true
       },
       "2026-09-03": {
-        "pct": 27.3,
+        "pct": 36.47,
         "n": 12,
         "won": 5,
         "lost": 7,
         "modelled": true
       },
       "2026-09-04": {
-        "pct": 112.43,
+        "pct": 151.52,
         "n": 13,
         "won": 8,
         "lost": 5,
         "modelled": true
       },
       "2026-09-08": {
-        "pct": 2.09,
+        "pct": 5.35,
         "n": 11,
         "won": 4,
         "lost": 7,
         "modelled": true
       },
       "2026-09-09": {
-        "pct": -10.35,
+        "pct": -11.96,
         "n": 6,
         "won": 2,
         "lost": 4,
         "modelled": true
       },
       "2026-09-10": {
-        "pct": 3.55,
+        "pct": 17.37,
         "n": 11,
         "won": 4,
         "lost": 7,
         "modelled": true
       },
       "2026-09-11": {
-        "pct": -23.65,
+        "pct": -22.85,
         "n": 11,
         "won": 2,
         "lost": 9,
         "modelled": true
       },
       "2026-09-14": {
-        "pct": -11.16,
+        "pct": -13.34,
         "n": 11,
         "won": 4,
         "lost": 7,
         "modelled": true
       },
       "2026-09-15": {
-        "pct": -10.79,
+        "pct": -11.25,
         "n": 11,
         "won": 2,
         "lost": 9,
         "modelled": true
       },
       "2026-09-16": {
-        "pct": -10.99,
+        "pct": -9.34,
         "n": 10,
         "won": 3,
         "lost": 7,
         "modelled": true
       },
       "2026-09-17": {
-        "pct": -11.19,
+        "pct": -10.7,
         "n": 13,
-        "won": 4,
-        "lost": 9,
+        "won": 5,
+        "lost": 8,
         "modelled": true
       },
       "2026-09-18": {
-        "pct": -5.62,
+        "pct": -3.9,
         "n": 12,
-        "won": 3,
-        "lost": 9,
+        "won": 4,
+        "lost": 8,
         "modelled": true
       },
       "2026-09-21": {
-        "pct": 2.46,
+        "pct": 2.33,
         "n": 12,
         "won": 4,
         "lost": 8,
         "modelled": true
       },
       "2026-09-22": {
-        "pct": -12.58,
+        "pct": -12.05,
         "n": 10,
         "won": 4,
         "lost": 6,
         "modelled": true
       },
       "2026-09-23": {
-        "pct": 25.82,
+        "pct": 31.48,
         "n": 10,
         "won": 6,
         "lost": 4,
         "modelled": true
       },
       "2026-09-24": {
-        "pct": -0.35,
+        "pct": 0.4,
         "n": 12,
         "won": 5,
         "lost": 7,
         "modelled": true
       },
       "2026-09-25": {
-        "pct": -7.15,
+        "pct": -7.85,
         "n": 9,
         "won": 2,
         "lost": 7,
         "modelled": true
       },
       "2026-09-28": {
-        "pct": 8.12,
+        "pct": 7.53,
         "n": 11,
         "won": 7,
         "lost": 4,
         "modelled": true
       },
       "2026-09-29": {
-        "pct": -8.26,
+        "pct": -6.86,
         "n": 11,
         "won": 3,
         "lost": 8,
         "modelled": true
       },
       "2026-09-30": {
-        "pct": -41.9,
+        "pct": -42.83,
         "n": 13,
         "won": 0,
         "lost": 13,
         "modelled": true
       },
       "2026-10-01": {
-        "pct": 18.17,
+        "pct": 16.21,
         "n": 13,
         "won": 4,
         "lost": 9,
         "modelled": true
       },
       "2026-10-02": {
-        "pct": 41.62,
+        "pct": 68.49,
         "n": 11,
         "won": 4,
         "lost": 7,
         "modelled": true
       },
       "2026-10-05": {
-        "pct": -9.8,
+        "pct": -10.05,
         "n": 12,
         "won": 3,
         "lost": 9,
         "modelled": true
       },
       "2026-10-06": {
-        "pct": -37.25,
+        "pct": -38.96,
         "n": 9,
         "won": 0,
+        "lost": 9,
+        "modelled": true
+      },
+      "2026-10-07": {
+        "pct": -27.23,
+        "n": 12,
+        "won": 3,
         "lost": 9,
         "modelled": true
       }
     },
     "summary": {
       "days": 35,
-      "green": 17,
-      "red": 18,
-      "total": 277.26,
-      "best": 133.83,
-      "worst": -46.64,
-      "trades": 384,
-      "won": 134,
+      "green": 19,
+      "red": 16,
+      "total": 394.38,
+      "best": 151.52,
+      "worst": -47.81,
+      "trades": 388,
+      "won": 138,
       "lost": 250
     },
     "assumptions": {
@@ -491,5 +491,5 @@
       "measured": false
     }
   },
-  "generated": "2026-10-06 17:47"
+  "generated": "2026-10-07 17:49"
 }
