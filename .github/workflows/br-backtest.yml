@@ -12,6 +12,7 @@ on:
       days: { description: "trading sessions", default: "252" }
       charts: { description: "none | sample | all", default: "sample" }
       refresh: { description: "re-download all bars", type: boolean, default: false }
+      variants: { description: "also run the pre-registered variant test", type: boolean, default: true }
   push:
     branches: [br-v1]
     paths:
@@ -48,11 +49,14 @@ jobs:
           IN_DAYS: ${{ inputs.days || '252' }}
           IN_CHARTS: ${{ inputs.charts || 'sample' }}
           IN_REFRESH: ${{ inputs.refresh }}
+          IN_VARIANTS: ${{ inputs.variants }}
         run: |
           ARGS=(--days "$IN_DAYS" --charts "$IN_CHARTS")
           if [ "${IN_REFRESH:-false}" = "true" ]; then ARGS+=(--refresh); fi
+          if [ "${IN_VARIANTS:-true}" != "false" ]; then ARGS+=(--variants); fi
           python -m src.br_backtest "${ARGS[@]}" 2>&1 | tee /tmp/br_backtest.log
           cat reports/br_v1/baseline.md >> "$GITHUB_STEP_SUMMARY"
+          [ -f reports/br_v1/variants.md ] && cat reports/br_v1/variants.md >> "$GITHUB_STEP_SUMMARY" || true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -66,6 +70,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           rm -rf reports/br_v1/charts
           git add reports/br_v1/baseline.md reports/br_v1/baseline.json reports/br_v1/trades.csv reports/br_v1/candidates.csv.gz
+          [ -f reports/br_v1/variants.md ] && git add reports/br_v1/variants.md || true
           git diff --cached --quiet && exit 0
           git commit -m "br v1: baseline backtest [skip ci]"
           for i in 1 2 3 4 5; do

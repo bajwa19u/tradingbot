@@ -71,12 +71,13 @@ class Candidate:
 
 
 class _Tracker:
-    __slots__ = ("level", "direction", "stage", "attempt", "cand", "break_i", "touch_i")
+    __slots__ = ("level", "direction", "stage", "attempt", "cand", "break_i", "touch_i", "best")
 
     def __init__(self, level: Level, direction: str):
         self.level, self.direction = level, direction
         self.stage, self.attempt = "armed", 0
         self.cand, self.break_i, self.touch_i = None, None, None
+        self.best = None                     # furthest price beyond the level since the break
 
 
 class Engine:
@@ -96,6 +97,7 @@ class Engine:
         self.fail = cfg.retest.fail_close_pct / 100
         self.beyond = cfg.breakout.min_close_beyond_pct / 100
         self.max_bars = max(1, int(cfg.retest.max_minutes_after_break // tf))
+        self.disp = cfg.retest.get("min_displacement_pct", 0.0) / 100
 
     # ------------------------------------------------------------ feed
     def on_bar(self, ts, o, h, l, c, v=0.0) -> list[Candidate]:
@@ -155,6 +157,7 @@ class Engine:
             if gap and not self.cfg.breakout.allow_gap_breaks:
                 tr.cand.blockers.append("gap_beyond_level")
             tr.stage, tr.break_i, tr.touch_i = "broken", i, None
+            tr.best = b["h"] if s > 0 else b["l"]
             return None
 
         cand = tr.cand
@@ -164,7 +167,12 @@ class Engine:
             return self._rearm(tr)
 
         touches = s * (b["l"] if s > 0 else b["h"]) <= s * L + L * self.tol
-        if touches and i - tr.break_i >= self.cfg.retest.min_bars_after_break:
+        # Price must have moved away from the level before a return counts as
+        # a retest (0 = off). Judged on bars BEFORE this one.
+        moved = s * (tr.best - L) >= L * self.disp
+        if i > tr.break_i:
+            tr.best = max(tr.best, b["h"]) if s > 0 else min(tr.best, b["l"])
+        if touches and moved and i - tr.break_i >= self.cfg.retest.min_bars_after_break:
             if tr.stage == "broken":
                 tr.stage = "touched"
                 cand.touch_ts = b["ts"]

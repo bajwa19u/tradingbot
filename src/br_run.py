@@ -109,7 +109,7 @@ def _blank() -> dict:
             "v_vwap": 0, "above_vwap": None, "extended": False, "consolidating": False}
 
 
-def evaluate(cands: list, setups: dict, bk: dict, cfg) -> pd.DataFrame:
+def evaluate(cands: list, setups: dict, bk: dict, cfg, extras: bool = True) -> pd.DataFrame:
     """One row per candidate: setup facts, context, the trade (or the
     hypothetical one for a setup that never completed)."""
     rows = []
@@ -137,12 +137,12 @@ def evaluate(cands: list, setups: dict, bk: dict, cfg) -> pd.DataFrame:
             continue
         row.update({f"plan_{k}": v for k, v in p.items()})
         res = simulate(st["rth"], t, c.direction, p, cfg, level=c.level,
-                       touch_extreme=c.touch_extreme, atr=atr, alternatives=(hypo == "signal"))
+                       touch_extreme=c.touch_extreme, atr=atr, alternatives=(hypo == "signal" and extras))
         row.update(res)
         # The same breakout bought at its close, no retest: what dropping the
         # retest rule would do. Measured on EVERY breakout, it is the fair
         # comparison for the rejected ones below.
-        if hypo == "signal":
+        if hypo == "signal" and extras:
             tb = pd.Timestamp(c.break_ts) + pd.Timedelta(minutes=c.tf)
             pb = plan(c.direction, c.break_close, c.level, None, cfg)
             rb = simulate(st["rth"], tb, c.direction, pb, cfg, alternatives=False) if pb else {}
@@ -202,7 +202,7 @@ def failures(ev: pd.DataFrame, tfs, cfg) -> pd.DataFrame:
     return f.drop_duplicates("_k").drop(columns="_k")
 
 
-def run(sess: dict, daily: dict, dates: list, cfg, symbols=None) -> tuple[pd.DataFrame, dict]:
+def run(sess: dict, daily: dict, dates: list, cfg, symbols=None, extras: bool = True) -> tuple[pd.DataFrame, dict]:
     """All candidates on `dates`, evaluated. Returns (evaluated rows, setups)."""
     bk = books(sess, daily, cfg)
     syms = symbols or cfg.universe.symbols
@@ -217,4 +217,4 @@ def run(sess: dict, daily: dict, dates: list, cfg, symbols=None) -> tuple[pd.Dat
                 continue
             setups[(s, d)] = st
             cands += candidates_for(s, d, st, cfg)
-    return evaluate(cands, setups, bk, cfg), setups
+    return evaluate(cands, setups, bk, cfg, extras), setups

@@ -48,6 +48,9 @@ retest:
   # "Meaningfully back through the level": a CLOSE this far beyond it on the
   # wrong side kills the setup as a failed breakout. Smaller dips are wiggle room.
   fail_close_pct: 0.15
+  # Price must first move this far beyond the level before a pullback counts
+  # as the retest (0 = off, the V1 baseline). Being tested as a variant.
+  min_displacement_pct: 0.0
 
 confirmation:
   max_bars_after_touch: 3             # the confirming candle must come this soon
@@ -82,6 +85,7 @@ analysis:
   alt_stop_pcts: [0.25, 0.35, 0.50, 0.75, 1.00]
   alt_stop_atr_mult: 0.25             # volatility stop: level -/+ this x daily ATR
   alt_targets_r: [1.5, 2.0, 3.0, 4.0]
+  alt_time_minutes: [60, 120, 180]       # time-based exits, decided on a bar's close
   in_sample_fraction: 0.60            # first 60% of dates by time = in-sample
 
 backtest:

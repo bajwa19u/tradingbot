@@ -94,13 +94,13 @@ def market_day_type(sess: dict, d) -> str:
     return "range"
 
 
-def build(cfg, data: dict, daily: dict, days: int):
+def build(cfg, data: dict, daily: dict, days: int, extras: bool = True):
     sess = br_run.sessions(data)
     all_dates = sorted({d for s in sess.values() for d in s})
     dates = [d for d in all_dates if sum(d in sess.get(s, {}) for s in cfg.universe.market_symbols) == 2]
     dates = dates[-days:]
     t0 = _time.time()
-    ev, setups = br_run.run(sess, daily, dates, cfg)
+    ev, setups = br_run.run(sess, daily, dates, cfg, extras=extras)
     print(f"evaluated {len(ev)} candidates on {len(dates)} sessions in {_time.time() - t0:.0f}s", flush=True)
     split = label_split(dates, cfg.analysis.in_sample_fraction)
     dtype = {d: market_day_type(sess, d) for d in dates}
@@ -265,11 +265,93 @@ def charts(cfg, sess, setups, T: pd.DataFrame, mode: str, sample: int, bench_res
     return files
 
 
+# Pre-registered before the run (8 Oct 2026), from two of this week's SNDK
+# losses: a "break" that closed $2 above the level and was "retested" the next
+# minute, and a trade held 4h40m after being +1.76R. Nothing is adopted from
+# this table without passing in BOTH halves.
+ENTRY_VARIANTS = {
+    "break closes >= 0.10% beyond": {"breakout": {"min_close_beyond_pct": 0.10}},
+    "break closes >= 0.20% beyond": {"breakout": {"min_close_beyond_pct": 0.20}},
+    "moves >= 0.20% away before retest": {"retest": {"min_displacement_pct": 0.20}},
+    "moves >= 0.40% away before retest": {"retest": {"min_displacement_pct": 0.40}},
+    "0.10% close + 0.20% move away": {"breakout": {"min_close_beyond_pct": 0.10},
+                                      "retest": {"min_displacement_pct": 0.20}},
+}
+TIME_LABEL = {"always": "exit at {n}m close", "if_profit": "exit at {n}m close if in profit",
+              "be_if_profit": "stop to breakeven at {n}m if in profit"}
+
+
+def _per(t: pd.DataFrame, col: str = "r") -> dict:
+    out = {}
+    for per in ("in-sample", "out-of-sample"):
+        r = t.loc[t.period == per, col].dropna().astype(float)
+        out[per] = (len(r), r.mean() if len(r) else float("nan"),
+                    r.std(ddof=1) / np.sqrt(len(r)) if len(r) > 1 else float("nan"),
+                    100 * (r > 0).mean() if len(r) else float("nan"), r.sum())
+    return out
+
+
+def _verdict(b: dict, v: dict, tstats: list) -> str:
+    better = all(v[p][1] > b[p][1] for p in b)
+    positive = all(v[p][1] > 0 for p in b)
+    if not better:
+        return "rejected (not better in both halves)"
+    if not positive:
+        return "better in both halves, still losing" + ("" if max(tstats) >= rp.noise_floor(14) else " - within noise")
+    return "CANDIDATE: better and positive in both halves" + ("" if min(tstats) >= rp.noise_floor(14) else " - but within noise")
+
+
+def variants(cfg, data, daily, days, base_taken: pd.DataFrame) -> str:
+    """Pre-registered variants vs the baseline, by half. Exit variants are
+    the same trades (paired); entry variants are different trades (unpaired)."""
+    nvar = len(ENTRY_VARIANTS) + 3 * len(cfg.analysis.alt_time_minutes)
+    floor = rp.noise_floor(nvar)
+    b = _per(base_taken)
+    L = ["# Break & Retest V1 — variant test\n",
+         f"{nvar} variants fixed before the run. A change has to beat the baseline in BOTH halves; "
+         f"with {nvar} looks, anything under about {floor:.1f} standard errors is noise. Account % "
+         "assumes 1% risked per trade (simple sum). Nothing here changes the live settings.\n",
+         "| variant | half | trades | win % | account % | avg account % per trade | t vs baseline | verdict |",
+         "|---|---|---|---|---|---|---|---|"]
+
+    def rows(name, v, ts, verdict):
+        for k, per in enumerate(("in-sample", "out-of-sample")):
+            n, m, se, w, tot = v[per]
+            L.append(f"| {name if k == 0 else ''} | {per} | {n} | {w:.1f}% | {tot:+.1f}% | {m:+.3f}% | "
+                     f"{'' if ts is None else f'{ts[k]:+.1f}'} | {verdict if k == 0 else ''} |")
+
+    rows("**baseline (V1)**", b, None, "")
+    L.append("| **exits** (same trades) | | | | | | | |")
+    for n in cfg.analysis.alt_time_minutes:
+        for key, lab in TIME_LABEL.items():
+            col = f"alt_time_{n}m" if key == "always" else f"alt_time_{n}m_{key}"
+            if col not in base_taken:
+                continue
+            v = _per(base_taken, col)
+            ts = []
+            for per in ("in-sample", "out-of-sample"):
+                d = (base_taken.loc[base_taken.period == per, col] - base_taken.loc[base_taken.period == per, "r"]).dropna()
+                ts.append(d.mean() / (d.std(ddof=1) / np.sqrt(len(d))) if len(d) > 1 and d.std() > 0 else 0.0)
+            rows(lab.format(n=n), v, ts, _verdict(b, v, ts))
+    L.append("| **entries** (different trades) | | | | | | | |")
+    for name, ov in ENTRY_VARIANTS.items():
+        vc = bcfg.load(**ov)
+        _, ev, _, _, _ = build(vc, data, daily, days, extras=False)
+        T = br_run.decide(ev, list(vc.timeframes.setup), vc)
+        T = T[T.taken]
+        v = _per(T)
+        ts = [(v[p][1] - b[p][1]) / np.sqrt(v[p][2] ** 2 + b[p][2] ** 2) for p in ("in-sample", "out-of-sample")]
+        rows(name, v, ts, _verdict(b, v, ts))
+        print(f"variant done: {name}", flush=True)
+    return "\n".join(L)
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=None)
     ap.add_argument("--refresh", action="store_true")
     ap.add_argument("--charts", default=None, choices=["none", "sample", "all"])
+    ap.add_argument("--variants", action="store_true", help="also run the pre-registered variant test")
     a = ap.parse_args(argv)
     cfg = bcfg.load()
     days = a.days or cfg.backtest.days
@@ -292,6 +374,10 @@ def main(argv=None) -> int:
                              for p in ("in-sample", "out-of-sample")},
                "benchmarks": bench_res, "charts": [str(f.relative_to(REPO_ROOT)) for f in files]}
     (OUT / "baseline.json").write_text(json.dumps(summary, indent=1, default=str))
+    if a.variants:
+        vmd = variants(cfg, data, daily, days, T)
+        (OUT / "variants.md").write_text(vmd)
+        print(vmd)
     print(md[:3000])
     return 0
 

@@ -87,6 +87,38 @@ def run_trail(h, l, c, s: int, entry: float, stop: float, arm_r: float, slip: fl
     return s * (c[-1] * (1 - s * slip) - entry) / rps if len(c) else 0.0
 
 
+def run_time(h, l, c, s: int, entry: float, stop: float, target: float, slip: float,
+             minutes: int, mode: str) -> float:
+    """The baseline stop and target, plus a decision `minutes` after entry,
+    made on that bar's CLOSE (never a wick):
+      always     exit at that close, whatever the P/L
+      profit     exit at that close only if the trade is in profit; else carry on
+      breakeven  if in profit then, move the stop to entry and carry on
+    """
+    k = min(minutes - 1, len(c) - 1)
+    if k < 0:
+        return 0.0
+    rps = s * (entry - stop)
+    r0, j, _ = run_exit(h[:k + 1], l[:k + 1], c[:k + 1], s, entry, stop, target, slip)
+    if j < k:                                   # stop or target came first
+        return r0
+    in_profit = s * (c[k] - entry) > 0
+    if mode == "always" or (mode == "profit" and in_profit):
+        return s * (c[k] * (1 - s * slip) - entry) / rps
+    new_stop = entry if (mode == "breakeven" and in_profit) else stop
+    hr, lr, cr = h[k + 1:], l[k + 1:], c[k + 1:]
+    n = len(cr)
+    if n == 0:
+        return s * (c[k] * (1 - s * slip) - entry) / rps
+    # Measured against the ORIGINAL risk, so a breakeven stop scores ~0R.
+    ks = _first(lr <= new_stop) if s > 0 else _first(hr >= new_stop)
+    kt = _first(hr >= target) if s > 0 else _first(lr <= target)
+    if ks < n and ks <= kt:
+        return s * (new_stop * (1 - s * slip) - entry) / rps
+    if kt < n:
+        return s * (target - entry) / rps
+    return s * (cr[-1] * (1 - s * slip) - entry) / rps
+
 def simulate(rth: pd.DataFrame, signal_ts, direction: str, p: dict, cfg,
              level: float | None = None, touch_extreme: float | None = None,
              atr: float | None = None, alternatives: bool = True) -> dict:
@@ -202,5 +234,9 @@ def _alternatives(h, l, c, s, entry, stop, slip, cfg, direction, level, touch_ex
     for t in cfg.analysis.alt_targets_r:
         out[f"alt_target_{t:g}r"] = run_exit(h, l, c, s, entry, stop, entry + s * t * rps, slip)[0]
     out["alt_target_none"] = run_exit(h, l, c, s, entry, stop, None, slip)[0]
+    for n in cfg.analysis.get("alt_time_minutes", []):
+        out[f"alt_time_{n}m"] = run_time(h, l, c, s, entry, stop, entry + s * tr * rps, slip, n, "always")
+        out[f"alt_time_{n}m_if_profit"] = run_time(h, l, c, s, entry, stop, entry + s * tr * rps, slip, n, "profit")
+        out[f"alt_time_{n}m_be_if_profit"] = run_time(h, l, c, s, entry, stop, entry + s * tr * rps, slip, n, "breakeven")
     out["alt_trail_after_2r"] = run_trail(h, l, c, s, entry, stop, 2.0, slip)
     return out

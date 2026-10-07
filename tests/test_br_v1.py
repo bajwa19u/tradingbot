@@ -352,3 +352,34 @@ def test_context_never_reads_bars_after_the_moment_asked_about(cfg):
         r.index = r.index.as_unit(unit)
         ctx = bc.Book(r, pd.DataFrame(columns=["open", "high", "low", "close"]), cfg).at(t)
         assert ctx["v_m15"] == 1 and ctx["v_h1"] == 1, unit       # the collapse on the 24th is unseen
+
+
+def test_a_pullback_only_counts_once_price_has_moved_away(cfg):
+    """The 5 Oct SNDK loss: closed $2 above the level, "retested" the next
+    minute. With min_displacement_pct set, that is not a retest yet."""
+    c = bcfg.load(retest={"min_displacement_pct": 0.40})
+    rows = [("09:30", 99.9, 100.12, 99.9, 100.1),            # break by 0.1%
+            ("09:31", 100.1, 100.3, 100.05, 100.25)]         # dips to the level, green: would confirm
+    eng = Engine("X", 1, D1, [lv()], c, prev_close=99.8)
+    assert feed(eng, D1, rows) == []
+    eng = Engine("X", 1, D1, [lv()], cfg, prev_close=99.8)     # baseline (0 = off) takes it
+    assert feed(eng, D1, rows)[-1].status == "confirmed"
+    rows += [("09:32", 100.25, 100.6, 100.2, 100.5),           # now it has moved 0.6% away
+             ("09:33", 100.5, 100.5, 100.05, 100.1),           # back to the level
+             ("09:34", 100.1, 100.3, 100.06, 100.28)]          # green: confirmed
+    eng = Engine("X", 1, D1, [lv()], c, prev_close=99.8)
+    assert feed(eng, D1, rows)[-1].status == "confirmed"
+
+
+def test_time_exits_decide_on_the_close_at_n_minutes():
+    import numpy as np
+    from src.br_trade import run_time
+    # +1R by minute 3, then down through the stop by minute 6
+    c = np.array([100.5, 101.0, 101.0, 100.5, 99.5, 98.9]); h = c + 0.1; l = c - 0.1
+    l[-1] = 98.8
+    kw = dict(s=1, entry=100.0, stop=99.0, target=102.0, slip=0.0, minutes=3)
+    assert run_time(h, l, c, mode="always", **kw) == pytest.approx(1.0)          # out at minute 3's close
+    assert run_time(h, l, c, mode="profit", **kw) == pytest.approx(1.0)
+    assert run_time(h, l, c, mode="breakeven", **kw) == pytest.approx(0.0)       # stopped at entry later
+    c2 = np.array([99.8, 99.6, 99.5, 99.4, 99.2, 98.8]); h2 = c2 + 0.1; l2 = c2 - 0.1
+    assert run_time(h2, l2, c2, mode="profit", **kw) == pytest.approx(-1.0, abs=0.2)   # losing: held to the stop
