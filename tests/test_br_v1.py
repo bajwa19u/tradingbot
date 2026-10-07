@@ -329,3 +329,26 @@ def test_v1_settings_load_and_validate():
     assert c.context.block_counter_bias is False          # V1: bias informs, never blocks
     with pytest.raises(ValueError):
         bcfg.load(risk={"stop_ref": "nonsense"})
+
+
+def test_context_never_reads_bars_after_the_moment_asked_about(cfg):
+    """Pinned after a real bug: with pandas 3 storing microseconds, the hourly
+    and 15-minute lookups compared units wrongly and always used the LAST bar
+    of the data. Up all morning on day 1, collapsing later: an early question
+    must see only the rise, whatever unit the index is stored in."""
+    from src import br_context as bc
+    rows = []
+    for d in ("2026-09-16", "2026-09-17", "2026-09-18", "2026-09-21", "2026-09-22", "2026-09-23", "2026-09-24"):
+        for i in range(390):
+            px = 100 + i * 0.05 if d != "2026-09-24" else 120 - i * 0.2
+            rows.append((d, i, px))
+    idx = [pd.Timestamp(f"{d} 09:30", tz=ET) + pd.Timedelta(minutes=i) for d, i, _ in rows]
+    px = [p for *_, p in rows]
+    rth = pd.DataFrame({"open": px, "high": [p + 0.02 for p in px], "low": [p - 0.02 for p in px],
+                        "close": px, "volume": 1000.0}, index=pd.DatetimeIndex(idx))
+    t = pd.Timestamp("2026-09-23 15:00", tz=ET)
+    for unit in ("ns", "us", "s"):
+        r = rth.copy()
+        r.index = r.index.as_unit(unit)
+        ctx = bc.Book(r, pd.DataFrame(columns=["open", "high", "low", "close"]), cfg).at(t)
+        assert ctx["v_m15"] == 1 and ctx["v_h1"] == 1, unit       # the collapse on the 24th is unseen

@@ -49,7 +49,11 @@ def row(name, s: dict) -> str:
     pf = "inf" if s["pf"] == math.inf else f"{s['pf']:.2f}"
     return (f"| {name} | {s['n']} | {s['wins']} | {s['losses']} | {s['win']:.1f}% | "
             f"{_usd(s['profit'])} | {s['avg']:+.3f} | {s['med']:+.2f} | {s['total']:+.1f} | {pf} | "
-            f"{_usd(-s['dd_usd'])} | {s['dur']:.0f} |")
+            f"{_usd(-s['dd_usd'])} | {_mins(s['dur'])} |")
+
+
+def _mins(x: float) -> str:
+    return "" if x != x else f"{x:.0f}"
 
 
 def _usd(x: float) -> str:
@@ -163,13 +167,27 @@ def alt_section(t: pd.DataFrame, prefix: str, label: str, split_col: str, risk: 
     return "\n".join(lines)
 
 
+HINDSIGHT = {"retest_timeout", "window_closed", "failed_breakout", "confirm_timeout"}
+
+
 def missed_section(conf: pd.DataFrame, fails: pd.DataFrame, taken: pd.DataFrame, risk: float, top: int = 15) -> str:
-    """Rejected setups and what they would have done. A rule is flagged for
-    review when its rejects did better than the trades taken, on enough of
-    them to matter - never because of one or two."""
+    """Rejected setups and what they would have done.
+
+    Two kinds, and only one of them can indict a rule:
+      blocked          a complete setup stopped by a rule (inactive level, gap,
+                       open position, daily cap). Its outcome is a fair test of
+                       that rule; it is flagged when its rejects beat the trades
+                       taken on 20+ setups.
+      never completed  a breakout that never retested/confirmed, simulated as if
+                       bought at the break. These are SELECTED BY WHAT PRICE DID
+                       NEXT ("retest_timeout" means price ran away and never came
+                       back), so they win or lose by construction and are never
+                       flagged. The fair question - "should we skip the retest?" -
+                       is answered by buying EVERY breakout at its close, below.
+    """
     base = stats(taken, risk)
     rej = conf[~conf.taken & conf.r.notna()].assign(stage="blocked")
-    flr = fails[fails.r.notna()].assign(stage="never completed (entered at the break)",
+    flr = fails[fails.r.notna()].assign(stage="never completed (at the break, hindsight-selected)",
                                         reject_reason=fails.status) if len(fails) else fails
     allr = pd.concat([rej, flr], ignore_index=True) if len(flr) else rej
     lines = ["| rejected by | stage | setups | would-win % | would-profit | avg R | vs trades taken |",
@@ -177,22 +195,31 @@ def missed_section(conf: pd.DataFrame, fails: pd.DataFrame, taken: pd.DataFrame,
     flags = []
     for (reason, stage), g in allr.groupby(["reject_reason", "stage"]):
         s = stats(g, risk)
-        better = base.get("n") and s["n"] >= 20 and s["avg"] > base["avg"] and s["avg"] > 0
-        mark = "**REVIEW: rejects beat trades**" if better else ""
+        better = (stage == "blocked" and base.get("n") and s["n"] >= 20
+                  and s["avg"] > base["avg"] and s["avg"] > 0)
+        mark = "**REVIEW: rejects beat trades**" if better else (
+            "not evidence (selected by outcome)" if reason in HINDSIGHT else "")
         if better:
             flags.append(reason)
         lines.append(f"| {reason} | {stage} | {s['n']} | {s['win']:.1f}% | {_usd(s['profit'])} | "
                      f"{s['avg']:+.3f} | {mark} |")
-    best = allr.sort_values("r", ascending=False).head(top)
-    lines.append(f"\n**Most profitable setups the strategy did not take (top {top}):**\n")
-    lines.append("| date | time | symbol | side | level | rejected by | would-R | note |")
-    lines.append("|---|---|---|---|---|---|---|---|")
+    # The fair test of the retest rule: every breakout, bought at its close.
+    every = pd.concat([conf[["r_at_break"]], fails[["r_at_break"]] if len(fails) else None])
+    every = every.rename(columns={"r_at_break": "r"}).dropna()
+    se = stats(every, risk)
+    lines.append("\n**Is waiting for the retest worth it?** The same breakouts, every one bought at the "
+                 "breakout candle's close with the same stop and target:\n")
+    lines.append(HEAD.format(k="entry"))
+    lines.append(row("every breakout, at the break", se))
+    lines.append(row("V1 (break, retest, confirm)", base))
+    best = rej.sort_values("r", ascending=False).head(top)
+    lines.append(f"\n**Most profitable complete setups that a rule blocked (top {top}):**\n")
+    lines.append("| date | time | symbol | side | level | blocked by | would-R |")
+    lines.append("|---|---|---|---|---|---|---|")
     for _, r in best.iterrows():
-        t = pd.Timestamp(r.t_known)
-        note = "entered at break" if r.get("hypo") == "at_break" else "complete setup, blocked"
-        lines.append(f"| {r.date} | {t:%H:%M} | {r.symbol} | {r.direction} | {r.level_name} {r.level:.2f} | "
-                     f"{r.reject_reason} | {r.r:+.2f} | {note} |")
-    head = ("Rules flagged for review (their rejects beat the trades taken, 20+ setups): "
+        lines.append(f"| {r.date} | {pd.Timestamp(r.t_known):%H:%M} | {r.symbol} | {r.direction} | "
+                     f"{r.level_name} {r.level:.2f} | {r.reject_reason} | {r.r:+.2f} |")
+    head = ("Rules flagged for review (blocked complete setups beat the trades taken, 20+ setups): "
             + (", ".join(f"`{f}`" for f in flags) if flags else "none") + "\n\n")
     return head + "\n".join(lines)
 

@@ -139,6 +139,16 @@ def evaluate(cands: list, setups: dict, bk: dict, cfg) -> pd.DataFrame:
         res = simulate(st["rth"], t, c.direction, p, cfg, level=c.level,
                        touch_extreme=c.touch_extreme, atr=atr, alternatives=(hypo == "signal"))
         row.update(res)
+        # The same breakout bought at its close, no retest: what dropping the
+        # retest rule would do. Measured on EVERY breakout, it is the fair
+        # comparison for the rejected ones below.
+        if hypo == "signal":
+            tb = pd.Timestamp(c.break_ts) + pd.Timedelta(minutes=c.tf)
+            pb = plan(c.direction, c.break_close, c.level, None, cfg)
+            rb = simulate(st["rth"], tb, c.direction, pb, cfg, alternatives=False) if pb else {}
+            row["r_at_break"] = rb.get("r")
+        else:
+            row["r_at_break"] = res.get("r")
         rows.append(row)
     df = pd.DataFrame(rows)
     if len(df):

@@ -55,7 +55,10 @@ class Book:
         for name, rule, off in (("h1", "60min", "30min"), ("m15", "15min", "0min")):
             parts = [_bars(g, rule, off) for _, g in rth.groupby(rth.index.date)]
             b = pd.concat(parts) if parts else pd.DataFrame(columns=list(OHLCV))
-            ends = (b.index + pd.Timedelta(rule)).tz_convert("UTC").asi8 if len(b) else np.array([])
+            # Nanoseconds explicitly: pandas 3 may store microseconds, and
+            # comparing those integers with a nanosecond timestamp silently
+            # picks the LAST bar of the data - lookahead.
+            ends = (b.index + pd.Timedelta(rule)).as_unit("ns").asi8 if len(b) else np.array([])
             close = b.close.to_numpy(float)
             ema = np.array(b.close.ewm(span=n, adjust=False).mean(), dtype=float)   # writable copy
             if len(ema) >= n:
@@ -84,7 +87,7 @@ class Book:
 
     def _tf_vote(self, name: str, t: pd.Timestamp) -> int:
         ends, close, ema = self.series[name]
-        k = bisect.bisect_right(ends, t.tz_convert("UTC").value) - 1
+        k = bisect.bisect_right(ends, pd.Timestamp(t).as_unit("ns").value) - 1
         return _vote(close, ema, k) if k >= 0 else 0
 
     def at(self, t) -> dict:
