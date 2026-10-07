@@ -1,6 +1,6 @@
 # Paper account
 
-**Forward test since 2026-09-28 · bars through 2026-10-06 · 35 symbols · generated 2026-10-06 21:41**
+**Forward test since 2026-09-28 · bars through 2026-10-07 · 35 symbols · generated 2026-10-07 21:43**
 
 Not a backtest. These are the trades the rule would have taken since the day it was chosen, on bars it had never seen when the choice was made.
 
@@ -21,12 +21,14 @@ Sized at 1% of $2,000 risked per trade.
 | **AMD** | 2026-10-06 | $649.85 | $589.08 | $832.17 | — too small | 0.0R |
 | **CRWD** | 2026-10-06 | $279.00 | $241.52 | $391.45 | — too small | 0.0R |
 | **NVDA** | 2026-10-05 | $239.10 | $219.37 | $298.28 | 1 | 0.21R |
-| **U** | 2026-10-05 | $45.72 | $37.85 | $69.33 | 2 | 0.02R |
+| **SMCI** | 2026-10-07 | $44.96 | $39.18 | $62.30 | 3 | 0.0R |
+| **U** | 2026-10-05 | $45.72 | $37.85 | $69.33 | 2 | 0.03R |
 | **ZM** | 2026-10-01 | $93.87 | $84.47 | $122.05 | 2 | 0.13R |
 
 - **AMD** — Coiled 10 days inside $596.20–$645.37 (2.1x ATR, tight), then closed above $645.37 on 1.0x normal volume. Daily range 3.7% — volatile enough to move.
 - **CRWD** — Coiled 10 days inside $244.76–$274.14 (2.7x ATR, tight), then closed above $274.14 on 1.4x normal volume. Daily range 3.9% — volatile enough to move.
 - **NVDA** — Coiled 10 days inside $221.13–$237.84 (2.8x ATR, tight), then closed above $237.84 on 1.3x normal volume. Daily range 2.5% — volatile enough to move.
+- **SMCI** — Coiled 10 days inside $39.85–$44.72 (2.2x ATR, tight), then closed above $44.72 on 1.1x normal volume. Daily range 5.0% — volatile enough to move.
 - **U** — Coiled 10 days inside $38.47–$45.31 (3.3x ATR, tight), then closed above $45.31 on 1.1x normal volume. Daily range 4.5% — volatile enough to move.
 - **ZM** — Coiled 10 days inside $85.41–$93.33 (2.5x ATR, tight), then closed above $93.33 on 1.7x normal volume. Daily range 3.3% — volatile enough to move.
 
