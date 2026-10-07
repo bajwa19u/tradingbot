@@ -1,6 +1,7 @@
-**Live check — 2026-10-07 11:34 ET** · 265 min to the close
+**Live check — 2026-10-07 11:58 ET** · 241 min to the close
 
-⚪ right at the level — **ZM** `$94.47` vs level `$95.12` (-0.7%) · volume 13% of what it needs
-⚪ right at the level — **SMCI** `$44.10` vs level `$44.72` (-1.4%) · volume 39% of what it needs
+⚪ right at the level — **ZM** `$94.59` vs level `$95.12` (-0.6%) · volume 15% of what it needs
+⚪ right at the level — **PLTR** `$192.47` vs level `$194.72` (-1.2%) · volume 34% of what it needs
+⚪ right at the level — **SMCI** `$44.09` vs level `$44.72` (-1.4%) · volume 42% of what it needs
 
 ⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
