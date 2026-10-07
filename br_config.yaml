@@ -1,0 +1,96 @@
+# ============================================================================
+#  Break & Retest V1 — every tunable value lives here
+# ============================================================================
+#  None of these numbers is known to be right. They are the baseline. Change
+#  one only after the backtest report shows a reason, and re-run it.
+#  Loaded by src/br_config.py; a missing key falls back to the default there.
+# ============================================================================
+
+universe:
+  # Fixed list. Do not add names without writing the reason next to them.
+  symbols: [SPY, QQQ, AAPL, TSLA, AMD, NVDA, MU, GOOGL, AMZN, HOOD, SHOP, COIN, SNDK]
+  # SNDK is the benchmark ticker: the setups we want to catch should show up
+  # on it. It is traded like the rest and also reported on its own.
+  benchmark_symbol: SNDK
+  market_symbols: [SPY, QQQ]          # used for market context
+
+session:
+  premarket_start: "04:00"
+  open: "09:30"
+  signals_until: "11:30"              # no new signals after this (confirmation close)
+  time_exit: "15:55"                  # baseline exit for a trade still open
+  live_start: "09:00"                 # live job prepares levels from here
+
+levels:
+  # Which levels each direction can trade. Highs are resistance (long breaks),
+  # lows are support (short breaks). PDC can break either way.
+  long: [pdh, pmh, pdc, swing_high]
+  short: [pdl, pml, pdc, swing_low]
+  # PMH/PML are only ACTIVE when the regular session opens above PDH or below
+  # PDL. Otherwise they are tracked but rejected as "inactive_level", so the
+  # missed-trade report can show whether that rule costs money.
+  pm_levels_need_outside_open: true
+  swing_left: 3                       # pivot needs this many bars on each side
+  swing_right: 3
+  merge_within_pct: 0.10              # two levels this close count as one
+
+breakout:
+  min_close_beyond_pct: 0.0           # close must be beyond the level by this much
+  # A gap open already beyond the level is not a break the rule saw happen.
+  # Off = record as rejected "gap_beyond_level"; the report shows if that hurts.
+  allow_gap_breaks: false
+  max_attempts_per_level: 2           # a level may re-arm after a failed break
+
+retest:
+  tolerance_pct: 0.10                 # how close to the level counts as a retest
+  max_minutes_after_break: 45         # retest + confirmation must finish in this
+  min_bars_after_break: 1             # never the breakout bar itself
+  # "Meaningfully back through the level": a CLOSE this far beyond it on the
+  # wrong side kills the setup as a failed breakout. Smaller dips are wiggle room.
+  fail_close_pct: 0.15
+
+confirmation:
+  max_bars_after_touch: 3             # the confirming candle must come this soon
+  require_close_beyond_level: true    # confirmation must close on the right side
+
+timeframes:
+  # Setups are detected on each of these (minutes). Live runs all of them and
+  # takes the first confirmation per ticker/level/direction; trades are always
+  # tracked on 1-minute bars.
+  setup: [1, 3, 5]
+
+risk:
+  risk_dollars: 1000.0
+  stop_buffer_pct: 0.50               # stop = level -/+ this %
+  stop_ref: level                     # level | retest_extreme
+  target_r: 2.0
+  slippage_pct: 0.025                 # per side, entries and stop/time exits
+  max_open_per_symbol: 1
+  max_signals_per_symbol_per_day: 2
+
+context:
+  # Bias = sum of daily, 1H and 15M structure and VWAP (each -1/0/+1).
+  bullish_at: 2                       # score >= this is Bullish
+  bearish_at: -2                      # score <= this is Bearish
+  ema_len: 20
+  extended_vwap_atr: 0.6              # |price-VWAP| / daily ATR above this = extended
+  # Neutral or opposing bias never blocks a trade in V1; it lowers confidence.
+  block_counter_bias: false
+
+analysis:
+  post_exit_minutes: [5, 10, 15, 30]
+  alt_stop_pcts: [0.25, 0.35, 0.50, 0.75, 1.00]
+  alt_stop_atr_mult: 0.25             # volatility stop: level -/+ this x daily ATR
+  alt_targets_r: [1.5, 2.0, 3.0, 4.0]
+  in_sample_fraction: 0.60            # first 60% of dates by time = in-sample
+
+backtest:
+  days: 252
+  feed: sip                           # consolidated tape; free plan, 15-min delay
+  charts: sample                      # none | sample | all
+  chart_sample: 12                    # best and worst N, plus every SNDK/benchmark
+
+live:
+  feed: iex                           # the free real-time stream
+  discord_secret: DISCORD_BR_WEBHOOK_URL   # its own channel, not the live bot's
+  post_daily_summary: true

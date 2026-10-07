@@ -1,0 +1,72 @@
+name: BR V1 live
+# Break & Retest V1 in real time, 09:00-14:45 ET on weekdays. Signals go to the
+# DISCORD_BR_WEBHOOK_URL secret (its own channel). Without that secret the job
+# still runs and records everything, and sends nothing.
+#
+# Schedules only fire from the default branch, so this is off until br-v1 is
+# merged. Two cron times because UTC ignores daylight saving; the script exits
+# from whichever one is too early, and the concurrency queue hands over.
+# The job polls Alpaca's REST bars a couple of seconds after every minute:
+# the free plan's single websocket belongs to the deployed live bot.
+on:
+  schedule:
+    - cron: "40 12,13 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      dry_run: { description: "log the cards instead of posting", type: boolean, default: false }
+      force: { description: "ignore the clock (testing)", type: boolean, default: false }
+
+concurrency:
+  group: br-live
+  cancel-in-progress: false
+
+permissions: { contents: write }
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -r requirements.txt
+      - name: Monitor and signal
+        id: run
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          DISCORD_BR_WEBHOOK_URL: ${{ secrets.DISCORD_BR_WEBHOOK_URL }}
+          IN_DRY: ${{ inputs.dry_run }}
+          IN_FORCE: ${{ inputs.force }}
+        run: |
+          set -uo pipefail
+          touch /tmp/runmark
+          ARGS=(--until 14:45)
+          if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
+          if [ "${IN_FORCE:-false}" = "true" ]; then ARGS+=(--force); fi
+          set +e
+          python -m src.br_live "${ARGS[@]}" 2>&1 | tee /tmp/br_live.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+      - name: Commit the session record
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          rm -rf /tmp/out && mkdir -p /tmp/out
+          find state/br_v1 reports/br_v1 -type f -newer /tmp/runmark -print0 2>/dev/null \
+            | while IFS= read -r -d '' f; do mkdir -p "/tmp/out/$(dirname "$f")"; cp -a "$f" "/tmp/out/$f"; done
+          [ -z "$(find /tmp/out -type f)" ] && { echo "nothing written"; exit 0; }
+          for i in 1 2 3 4 5; do
+            git fetch origin "${GITHUB_REF_NAME}" && git reset --hard "origin/${GITHUB_REF_NAME}"
+            cp -a /tmp/out/. .
+            git add state/br_v1 reports/br_v1
+            git diff --cached --quiet && exit 0
+            git commit -m "br v1: live session [skip ci]"
+            git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep $((i * 5))
+          done
+          exit 1
+      - name: Fail if the run failed
+        if: always() && steps.run.outputs.code != '0'
+        run: exit 1

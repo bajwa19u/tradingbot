@@ -1,0 +1,75 @@
+name: BR V1 backtest
+# Break & Retest V1 baseline: the rules in br_config.yaml on ~12 months of SIP
+# 1-minute bars. Writes reports/br_v1/baseline.md (+ json, trades.csv,
+# candidates.csv.gz) to the branch it ran on; charts go to the run's artifact.
+# Nothing is posted, nothing is traded.
+#
+# Runs on manual dispatch, and on a push to the br-v1 branch that touches the
+# strategy - so a rule change on that branch is backtested before anyone merges it.
+on:
+  workflow_dispatch:
+    inputs:
+      days: { description: "trading sessions", default: "252" }
+      charts: { description: "none | sample | all", default: "sample" }
+      refresh: { description: "re-download all bars", type: boolean, default: false }
+  push:
+    branches: [br-v1]
+    paths:
+      - "src/br_*.py"
+      - "br_config.yaml"
+      - "br_benchmarks.yaml"
+      - ".github/workflows/br-backtest.yml"
+
+concurrency:
+  group: br-backtest-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: { contents: write }
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -r requirements.txt
+      - run: python -m pytest tests/test_br_v1.py tests/test_boundaries.py -q
+      - uses: actions/cache@v4
+        with:
+          path: cache/br_v1
+          key: br-v1-sip-${{ github.run_id }}
+          restore-keys: br-v1-sip-
+      - name: Backtest
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          IN_DAYS: ${{ inputs.days || '252' }}
+          IN_CHARTS: ${{ inputs.charts || 'sample' }}
+          IN_REFRESH: ${{ inputs.refresh }}
+        run: |
+          ARGS=(--days "$IN_DAYS" --charts "$IN_CHARTS")
+          if [ "${IN_REFRESH:-false}" = "true" ]; then ARGS+=(--refresh); fi
+          python -m src.br_backtest "${ARGS[@]}" 2>&1 | tee /tmp/br_backtest.log
+          cat reports/br_v1/baseline.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: br-v1-charts
+          path: reports/br_v1/charts/
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: Commit the report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          rm -rf reports/br_v1/charts
+          git add reports/br_v1/baseline.md reports/br_v1/baseline.json reports/br_v1/trades.csv reports/br_v1/candidates.csv.gz
+          git diff --cached --quiet && exit 0
+          git commit -m "br v1: baseline backtest [skip ci]"
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep $((i * 5))
+          done
+          exit 1

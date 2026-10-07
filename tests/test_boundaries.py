@@ -40,6 +40,9 @@ INTRADAY = {
     "inspect_symbol", "live_bot", "notify", "opening", "orb_autopsy",
     "paper", "retest", "run_backtest", "run_live", "sq_autopsy", "squeeze",
     "sweep", "swing", "universe", "widths",
+    # Break & Retest V1 (br_config.yaml): its own modules, its own Discord channel
+    "br_config", "br_levels", "br_engine", "br_context", "br_trade", "br_chart", "br_discord",
+    "br_run", "br_report", "br_bench", "br_backtest", "br_live", "br_daily",
 }
 
 # Genuinely common ground: where the repo is on disk, and which secrets

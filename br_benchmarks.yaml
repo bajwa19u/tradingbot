@@ -1,0 +1,25 @@
+# ============================================================================
+#  Benchmark trades: setups you picked by hand, checked against the strategy
+# ============================================================================
+#  Add one entry per example. The backtest report says, for each, whether the
+#  strategy detected it, rejected it (and which rule), missed it entirely, or
+#  traded it differently. Benchmarks are evidence for reviewing a rule, never
+#  a target to tune the rules until they match.
+#
+#  symbol     ticker
+#  date       YYYY-MM-DD
+#  time       HH:MM Eastern, roughly when you would have entered
+#  direction  long | short
+#  level      pdh | pdl | pdc | pmh | pml | swing_high | swing_low  (optional)
+#  note       what you saw - or the file name of a screenshot in reports/br_v1/benchmarks/
+#
+#  Example (delete the leading # to use it):
+#  - symbol: SNDK
+#    date: 2026-09-15
+#    time: "09:52"
+#    direction: long
+#    level: pmh
+#    note: broke premarket high, came back to it, held, ran
+# ============================================================================
+
+benchmarks: []
