@@ -5,8 +5,12 @@
     "ORB-MSFT-2026-10-07",
     "ORB-TSLA-2026-10-07"
   ],
-  "exits": [],
-  "summary": false,
+  "exits": [
+    "ORB-AAPL-2026-10-07",
+    "ORB-MSFT-2026-10-07",
+    "ORB-TSLA-2026-10-07"
+  ],
+  "summary": true,
   "strategy": "bigtech",
   "cards": {
     "ORB-AAPL-2026-10-07": "1557386018876035117",
