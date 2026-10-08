@@ -8,9 +8,12 @@
     "IP-AFL-orh-2026-10-08"
   ],
   "exits": [
-    "IP-PLTR-orl-2026-10-08"
+    "IP-PLTR-orl-2026-10-08",
+    "IP-PEP-orh-2026-10-08",
+    "IP-BABA-orl-2026-10-08",
+    "IP-AFL-orh-2026-10-08"
   ],
-  "summary": false,
+  "summary": true,
   "picks": true,
   "cards": {
     "IP-XOM-orh-2026-10-08": "1557749908327366761",

@@ -40,7 +40,15 @@
    "vwap_ok": true,
    "spy_ok": false,
    "qqq_ok": false,
-   "same_side_10m": 0
+   "same_side_10m": 0,
+   "exit_bar": "15:55",
+   "exit_reason": "bell",
+   "result_pct": 1.851,
+   "win": true,
+   "entry_cost_pct": 0.215,
+   "exit_cost_pct": 0.016,
+   "result_real_pct": 1.72,
+   "backtest_agrees": "yes"
   },
   {
    "date": "2026-10-08",
@@ -68,7 +76,14 @@
    "vwap_ok": true,
    "spy_ok": true,
    "qqq_ok": true,
-   "same_side_10m": 0
+   "same_side_10m": 0,
+   "exit_bar": "15:55",
+   "exit_reason": "bell",
+   "result_pct": -0.769,
+   "win": false,
+   "entry_cost_pct": null,
+   "exit_cost_pct": 0.023,
+   "backtest_agrees": "yes"
   },
   {
    "date": "2026-10-08",
@@ -96,8 +111,16 @@
    "vwap_ok": true,
    "spy_ok": true,
    "qqq_ok": true,
-   "same_side_10m": 0
+   "same_side_10m": 0,
+   "exit_bar": "15:55",
+   "exit_reason": "bell",
+   "result_pct": 1.04,
+   "win": true,
+   "entry_cost_pct": -0.165,
+   "exit_cost_pct": -0.0,
+   "result_real_pct": 1.305,
+   "backtest_agrees": "yes"
   }
  ],
- "settled": false
+ "settled": true
 }
