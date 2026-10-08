@@ -1,6 +1,6 @@
 # Paper account
 
-**Forward test since 2026-09-28 · bars through 2026-10-07 · 35 symbols · generated 2026-10-07 21:43**
+**Forward test since 2026-09-28 · bars through 2026-10-08 · 35 symbols · generated 2026-10-08 21:43**
 
 Not a backtest. These are the trades the rule would have taken since the day it was chosen, on bars it had never seen when the choice was made.
 
@@ -22,7 +22,7 @@ Sized at 1% of $2,000 risked per trade.
 | **CRWD** | 2026-10-06 | $279.00 | $241.52 | $391.45 | — too small | 0.0R |
 | **NVDA** | 2026-10-05 | $239.10 | $219.37 | $298.28 | 1 | 0.21R |
 | **SMCI** | 2026-10-07 | $44.96 | $39.18 | $62.30 | 3 | 0.0R |
-| **U** | 2026-10-05 | $45.72 | $37.85 | $69.33 | 2 | 0.03R |
+| **U** | 2026-10-05 | $45.72 | $37.85 | $69.33 | 2 | 0.2R |
 | **ZM** | 2026-10-01 | $93.87 | $84.47 | $122.05 | 2 | 0.13R |
 
 - **AMD** — Coiled 10 days inside $596.20–$645.37 (2.1x ATR, tight), then closed above $645.37 on 1.0x normal volume. Daily range 3.7% — volatile enough to move.
