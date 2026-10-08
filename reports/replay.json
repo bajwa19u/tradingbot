@@ -1,17 +1,198 @@
 {
-  "date": "2026-10-07",
+  "date": "2026-10-08",
   "signals": [
     {
-      "symbol": "MU",
+      "symbol": "AMD",
+      "side": "short",
+      "break_time": "12:10",
+      "entry_time": "12:15",
+      "level": 631.9,
+      "entry": 631.59,
+      "stop": 633.91,
+      "target": 626.94,
+      "shares": 8,
+      "risk": 18.59,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "PLTR",
+      "side": "short",
+      "break_time": "12:10",
+      "entry_time": "12:15",
+      "level": 198.18,
+      "entry": 197.92,
+      "stop": 199.54,
+      "target": 194.67,
+      "shares": 12,
+      "risk": 19.5,
+      "outcome": {
+        "won": 0,
+        "r": -0.52,
+        "unfinished": true
+      }
+    },
+    {
+      "symbol": "NVDA",
+      "side": "short",
+      "break_time": "12:40",
+      "entry_time": "12:45",
+      "level": 234.95,
+      "entry": 233.47,
+      "stop": 235.41,
+      "target": 229.59,
+      "shares": 10,
+      "risk": 19.41,
+      "outcome": {
+        "won": 1,
+        "r": 1.49,
+        "unfinished": true
+      }
+    },
+    {
+      "symbol": "MSFT",
+      "side": "short",
+      "break_time": "12:40",
+      "entry_time": "12:45",
+      "level": 529.0,
+      "entry": 525.23,
+      "stop": 530.08,
+      "target": 515.53,
+      "shares": 4,
+      "risk": 19.39,
+      "outcome": {
+        "won": 1,
+        "r": 0.52,
+        "unfinished": true
+      }
+    },
+    {
+      "symbol": "TSLA",
+      "side": "short",
+      "break_time": "12:45",
+      "entry_time": "12:50",
+      "level": 371.74,
+      "entry": 371.34,
+      "stop": 372.52,
+      "target": 368.98,
+      "shares": 16,
+      "risk": 18.89,
+      "outcome": {
+        "won": 1,
+        "r": 2.0
+      }
+    },
+    {
+      "symbol": "TSLA",
+      "side": "short",
+      "break_time": "12:50",
+      "entry_time": "12:55",
+      "level": 371.58,
+      "entry": 371.2,
+      "stop": 372.36,
+      "target": 368.9,
+      "shares": 17,
+      "risk": 19.62,
+      "outcome": {
+        "won": 1,
+        "r": 2.0
+      }
+    },
+    {
+      "symbol": "GOOGL",
+      "side": "short",
+      "break_time": "13:25",
+      "entry_time": "13:30",
+      "level": 347.72,
+      "entry": 347.38,
+      "stop": 348.56,
+      "target": 345.01,
+      "shares": 16,
+      "risk": 18.94,
+      "outcome": {
+        "won": 0,
+        "r": -0.78,
+        "unfinished": true
+      }
+    },
+    {
+      "symbol": "GOOGL",
+      "side": "short",
+      "break_time": "13:20",
+      "entry_time": "13:35",
+      "level": 348.17,
+      "entry": 347.99,
+      "stop": 349.0,
+      "target": 345.96,
+      "shares": 19,
+      "risk": 19.28,
+      "outcome": {
+        "won": 0,
+        "r": -0.31,
+        "unfinished": true
+      }
+    },
+    {
+      "symbol": "META",
+      "side": "short",
+      "break_time": "12:45",
+      "entry_time": "13:40",
+      "level": 718.29,
+      "entry": 717.15,
+      "stop": 719.89,
+      "target": 711.67,
+      "shares": 7,
+      "risk": 19.17,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "PLTR",
+      "side": "short",
+      "break_time": "13:20",
+      "entry_time": "14:10",
+      "level": 197.05,
+      "entry": 197.0,
+      "stop": 198.08,
+      "target": 194.84,
+      "shares": 18,
+      "risk": 19.47,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "AMD",
       "side": "short",
       "break_time": "15:00",
+      "entry_time": "15:05",
+      "level": 615.89,
+      "entry": 614.02,
+      "stop": 617.96,
+      "target": 606.16,
+      "shares": 5,
+      "risk": 19.66,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "AMD",
+      "side": "short",
+      "break_time": "15:05",
       "entry_time": "15:10",
-      "level": 1083.48,
-      "entry": 1082.67,
-      "stop": 1085.83,
-      "target": 1076.35,
+      "level": 615.62,
+      "entry": 614.43,
+      "stop": 617.67,
+      "target": 607.96,
       "shares": 6,
-      "risk": 18.95,
+      "risk": 19.41,
       "outcome": {
         "won": 0,
         "r": -1.0
