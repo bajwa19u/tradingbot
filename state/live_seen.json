@@ -2,7 +2,8 @@
   "date": "2026-10-08",
   "seen": {
     "U": "at_the_level",
-    "AFRM": "at_the_level",
-    "SNAP": "at_the_level"
+    "AFRM": "above_light_volume",
+    "SNAP": "at_the_level",
+    "PLTR": "at_the_level"
   }
 }
