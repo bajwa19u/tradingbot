@@ -44,7 +44,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 345
     steps:
+      # The branch's LATEST commit, not the one this run was queued on. A run
+      # that waits in the concurrency queue otherwise starts from state that is
+      # minutes old: on 5 Oct the job queued at 10:03 started after the open
+      # job saved at 10:05, re-posted MSFT/BAC/NVDA as EXPIRED and overwrote
+      # their Discord card ids, so the on-time cards never got their results.
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"

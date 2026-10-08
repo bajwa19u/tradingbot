@@ -231,3 +231,15 @@ def test_a_card_says_in_words_whether_it_is_live_or_finished():
     won = lb.card(trade(exit=179.0, exit_time="11:30", reason="target", pct=2.0))
     assert "CLOSED · LOSS · SHORT NVDA" in lost and "CLOSED · WIN · SHORT NVDA" in won
     assert "NEW SIGNAL" not in lost
+
+
+def test_inplay_starts_early_enough_and_hands_over_on_the_bell_clock():
+    """5-8 Oct 2026 the 09:20 cron started at 09:36-09:40. It now starts at
+    08:40 and sleeps; the winter run that is far too early leaves it to the next."""
+    import pandas as pd
+    from src import inplay_bot as ib
+    t = lambda s: pd.Timestamp(f"2026-10-08 {s}", tz="America/New_York")   # noqa: E731
+    assert not ib.too_early(t("08:40")) and ib.too_early(t("07:40"))
+    assert ib.handover_at(t("08:40"), 310) == t("14:40")          # from the bell, not the start
+    assert ib.handover_at(t("13:00"), 310) == t("18:10")
+    assert ib.handover_at(t("08:40"), 0) is None

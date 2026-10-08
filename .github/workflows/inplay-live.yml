@@ -17,9 +17,13 @@ name: In play — live
 # minutes after their bar closed post as EXPIRED.
 on:
   schedule:
-    # Before the bell in both EDT and EST, plus afternoon takeovers: each run
-    # hands over after --for minutes and the queued run continues to the close.
-    - cron: "20 13,14 * * 1-5"
+    # Well before the bell in both EDT and EST, plus afternoon takeovers: each
+    # run hands over after --for minutes and the queued run continues to the
+    # close. It used to be 13:20/14:20 UTC (09:20 ET), and GitHub started it
+    # at 09:36-09:40 ET on every day of 5-8 Oct - after the first entries can
+    # fire. Now 08:40 ET; the script sleeps to the bell, and the run that is
+    # 1h50m early in winter exits so the next one takes the session.
+    - cron: "40 12,13 * * 1-5"
     - cron: "0,20 18,19 * * 1-5"
   workflow_dispatch:
     inputs:
@@ -50,9 +54,18 @@ permissions:
 jobs:
   inplay:
     runs-on: ubuntu-latest
-    timeout-minutes: 320
+    # Start ~08:40 + hand over 290 min after the 09:30 bell = 14:20, i.e.
+    # 340 min of job; the afternoon cron (18:00/18:20 UTC) queues and takes over.
+    timeout-minutes: 355
     steps:
+      # The branch's LATEST commit, not the one this run was queued on. A run
+      # that waits in the concurrency queue otherwise starts from state that is
+      # minutes old: on 5 Oct the job queued at 10:03 started after the open
+      # job saved at 10:05, re-posted MSFT/BAC/NVDA as EXPIRED and overwrote
+      # their Discord card ids, so the on-time cards never got their results.
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
@@ -75,7 +88,7 @@ jobs:
           set -uo pipefail
           mkdir -p reports state
           touch /tmp/runmark
-          ARGS=(--until "${IN_UNTIL:-16:15}" --every "${IN_EVERY:-60}" --for 310)
+          ARGS=(--until "${IN_UNTIL:-16:15}" --every "${IN_EVERY:-60}" --for 290)
           if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
           if [ "${IN_FORCE:-false}" = "true" ]; then ARGS+=(--force); fi
           set +e

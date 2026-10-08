@@ -205,3 +205,16 @@ def test_a_day_is_finished_on_the_rule_it_started_with(monkeypatch, tmp_path):
     finally:
         ol.use("inplay_orb")
     assert seen == [("inplay_orb", "top10")]
+
+
+def test_the_desk_month_follows_the_live_switch(monkeypatch):
+    """Until 8 Oct 2026 the desk's month replay hard-coded the in-play rule and
+    kept showing it after the channel switched to the big tech list."""
+    from src import orb_month
+    monkeypatch.setenv("DAYTRADE_STRATEGY", "bigtech")
+    key, p, name = orb_month.live_rule()
+    assert key == "bigtech" and p.universe == "bigtech" and "Big Tech" in name
+    monkeypatch.setenv("DAYTRADE_STRATEGY", "classic")            # not an ORB rule
+    assert orb_month.live_rule()[0] == "inplay_orb"
+    monkeypatch.delenv("DAYTRADE_STRATEGY")
+    assert orb_month.live_rule()[1].universe == "top10"
