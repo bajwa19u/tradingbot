@@ -92,6 +92,16 @@ shared thing belongs in its own module.
   filter (trades WITH SPY did worse), longs/shorts only, top 5, breakout strength and
   volume, wide-stop cap, 3x target. The rule is near break-even on the earlier nine
   months (+0.002R -> about +0.02R); the edge is mostly recent.
+- **Audit, 8 Oct 2026 (`reports/live_corrections.md`, PR #1 and #2).** Signals post
+  0.4-3 s after the bar closes when the job is running. Three faults found and
+  fixed: (1) a run waiting in a concurrency queue checked out the commit it was
+  queued on and overwrote newer state - every state-writing workflow now uses
+  `actions/checkout` with `ref: ${{ github.ref_name }}`; keep it that way in any
+  new workflow; (2) the in-play job's 09:20 cron started 09:36-09:40 - it now
+  starts 08:40 and sleeps; (3) `orb_month` hard-coded the in-play rule, so the
+  desk described the wrong rule after the switch - it now follows the switch and
+  runs daily. **The `DAYTRADE_STRATEGY` repo variable is `bigtech\r\n\n`** - always
+  `.strip().lower()` it. 5 Oct's true record is in `reports/live_corrections.md`.
 - **The free IEX premarket feed is unusable.** It carries premarket bars on
   about 1% of days. Anything built on premarket highs and lows silently does
   nothing. This is a data-plan problem, not a code problem.
