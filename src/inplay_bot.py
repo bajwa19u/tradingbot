@@ -257,6 +257,24 @@ def paper_tick(now: pd.Timestamp, dry_run: bool) -> None:
         log.warning("ORB paper feed failed (in-play unaffected): %s", exc)
 
 
+EARLIEST_START_MIN = 90       # a run this long before the bell leaves it to the next cron
+
+
+def too_early(now: pd.Timestamp) -> bool:
+    bell = now.normalize() + pd.Timedelta(hours=9, minutes=30)
+    return now < bell - pd.Timedelta(minutes=EARLIEST_START_MIN)
+
+
+def handover_at(now: pd.Timestamp, minutes: int) -> pd.Timestamp | None:
+    """When to hand over to the queued run. Counted from the bell, not from
+    the start: a run that starts early and sleeps must not spend its six
+    hours waiting and leave a gap in the afternoon."""
+    if not minutes:
+        return None
+    bell = now.normalize() + pd.Timedelta(hours=9, minutes=30)
+    return max(now, bell) + pd.Timedelta(minutes=minutes)
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--dry-run", action="store_true")
@@ -281,8 +299,11 @@ def main(argv=None) -> int:
         paper_tick(pd.Timestamp.now(tz=EASTERN), args.dry_run)    # settles the paper record after the close
         return 0
 
+    if not args.force and too_early(now):
+        log.info("%s ET is too early - the next scheduled run takes the session.", now.strftime("%H:%M"))
+        return 0
     stop = pd.Timestamp(args.until).time()
-    deadline = now + pd.Timedelta(minutes=args.minutes) if args.minutes else None
+    deadline = handover_at(now, args.minutes)
     log.info("Polling every %ds until %s ET", args.every, args.until)
     while True:
         now = pd.Timestamp.now(tz=EASTERN)

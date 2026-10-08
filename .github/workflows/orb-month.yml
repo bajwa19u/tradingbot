@@ -1,11 +1,16 @@
 name: ORB month replay
-# Manual. The day-trade channel's in-play ORB strategy over the last N
-# sessions, every pick and trade, for the Trading Bot Desk page.
+# The day-trade channel's live rule (follows DAYTRADE_STRATEGY) over the last
+# N sessions, every pick and trade, for the Trading Bot Desk page. Daily after
+# the close so the desk's month is never more than a day old (it was manual,
+# and stood at 2 Oct while the channel had moved to the big tech rule).
 # Writes reports/orb_month.json. Posts nothing, trades nothing.
 on:
+  schedule:
+    - cron: "50 20,21 * * 1-5"     # 16:50 ET in summer / winter; the other one is a harmless rerun
   workflow_dispatch:
     inputs:
       sessions: { description: "trading sessions", default: "21" }
+concurrency: { group: orb-month, cancel-in-progress: false }
 permissions: { contents: write }
 jobs:
   month:
@@ -13,6 +18,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v5
+        with: { ref: "${{ github.ref_name }}" }
       - uses: actions/setup-python@v5
         with: { python-version: "3.11", cache: pip }
       - run: pip install -r requirements.txt
@@ -21,8 +27,9 @@ jobs:
           path: cache/minute_iex_wide.pkl
           key: minute-iex-wide-${{ github.run_id }}
           restore-keys: minute-iex-wide-
-      - run: python -m src.orb_month --sessions "${{ inputs.sessions }}"
+      - run: python -m src.orb_month --sessions "${{ inputs.sessions || '21' }}"
         env:
+          DAYTRADE_STRATEGY: ${{ vars.DAYTRADE_STRATEGY }}
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
       - name: commit

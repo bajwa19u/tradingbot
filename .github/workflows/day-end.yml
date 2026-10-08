@@ -20,8 +20,11 @@ on:
         type: boolean
         default: false
 
+# Same queue as the live jobs: this runs src.live_bot and writes the same
+# record (state/live_bot_seen.json). In its own group it could run beside a
+# late live-bot run and the second to save would overwrite the first.
 concurrency:
-  group: day-end
+  group: live-bot
   cancel-in-progress: false
 
 permissions:
@@ -32,7 +35,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      # The branch's LATEST commit, not the one this run was queued on. A run
+      # that waits in the concurrency queue otherwise starts from state that is
+      # minutes old: on 5 Oct the job queued at 10:03 started after the open
+      # job saved at 10:05, re-posted MSFT/BAC/NVDA as EXPIRED and overwrote
+      # their Discord card ids, so the on-time cards never got their results.
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"

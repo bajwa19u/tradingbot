@@ -1,5 +1,10 @@
-"""The day-trade channel's strategy (in-play ORB), replayed over the last N
-sessions, for the Trading Bot Desk page.
+"""The day-trade channel's strategy, replayed over the last N sessions, for
+the Trading Bot Desk page.
+
+Follows the live switch (repo variable DAYTRADE_STRATEGY, via
+`orb_live.RULES`): the desk must describe the rule the channel is actually
+running. Until 8 Oct 2026 this file hard-coded the in-play rule, so after the
+switch to the big tech list on 5 Oct the desk kept showing the old rule.
 
 Same rules and code path as the live feed: `orb_research.select` picks the
 day's ten names, `first_signal` finds the entry, `exit_r` manages it, with
@@ -13,12 +18,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 
 import numpy as np
 
 from . import orb_research as orr
 from .config import REPO_ROOT
+from .orb_live import RULES
 from .orb_paper import CANDIDATE, bar_label
 
 OUT = REPO_ROOT / "reports" / "orb_month.json"
@@ -56,21 +63,37 @@ def day_rows(D: dict, d, p: orr.P = CANDIDATE) -> tuple[list[dict], list[dict]]:
     return picks, trades
 
 
+RULE_TEXT = {
+    "top10": "Top 10 by first-5-minute volume vs normal (of ~105 liquid names)",
+    "bigtech": "Fixed list: " + " ".join(orr.BIG_TECH),
+}
+
+
+def live_rule() -> tuple[str, orr.P, str]:
+    """(switch value, parameters, setup name) of the rule the channel runs."""
+    key = os.environ.get("DAYTRADE_STRATEGY") or "inplay_orb"
+    if key not in RULES:            # e.g. "classic": not an ORB rule; show the in-play one
+        key = "inplay_orb"
+    p, name = RULES[key]
+    return key, p, name
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--sessions", type=int, default=21)
     args = ap.parse_args(argv)
+    key, p, name = live_rule()
     D, common = orr.build(orr.load(max(60, args.sessions), False))
     dates = common[-args.sessions:]
     days, trades = [], []
     for d in dates:
-        picks, ts = day_rows(D, d)
+        picks, ts = day_rows(D, d, p)
         r = [t["result_pct"] for t in ts]
         days.append({"date": str(d), "picks": picks, "trades": len(ts), "won": sum(x > 0 for x in r),
                      "result_pct": round(float(np.sum(r)), 3) if r else 0.0})
         trades += ts
-    out = {"strategy": "ORB · Stocks in Play",
-           "rules": "Top 10 by first-5-minute volume vs normal (of ~105 liquid names), opening range "
+    out = {"strategy": name, "switch": key,
+           "rules": RULE_TEXT.get(p.universe, p.universe) + ", opening range "
                     "09:30-09:34 at least 0.35 of daily ATR, first 1-minute close outside it before 09:45, "
                     "stop at the session extreme (moved to entry at +1x risk), target 2x risk, out by 15:55. 0.05% slippage a side.",
            "sizing": "Results are % of the account with a full stop costing 1%.",
