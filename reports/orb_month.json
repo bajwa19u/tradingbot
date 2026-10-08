@@ -1,7 +1,7 @@
 {
- "strategy": "ORB \u00b7 Stocks in Play",
- "switch": "inplay_orb",
- "rules": "Top 10 by first-5-minute volume vs normal (of ~105 liquid names), opening range 09:30-09:34 at least 0.35 of daily ATR, first 1-minute close outside it before 09:45, stop at the session extreme (moved to entry at +1x risk), target 2x risk, out by 15:55. 0.05% slippage a side.",
+ "strategy": "ORB \u00b7 Big Tech",
+ "switch": "bigtech",
+ "rules": "Fixed list: TSLA AMD NVDA META AAPL MSFT, opening range 09:30-09:34 at least 0.35 of daily ATR, first 1-minute close outside it before 09:45, stop at the session extreme (moved to entry at +1x risk), target 2x risk, out by 15:55. 0.05% slippage a side.",
  "sizing": "Results are % of the account with a full stop costing 1%.",
  "from": "2026-09-09",
  "to": "2026-10-07",
@@ -10,128 +10,88 @@
    "date": "2026-09-09",
    "picks": [
     {
-     "symbol": "META",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 5.37,
-     "or_width_atr": 0.74,
-     "gap_pct": 5.7,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "UNH",
-     "rank": 2,
-     "rvol5": 4.05,
-     "or_width_atr": 0.61,
-     "gap_pct": 1.13,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "GOOGL",
-     "rank": 3,
-     "rvol5": 2.6,
-     "or_width_atr": 0.5,
-     "gap_pct": -2.03,
+     "rvol5": 0.82,
+     "or_width_atr": 0.46,
+     "gap_pct": 0.29,
      "outcome": "no breakout before 09:45"
     },
     {
      "symbol": "AMD",
-     "rank": 4,
+     "rank": 2,
      "rvol5": 1.84,
      "or_width_atr": 0.42,
      "gap_pct": 0.47,
      "outcome": "traded"
     },
     {
-     "symbol": "AMZN",
-     "rank": 5,
-     "rvol5": 1.81,
-     "or_width_atr": 0.6,
-     "gap_pct": -1.6,
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 0.35,
+     "or_width_atr": 0.16,
+     "gap_pct": -0.27,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 5.37,
+     "or_width_atr": 0.74,
+     "gap_pct": 5.7,
      "outcome": "no breakout before 09:45"
     },
     {
-     "symbol": "ETN",
+     "symbol": "AAPL",
+     "rank": 5,
+     "rvol5": 0.83,
+     "or_width_atr": 0.15,
+     "gap_pct": -0.21,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "MSFT",
      "rank": 6,
-     "rvol5": 1.73,
-     "or_width_atr": 0.13,
-     "gap_pct": -0.06,
+     "rvol5": 0.73,
+     "or_width_atr": 0.27,
+     "gap_pct": -0.28,
      "outcome": "range too narrow"
-    },
-    {
-     "symbol": "XOM",
-     "rank": 7,
-     "rvol5": 1.72,
-     "or_width_atr": 0.13,
-     "gap_pct": 1.36,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "HD",
-     "rank": 8,
-     "rvol5": 1.64,
-     "or_width_atr": 0.18,
-     "gap_pct": -1.0,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "QCOM",
-     "rank": 9,
-     "rvol5": 1.63,
-     "or_width_atr": 0.92,
-     "gap_pct": 0.3,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "JPM",
-     "rank": 10,
-     "rvol5": 1.6,
-     "or_width_atr": 0.46,
-     "gap_pct": -0.65,
-     "outcome": "traded"
     }
    ],
-   "trades": 4,
-   "won": 3,
-   "result_pct": 2.259
+   "trades": 1,
+   "won": 1,
+   "result_pct": 0.362
   },
   {
    "date": "2026-09-10",
    "picks": [
     {
-     "symbol": "UNH",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 3.07,
+     "rvol5": 0.57,
      "or_width_atr": 0.27,
-     "gap_pct": 0.85,
+     "gap_pct": -2.0,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "JNJ",
+     "symbol": "AMD",
      "rank": 2,
-     "rvol5": 2.15,
-     "or_width_atr": 0.3,
-     "gap_pct": -2.01,
+     "rvol5": 0.76,
+     "or_width_atr": 0.34,
+     "gap_pct": -2.47,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "FCX",
+     "symbol": "NVDA",
      "rank": 3,
-     "rvol5": 1.96,
-     "or_width_atr": 0.37,
-     "gap_pct": -7.84,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "MSTR",
-     "rank": 4,
-     "rvol5": 1.88,
-     "or_width_atr": 0.22,
-     "gap_pct": -3.1,
+     "rvol5": 1.5,
+     "or_width_atr": 0.34,
+     "gap_pct": -1.45,
      "outcome": "range too narrow"
     },
     {
      "symbol": "META",
-     "rank": 5,
+     "rank": 4,
      "rvol5": 1.76,
      "or_width_atr": 0.69,
      "gap_pct": 0.09,
@@ -139,482 +99,242 @@
     },
     {
      "symbol": "AAPL",
-     "rank": 6,
+     "rank": 5,
      "rvol5": 1.76,
      "or_width_atr": 0.56,
      "gap_pct": 0.42,
      "outcome": "traded"
     },
     {
-     "symbol": "NVDA",
-     "rank": 7,
-     "rvol5": 1.5,
-     "or_width_atr": 0.34,
-     "gap_pct": -1.45,
+     "symbol": "MSFT",
+     "rank": 6,
+     "rvol5": 0.53,
+     "or_width_atr": 0.33,
+     "gap_pct": -0.67,
      "outcome": "range too narrow"
-    },
-    {
-     "symbol": "KO",
-     "rank": 8,
-     "rvol5": 1.45,
-     "or_width_atr": 0.66,
-     "gap_pct": 0.69,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "PG",
-     "rank": 9,
-     "rvol5": 1.21,
-     "or_width_atr": 0.26,
-     "gap_pct": 0.06,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "AMZN",
-     "rank": 10,
-     "rvol5": 1.19,
-     "or_width_atr": 0.38,
-     "gap_pct": -0.74,
-     "outcome": "no breakout before 09:45"
     }
    ],
-   "trades": 3,
+   "trades": 1,
    "won": 1,
-   "result_pct": -1.186
+   "result_pct": 0.89
   },
   {
    "date": "2026-09-11",
    "picks": [
     {
-     "symbol": "ORCL",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 5.15,
-     "or_width_atr": 1.71,
-     "gap_pct": 7.14,
-     "outcome": "no breakout before 09:45"
+     "rvol5": 0.8,
+     "or_width_atr": 0.32,
+     "gap_pct": 0.12,
+     "outcome": "range too narrow"
     },
     {
-     "symbol": "XOM",
+     "symbol": "AMD",
      "rank": 2,
-     "rvol5": 2.46,
-     "or_width_atr": 0.34,
-     "gap_pct": -0.08,
+     "rvol5": 0.65,
+     "or_width_atr": 0.33,
+     "gap_pct": 1.31,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "VZ",
+     "symbol": "NVDA",
      "rank": 3,
-     "rvol5": 2.0,
-     "or_width_atr": 0.4,
-     "gap_pct": 0.66,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "CVX",
-     "rank": 4,
-     "rvol5": 1.86,
-     "or_width_atr": 0.28,
-     "gap_pct": -0.26,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "JPM",
-     "rank": 5,
-     "rvol5": 1.68,
+     "rvol5": 0.62,
      "or_width_atr": 0.26,
-     "gap_pct": 1.02,
+     "gap_pct": 1.31,
      "outcome": "range too narrow"
+    },
+    {
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 0.65,
+     "or_width_atr": 0.51,
+     "gap_pct": 1.42,
+     "outcome": "traded"
     },
     {
      "symbol": "AAPL",
-     "rank": 6,
+     "rank": 5,
      "rvol5": 1.63,
      "or_width_atr": 0.76,
      "gap_pct": 0.26,
      "outcome": "traded"
     },
     {
-     "symbol": "INTC",
-     "rank": 7,
-     "rvol5": 1.62,
-     "or_width_atr": 0.45,
-     "gap_pct": 2.21,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "BAC",
-     "rank": 8,
-     "rvol5": 1.04,
-     "or_width_atr": 0.69,
-     "gap_pct": 1.03,
-     "outcome": "no breakout before 09:45"
-    },
-    {
      "symbol": "MSFT",
-     "rank": 9,
+     "rank": 6,
      "rvol5": 1.03,
      "or_width_atr": 0.31,
      "gap_pct": 0.65,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "TSLA",
-     "rank": 10,
-     "rvol5": 0.8,
-     "or_width_atr": 0.32,
-     "gap_pct": 0.12,
      "outcome": "range too narrow"
     }
    ],
    "trades": 2,
    "won": 0,
-   "result_pct": -0.278
+   "result_pct": -1.038
   },
   {
    "date": "2026-09-14",
    "picks": [
     {
-     "symbol": "CRWD",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 4.53,
-     "or_width_atr": 0.54,
-     "gap_pct": 5.94,
+     "rvol5": 0.7,
+     "or_width_atr": 0.58,
+     "gap_pct": -1.56,
+     "outcome": "no breakout before 09:45"
+    },
+    {
+     "symbol": "AMD",
+     "rank": 2,
+     "rvol5": 1.7,
+     "or_width_atr": 0.45,
+     "gap_pct": -5.78,
      "outcome": "traded"
     },
     {
-     "symbol": "ORCL",
-     "rank": 2,
-     "rvol5": 3.16,
-     "or_width_atr": 0.38,
-     "gap_pct": -5.99,
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 1.39,
+     "or_width_atr": 0.29,
+     "gap_pct": -3.2,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 1.29,
+     "or_width_atr": 0.49,
+     "gap_pct": 1.43,
+     "outcome": "traded"
+    },
+    {
+     "symbol": "AAPL",
+     "rank": 5,
+     "rvol5": 1.23,
+     "or_width_atr": 0.36,
+     "gap_pct": 0.74,
      "outcome": "traded"
     },
     {
      "symbol": "MSFT",
-     "rank": 3,
+     "rank": 6,
      "rvol5": 3.07,
      "or_width_atr": 0.41,
      "gap_pct": 0.39,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "PG",
-     "rank": 4,
-     "rvol5": 2.62,
-     "or_width_atr": 0.4,
-     "gap_pct": 1.12,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "SMCI",
-     "rank": 5,
-     "rvol5": 2.6,
-     "or_width_atr": 0.57,
-     "gap_pct": -6.61,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "GE",
-     "rank": 6,
-     "rvol5": 2.44,
-     "or_width_atr": 0.28,
-     "gap_pct": -2.84,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "KO",
-     "rank": 7,
-     "rvol5": 2.37,
-     "or_width_atr": 0.46,
-     "gap_pct": 2.03,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "XOM",
-     "rank": 8,
-     "rvol5": 2.25,
-     "or_width_atr": 0.29,
-     "gap_pct": 1.64,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "GOOGL",
-     "rank": 9,
-     "rvol5": 2.19,
-     "or_width_atr": 0.34,
-     "gap_pct": 1.35,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "JPM",
-     "rank": 10,
-     "rvol5": 2.11,
-     "or_width_atr": 0.26,
-     "gap_pct": -0.44,
-     "outcome": "range too narrow"
-    }
-   ],
-   "trades": 3,
-   "won": 2,
-   "result_pct": 1.262
-  },
-  {
-   "date": "2026-09-15",
-   "picks": [
-    {
-     "symbol": "BAC",
-     "rank": 1,
-     "rvol5": 1.96,
-     "or_width_atr": 0.33,
-     "gap_pct": -0.39,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "JPM",
-     "rank": 2,
-     "rvol5": 1.92,
-     "or_width_atr": 0.39,
-     "gap_pct": 0.23,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "CSCO",
-     "rank": 3,
-     "rvol5": 1.51,
-     "or_width_atr": 0.24,
-     "gap_pct": 0.77,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "PG",
-     "rank": 4,
-     "rvol5": 1.47,
-     "or_width_atr": 0.29,
-     "gap_pct": -0.94,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "KO",
-     "rank": 5,
-     "rvol5": 1.47,
-     "or_width_atr": 0.56,
-     "gap_pct": -0.93,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "MS",
-     "rank": 6,
-     "rvol5": 1.44,
-     "or_width_atr": 0.25,
-     "gap_pct": -0.84,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "QCOM",
-     "rank": 7,
-     "rvol5": 1.06,
-     "or_width_atr": 0.92,
-     "gap_pct": 0.54,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "CRWD",
-     "rank": 8,
-     "rvol5": 0.99,
-     "or_width_atr": 0.21,
-     "gap_pct": -1.04,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "HD",
-     "rank": 9,
-     "rvol5": 0.94,
-     "or_width_atr": 0.41,
-     "gap_pct": 0.07,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "HOOD",
-     "rank": 10,
-     "rvol5": 0.85,
-     "or_width_atr": 0.53,
-     "gap_pct": -2.53,
      "outcome": "no breakout before 09:45"
     }
    ],
    "trades": 3,
    "won": 1,
-   "result_pct": 0.495
+   "result_pct": -1.67
+  },
+  {
+   "date": "2026-09-15",
+   "picks": [
+    {
+     "symbol": "TSLA",
+     "rank": 1,
+     "rvol5": 0.64,
+     "or_width_atr": 0.42,
+     "gap_pct": -0.08,
+     "outcome": "traded"
+    },
+    {
+     "symbol": "AMD",
+     "rank": 2,
+     "rvol5": 0.56,
+     "or_width_atr": 0.45,
+     "gap_pct": 1.56,
+     "outcome": "no breakout before 09:45"
+    },
+    {
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 0.77,
+     "or_width_atr": 0.16,
+     "gap_pct": 1.08,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 0.56,
+     "or_width_atr": 0.36,
+     "gap_pct": -1.01,
+     "outcome": "traded"
+    },
+    {
+     "symbol": "AAPL",
+     "rank": 5,
+     "rvol5": 0.61,
+     "or_width_atr": 0.38,
+     "gap_pct": -0.77,
+     "outcome": "no breakout before 09:45"
+    },
+    {
+     "symbol": "MSFT",
+     "rank": 6,
+     "rvol5": 0.68,
+     "or_width_atr": 0.37,
+     "gap_pct": -1.12,
+     "outcome": "traded"
+    }
+   ],
+   "trades": 3,
+   "won": 0,
+   "result_pct": -2.164
   },
   {
    "date": "2026-09-16",
    "picks": [
     {
-     "symbol": "BAC",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 2.56,
-     "or_width_atr": 0.6,
-     "gap_pct": -0.26,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "JPM",
-     "rank": 2,
-     "rvol5": 2.5,
-     "or_width_atr": 0.49,
-     "gap_pct": 0.28,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "XOM",
-     "rank": 3,
-     "rvol5": 1.67,
-     "or_width_atr": 0.21,
-     "gap_pct": -1.33,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "ORCL",
-     "rank": 4,
-     "rvol5": 1.51,
+     "rvol5": 0.32,
      "or_width_atr": 0.24,
-     "gap_pct": -0.5,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "AMZN",
-     "rank": 5,
-     "rvol5": 1.47,
-     "or_width_atr": 0.43,
-     "gap_pct": -0.1,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "INTC",
-     "rank": 6,
-     "rvol5": 1.35,
-     "or_width_atr": 0.44,
-     "gap_pct": 4.3,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "GE",
-     "rank": 7,
-     "rvol5": 1.21,
-     "or_width_atr": 0.24,
-     "gap_pct": 0.84,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "KO",
-     "rank": 8,
-     "rvol5": 1.21,
-     "or_width_atr": 0.26,
-     "gap_pct": -0.24,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "MS",
-     "rank": 9,
-     "rvol5": 1.16,
-     "or_width_atr": 0.12,
-     "gap_pct": 0.43,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "FCX",
-     "rank": 10,
-     "rvol5": 1.12,
-     "or_width_atr": 0.2,
-     "gap_pct": 1.05,
-     "outcome": "range too narrow"
-    }
-   ],
-   "trades": 3,
-   "won": 2,
-   "result_pct": 0.352
-  },
-  {
-   "date": "2026-09-17",
-   "picks": [
-    {
-     "symbol": "GE",
-     "rank": 1,
-     "rvol5": 4.65,
-     "or_width_atr": 0.29,
-     "gap_pct": 1.03,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "CVX",
-     "rank": 2,
-     "rvol5": 4.45,
-     "or_width_atr": 0.27,
-     "gap_pct": -1.01,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "JPM",
-     "rank": 3,
-     "rvol5": 3.31,
-     "or_width_atr": 0.33,
-     "gap_pct": 0.92,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "BA",
-     "rank": 4,
-     "rvol5": 3.2,
-     "or_width_atr": 0.46,
-     "gap_pct": -3.91,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "INTC",
-     "rank": 5,
-     "rvol5": 2.41,
-     "or_width_atr": 0.2,
-     "gap_pct": 3.85,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "GS",
-     "rank": 6,
-     "rvol5": 1.93,
-     "or_width_atr": 0.15,
-     "gap_pct": -11.69,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "TXN",
-     "rank": 7,
-     "rvol5": 1.54,
-     "or_width_atr": 0.16,
-     "gap_pct": 0.92,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "MSTR",
-     "rank": 8,
-     "rvol5": 1.39,
-     "or_width_atr": 0.19,
-     "gap_pct": 2.89,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "KO",
-     "rank": 9,
-     "rvol5": 1.29,
-     "or_width_atr": 0.21,
      "gap_pct": 0.26,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "ARM",
-     "rank": 10,
-     "rvol5": 1.28,
-     "or_width_atr": 0.3,
-     "gap_pct": 9.49,
+     "symbol": "AMD",
+     "rank": 2,
+     "rvol5": 1.06,
+     "or_width_atr": 0.24,
+     "gap_pct": 2.58,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 0.33,
+     "or_width_atr": 0.12,
+     "gap_pct": 0.95,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 1.04,
+     "or_width_atr": 0.42,
+     "gap_pct": 1.4,
+     "outcome": "no breakout before 09:45"
+    },
+    {
+     "symbol": "AAPL",
+     "rank": 5,
+     "rvol5": 0.81,
+     "or_width_atr": 0.33,
+     "gap_pct": 0.33,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "MSFT",
+     "rank": 6,
+     "rvol5": 0.93,
+     "or_width_atr": 0.33,
+     "gap_pct": -0.76,
      "outcome": "range too narrow"
     }
    ],
@@ -623,19 +343,99 @@
    "result_pct": 0.0
   },
   {
-   "date": "2026-09-18",
+   "date": "2026-09-17",
    "picks": [
     {
-     "symbol": "GOOGL",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 3.15,
-     "or_width_atr": 0.29,
-     "gap_pct": 2.85,
+     "rvol5": 0.86,
+     "or_width_atr": 0.33,
+     "gap_pct": 2.58,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "AAPL",
+     "symbol": "AMD",
      "rank": 2,
+     "rvol5": 0.85,
+     "or_width_atr": 0.35,
+     "gap_pct": 4.2,
+     "outcome": "no breakout before 09:45"
+    },
+    {
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 0.77,
+     "or_width_atr": 0.2,
+     "gap_pct": 1.98,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 0.63,
+     "or_width_atr": 0.4,
+     "gap_pct": 0.98,
+     "outcome": "traded"
+    },
+    {
+     "symbol": "AAPL",
+     "rank": 5,
+     "rvol5": 0.51,
+     "or_width_atr": 0.36,
+     "gap_pct": 0.7,
+     "outcome": "traded"
+    },
+    {
+     "symbol": "MSFT",
+     "rank": 6,
+     "rvol5": 1.2,
+     "or_width_atr": 0.64,
+     "gap_pct": 1.3,
+     "outcome": "traded"
+    }
+   ],
+   "trades": 3,
+   "won": 0,
+   "result_pct": -2.617
+  },
+  {
+   "date": "2026-09-18",
+   "picks": [
+    {
+     "symbol": "TSLA",
+     "rank": 1,
+     "rvol5": 0.42,
+     "or_width_atr": 0.26,
+     "gap_pct": 0.93,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "AMD",
+     "rank": 2,
+     "rvol5": 1.25,
+     "or_width_atr": 0.25,
+     "gap_pct": 0.5,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 0.77,
+     "or_width_atr": 0.24,
+     "gap_pct": -0.15,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 0.71,
+     "or_width_atr": 0.5,
+     "gap_pct": 0.79,
+     "outcome": "traded"
+    },
+    {
+     "symbol": "AAPL",
+     "rank": 5,
      "rvol5": 1.52,
      "or_width_atr": 0.28,
      "gap_pct": 0.26,
@@ -643,291 +443,171 @@
     },
     {
      "symbol": "MSFT",
-     "rank": 3,
+     "rank": 6,
      "rvol5": 1.47,
      "or_width_atr": 0.31,
      "gap_pct": -0.01,
      "outcome": "range too narrow"
-    },
-    {
-     "symbol": "WMT",
-     "rank": 4,
-     "rvol5": 1.28,
-     "or_width_atr": 0.48,
-     "gap_pct": -0.24,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "AMD",
-     "rank": 5,
-     "rvol5": 1.25,
-     "or_width_atr": 0.25,
-     "gap_pct": 0.5,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "BABA",
-     "rank": 6,
-     "rvol5": 1.22,
-     "or_width_atr": 0.22,
-     "gap_pct": 1.6,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "BAC",
-     "rank": 7,
-     "rvol5": 1.18,
-     "or_width_atr": 0.26,
-     "gap_pct": -0.83,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "HOOD",
-     "rank": 8,
-     "rvol5": 1.18,
-     "or_width_atr": 0.49,
-     "gap_pct": 3.6,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "COIN",
-     "rank": 9,
-     "rvol5": 1.18,
-     "or_width_atr": 0.19,
-     "gap_pct": 8.6,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "CRM",
-     "rank": 10,
-     "rvol5": 1.14,
-     "or_width_atr": 0.41,
-     "gap_pct": 0.5,
-     "outcome": "traded"
     }
    ],
-   "trades": 3,
+   "trades": 1,
    "won": 1,
-   "result_pct": -1.082
+   "result_pct": 0.974
   },
   {
    "date": "2026-09-21",
    "picks": [
     {
-     "symbol": "AMD",
+     "symbol": "TSLA",
      "rank": 1,
+     "rvol5": 1.3,
+     "or_width_atr": 0.36,
+     "gap_pct": 2.08,
+     "outcome": "no breakout before 09:45"
+    },
+    {
+     "symbol": "AMD",
+     "rank": 2,
      "rvol5": 5.33,
      "or_width_atr": 0.3,
      "gap_pct": 4.59,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "INTC",
-     "rank": 2,
-     "rvol5": 3.78,
-     "or_width_atr": 0.73,
-     "gap_pct": 7.2,
-     "outcome": "no breakout before 09:45"
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 0.87,
+     "or_width_atr": 0.31,
+     "gap_pct": 0.4,
+     "outcome": "range too narrow"
     },
     {
      "symbol": "META",
-     "rank": 3,
+     "rank": 4,
      "rvol5": 3.4,
      "or_width_atr": 0.95,
      "gap_pct": 2.17,
      "outcome": "traded"
     },
     {
-     "symbol": "ARM",
-     "rank": 4,
-     "rvol5": 2.68,
-     "or_width_atr": 0.38,
-     "gap_pct": 11.08,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "COIN",
+     "symbol": "AAPL",
      "rank": 5,
-     "rvol5": 2.13,
-     "or_width_atr": 0.28,
-     "gap_pct": 5.88,
+     "rvol5": 0.77,
+     "or_width_atr": 0.24,
+     "gap_pct": -0.07,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "CSCO",
+     "symbol": "MSFT",
      "rank": 6,
-     "rvol5": 1.7,
-     "or_width_atr": 0.51,
-     "gap_pct": 0.39,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "CRWD",
-     "rank": 7,
-     "rvol5": 1.69,
-     "or_width_atr": 0.49,
-     "gap_pct": -2.55,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "MSTR",
-     "rank": 8,
-     "rvol5": 1.57,
-     "or_width_atr": 0.48,
-     "gap_pct": 6.93,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "GOOGL",
-     "rank": 9,
-     "rvol5": 1.34,
-     "or_width_atr": 0.6,
-     "gap_pct": 0.35,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "TSLA",
-     "rank": 10,
-     "rvol5": 1.3,
-     "or_width_atr": 0.36,
-     "gap_pct": 2.08,
-     "outcome": "no breakout before 09:45"
+     "rvol5": 0.92,
+     "or_width_atr": 0.29,
+     "gap_pct": 0.5,
+     "outcome": "range too narrow"
     }
    ],
-   "trades": 4,
-   "won": 3,
-   "result_pct": 2.197
+   "trades": 1,
+   "won": 1,
+   "result_pct": 1.605
   },
   {
    "date": "2026-09-22",
    "picks": [
     {
-     "symbol": "SHOP",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 17.59,
-     "or_width_atr": 0.75,
-     "gap_pct": 4.73,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "BABA",
-     "rank": 2,
-     "rvol5": 2.28,
-     "or_width_atr": 0.35,
-     "gap_pct": 3.65,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "META",
-     "rank": 3,
-     "rvol5": 1.65,
-     "or_width_atr": 0.62,
-     "gap_pct": -1.32,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "CRM",
-     "rank": 4,
-     "rvol5": 1.4,
-     "or_width_atr": 0.42,
-     "gap_pct": 2.33,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "AMZN",
-     "rank": 5,
-     "rvol5": 1.37,
-     "or_width_atr": 0.43,
-     "gap_pct": -1.24,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "MSTR",
-     "rank": 6,
-     "rvol5": 1.19,
-     "or_width_atr": 0.19,
-     "gap_pct": -0.5,
+     "rvol5": 0.61,
+     "or_width_atr": 0.32,
+     "gap_pct": 1.02,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "CSCO",
-     "rank": 7,
-     "rvol5": 1.15,
-     "or_width_atr": 0.52,
-     "gap_pct": -1.01,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "KO",
-     "rank": 8,
-     "rvol5": 1.14,
-     "or_width_atr": 0.38,
-     "gap_pct": 0.75,
-     "outcome": "no breakout before 09:45"
-    },
-    {
      "symbol": "AMD",
-     "rank": 9,
+     "rank": 2,
      "rvol5": 1.02,
      "or_width_atr": 0.29,
      "gap_pct": -1.39,
      "outcome": "range too narrow"
     },
     {
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 0.78,
+     "or_width_atr": 0.48,
+     "gap_pct": -0.14,
+     "outcome": "no breakout before 09:45"
+    },
+    {
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 1.65,
+     "or_width_atr": 0.62,
+     "gap_pct": -1.32,
+     "outcome": "traded"
+    },
+    {
      "symbol": "AAPL",
-     "rank": 10,
+     "rank": 5,
      "rvol5": 1.01,
      "or_width_atr": 0.7,
      "gap_pct": 0.4,
      "outcome": "no breakout before 09:45"
+    },
+    {
+     "symbol": "MSFT",
+     "rank": 6,
+     "rvol5": 0.97,
+     "or_width_atr": 0.62,
+     "gap_pct": 1.09,
+     "outcome": "traded"
     }
    ],
-   "trades": 5,
-   "won": 2,
-   "result_pct": 2.226
+   "trades": 2,
+   "won": 1,
+   "result_pct": -0.355
   },
   {
    "date": "2026-09-23",
    "picks": [
     {
-     "symbol": "NKE",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 2.47,
-     "or_width_atr": 0.43,
-     "gap_pct": 0.64,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "VZ",
-     "rank": 2,
-     "rvol5": 2.19,
+     "rvol5": 0.85,
      "or_width_atr": 0.33,
-     "gap_pct": 0.26,
+     "gap_pct": 0.4,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "CSCO",
+     "symbol": "AMD",
+     "rank": 2,
+     "rvol5": 0.56,
+     "or_width_atr": 0.28,
+     "gap_pct": -0.36,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "NVDA",
      "rank": 3,
-     "rvol5": 2.1,
-     "or_width_atr": 0.3,
-     "gap_pct": -0.11,
+     "rvol5": 0.49,
+     "or_width_atr": 0.2,
+     "gap_pct": -0.35,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "SMCI",
+     "symbol": "META",
      "rank": 4,
-     "rvol5": 1.57,
-     "or_width_atr": 0.37,
-     "gap_pct": 1.96,
-     "outcome": "traded"
+     "rvol5": 0.84,
+     "or_width_atr": 0.32,
+     "gap_pct": 1.57,
+     "outcome": "range too narrow"
     },
     {
-     "symbol": "JPM",
+     "symbol": "AAPL",
      "rank": 5,
-     "rvol5": 1.3,
-     "or_width_atr": 0.32,
-     "gap_pct": -0.81,
-     "outcome": "range too narrow"
+     "rvol5": 0.84,
+     "or_width_atr": 0.36,
+     "gap_pct": 0.36,
+     "outcome": "traded"
     },
     {
      "symbol": "MSFT",
@@ -936,438 +616,278 @@
      "or_width_atr": 0.3,
      "gap_pct": 0.76,
      "outcome": "range too narrow"
-    },
-    {
-     "symbol": "KO",
-     "rank": 7,
-     "rvol5": 1.15,
-     "or_width_atr": 0.25,
-     "gap_pct": 0.11,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "BABA",
-     "rank": 8,
-     "rvol5": 1.0,
-     "or_width_atr": 0.11,
-     "gap_pct": -3.68,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "MRK",
-     "rank": 9,
-     "rvol5": 0.98,
-     "or_width_atr": 0.19,
-     "gap_pct": 0.12,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "GOOGL",
-     "rank": 10,
-     "rvol5": 0.87,
-     "or_width_atr": 0.22,
-     "gap_pct": -0.4,
-     "outcome": "range too narrow"
     }
    ],
-   "trades": 2,
-   "won": 0,
-   "result_pct": -1.061
+   "trades": 1,
+   "won": 1,
+   "result_pct": 0.599
   },
   {
    "date": "2026-09-24",
    "picks": [
     {
-     "symbol": "CSCO",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 5.57,
-     "or_width_atr": 0.43,
-     "gap_pct": -0.79,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "MCD",
-     "rank": 2,
-     "rvol5": 4.4,
-     "or_width_atr": 0.69,
-     "gap_pct": 0.41,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "BA",
-     "rank": 3,
-     "rvol5": 2.76,
-     "or_width_atr": 0.17,
-     "gap_pct": -0.49,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "ORCL",
-     "rank": 4,
-     "rvol5": 2.64,
-     "or_width_atr": 0.28,
-     "gap_pct": -5.32,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "PLTR",
-     "rank": 5,
-     "rvol5": 2.25,
-     "or_width_atr": 0.36,
-     "gap_pct": -1.26,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "WMT",
-     "rank": 6,
-     "rvol5": 2.13,
-     "or_width_atr": 0.82,
-     "gap_pct": 0.36,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "HOOD",
-     "rank": 7,
-     "rvol5": 1.51,
-     "or_width_atr": 0.52,
-     "gap_pct": -2.44,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "JPM",
-     "rank": 8,
-     "rvol5": 1.39,
-     "or_width_atr": 0.24,
-     "gap_pct": 0.1,
+     "rvol5": 0.2,
+     "or_width_atr": 0.19,
+     "gap_pct": -0.77,
      "outcome": "range too narrow"
     },
     {
      "symbol": "AMD",
-     "rank": 9,
+     "rank": 2,
      "rvol5": 1.2,
      "or_width_atr": 0.4,
      "gap_pct": -2.31,
      "outcome": "traded"
     },
     {
-     "symbol": "BAC",
-     "rank": 10,
-     "rvol5": 1.12,
-     "or_width_atr": 0.24,
-     "gap_pct": 0.37,
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 1.07,
+     "or_width_atr": 0.33,
+     "gap_pct": -1.58,
      "outcome": "range too narrow"
+    },
+    {
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 0.96,
+     "or_width_atr": 0.64,
+     "gap_pct": -0.04,
+     "outcome": "traded"
+    },
+    {
+     "symbol": "AAPL",
+     "rank": 5,
+     "rvol5": 0.59,
+     "or_width_atr": 0.25,
+     "gap_pct": -0.04,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "MSFT",
+     "rank": 6,
+     "rvol5": 1.07,
+     "or_width_atr": 0.35,
+     "gap_pct": -1.08,
+     "outcome": "no breakout before 09:45"
     }
    ],
-   "trades": 3,
+   "trades": 2,
    "won": 2,
-   "result_pct": 0.743
+   "result_pct": 2.348
   },
   {
    "date": "2026-09-25",
    "picks": [
     {
-     "symbol": "COST",
-     "rank": 1,
-     "rvol5": 5.58,
-     "or_width_atr": 0.74,
-     "gap_pct": -1.06,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "MSFT",
-     "rank": 2,
-     "rvol5": 3.62,
-     "or_width_atr": 1.18,
-     "gap_pct": 0.26,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "JPM",
-     "rank": 3,
-     "rvol5": 2.83,
-     "or_width_atr": 0.24,
-     "gap_pct": 0.7,
-     "outcome": "range too narrow"
-    },
-    {
      "symbol": "TSLA",
-     "rank": 4,
+     "rank": 1,
      "rvol5": 2.83,
      "or_width_atr": 1.4,
      "gap_pct": 1.75,
      "outcome": "traded"
     },
     {
-     "symbol": "AMZN",
-     "rank": 5,
-     "rvol5": 2.48,
-     "or_width_atr": 0.42,
-     "gap_pct": -0.31,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "WMT",
-     "rank": 6,
-     "rvol5": 2.33,
-     "or_width_atr": 0.48,
-     "gap_pct": -0.74,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "DDOG",
-     "rank": 7,
-     "rvol5": 2.21,
-     "or_width_atr": 0.77,
-     "gap_pct": 16.08,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "HD",
-     "rank": 8,
-     "rvol5": 1.94,
+     "symbol": "AMD",
+     "rank": 2,
+     "rvol5": 1.08,
      "or_width_atr": 0.2,
-     "gap_pct": 0.2,
+     "gap_pct": 0.96,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "NKE",
-     "rank": 9,
-     "rvol5": 1.8,
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 1.07,
      "or_width_atr": 0.38,
-     "gap_pct": -2.04,
+     "gap_pct": 0.28,
      "outcome": "no breakout before 09:45"
     },
     {
      "symbol": "META",
-     "rank": 10,
+     "rank": 4,
      "rvol5": 1.78,
      "or_width_atr": 0.51,
      "gap_pct": -1.09,
      "outcome": "traded"
+    },
+    {
+     "symbol": "AAPL",
+     "rank": 5,
+     "rvol5": 0.82,
+     "or_width_atr": 0.27,
+     "gap_pct": 0.02,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "MSFT",
+     "rank": 6,
+     "rvol5": 3.62,
+     "or_width_atr": 1.18,
+     "gap_pct": 0.26,
+     "outcome": "traded"
     }
    ],
-   "trades": 5,
-   "won": 3,
-   "result_pct": 1.112
+   "trades": 3,
+   "won": 1,
+   "result_pct": 0.235
   },
   {
    "date": "2026-09-28",
    "picks": [
     {
-     "symbol": "BA",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 3.55,
-     "or_width_atr": 0.51,
-     "gap_pct": -3.09,
+     "rvol5": 0.9,
+     "or_width_atr": 0.41,
+     "gap_pct": -1.08,
      "outcome": "traded"
     },
     {
-     "symbol": "NVDA",
+     "symbol": "AMD",
      "rank": 2,
+     "rvol5": 0.49,
+     "or_width_atr": 0.3,
+     "gap_pct": -0.51,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "NVDA",
+     "rank": 3,
      "rvol5": 2.23,
      "or_width_atr": 0.56,
      "gap_pct": 1.99,
      "outcome": "traded"
     },
     {
-     "symbol": "NKE",
-     "rank": 3,
-     "rvol5": 1.92,
-     "or_width_atr": 0.31,
-     "gap_pct": -0.49,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "KO",
-     "rank": 4,
-     "rvol5": 1.82,
-     "or_width_atr": 0.37,
-     "gap_pct": -0.22,
-     "outcome": "traded"
-    },
-    {
      "symbol": "META",
-     "rank": 5,
+     "rank": 4,
      "rvol5": 1.58,
      "or_width_atr": 0.81,
      "gap_pct": -0.23,
      "outcome": "traded"
     },
     {
-     "symbol": "QCOM",
-     "rank": 6,
-     "rvol5": 1.57,
-     "or_width_atr": 0.45,
-     "gap_pct": -1.48,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "JPM",
-     "rank": 7,
-     "rvol5": 1.53,
-     "or_width_atr": 0.26,
-     "gap_pct": -0.46,
-     "outcome": "range too narrow"
-    },
-    {
      "symbol": "AAPL",
-     "rank": 8,
+     "rank": 5,
      "rvol5": 1.44,
      "or_width_atr": 0.33,
      "gap_pct": -0.14,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "AMZN",
-     "rank": 9,
-     "rvol5": 1.3,
-     "or_width_atr": 0.37,
-     "gap_pct": -1.32,
-     "outcome": "no breakout before 09:45"
-    },
-    {
      "symbol": "MSFT",
-     "rank": 10,
+     "rank": 6,
      "rvol5": 1.12,
      "or_width_atr": 0.36,
      "gap_pct": -2.07,
      "outcome": "no breakout before 09:45"
     }
    ],
-   "trades": 5,
-   "won": 3,
-   "result_pct": 0.107
+   "trades": 3,
+   "won": 2,
+   "result_pct": 0.602
   },
   {
    "date": "2026-09-29",
    "picks": [
     {
-     "symbol": "WMT",
-     "rank": 1,
-     "rvol5": 2.3,
-     "or_width_atr": 0.78,
-     "gap_pct": -1.12,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "CRM",
-     "rank": 2,
-     "rvol5": 1.91,
-     "or_width_atr": 0.36,
-     "gap_pct": 0.06,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "BA",
-     "rank": 3,
-     "rvol5": 1.73,
-     "or_width_atr": 0.5,
-     "gap_pct": 0.58,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "HD",
-     "rank": 4,
-     "rvol5": 1.62,
-     "or_width_atr": 0.37,
-     "gap_pct": 0.37,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "PEP",
-     "rank": 5,
-     "rvol5": 1.62,
-     "or_width_atr": 0.32,
-     "gap_pct": -1.58,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "BAC",
-     "rank": 6,
-     "rvol5": 1.26,
-     "or_width_atr": 0.2,
-     "gap_pct": -0.25,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "NVDA",
-     "rank": 7,
-     "rvol5": 1.2,
-     "or_width_atr": 0.45,
-     "gap_pct": 0.87,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "MCD",
-     "rank": 8,
-     "rvol5": 1.15,
-     "or_width_atr": 0.22,
-     "gap_pct": -0.42,
-     "outcome": "range too narrow"
-    },
-    {
      "symbol": "TSLA",
-     "rank": 9,
+     "rank": 1,
      "rvol5": 1.07,
      "or_width_atr": 0.52,
      "gap_pct": 0.34,
      "outcome": "traded"
     },
     {
-     "symbol": "UNH",
-     "rank": 10,
-     "rvol5": 1.07,
+     "symbol": "AMD",
+     "rank": 2,
+     "rvol5": 0.28,
+     "or_width_atr": 0.31,
+     "gap_pct": 1.26,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 1.2,
+     "or_width_atr": 0.45,
+     "gap_pct": 0.87,
+     "outcome": "traded"
+    },
+    {
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 0.61,
      "or_width_atr": 0.19,
-     "gap_pct": -0.49,
+     "gap_pct": 1.28,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "AAPL",
+     "rank": 5,
+     "rvol5": 1.05,
+     "or_width_atr": 0.66,
+     "gap_pct": -0.6,
+     "outcome": "no breakout before 09:45"
+    },
+    {
+     "symbol": "MSFT",
+     "rank": 6,
+     "rvol5": 0.64,
+     "or_width_atr": 0.33,
+     "gap_pct": -0.21,
      "outcome": "range too narrow"
     }
    ],
-   "trades": 5,
+   "trades": 2,
    "won": 1,
-   "result_pct": -0.919
+   "result_pct": 0.911
   },
   {
    "date": "2026-09-30",
    "picks": [
     {
-     "symbol": "HOOD",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 3.09,
-     "or_width_atr": 1.23,
-     "gap_pct": 5.18,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "BA",
-     "rank": 2,
-     "rvol5": 1.58,
-     "or_width_atr": 0.29,
-     "gap_pct": 2.34,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "PG",
-     "rank": 3,
-     "rvol5": 1.39,
-     "or_width_atr": 0.36,
-     "gap_pct": 0.05,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "GOOGL",
-     "rank": 4,
-     "rvol5": 1.36,
-     "or_width_atr": 0.5,
-     "gap_pct": 0.96,
+     "rvol5": 1.04,
+     "or_width_atr": 0.53,
+     "gap_pct": -0.27,
      "outcome": "no breakout before 09:45"
     },
     {
-     "symbol": "MSTR",
+     "symbol": "AMD",
+     "rank": 2,
+     "rvol5": 0.86,
+     "or_width_atr": 0.26,
+     "gap_pct": 0.2,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 0.71,
+     "or_width_atr": 0.48,
+     "gap_pct": 0.71,
+     "outcome": "no breakout before 09:45"
+    },
+    {
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 0.95,
+     "or_width_atr": 0.3,
+     "gap_pct": -1.27,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "AAPL",
      "rank": 5,
-     "rvol5": 1.29,
-     "or_width_atr": 0.57,
-     "gap_pct": 3.75,
-     "outcome": "traded"
+     "rvol5": 0.81,
+     "or_width_atr": 0.43,
+     "gap_pct": 0.21,
+     "outcome": "no breakout before 09:45"
     },
     {
      "symbol": "MSFT",
@@ -1376,438 +896,278 @@
      "or_width_atr": 0.38,
      "gap_pct": 0.45,
      "outcome": "traded"
-    },
-    {
-     "symbol": "TSLA",
-     "rank": 7,
-     "rvol5": 1.04,
-     "or_width_atr": 0.53,
-     "gap_pct": -0.27,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "SMCI",
-     "rank": 8,
-     "rvol5": 0.99,
-     "or_width_atr": 0.36,
-     "gap_pct": 2.82,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "META",
-     "rank": 9,
-     "rvol5": 0.95,
-     "or_width_atr": 0.3,
-     "gap_pct": -1.27,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "LIN",
-     "rank": 10,
-     "rvol5": 0.9,
-     "or_width_atr": 0.25,
-     "gap_pct": 1.21,
-     "outcome": "range too narrow"
     }
    ],
-   "trades": 5,
-   "won": 4,
-   "result_pct": 1.993
+   "trades": 1,
+   "won": 0,
+   "result_pct": -0.617
   },
   {
    "date": "2026-10-01",
    "picks": [
     {
-     "symbol": "ABNB",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 2.54,
-     "or_width_atr": 0.11,
-     "gap_pct": 2.72,
+     "rvol5": 0.98,
+     "or_width_atr": 0.28,
+     "gap_pct": 0.25,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "HD",
+     "symbol": "AMD",
      "rank": 2,
-     "rvol5": 2.27,
-     "or_width_atr": 0.18,
-     "gap_pct": -0.4,
+     "rvol5": 0.35,
+     "or_width_atr": 0.16,
+     "gap_pct": -0.04,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "KO",
+     "symbol": "NVDA",
      "rank": 3,
-     "rvol5": 1.95,
-     "or_width_atr": 0.22,
-     "gap_pct": 0.13,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "GOOGL",
-     "rank": 4,
-     "rvol5": 1.82,
-     "or_width_atr": 0.54,
-     "gap_pct": 1.96,
+     "rvol5": 1.18,
+     "or_width_atr": 0.38,
+     "gap_pct": 0.63,
      "outcome": "traded"
     },
     {
-     "symbol": "JPM",
-     "rank": 5,
-     "rvol5": 1.8,
-     "or_width_atr": 0.61,
-     "gap_pct": -0.75,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "NKE",
-     "rank": 6,
-     "rvol5": 1.74,
-     "or_width_atr": 0.34,
-     "gap_pct": 0.55,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "MS",
-     "rank": 7,
-     "rvol5": 1.67,
-     "or_width_atr": 0.23,
-     "gap_pct": -3.36,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "T",
-     "rank": 8,
-     "rvol5": 1.59,
-     "or_width_atr": 0.27,
-     "gap_pct": -0.16,
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 0.7,
+     "or_width_atr": 0.14,
+     "gap_pct": 0.53,
      "outcome": "range too narrow"
     },
     {
      "symbol": "AAPL",
-     "rank": 9,
+     "rank": 5,
      "rvol5": 1.58,
      "or_width_atr": 0.44,
      "gap_pct": -1.1,
      "outcome": "traded"
     },
     {
-     "symbol": "AMZN",
-     "rank": 10,
-     "rvol5": 1.42,
-     "or_width_atr": 0.33,
-     "gap_pct": 0.94,
-     "outcome": "range too narrow"
+     "symbol": "MSFT",
+     "rank": 6,
+     "rvol5": 1.25,
+     "or_width_atr": 0.44,
+     "gap_pct": 1.34,
+     "outcome": "no breakout before 09:45"
     }
    ],
    "trades": 2,
-   "won": 1,
-   "result_pct": 0.925
+   "won": 0,
+   "result_pct": -2.093
   },
   {
    "date": "2026-10-02",
    "picks": [
     {
-     "symbol": "NKE",
-     "rank": 1,
-     "rvol5": 8.46,
-     "or_width_atr": 1.16,
-     "gap_pct": -7.22,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "WMT",
-     "rank": 2,
-     "rvol5": 2.99,
-     "or_width_atr": 0.36,
-     "gap_pct": 0.67,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "HOOD",
-     "rank": 3,
-     "rvol5": 1.67,
-     "or_width_atr": 0.75,
-     "gap_pct": 2.16,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "VZ",
-     "rank": 4,
-     "rvol5": 1.67,
-     "or_width_atr": 0.23,
-     "gap_pct": 0.18,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "COIN",
-     "rank": 5,
-     "rvol5": 1.57,
-     "or_width_atr": 0.34,
-     "gap_pct": 2.91,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "MS",
-     "rank": 6,
-     "rvol5": 1.56,
-     "or_width_atr": 0.3,
-     "gap_pct": 0.47,
-     "outcome": "range too narrow"
-    },
-    {
      "symbol": "TSLA",
-     "rank": 7,
+     "rank": 1,
      "rvol5": 1.53,
      "or_width_atr": 0.84,
      "gap_pct": 1.65,
      "outcome": "traded"
     },
     {
-     "symbol": "MSTR",
-     "rank": 8,
-     "rvol5": 1.48,
-     "or_width_atr": 0.47,
-     "gap_pct": 3.3,
-     "outcome": "no breakout before 09:45"
+     "symbol": "AMD",
+     "rank": 2,
+     "rvol5": 0.64,
+     "or_width_atr": 0.19,
+     "gap_pct": 3.18,
+     "outcome": "range too narrow"
     },
     {
      "symbol": "NVDA",
-     "rank": 9,
+     "rank": 3,
      "rvol5": 1.46,
      "or_width_atr": 0.35,
      "gap_pct": 2.17,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "BA",
-     "rank": 10,
-     "rvol5": 1.29,
-     "or_width_atr": 0.35,
-     "gap_pct": 0.83,
-     "outcome": "traded"
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 0.47,
+     "or_width_atr": 0.27,
+     "gap_pct": 1.12,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "AAPL",
+     "rank": 5,
+     "rvol5": 0.62,
+     "or_width_atr": 0.36,
+     "gap_pct": 0.82,
+     "outcome": "no breakout before 09:45"
+    },
+    {
+     "symbol": "MSFT",
+     "rank": 6,
+     "rvol5": 0.75,
+     "or_width_atr": 0.3,
+     "gap_pct": 1.25,
+     "outcome": "range too narrow"
     }
    ],
-   "trades": 4,
-   "won": 2,
-   "result_pct": -1.415
+   "trades": 1,
+   "won": 1,
+   "result_pct": 0.021
   },
   {
    "date": "2026-10-05",
    "picks": [
     {
-     "symbol": "BAC",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 2.61,
-     "or_width_atr": 0.37,
-     "gap_pct": 0.47,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "GE",
-     "rank": 2,
-     "rvol5": 2.24,
-     "or_width_atr": 0.31,
-     "gap_pct": -0.18,
+     "rvol5": 0.93,
+     "or_width_atr": 0.34,
+     "gap_pct": -0.69,
      "outcome": "range too narrow"
     },
     {
-     "symbol": "NKE",
-     "rank": 3,
-     "rvol5": 1.94,
-     "or_width_atr": 0.85,
-     "gap_pct": 0.32,
-     "outcome": "no breakout before 09:45"
+     "symbol": "AMD",
+     "rank": 2,
+     "rvol5": 0.57,
+     "or_width_atr": 0.42,
+     "gap_pct": -0.58,
+     "outcome": "traded"
     },
     {
      "symbol": "NVDA",
-     "rank": 4,
+     "rank": 3,
      "rvol5": 1.66,
      "or_width_atr": 0.44,
      "gap_pct": 0.92,
      "outcome": "traded"
     },
     {
-     "symbol": "MSFT",
-     "rank": 5,
-     "rvol5": 1.62,
-     "or_width_atr": 0.58,
-     "gap_pct": 0.9,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "TXN",
-     "rank": 6,
-     "rvol5": 1.55,
-     "or_width_atr": 0.1,
-     "gap_pct": -0.77,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "LIN",
-     "rank": 7,
-     "rvol5": 1.43,
-     "or_width_atr": 0.2,
-     "gap_pct": 2.25,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "UNH",
-     "rank": 8,
-     "rvol5": 1.41,
-     "or_width_atr": 0.31,
-     "gap_pct": 0.46,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "PEP",
-     "rank": 9,
-     "rvol5": 1.37,
-     "or_width_atr": 0.27,
-     "gap_pct": -0.01,
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 0.23,
+     "or_width_atr": 0.32,
+     "gap_pct": -0.07,
      "outcome": "range too narrow"
     },
     {
      "symbol": "AAPL",
-     "rank": 10,
+     "rank": 5,
      "rvol5": 1.18,
      "or_width_atr": 0.7,
      "gap_pct": -0.28,
      "outcome": "no breakout before 09:45"
+    },
+    {
+     "symbol": "MSFT",
+     "rank": 6,
+     "rvol5": 1.62,
+     "or_width_atr": 0.58,
+     "gap_pct": 0.9,
+     "outcome": "traded"
     }
    ],
    "trades": 3,
    "won": 1,
-   "result_pct": -1.394
+   "result_pct": -0.385
   },
   {
    "date": "2026-10-06",
    "picks": [
     {
-     "symbol": "MS",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 2.13,
-     "or_width_atr": 0.24,
-     "gap_pct": 0.57,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "NVDA",
-     "rank": 2,
-     "rvol5": 1.49,
-     "or_width_atr": 0.48,
-     "gap_pct": 1.28,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "LIN",
-     "rank": 3,
-     "rvol5": 1.39,
-     "or_width_atr": 0.6,
-     "gap_pct": 0.17,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "CRWD",
-     "rank": 4,
-     "rvol5": 1.19,
-     "or_width_atr": 0.67,
-     "gap_pct": 1.98,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "UNH",
-     "rank": 5,
-     "rvol5": 1.15,
-     "or_width_atr": 0.23,
-     "gap_pct": 0.12,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "SMCI",
-     "rank": 6,
-     "rvol5": 1.1,
-     "or_width_atr": 0.4,
-     "gap_pct": 1.59,
+     "rvol5": 0.89,
+     "or_width_atr": 0.36,
+     "gap_pct": 0.93,
      "outcome": "no breakout before 09:45"
     },
     {
      "symbol": "AMD",
-     "rank": 7,
+     "rank": 2,
      "rvol5": 1.08,
      "or_width_atr": 0.77,
      "gap_pct": 2.69,
      "outcome": "traded"
     },
     {
-     "symbol": "SHOP",
-     "rank": 8,
-     "rvol5": 1.08,
-     "or_width_atr": 0.35,
-     "gap_pct": 3.8,
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 1.49,
+     "or_width_atr": 0.48,
+     "gap_pct": 1.28,
+     "outcome": "no breakout before 09:45"
+    },
+    {
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 0.29,
+     "or_width_atr": 0.22,
+     "gap_pct": 0.69,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "AAPL",
+     "rank": 5,
+     "rvol5": 0.74,
+     "or_width_atr": 0.29,
+     "gap_pct": -0.24,
      "outcome": "range too narrow"
     },
     {
      "symbol": "MSFT",
-     "rank": 9,
+     "rank": 6,
      "rvol5": 0.99,
      "or_width_atr": 0.25,
      "gap_pct": 1.26,
      "outcome": "range too narrow"
-    },
-    {
-     "symbol": "PLTR",
-     "rank": 10,
-     "rvol5": 0.91,
-     "or_width_atr": 0.38,
-     "gap_pct": 0.86,
-     "outcome": "traded"
     }
    ],
-   "trades": 3,
+   "trades": 1,
    "won": 0,
-   "result_pct": -1.931
+   "result_pct": -1.016
   },
   {
    "date": "2026-10-07",
    "picks": [
     {
-     "symbol": "HD",
+     "symbol": "TSLA",
      "rank": 1,
-     "rvol5": 2.26,
-     "or_width_atr": 0.24,
-     "gap_pct": -0.58,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "ETN",
-     "rank": 2,
-     "rvol5": 1.98,
-     "or_width_atr": 0.2,
-     "gap_pct": -0.45,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "GS",
-     "rank": 3,
-     "rvol5": 1.91,
-     "or_width_atr": 0.16,
-     "gap_pct": -1.41,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "PEP",
-     "rank": 4,
-     "rvol5": 1.57,
-     "or_width_atr": 0.44,
-     "gap_pct": 0.23,
+     "rvol5": 0.36,
+     "or_width_atr": 0.35,
+     "gap_pct": -0.6,
      "outcome": "traded"
     },
     {
-     "symbol": "BAC",
-     "rank": 5,
-     "rvol5": 1.51,
-     "or_width_atr": 0.52,
-     "gap_pct": -1.7,
+     "symbol": "AMD",
+     "rank": 2,
+     "rvol5": 1.28,
+     "or_width_atr": 0.56,
+     "gap_pct": -2.4,
      "outcome": "no breakout before 09:45"
+    },
+    {
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 0.89,
+     "or_width_atr": 0.22,
+     "gap_pct": -0.62,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 0.58,
+     "or_width_atr": 0.24,
+     "gap_pct": -0.24,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "AAPL",
+     "rank": 5,
+     "rvol5": 1.38,
+     "or_width_atr": 0.85,
+     "gap_pct": 0.99,
+     "outcome": "traded"
     },
     {
      "symbol": "MSFT",
@@ -1816,71 +1176,19 @@
      "or_width_atr": 0.36,
      "gap_pct": 0.25,
      "outcome": "traded"
-    },
-    {
-     "symbol": "SMCI",
-     "rank": 7,
-     "rvol5": 1.4,
-     "or_width_atr": 0.78,
-     "gap_pct": -2.08,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "AAPL",
-     "rank": 8,
-     "rvol5": 1.38,
-     "or_width_atr": 0.85,
-     "gap_pct": 0.99,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "CRWD",
-     "rank": 9,
-     "rvol5": 1.3,
-     "or_width_atr": 0.16,
-     "gap_pct": -1.44,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "AMD",
-     "rank": 10,
-     "rvol5": 1.28,
-     "or_width_atr": 0.56,
-     "gap_pct": -2.4,
-     "outcome": "no breakout before 09:45"
     }
    ],
    "trades": 3,
-   "won": 1,
-   "result_pct": 0.142
+   "won": 0,
+   "result_pct": -1.425
   }
  ],
  "trades": [
   {
    "date": "2026-09-09",
-   "symbol": "UNH",
-   "side": "short",
-   "rank": 2,
-   "entry_time": "09:35",
-   "exit_time": "09:43",
-   "exit_reason": "target",
-   "entry": 400.8,
-   "stop": 406.65,
-   "target": 389.1,
-   "exit": 389.1,
-   "result_pct": 1.967,
-   "move_pct": 2.87,
-   "risk_pct_price": 1.46,
-   "rvol5": 4.05,
-   "or_width_atr": 0.61,
-   "gap_pct": 1.13,
-   "hold_min": 8
-  },
-  {
-   "date": "2026-09-09",
    "symbol": "AMD",
    "side": "long",
-   "rank": 4,
+   "rank": 2,
    "entry_time": "09:38",
    "exit_time": "15:55",
    "exit_reason": "bell",
@@ -1897,70 +1205,10 @@
    "hold_min": 377
   },
   {
-   "date": "2026-09-09",
-   "symbol": "QCOM",
-   "side": "long",
-   "rank": 9,
-   "entry_time": "09:35",
-   "exit_time": "11:09",
-   "exit_reason": "stop",
-   "entry": 180.1,
-   "stop": 174.49,
-   "target": 191.31,
-   "exit": 174.49,
-   "result_pct": -1.016,
-   "move_pct": -3.16,
-   "risk_pct_price": 3.11,
-   "rvol5": 1.63,
-   "or_width_atr": 0.92,
-   "gap_pct": 0.3,
-   "hold_min": 94
-  },
-  {
-   "date": "2026-09-09",
-   "symbol": "JPM",
-   "side": "long",
-   "rank": 10,
-   "entry_time": "09:41",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 351.92,
-   "stop": 348.7,
-   "target": 358.36,
-   "exit": 355.14,
-   "result_pct": 0.946,
-   "move_pct": 0.87,
-   "risk_pct_price": 0.91,
-   "rvol5": 1.6,
-   "or_width_atr": 0.46,
-   "gap_pct": -0.65,
-   "hold_min": 374
-  },
-  {
-   "date": "2026-09-10",
-   "symbol": "FCX",
-   "side": "short",
-   "rank": 3,
-   "entry_time": "09:35",
-   "exit_time": "11:35",
-   "exit_reason": "stop",
-   "entry": 69.82,
-   "stop": 71.13,
-   "target": 67.18,
-   "exit": 71.13,
-   "result_pct": -1.027,
-   "move_pct": -1.94,
-   "risk_pct_price": 1.89,
-   "rvol5": 1.96,
-   "or_width_atr": 0.37,
-   "gap_pct": -7.84,
-   "hold_min": 120
-  },
-  {
    "date": "2026-09-10",
    "symbol": "AAPL",
    "side": "long",
-   "rank": 6,
+   "rank": 5,
    "entry_time": "09:36",
    "exit_time": "15:55",
    "exit_reason": "bell",
@@ -1977,30 +1225,30 @@
    "hold_min": 379
   },
   {
-   "date": "2026-09-10",
-   "symbol": "KO",
+   "date": "2026-09-11",
+   "symbol": "META",
    "side": "long",
-   "rank": 8,
+   "rank": 4,
    "entry_time": "09:37",
-   "exit_time": "10:52",
+   "exit_time": "12:36",
    "exit_reason": "stop",
-   "entry": 88.93,
-   "stop": 88.04,
-   "target": 90.73,
-   "exit": 88.04,
-   "result_pct": -1.049,
-   "move_pct": -1.06,
-   "risk_pct_price": 1.01,
-   "rvol5": 1.45,
-   "or_width_atr": 0.66,
-   "gap_pct": 0.69,
-   "hold_min": 75
+   "entry": 660.65,
+   "stop": 648.4,
+   "target": 685.15,
+   "exit": 648.4,
+   "result_pct": -1.026,
+   "move_pct": -1.9,
+   "risk_pct_price": 1.85,
+   "rvol5": 0.65,
+   "or_width_atr": 0.51,
+   "gap_pct": 1.42,
+   "hold_min": 179
   },
   {
    "date": "2026-09-11",
    "symbol": "AAPL",
    "side": "long",
-   "rank": 6,
+   "rank": 5,
    "entry_time": "09:35",
    "exit_time": "15:55",
    "exit_reason": "bell",
@@ -2017,270 +1265,210 @@
    "hold_min": 380
   },
   {
-   "date": "2026-09-11",
-   "symbol": "INTC",
+   "date": "2026-09-14",
+   "symbol": "AMD",
+   "side": "short",
+   "rank": 2,
+   "entry_time": "09:35",
+   "exit_time": "10:12",
+   "exit_reason": "stop",
+   "entry": 480.53,
+   "stop": 492.01,
+   "target": 457.56,
+   "exit": 492.01,
+   "result_pct": -1.021,
+   "move_pct": -2.44,
+   "risk_pct_price": 2.39,
+   "rvol5": 1.7,
+   "or_width_atr": 0.45,
+   "gap_pct": -5.78,
+   "hold_min": 37
+  },
+  {
+   "date": "2026-09-14",
+   "symbol": "META",
    "side": "long",
-   "rank": 7,
+   "rank": 4,
    "entry_time": "09:39",
    "exit_time": "15:55",
    "exit_reason": "bell",
-   "entry": 103.51,
-   "stop": 100.99,
-   "target": 108.54,
-   "exit": 102.89,
-   "result_pct": -0.266,
-   "move_pct": -0.65,
-   "risk_pct_price": 2.43,
-   "rvol5": 1.62,
-   "or_width_atr": 0.45,
-   "gap_pct": 2.21,
+   "entry": 661.17,
+   "stop": 648.92,
+   "target": 685.67,
+   "exit": 666.39,
+   "result_pct": 0.398,
+   "move_pct": 0.74,
+   "risk_pct_price": 1.85,
+   "rvol5": 1.29,
+   "or_width_atr": 0.49,
+   "gap_pct": 1.43,
    "hold_min": 376
   },
   {
    "date": "2026-09-14",
-   "symbol": "CRWD",
-   "side": "long",
-   "rank": 1,
-   "entry_time": "09:44",
-   "exit_time": "11:19",
-   "exit_reason": "target",
-   "entry": 223.36,
-   "stop": 215.79,
-   "target": 238.5,
-   "exit": 238.5,
-   "result_pct": 1.984,
-   "move_pct": 6.73,
-   "risk_pct_price": 3.39,
-   "rvol5": 4.53,
-   "or_width_atr": 0.54,
-   "gap_pct": 5.94,
-   "hold_min": 95
-  },
-  {
-   "date": "2026-09-14",
-   "symbol": "ORCL",
+   "symbol": "AAPL",
    "side": "short",
-   "rank": 2,
-   "entry_time": "09:37",
-   "exit_time": "09:48",
-   "exit_reason": "stop",
-   "entry": 141.09,
-   "stop": 144.3,
-   "target": 134.67,
-   "exit": 144.3,
-   "result_pct": -1.022,
-   "move_pct": -2.33,
-   "risk_pct_price": 2.28,
-   "rvol5": 3.16,
-   "or_width_atr": 0.38,
-   "gap_pct": -5.99,
-   "hold_min": 11
-  },
-  {
-   "date": "2026-09-14",
-   "symbol": "KO",
-   "side": "short",
-   "rank": 7,
-   "entry_time": "09:35",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 89.63,
-   "stop": 90.24,
-   "target": 88.39,
-   "exit": 89.39,
-   "result_pct": 0.3,
-   "move_pct": 0.21,
-   "risk_pct_price": 0.69,
-   "rvol5": 2.37,
-   "or_width_atr": 0.46,
-   "gap_pct": 2.03,
-   "hold_min": 380
-  },
-  {
-   "date": "2026-09-15",
-   "symbol": "JPM",
-   "side": "short",
-   "rank": 2,
-   "entry_time": "09:39",
-   "exit_time": "14:51",
-   "exit_reason": "stop",
-   "entry": 348.24,
-   "stop": 351.24,
-   "target": 342.23,
-   "exit": 351.24,
-   "result_pct": -0.058,
-   "move_pct": -0.05,
-   "risk_pct_price": 0.86,
-   "rvol5": 1.92,
-   "or_width_atr": 0.39,
-   "gap_pct": 0.23,
-   "hold_min": 312
-  },
-  {
-   "date": "2026-09-15",
-   "symbol": "QCOM",
-   "side": "long",
-   "rank": 7,
-   "entry_time": "09:41",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 187.66,
-   "stop": 180.99,
-   "target": 201.01,
-   "exit": 187.7,
-   "result_pct": -0.009,
-   "move_pct": -0.03,
-   "risk_pct_price": 3.56,
-   "rvol5": 1.06,
-   "or_width_atr": 0.92,
-   "gap_pct": 0.54,
-   "hold_min": 374
-  },
-  {
-   "date": "2026-09-15",
-   "symbol": "HD",
-   "side": "short",
-   "rank": 9,
-   "entry_time": "09:36",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 307.11,
-   "stop": 311.29,
-   "target": 298.75,
-   "exit": 304.61,
-   "result_pct": 0.562,
-   "move_pct": 0.76,
-   "risk_pct_price": 1.36,
-   "rvol5": 0.94,
-   "or_width_atr": 0.41,
-   "gap_pct": 0.07,
-   "hold_min": 379
-  },
-  {
-   "date": "2026-09-16",
-   "symbol": "BAC",
-   "side": "short",
-   "rank": 1,
-   "entry_time": "09:35",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 58.47,
-   "stop": 59.4,
-   "target": 56.61,
-   "exit": 57.88,
-   "result_pct": 0.604,
-   "move_pct": 0.96,
-   "risk_pct_price": 1.59,
-   "rvol5": 2.56,
-   "or_width_atr": 0.6,
-   "gap_pct": -0.26,
-   "hold_min": 380
-  },
-  {
-   "date": "2026-09-16",
-   "symbol": "JPM",
-   "side": "short",
-   "rank": 2,
-   "entry_time": "09:35",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 351.72,
-   "stop": 355.3,
-   "target": 344.58,
-   "exit": 348.8,
-   "result_pct": 0.77,
-   "move_pct": 0.78,
-   "risk_pct_price": 1.02,
-   "rvol5": 2.5,
-   "or_width_atr": 0.49,
-   "gap_pct": 0.28,
-   "hold_min": 380
-  },
-  {
-   "date": "2026-09-16",
-   "symbol": "INTC",
-   "side": "long",
-   "rank": 6,
-   "entry_time": "09:40",
-   "exit_time": "09:51",
-   "exit_reason": "stop",
-   "entry": 103.42,
-   "stop": 101.09,
-   "target": 108.07,
-   "exit": 101.09,
-   "result_pct": -1.022,
-   "move_pct": -2.3,
-   "risk_pct_price": 2.25,
-   "rvol5": 1.35,
-   "or_width_atr": 0.44,
-   "gap_pct": 4.3,
-   "hold_min": 11
-  },
-  {
-   "date": "2026-09-18",
-   "symbol": "WMT",
-   "side": "long",
-   "rank": 4,
-   "entry_time": "09:38",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 107.5,
-   "stop": 106.48,
-   "target": 109.53,
-   "exit": 107.0,
-   "result_pct": -0.543,
-   "move_pct": -0.51,
-   "risk_pct_price": 0.95,
-   "rvol5": 1.28,
-   "or_width_atr": 0.48,
-   "gap_pct": -0.24,
-   "hold_min": 377
-  },
-  {
-   "date": "2026-09-18",
-   "symbol": "HOOD",
-   "side": "short",
-   "rank": 8,
+   "rank": 5,
    "entry_time": "09:35",
    "exit_time": "09:56",
    "exit_reason": "stop",
-   "entry": 111.13,
-   "stop": 115.31,
-   "target": 102.78,
-   "exit": 115.31,
-   "result_pct": -1.014,
-   "move_pct": -3.81,
-   "risk_pct_price": 3.76,
-   "rvol5": 1.18,
-   "or_width_atr": 0.49,
-   "gap_pct": 3.6,
+   "entry": 331.26,
+   "stop": 334.86,
+   "target": 324.08,
+   "exit": 334.86,
+   "result_pct": -1.047,
+   "move_pct": -1.13,
+   "risk_pct_price": 1.08,
+   "rvol5": 1.23,
+   "or_width_atr": 0.36,
+   "gap_pct": 0.74,
    "hold_min": 21
   },
   {
-   "date": "2026-09-18",
-   "symbol": "CRM",
+   "date": "2026-09-15",
+   "symbol": "TSLA",
+   "side": "long",
+   "rank": 1,
+   "entry_time": "09:38",
+   "exit_time": "15:39",
+   "exit_reason": "stop",
+   "entry": 360.88,
+   "stop": 354.44,
+   "target": 373.77,
+   "exit": 354.44,
+   "result_pct": -1.027,
+   "move_pct": -1.83,
+   "risk_pct_price": 1.79,
+   "rvol5": 0.64,
+   "or_width_atr": 0.42,
+   "gap_pct": -0.08,
+   "hold_min": 361
+  },
+  {
+   "date": "2026-09-15",
+   "symbol": "META",
+   "side": "long",
+   "rank": 4,
+   "entry_time": "09:35",
+   "exit_time": "10:10",
+   "exit_reason": "stop",
+   "entry": 667.24,
+   "stop": 656.04,
+   "target": 689.63,
+   "exit": 656.04,
+   "result_pct": -0.087,
+   "move_pct": -0.15,
+   "risk_pct_price": 1.68,
+   "rvol5": 0.56,
+   "or_width_atr": 0.36,
+   "gap_pct": -1.01,
+   "hold_min": 35
+  },
+  {
+   "date": "2026-09-15",
+   "symbol": "MSFT",
+   "side": "long",
+   "rank": 6,
+   "entry_time": "09:37",
+   "exit_time": "10:09",
+   "exit_reason": "stop",
+   "entry": 503.94,
+   "stop": 498.99,
+   "target": 513.84,
+   "exit": 498.99,
+   "result_pct": -1.05,
+   "move_pct": -1.03,
+   "risk_pct_price": 0.98,
+   "rvol5": 0.68,
+   "or_width_atr": 0.37,
+   "gap_pct": -1.12,
+   "hold_min": 32
+  },
+  {
+   "date": "2026-09-17",
+   "symbol": "META",
    "side": "short",
-   "rank": 10,
-   "entry_time": "09:42",
+   "rank": 4,
+   "entry_time": "09:41",
+   "exit_time": "15:55",
+   "exit_reason": "stop",
+   "entry": 672.64,
+   "stop": 682.82,
+   "target": 652.3,
+   "exit": 682.82,
+   "result_pct": -1.037,
+   "move_pct": -1.57,
+   "risk_pct_price": 1.51,
+   "rvol5": 0.63,
+   "or_width_atr": 0.4,
+   "gap_pct": 0.98,
+   "hold_min": 374
+  },
+  {
+   "date": "2026-09-17",
+   "symbol": "AAPL",
+   "side": "short",
+   "rank": 5,
+   "entry_time": "09:35",
+   "exit_time": "12:01",
+   "exit_reason": "stop",
+   "entry": 331.83,
+   "stop": 335.54,
+   "target": 324.4,
+   "exit": 335.54,
+   "result_pct": -1.045,
+   "move_pct": -1.17,
+   "risk_pct_price": 1.12,
+   "rvol5": 0.51,
+   "or_width_atr": 0.36,
+   "gap_pct": 0.7,
+   "hold_min": 146
+  },
+  {
+   "date": "2026-09-17",
+   "symbol": "MSFT",
+   "side": "short",
+   "rank": 6,
+   "entry_time": "09:35",
    "exit_time": "15:55",
    "exit_reason": "bell",
-   "entry": 239.69,
-   "stop": 244.41,
-   "target": 230.25,
-   "exit": 237.33,
-   "result_pct": 0.475,
-   "move_pct": 0.94,
-   "risk_pct_price": 1.97,
-   "rvol5": 1.14,
-   "or_width_atr": 0.41,
-   "gap_pct": 0.5,
-   "hold_min": 373
+   "entry": 493.97,
+   "stop": 501.61,
+   "target": 478.68,
+   "exit": 497.81,
+   "result_pct": -0.535,
+   "move_pct": -0.83,
+   "risk_pct_price": 1.55,
+   "rvol5": 1.2,
+   "or_width_atr": 0.64,
+   "gap_pct": 1.3,
+   "hold_min": 380
+  },
+  {
+   "date": "2026-09-18",
+   "symbol": "META",
+   "side": "short",
+   "rank": 4,
+   "entry_time": "09:35",
+   "exit_time": "15:55",
+   "exit_reason": "bell",
+   "entry": 677.96,
+   "stop": 690.41,
+   "target": 653.05,
+   "exit": 665.5,
+   "result_pct": 0.974,
+   "move_pct": 1.79,
+   "risk_pct_price": 1.84,
+   "rvol5": 0.71,
+   "or_width_atr": 0.5,
+   "gap_pct": 0.79,
+   "hold_min": 380
   },
   {
    "date": "2026-09-21",
    "symbol": "META",
    "side": "long",
-   "rank": 3,
+   "rank": 4,
    "entry_time": "09:43",
    "exit_time": "15:55",
    "exit_reason": "bell",
@@ -2297,90 +1485,10 @@
    "hold_min": 372
   },
   {
-   "date": "2026-09-21",
-   "symbol": "CSCO",
-   "side": "short",
-   "rank": 6,
-   "entry_time": "09:35",
-   "exit_time": "14:38",
-   "exit_reason": "stop",
-   "entry": 109.13,
-   "stop": 110.59,
-   "target": 106.2,
-   "exit": 110.59,
-   "result_pct": -1.038,
-   "move_pct": -1.39,
-   "risk_pct_price": 1.34,
-   "rvol5": 1.7,
-   "or_width_atr": 0.51,
-   "gap_pct": 0.39,
-   "hold_min": 303
-  },
-  {
-   "date": "2026-09-21",
-   "symbol": "CRWD",
-   "side": "long",
-   "rank": 7,
-   "entry_time": "09:35",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 237.94,
-   "stop": 230.65,
-   "target": 252.53,
-   "exit": 249.12,
-   "result_pct": 1.516,
-   "move_pct": 4.65,
-   "risk_pct_price": 3.06,
-   "rvol5": 1.69,
-   "or_width_atr": 0.49,
-   "gap_pct": -2.55,
-   "hold_min": 380
-  },
-  {
-   "date": "2026-09-21",
-   "symbol": "GOOGL",
-   "side": "long",
-   "rank": 9,
-   "entry_time": "09:35",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 354.29,
-   "stop": 349.02,
-   "target": 364.84,
-   "exit": 355.07,
-   "result_pct": 0.114,
-   "move_pct": 0.17,
-   "risk_pct_price": 1.49,
-   "rvol5": 1.34,
-   "or_width_atr": 0.6,
-   "gap_pct": 0.35,
-   "hold_min": 380
-  },
-  {
-   "date": "2026-09-22",
-   "symbol": "SHOP",
-   "side": "long",
-   "rank": 1,
-   "entry_time": "09:36",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 149.35,
-   "stop": 144.13,
-   "target": 159.81,
-   "exit": 147.39,
-   "result_pct": -0.39,
-   "move_pct": -1.36,
-   "risk_pct_price": 3.5,
-   "rvol5": 17.59,
-   "or_width_atr": 0.75,
-   "gap_pct": 4.73,
-   "hold_min": 379
-  },
-  {
    "date": "2026-09-22",
    "symbol": "META",
    "side": "long",
-   "rank": 3,
+   "rank": 4,
    "entry_time": "09:35",
    "exit_time": "15:55",
    "exit_reason": "bell",
@@ -2398,149 +1506,49 @@
   },
   {
    "date": "2026-09-22",
-   "symbol": "CRM",
+   "symbol": "MSFT",
    "side": "short",
-   "rank": 4,
-   "entry_time": "09:40",
-   "exit_time": "11:37",
-   "exit_reason": "target",
-   "entry": 238.16,
-   "stop": 242.28,
-   "target": 229.91,
-   "exit": 229.91,
-   "result_pct": 1.972,
-   "move_pct": 3.41,
-   "risk_pct_price": 1.73,
-   "rvol5": 1.4,
-   "or_width_atr": 0.42,
-   "gap_pct": 2.33,
-   "hold_min": 117
-  },
-  {
-   "date": "2026-09-22",
-   "symbol": "AMZN",
-   "side": "long",
-   "rank": 5,
-   "entry_time": "09:35",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 257.32,
-   "stop": 253.78,
-   "target": 264.39,
-   "exit": 255.26,
-   "result_pct": -0.619,
-   "move_pct": -0.85,
-   "risk_pct_price": 1.37,
-   "rvol5": 1.37,
-   "or_width_atr": 0.43,
-   "gap_pct": -1.24,
-   "hold_min": 380
-  },
-  {
-   "date": "2026-09-22",
-   "symbol": "CSCO",
-   "side": "short",
-   "rank": 7,
-   "entry_time": "09:41",
-   "exit_time": "11:40",
-   "exit_reason": "target",
-   "entry": 108.78,
-   "stop": 110.39,
-   "target": 105.55,
-   "exit": 105.55,
-   "result_pct": 1.967,
-   "move_pct": 2.92,
-   "risk_pct_price": 1.48,
-   "rvol5": 1.15,
-   "or_width_atr": 0.52,
-   "gap_pct": -1.01,
-   "hold_min": 119
-  },
-  {
-   "date": "2026-09-23",
-   "symbol": "NKE",
-   "side": "short",
-   "rank": 1,
-   "entry_time": "09:39",
-   "exit_time": "11:09",
-   "exit_reason": "stop",
-   "entry": 36.21,
-   "stop": 36.64,
-   "target": 35.36,
-   "exit": 36.64,
-   "result_pct": -0.043,
-   "move_pct": -0.05,
-   "risk_pct_price": 1.18,
-   "rvol5": 2.47,
-   "or_width_atr": 0.43,
-   "gap_pct": 0.64,
-   "hold_min": 90
-  },
-  {
-   "date": "2026-09-23",
-   "symbol": "SMCI",
-   "side": "short",
-   "rank": 4,
+   "rank": 6,
    "entry_time": "09:36",
-   "exit_time": "10:04",
-   "exit_reason": "stop",
-   "entry": 41.49,
-   "stop": 42.69,
-   "target": 39.08,
-   "exit": 42.69,
-   "result_pct": -1.018,
-   "move_pct": -2.95,
-   "risk_pct_price": 2.9,
-   "rvol5": 1.57,
-   "or_width_atr": 0.37,
-   "gap_pct": 1.96,
-   "hold_min": 28
-  },
-  {
-   "date": "2026-09-24",
-   "symbol": "CSCO",
-   "side": "long",
-   "rank": 1,
-   "entry_time": "09:35",
    "exit_time": "15:55",
    "exit_reason": "bell",
-   "entry": 106.39,
-   "stop": 105.03,
-   "target": 109.1,
-   "exit": 106.88,
-   "result_pct": 0.319,
-   "move_pct": 0.41,
-   "risk_pct_price": 1.28,
-   "rvol5": 5.57,
-   "or_width_atr": 0.43,
-   "gap_pct": -0.79,
-   "hold_min": 380
+   "entry": 500.78,
+   "stop": 508.2,
+   "target": 485.94,
+   "exit": 497.95,
+   "result_pct": 0.349,
+   "move_pct": 0.52,
+   "risk_pct_price": 1.48,
+   "rvol5": 0.97,
+   "or_width_atr": 0.62,
+   "gap_pct": 1.09,
+   "hold_min": 379
   },
   {
-   "date": "2026-09-24",
-   "symbol": "PLTR",
-   "side": "long",
+   "date": "2026-09-23",
+   "symbol": "AAPL",
+   "side": "short",
    "rank": 5,
-   "entry_time": "09:40",
-   "exit_time": "09:46",
-   "exit_reason": "stop",
-   "entry": 192.61,
-   "stop": 189.19,
-   "target": 199.45,
-   "exit": 189.19,
-   "result_pct": -1.028,
-   "move_pct": -1.82,
-   "risk_pct_price": 1.78,
-   "rvol5": 2.25,
+   "entry_time": "09:38",
+   "exit_time": "15:55",
+   "exit_reason": "bell",
+   "entry": 338.73,
+   "stop": 341.87,
+   "target": 332.45,
+   "exit": 336.68,
+   "result_pct": 0.599,
+   "move_pct": 0.56,
+   "risk_pct_price": 0.93,
+   "rvol5": 0.84,
    "or_width_atr": 0.36,
-   "gap_pct": -1.26,
-   "hold_min": 6
+   "gap_pct": 0.36,
+   "hold_min": 377
   },
   {
    "date": "2026-09-24",
    "symbol": "AMD",
    "side": "long",
-   "rank": 9,
+   "rank": 2,
    "entry_time": "09:35",
    "exit_time": "15:55",
    "exit_reason": "bell",
@@ -2557,50 +1565,30 @@
    "hold_min": 380
   },
   {
-   "date": "2026-09-25",
-   "symbol": "COST",
+   "date": "2026-09-24",
+   "symbol": "META",
    "side": "long",
-   "rank": 1,
+   "rank": 4,
    "entry_time": "09:36",
    "exit_time": "15:55",
    "exit_reason": "bell",
-   "entry": 911.55,
-   "stop": 884.11,
-   "target": 966.42,
-   "exit": 922.89,
-   "result_pct": 0.397,
-   "move_pct": 1.19,
-   "risk_pct_price": 3.01,
-   "rvol5": 5.58,
-   "or_width_atr": 0.74,
-   "gap_pct": -1.06,
+   "entry": 761.21,
+   "stop": 742.5,
+   "target": 798.64,
+   "exit": 778.36,
+   "result_pct": 0.896,
+   "move_pct": 2.2,
+   "risk_pct_price": 2.46,
+   "rvol5": 0.96,
+   "or_width_atr": 0.64,
+   "gap_pct": -0.04,
    "hold_min": 379
-  },
-  {
-   "date": "2026-09-25",
-   "symbol": "MSFT",
-   "side": "long",
-   "rank": 2,
-   "entry_time": "09:35",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 510.85,
-   "stop": 497.15,
-   "target": 538.24,
-   "exit": 516.66,
-   "result_pct": 0.406,
-   "move_pct": 1.09,
-   "risk_pct_price": 2.68,
-   "rvol5": 3.62,
-   "or_width_atr": 1.18,
-   "gap_pct": 0.26,
-   "hold_min": 380
   },
   {
    "date": "2026-09-25",
    "symbol": "TSLA",
    "side": "short",
-   "rank": 4,
+   "rank": 1,
    "entry_time": "09:41",
    "exit_time": "15:55",
    "exit_reason": "bell",
@@ -2618,29 +1606,9 @@
   },
   {
    "date": "2026-09-25",
-   "symbol": "WMT",
-   "side": "long",
-   "rank": 6,
-   "entry_time": "09:38",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 107.39,
-   "stop": 106.41,
-   "target": 109.36,
-   "exit": 107.92,
-   "result_pct": 0.48,
-   "move_pct": 0.44,
-   "risk_pct_price": 0.92,
-   "rvol5": 2.33,
-   "or_width_atr": 0.48,
-   "gap_pct": -0.74,
-   "hold_min": 377
-  },
-  {
-   "date": "2026-09-25",
    "symbol": "META",
    "side": "short",
-   "rank": 10,
+   "rank": 4,
    "entry_time": "09:35",
    "exit_time": "15:55",
    "exit_reason": "bell",
@@ -2657,30 +1625,50 @@
    "hold_min": 380
   },
   {
-   "date": "2026-09-28",
-   "symbol": "BA",
-   "side": "short",
-   "rank": 1,
+   "date": "2026-09-25",
+   "symbol": "MSFT",
+   "side": "long",
+   "rank": 6,
    "entry_time": "09:35",
    "exit_time": "15:55",
    "exit_reason": "bell",
-   "entry": 188.86,
-   "stop": 192.71,
-   "target": 181.15,
-   "exit": 184.84,
-   "result_pct": 1.02,
-   "move_pct": 2.08,
-   "risk_pct_price": 2.04,
-   "rvol5": 3.55,
-   "or_width_atr": 0.51,
-   "gap_pct": -3.09,
+   "entry": 510.85,
+   "stop": 497.15,
+   "target": 538.24,
+   "exit": 516.66,
+   "result_pct": 0.406,
+   "move_pct": 1.09,
+   "risk_pct_price": 2.68,
+   "rvol5": 3.62,
+   "or_width_atr": 1.18,
+   "gap_pct": 0.26,
    "hold_min": 380
+  },
+  {
+   "date": "2026-09-28",
+   "symbol": "TSLA",
+   "side": "short",
+   "rank": 1,
+   "entry_time": "09:40",
+   "exit_time": "15:55",
+   "exit_reason": "bell",
+   "entry": 364.51,
+   "stop": 369.64,
+   "target": 354.26,
+   "exit": 357.69,
+   "result_pct": 1.296,
+   "move_pct": 1.82,
+   "risk_pct_price": 1.41,
+   "rvol5": 0.9,
+   "or_width_atr": 0.41,
+   "gap_pct": -1.08,
+   "hold_min": 375
   },
   {
    "date": "2026-09-28",
    "symbol": "NVDA",
    "side": "long",
-   "rank": 2,
+   "rank": 3,
    "entry_time": "09:35",
    "exit_time": "10:46",
    "exit_reason": "stop",
@@ -2698,29 +1686,9 @@
   },
   {
    "date": "2026-09-28",
-   "symbol": "KO",
-   "side": "short",
-   "rank": 4,
-   "entry_time": "09:39",
-   "exit_time": "10:09",
-   "exit_reason": "stop",
-   "entry": 87.06,
-   "stop": 87.63,
-   "target": 85.9,
-   "exit": 87.63,
-   "result_pct": -1.076,
-   "move_pct": -0.71,
-   "risk_pct_price": 0.66,
-   "rvol5": 1.82,
-   "or_width_atr": 0.37,
-   "gap_pct": -0.22,
-   "hold_min": 30
-  },
-  {
-   "date": "2026-09-28",
    "symbol": "META",
    "side": "short",
-   "rank": 5,
+   "rank": 4,
    "entry_time": "09:36",
    "exit_time": "15:55",
    "exit_reason": "bell",
@@ -2737,110 +1705,10 @@
    "hold_min": 379
   },
   {
-   "date": "2026-09-28",
-   "symbol": "QCOM",
-   "side": "short",
-   "rank": 6,
-   "entry_time": "09:35",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 192.99,
-   "stop": 199.23,
-   "target": 180.52,
-   "exit": 187.55,
-   "result_pct": 0.857,
-   "move_pct": 2.77,
-   "risk_pct_price": 3.23,
-   "rvol5": 1.57,
-   "or_width_atr": 0.45,
-   "gap_pct": -1.48,
-   "hold_min": 380
-  },
-  {
-   "date": "2026-09-29",
-   "symbol": "WMT",
-   "side": "short",
-   "rank": 1,
-   "entry_time": "09:35",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 106.23,
-   "stop": 107.9,
-   "target": 102.9,
-   "exit": 106.71,
-   "result_pct": -0.319,
-   "move_pct": -0.5,
-   "risk_pct_price": 1.57,
-   "rvol5": 2.3,
-   "or_width_atr": 0.78,
-   "gap_pct": -1.12,
-   "hold_min": 380
-  },
-  {
-   "date": "2026-09-29",
-   "symbol": "CRM",
-   "side": "short",
-   "rank": 2,
-   "entry_time": "09:43",
-   "exit_time": "10:13",
-   "exit_reason": "stop",
-   "entry": 223.57,
-   "stop": 227.68,
-   "target": 215.34,
-   "exit": 227.68,
-   "result_pct": -1.028,
-   "move_pct": -1.89,
-   "risk_pct_price": 1.84,
-   "rvol5": 1.91,
-   "or_width_atr": 0.36,
-   "gap_pct": 0.06,
-   "hold_min": 30
-  },
-  {
-   "date": "2026-09-29",
-   "symbol": "BA",
-   "side": "long",
-   "rank": 3,
-   "entry_time": "09:42",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 189.59,
-   "stop": 185.17,
-   "target": 198.43,
-   "exit": 187.55,
-   "result_pct": -0.483,
-   "move_pct": -1.13,
-   "risk_pct_price": 2.33,
-   "rvol5": 1.73,
-   "or_width_atr": 0.5,
-   "gap_pct": 0.58,
-   "hold_min": 373
-  },
-  {
-   "date": "2026-09-29",
-   "symbol": "NVDA",
-   "side": "short",
-   "rank": 7,
-   "entry_time": "09:36",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 230.2,
-   "stop": 232.91,
-   "target": 224.77,
-   "exit": 227.3,
-   "result_pct": 1.025,
-   "move_pct": 1.21,
-   "risk_pct_price": 1.18,
-   "rvol5": 1.2,
-   "or_width_atr": 0.45,
-   "gap_pct": 0.87,
-   "hold_min": 379
-  },
-  {
    "date": "2026-09-29",
    "symbol": "TSLA",
    "side": "short",
-   "rank": 9,
+   "rank": 1,
    "entry_time": "09:37",
    "exit_time": "15:55",
    "exit_reason": "bell",
@@ -2857,64 +1725,24 @@
    "hold_min": 378
   },
   {
-   "date": "2026-09-30",
-   "symbol": "HOOD",
-   "side": "short",
-   "rank": 1,
-   "entry_time": "09:35",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 113.45,
-   "stop": 123.43,
-   "target": 93.49,
-   "exit": 112.72,
-   "result_pct": 0.067,
-   "move_pct": 0.59,
-   "risk_pct_price": 8.8,
-   "rvol5": 3.09,
-   "or_width_atr": 1.23,
-   "gap_pct": 5.18,
-   "hold_min": 380
-  },
-  {
-   "date": "2026-09-30",
-   "symbol": "PG",
+   "date": "2026-09-29",
+   "symbol": "NVDA",
    "side": "short",
    "rank": 3,
    "entry_time": "09:36",
-   "exit_time": "15:03",
-   "exit_reason": "target",
-   "entry": 148.14,
-   "stop": 149.16,
-   "target": 146.08,
-   "exit": 146.08,
-   "result_pct": 1.929,
-   "move_pct": 1.34,
-   "risk_pct_price": 0.69,
-   "rvol5": 1.39,
-   "or_width_atr": 0.36,
-   "gap_pct": 0.05,
-   "hold_min": 327
-  },
-  {
-   "date": "2026-09-30",
-   "symbol": "MSTR",
-   "side": "short",
-   "rank": 5,
-   "entry_time": "09:35",
    "exit_time": "15:55",
    "exit_reason": "bell",
-   "entry": 156.74,
-   "stop": 163.45,
-   "target": 143.33,
-   "exit": 153.59,
-   "result_pct": 0.459,
-   "move_pct": 1.96,
-   "risk_pct_price": 4.28,
-   "rvol5": 1.29,
-   "or_width_atr": 0.57,
-   "gap_pct": 3.75,
-   "hold_min": 380
+   "entry": 230.2,
+   "stop": 232.91,
+   "target": 224.77,
+   "exit": 227.3,
+   "result_pct": 1.025,
+   "move_pct": 1.21,
+   "risk_pct_price": 1.18,
+   "rvol5": 1.2,
+   "or_width_atr": 0.45,
+   "gap_pct": 0.87,
+   "hold_min": 379
   },
   {
    "date": "2026-09-30",
@@ -2937,50 +1765,30 @@
    "hold_min": 378
   },
   {
-   "date": "2026-09-30",
-   "symbol": "SMCI",
-   "side": "short",
-   "rank": 8,
-   "entry_time": "09:35",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 41.44,
-   "stop": 42.72,
-   "target": 38.88,
-   "exit": 41.22,
-   "result_pct": 0.155,
-   "move_pct": 0.48,
-   "risk_pct_price": 3.08,
-   "rvol5": 0.99,
-   "or_width_atr": 0.36,
-   "gap_pct": 2.82,
-   "hold_min": 380
-  },
-  {
    "date": "2026-10-01",
-   "symbol": "GOOGL",
-   "side": "short",
-   "rank": 4,
-   "entry_time": "09:36",
-   "exit_time": "12:49",
-   "exit_reason": "target",
-   "entry": 347.9,
-   "stop": 353.17,
-   "target": 337.35,
-   "exit": 337.35,
-   "result_pct": 1.968,
-   "move_pct": 2.98,
-   "risk_pct_price": 1.52,
-   "rvol5": 1.82,
-   "or_width_atr": 0.54,
-   "gap_pct": 1.96,
-   "hold_min": 193
+   "symbol": "NVDA",
+   "side": "long",
+   "rank": 3,
+   "entry_time": "09:37",
+   "exit_time": "11:11",
+   "exit_reason": "stop",
+   "entry": 230.63,
+   "stop": 228.33,
+   "target": 235.22,
+   "exit": 228.33,
+   "result_pct": -1.05,
+   "move_pct": -1.04,
+   "risk_pct_price": 1.0,
+   "rvol5": 1.18,
+   "or_width_atr": 0.38,
+   "gap_pct": 0.63,
+   "hold_min": 94
   },
   {
    "date": "2026-10-01",
    "symbol": "AAPL",
    "side": "long",
-   "rank": 9,
+   "rank": 5,
    "entry_time": "09:35",
    "exit_time": "11:32",
    "exit_reason": "stop",
@@ -2998,49 +1806,9 @@
   },
   {
    "date": "2026-10-02",
-   "symbol": "NKE",
-   "side": "long",
-   "rank": 1,
-   "entry_time": "09:36",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 33.14,
-   "stop": 31.96,
-   "target": 35.5,
-   "exit": 33.88,
-   "result_pct": 0.611,
-   "move_pct": 2.18,
-   "risk_pct_price": 3.56,
-   "rvol5": 8.46,
-   "or_width_atr": 1.16,
-   "gap_pct": -7.22,
-   "hold_min": 379
-  },
-  {
-   "date": "2026-10-02",
-   "symbol": "HOOD",
-   "side": "long",
-   "rank": 3,
-   "entry_time": "09:35",
-   "exit_time": "11:46",
-   "exit_reason": "stop",
-   "entry": 118.74,
-   "stop": 113.35,
-   "target": 129.52,
-   "exit": 113.35,
-   "result_pct": -1.011,
-   "move_pct": -4.59,
-   "risk_pct_price": 4.54,
-   "rvol5": 1.67,
-   "or_width_atr": 0.75,
-   "gap_pct": 2.16,
-   "hold_min": 131
-  },
-  {
-   "date": "2026-10-02",
    "symbol": "TSLA",
    "side": "long",
-   "rank": 7,
+   "rank": 1,
    "entry_time": "09:39",
    "exit_time": "15:55",
    "exit_reason": "bell",
@@ -3057,50 +1825,30 @@
    "hold_min": 376
   },
   {
-   "date": "2026-10-02",
-   "symbol": "BA",
-   "side": "short",
-   "rank": 10,
-   "entry_time": "09:43",
-   "exit_time": "14:35",
-   "exit_reason": "stop",
-   "entry": 192.76,
-   "stop": 195.45,
-   "target": 187.38,
-   "exit": 195.45,
-   "result_pct": -1.036,
-   "move_pct": -1.44,
-   "risk_pct_price": 1.39,
-   "rvol5": 1.29,
-   "or_width_atr": 0.35,
-   "gap_pct": 0.83,
-   "hold_min": 292
-  },
-  {
    "date": "2026-10-05",
-   "symbol": "BAC",
-   "side": "short",
-   "rank": 1,
-   "entry_time": "09:40",
-   "exit_time": "10:19",
-   "exit_reason": "stop",
-   "entry": 53.69,
-   "stop": 54.19,
-   "target": 52.71,
-   "exit": 54.19,
-   "result_pct": -1.055,
-   "move_pct": -0.97,
-   "risk_pct_price": 0.92,
-   "rvol5": 2.61,
-   "or_width_atr": 0.37,
-   "gap_pct": 0.47,
-   "hold_min": 39
+   "symbol": "AMD",
+   "side": "long",
+   "rank": 2,
+   "entry_time": "09:44",
+   "exit_time": "15:55",
+   "exit_reason": "bell",
+   "entry": 631.15,
+   "stop": 619.55,
+   "target": 654.35,
+   "exit": 630.93,
+   "result_pct": -0.046,
+   "move_pct": -0.08,
+   "risk_pct_price": 1.84,
+   "rvol5": 0.57,
+   "or_width_atr": 0.42,
+   "gap_pct": -0.58,
+   "hold_min": 371
   },
   {
    "date": "2026-10-05",
    "symbol": "NVDA",
    "side": "long",
-   "rank": 4,
+   "rank": 3,
    "entry_time": "09:41",
    "exit_time": "15:55",
    "exit_reason": "bell",
@@ -3120,7 +1868,7 @@
    "date": "2026-10-05",
    "symbol": "MSFT",
    "side": "long",
-   "rank": 5,
+   "rank": 6,
    "entry_time": "09:38",
    "exit_time": "15:55",
    "exit_reason": "bell",
@@ -3138,29 +1886,9 @@
   },
   {
    "date": "2026-10-06",
-   "symbol": "CRWD",
-   "side": "long",
-   "rank": 4,
-   "entry_time": "09:38",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 283.47,
-   "stop": 276.19,
-   "target": 298.04,
-   "exit": 278.98,
-   "result_pct": -0.635,
-   "move_pct": -1.63,
-   "risk_pct_price": 2.57,
-   "rvol5": 1.19,
-   "or_width_atr": 0.67,
-   "gap_pct": 1.98,
-   "hold_min": 377
-  },
-  {
-   "date": "2026-10-06",
    "symbol": "AMD",
    "side": "short",
-   "rank": 7,
+   "rank": 2,
    "entry_time": "09:35",
    "exit_time": "10:35",
    "exit_reason": "stop",
@@ -3177,43 +1905,43 @@
    "hold_min": 60
   },
   {
-   "date": "2026-10-06",
-   "symbol": "PLTR",
-   "side": "long",
-   "rank": 10,
-   "entry_time": "09:36",
+   "date": "2026-10-07",
+   "symbol": "TSLA",
+   "side": "short",
+   "rank": 1,
+   "entry_time": "09:42",
    "exit_time": "15:55",
    "exit_reason": "bell",
-   "entry": 192.67,
-   "stop": 190.27,
-   "target": 197.47,
-   "exit": 192.1,
-   "result_pct": -0.28,
-   "move_pct": -0.35,
-   "risk_pct_price": 1.25,
-   "rvol5": 0.91,
-   "or_width_atr": 0.38,
-   "gap_pct": 0.86,
-   "hold_min": 379
+   "entry": 377.56,
+   "stop": 382.53,
+   "target": 367.62,
+   "exit": 378.19,
+   "result_pct": -0.165,
+   "move_pct": -0.22,
+   "risk_pct_price": 1.32,
+   "rvol5": 0.36,
+   "or_width_atr": 0.35,
+   "gap_pct": -0.6,
+   "hold_min": 373
   },
   {
    "date": "2026-10-07",
-   "symbol": "PEP",
+   "symbol": "AAPL",
    "side": "short",
-   "rank": 4,
+   "rank": 5,
    "entry_time": "09:35",
    "exit_time": "15:55",
    "exit_reason": "bell",
-   "entry": 125.25,
-   "stop": 126.42,
-   "target": 122.93,
-   "exit": 123.56,
-   "result_pct": 1.402,
-   "move_pct": 1.3,
-   "risk_pct_price": 0.93,
-   "rvol5": 1.57,
-   "or_width_atr": 0.44,
-   "gap_pct": 0.23,
+   "entry": 332.8,
+   "stop": 338.73,
+   "target": 320.96,
+   "exit": 336.55,
+   "result_pct": -0.661,
+   "move_pct": -1.18,
+   "risk_pct_price": 1.78,
+   "rvol5": 1.38,
+   "or_width_atr": 0.85,
+   "gap_pct": 0.99,
    "hold_min": 380
   },
   {
@@ -3235,26 +1963,6 @@
    "or_width_atr": 0.36,
    "gap_pct": 0.25,
    "hold_min": 374
-  },
-  {
-   "date": "2026-10-07",
-   "symbol": "AAPL",
-   "side": "short",
-   "rank": 8,
-   "entry_time": "09:35",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 332.8,
-   "stop": 338.73,
-   "target": 320.96,
-   "exit": 336.55,
-   "result_pct": -0.661,
-   "move_pct": -1.18,
-   "risk_pct_price": 1.78,
-   "rvol5": 1.38,
-   "or_width_atr": 0.85,
-   "gap_pct": 0.99,
-   "hold_min": 380
   }
  ]
 }
