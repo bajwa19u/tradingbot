@@ -71,7 +71,8 @@ RULE_TEXT = {
 
 def live_rule() -> tuple[str, orr.P, str]:
     """(switch value, parameters, setup name) of the rule the channel runs."""
-    key = os.environ.get("DAYTRADE_STRATEGY") or "inplay_orb"
+    # Read exactly as live_bot does: the repo variable is "bigtech\r\n\n".
+    key = (os.environ.get("DAYTRADE_STRATEGY") or "inplay_orb").strip().lower()
     if key not in RULES:            # e.g. "classic": not an ORB rule; show the in-play one
         key = "inplay_orb"
     p, name = RULES[key]
