@@ -3,65 +3,9 @@
  "switch": "bigtech",
  "rules": "Fixed list: TSLA AMD NVDA META AAPL MSFT, opening range 09:30-09:34 at least 0.35 of daily ATR, first 1-minute close outside it before 09:45, stop at the session extreme (moved to entry at +1x risk), target 2x risk, out by 15:55. 0.05% slippage a side.",
  "sizing": "Results are % of the account with a full stop costing 1%.",
- "from": "2026-09-09",
- "to": "2026-10-07",
+ "from": "2026-09-10",
+ "to": "2026-10-08",
  "days": [
-  {
-   "date": "2026-09-09",
-   "picks": [
-    {
-     "symbol": "TSLA",
-     "rank": 1,
-     "rvol5": 0.82,
-     "or_width_atr": 0.46,
-     "gap_pct": 0.29,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "AMD",
-     "rank": 2,
-     "rvol5": 1.84,
-     "or_width_atr": 0.42,
-     "gap_pct": 0.47,
-     "outcome": "traded"
-    },
-    {
-     "symbol": "NVDA",
-     "rank": 3,
-     "rvol5": 0.35,
-     "or_width_atr": 0.16,
-     "gap_pct": -0.27,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "META",
-     "rank": 4,
-     "rvol5": 5.37,
-     "or_width_atr": 0.74,
-     "gap_pct": 5.7,
-     "outcome": "no breakout before 09:45"
-    },
-    {
-     "symbol": "AAPL",
-     "rank": 5,
-     "rvol5": 0.83,
-     "or_width_atr": 0.15,
-     "gap_pct": -0.21,
-     "outcome": "range too narrow"
-    },
-    {
-     "symbol": "MSFT",
-     "rank": 6,
-     "rvol5": 0.73,
-     "or_width_atr": 0.27,
-     "gap_pct": -0.28,
-     "outcome": "range too narrow"
-    }
-   ],
-   "trades": 1,
-   "won": 1,
-   "result_pct": 0.362
-  },
   {
    "date": "2026-09-10",
    "picks": [
@@ -1181,29 +1125,65 @@
    "trades": 3,
    "won": 0,
    "result_pct": -1.425
+  },
+  {
+   "date": "2026-10-08",
+   "picks": [
+    {
+     "symbol": "TSLA",
+     "rank": 1,
+     "rvol5": 0.44,
+     "or_width_atr": 0.21,
+     "gap_pct": -0.89,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "AMD",
+     "rank": 2,
+     "rvol5": 0.53,
+     "or_width_atr": 0.24,
+     "gap_pct": -1.3,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "NVDA",
+     "rank": 3,
+     "rvol5": 0.96,
+     "or_width_atr": 0.25,
+     "gap_pct": -1.1,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "META",
+     "rank": 4,
+     "rvol5": 0.68,
+     "or_width_atr": 0.23,
+     "gap_pct": 0.47,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "AAPL",
+     "rank": 5,
+     "rvol5": 0.61,
+     "or_width_atr": 0.27,
+     "gap_pct": 0.11,
+     "outcome": "range too narrow"
+    },
+    {
+     "symbol": "MSFT",
+     "rank": 6,
+     "rvol5": 0.77,
+     "or_width_atr": 0.35,
+     "gap_pct": 0.14,
+     "outcome": "range too narrow"
+    }
+   ],
+   "trades": 0,
+   "won": 0,
+   "result_pct": 0.0
   }
  ],
  "trades": [
-  {
-   "date": "2026-09-09",
-   "symbol": "AMD",
-   "side": "long",
-   "rank": 2,
-   "entry_time": "09:38",
-   "exit_time": "15:55",
-   "exit_reason": "bell",
-   "entry": 515.88,
-   "stop": 506.13,
-   "target": 535.38,
-   "exit": 519.67,
-   "result_pct": 0.362,
-   "move_pct": 0.68,
-   "risk_pct_price": 1.89,
-   "rvol5": 1.84,
-   "or_width_atr": 0.42,
-   "gap_pct": 0.47,
-   "hold_min": 377
-  },
   {
    "date": "2026-09-10",
    "symbol": "AAPL",
