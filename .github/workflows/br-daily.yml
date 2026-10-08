@@ -12,6 +12,11 @@ on:
     inputs:
       date: { description: "YYYY-MM-DD (blank = today)", default: "" }
       no_post: { description: "do not post the summary", type: boolean, default: false }
+  # A push to br-v1 that touches the daily report runs it on today SO FAR
+  # (partial, never posted) - a way to see a session before it is over.
+  push:
+    branches: [br-v1]
+    paths: ["src/br_daily.py", ".github/workflows/br-daily.yml"]
 
 concurrency:
   group: br-daily
@@ -37,6 +42,7 @@ jobs:
           IN_NOPOST: ${{ inputs.no_post }}
         run: |
           ARGS=()
+          if [ "${{ github.event_name }}" = "push" ]; then ARGS+=(--partial --no-post); fi
           if [ -n "${IN_DATE:-}" ]; then ARGS+=(--date "$IN_DATE"); fi
           if [ "${IN_NOPOST:-false}" = "true" ]; then ARGS+=(--no-post); fi
           python -m src.br_daily "${ARGS[@]}"

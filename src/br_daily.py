@@ -68,9 +68,9 @@ def index_summary(sess, sym: str, day) -> str:
             f"({(c / o - 1) * 100:+.2f}% from the open)")
 
 
-def build(cfg, day) -> tuple[str, dict]:
+def build(cfg, day, partial: bool = False) -> tuple[str, dict]:
     data, daily = load_day(cfg, day)
-    sess = br_run.sessions(data)
+    sess = br_run.sessions(data, partial_day=day if partial else None)
     if day not in sess.get("SPY", {}):
         return f"# Break & Retest V1 — {day}\n\nNo complete SPY session for {day}; nothing to report.", {}
     ev, setups = br_run.run(sess, daily, [day], cfg)
@@ -84,10 +84,19 @@ def build(cfg, day) -> tuple[str, dict]:
         D = br_run.decide(ev, tfs, cfg)
         T = D[D.taken]
         F = br_run.failures(ev, tfs, cfg)
+        if partial and len(T):
+            # Still trading: a trade the data has not closed is OPEN, valued at
+            # the latest (15-minute delayed) price, not a time exit.
+            T = T.copy()
+            T.loc[T.outcome == "time", "outcome"] = "open"
     live = live_records(day)
     L = []
     w = L.append
-    w(f"# Break & Retest V1 — daily report, {day}\n")
+    w(f"# Break & Retest V1 — daily report, {day}" + (" (so far — session still trading)" if partial else "") + "\n")
+    if partial:
+        newest = max((g.index[-1] for s in sess.values() for d, g in s.items() if d == day), default=None)
+        w(f"**Partial day.** SIP data up to {newest:%H:%M} ET (15-minute delay). Signals stop at "
+          f"{cfg.session.signals_until}, so the list of trades is final; trades marked `open` are valued at that price.\n")
     w("Replayed after the close on SIP (consolidated) 1-minute bars with the backtest code. "
       "This replay is the record; the live section below shows what was actually sent.\n")
     w("## Market\n")
@@ -161,7 +170,7 @@ def build(cfg, day) -> tuple[str, dict]:
         w("\n## Charts\n")
         for p in charts:
             w(f"- [{p.name}]({p.relative_to(OUT / 'daily')})")
-    if len(T):
+    if len(T) and not partial:
         f = OUT / "forward.csv"
         keep = ["date", "symbol", "direction", "tf", "level_kind", "level_name", "level", "signal_ts",
                 "plan_entry", "plan_stop", "plan_target", "outcome", "exit_ts", "r", "pnl", "mfe_r_eod",
@@ -179,14 +188,17 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=None)
     ap.add_argument("--no-post", action="store_true")
+    ap.add_argument("--partial", action="store_true", help="today, while the session is still trading")
     a = ap.parse_args(argv)
     cfg = bcfg.load()
     now = pd.Timestamp.now(tz=ET)
     day = pd.Timestamp(a.date).date() if a.date else now.date()
-    if not a.date and (now.weekday() >= 5 or now.hour * 60 + now.minute < 16 * 60 + 20):
+    if not a.date and not a.partial and (now.weekday() >= 5 or now.hour * 60 + now.minute < 16 * 60 + 20):
         print("Not after today's close yet (SIP needs ~15 minutes) - nothing to do")
         return 0
-    md, summary = build(cfg, day)
+    md, summary = build(cfg, day, partial=a.partial)
+    if a.partial:
+        a.no_post = True                     # a partial day is never posted
     (OUT / "daily").mkdir(parents=True, exist_ok=True)
     (OUT / "daily" / f"{day}.md").write_text(md)
     print(md)

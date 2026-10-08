@@ -47,14 +47,15 @@ def _keys(df: pd.DataFrame, cfg) -> pd.Series:
                       for r in df.itertuples()], index=df.index, dtype=object)
 
 
-def sessions(data: dict[str, pd.DataFrame], min_rth_bars: int = 300) -> dict[str, dict]:
-    """{symbol: {date: extended 1-minute day}}, complete regular sessions only."""
+def sessions(data: dict[str, pd.DataFrame], min_rth_bars: int = 300, partial_day=None) -> dict[str, dict]:
+    """{symbol: {date: extended 1-minute day}}, complete regular sessions only
+    - except `partial_day`, today while it is still trading, kept as far as it goes."""
     out = {}
     for s, df in data.items():
         days = {}
         for d, g in df.groupby(df.index.date):
             _, rth = split_day(g)
-            if len(rth) >= min_rth_bars:
+            if len(rth) >= min_rth_bars or (d == partial_day and len(rth)):
                 days[d] = g
         out[s] = days
     return out
