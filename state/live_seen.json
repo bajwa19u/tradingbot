@@ -4,9 +4,10 @@
     "SNAP": "above_light_volume",
     "AFRM": "above_light_volume",
     "SNOW": "above_light_volume",
-    "RBLX": "above_light_volume",
+    "RBLX": "at_the_level",
     "PLTR": "at_the_level",
     "DDOG": "at_the_level",
-    "NIO": "at_the_level"
+    "NIO": "at_the_level",
+    "TSLA": "at_the_level"
   }
 }
