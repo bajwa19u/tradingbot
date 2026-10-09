@@ -5,9 +5,10 @@
     "ORB-TSLA-2026-10-09"
   ],
   "exits": [
-    "ORB-TSLA-2026-10-09"
+    "ORB-TSLA-2026-10-09",
+    "ORB-NVDA-2026-10-09"
   ],
-  "summary": false,
+  "summary": true,
   "strategy": "bigtech",
   "cards": {
     "ORB-NVDA-2026-10-09": "1558110794347192363",

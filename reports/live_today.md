@@ -1,18 +1,18 @@
 📊 **2026-10-09**
 
-**1 trade · 0 won, 1 lost · 0% win rate**
-**-1.03%**
+**2 trades · 1 won, 1 lost · 50% win rate**
+**-0.50%**
+✅ NVDA 09:35→15:55  +0.53%
 ❌ TSLA 09:42→11:29  -1.03%
 
 _Paper only. No orders were placed._
 
-🔴 **NEW SIGNAL · SHORT NVDA**  ·  09:35 ET
+✅ **CLOSED · WIN · SHORT NVDA**  ·  09:35 → 15:55
 `Entry    231.25`
 `SL       234.00`
 `TP       225.77`
-R:R 1:2.0 · risk 1.19% of price · signal 09:36:00 ET
-opening volume 0.7x normal · range 0.40 of daily ATR · gap +1.4% · break-minute volume 0.7x
-_ORB · Big Tech · out by 15:55_
+`Exit     229.69`  closed at the bell
+**+0.53%** · _ORB · Big Tech_
 
 ❌ **CLOSED · LOSS · LONG TSLA**  ·  09:42 → 11:29
 `Entry    386.81`
