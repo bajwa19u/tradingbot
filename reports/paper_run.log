@@ -1,3 +1,4 @@
-2026-10-08 21:43:52,141 INFO Screen >= 3.0%: kept 35 of 36
-2026-10-08 21:43:52,289 INFO 0 closed, 6 open, +0.0%, worst drop 0.0%
-2026-10-08 21:43:52,289 INFO Nothing changed today — staying quiet.
+2026-10-09 21:42:59,879 INFO Screen >= 3.0%: kept 35 of 36
+2026-10-09 21:43:00,113 INFO 0 closed, 8 open, +0.0%, worst drop 0.0%
+2026-10-09 21:43:00,113 INFO Logged 2 event(s) to trade_log.jsonl
+2026-10-09 21:43:00,523 INFO Alert sent.
