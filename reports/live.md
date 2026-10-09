@@ -1,8 +1,9 @@
-**Live check — 2026-10-09 09:53 ET** · 366 min to the close
+**Live check — 2026-10-09 10:26 ET** · 333 min to the close
 
-⚪ above level, volume light — **SNAP** `$6.16` vs level `$5.89` (+4.4%) · volume 14% of what it needs
-⚪ above level, volume light — **AFRM** `$78.36` vs level `$77.19` (+1.5%) · volume 4% of what it needs
-⚪ above level, volume light — **SNOW** `$351.56` vs level `$348.70` (+0.8%) · volume 24% of what it needs
-⚪ right at the level — **RBLX** `$48.11` vs level `$48.62` (-1.0%) · volume 6% of what it needs
+⚪ above level, volume light — **SNAP** `$6.13` vs level `$5.89` (+4.1%) · volume 29% of what it needs
+⚪ above level, volume light — **AFRM** `$79.92` vs level `$77.19` (+3.5%) · volume 17% of what it needs
+⚪ above level, volume light — **SNOW** `$357.83` vs level `$348.70` (+2.6%) · volume 40% of what it needs
+⚪ right at the level — **RBLX** `$48.56` vs level `$48.62` (-0.1%) · volume 12% of what it needs
+⚪ right at the level — **PLTR** `$202.33` vs level `$204.32` (-1.0%) · volume 51% of what it needs
 
 ⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
