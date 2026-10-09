@@ -1,13 +1,13 @@
-**Live check — 2026-10-09 12:52 ET** · 187 min to the close
+**Live check — 2026-10-09 13:21 ET** · 158 min to the close
 
-🟡 **AT LEVEL, VOLUME CONFIRMS** — **SNAP** `$6.29` vs level `$5.89` (+6.6%) · volume 124% of what it needs
-   → if it closes here: stop `$5.10`, target `$9.83`, 16 shares
-🟡 **AT LEVEL, VOLUME CONFIRMS** — **PLTR** `$205.66` vs level `$204.32` (+0.7%) · volume 121% of what it needs
-   → if it closes here: stop `$183.05`, target `$273.48`, **0 — too small for this account**
-⚪ above level, volume light — **AFRM** `$80.30` vs level `$77.19` (+4.0%) · volume 81% of what it needs
-⚪ above level, volume light — **SNOW** `$360.67` vs level `$348.70` (+3.4%) · volume 73% of what it needs
-⚪ above level, volume light — **DDOG** `$290.28` vs level `$285.68` (+1.6%) · volume 57% of what it needs
-⚪ above level, volume light — **RBLX** `$48.77` vs level `$48.62` (+0.3%) · volume 36% of what it needs
-⚪ right at the level — **TSLA** `$384.03` vs level `$386.67` (-0.7%) · volume 65% of what it needs
+🟡 **AT LEVEL, VOLUME CONFIRMS** — **SNAP** `$6.25` vs level `$5.89` (+6.1%) · volume 130% of what it needs
+   → if it closes here: stop `$5.10`, target `$9.71`, 17 shares
+🟡 **AT LEVEL, VOLUME CONFIRMS** — **PLTR** `$205.68` vs level `$204.32` (+0.7%) · volume 127% of what it needs
+   → if it closes here: stop `$183.05`, target `$273.58`, **0 — too small for this account**
+⚪ above level, volume light — **SNOW** `$363.09` vs level `$348.70` (+4.1%) · volume 83% of what it needs
+⚪ above level, volume light — **AFRM** `$80.03` vs level `$77.19` (+3.7%) · volume 93% of what it needs
+⚪ above level, volume light — **DDOG** `$291.02` vs level `$285.68` (+1.9%) · volume 62% of what it needs
+⚪ above level, volume light — **RBLX** `$48.65` vs level `$48.62` (+0.1%) · volume 41% of what it needs
+⚪ right at the level — **TSLA** `$382.94` vs level `$386.67` (-1.0%) · volume 69% of what it needs
 
 ⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
