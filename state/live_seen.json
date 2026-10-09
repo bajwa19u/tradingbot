@@ -3,8 +3,8 @@
   "seen": {
     "SNAP": "triggering",
     "AFRM": "triggering",
-    "SNOW": "above_light_volume",
-    "RBLX": "above_light_volume",
+    "SNOW": "triggering",
+    "RBLX": "at_the_level",
     "PLTR": "triggering",
     "DDOG": "above_light_volume",
     "NIO": "at_the_level",
