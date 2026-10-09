@@ -1,8 +1,25 @@
-**Live check — 2026-10-08 15:59 ET** · 0 min to the close
+🔔 **TAKE THESE AT THE CLOSE — 2026-10-09 15:57 ET**
+_2 minutes left. These meet the rule right now: coiled base, price above it, volume confirming._
 
-⚪ above level, volume light — **AFRM** `$77.14` vs level `$76.06` (+1.4%) · volume 70% of what it needs
-⚪ right at the level — **SNAP** `$5.87` vs level `$5.89` (-0.5%) · volume 64% of what it needs
-⚪ right at the level — **U** `$45.82` vs level `$46.34` (-1.1%) · volume 83% of what it needs
-⚪ right at the level — **SNOW** `$343.82` vs level `$348.70` (-1.4%) · volume 100% of what it needs
+**SNAP** — **17 shares**
+Entry `~$6.24` · stop `$5.10` (18.3% below) · target `$9.63`
+Risking `$19.38`
+Broke `$5.89` on 184% of the volume it needs
 
-⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
+**SNOW** — **skip — one share risks more than the budget**
+Entry `~$368.53` · stop `$313.85` (14.8% below) · target `$532.57`
+No size that fits the risk budget
+Broke `$348.70` on 183% of the volume it needs
+
+**AFRM** — **1 share**
+Entry `~$80.83` · stop `$66.23` (18.1% below) · target `$124.63`
+Risking `$14.60`
+Broke `$77.19` on 156% of the volume it needs
+
+**DDOG** — **skip — one share risks more than the budget**
+Entry `~$293.85` · stop `$253.66` (13.7% below) · target `$414.40`
+No size that fits the risk budget
+Broke `$285.68` on 101% of the volume it needs
+
+_Enter near the close — the tested entry IS the closing price, so the longer you wait after this, the less the numbers apply._
+_Paper only. No orders are being placed._
