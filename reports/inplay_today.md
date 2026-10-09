@@ -1,9 +1,11 @@
 📊 **2026-10-09**
 
-**2 trades · 0 won, 2 lost · 0% win rate**
-**-2.09%**
+**4 trades · 1 won, 3 lost · 25% win rate**
+**-1.49%**
 ❌ CVS 09:35→09:44  -1.04%
 ❌ UNH 09:35→10:05  -1.05%
+❌ MET 09:38→15:55  -0.32%
+✅ AAPL 09:46→15:55  +0.92%
 
 _Paper only. No orders were placed._
 
@@ -21,14 +23,16 @@ _Paper only. No orders were placed._
 `Exit     375.86`  hit stop
 **-1.05%** · _In-play · opening range_
 
-🔴 **NEW SIGNAL · SHORT MET**  ·  09:38 ET
+❌ **CLOSED · LOSS · SHORT MET**  ·  09:38 → 15:55
 `Entry     97.93`
 `SL        98.87`
 `TP         none`  held until the stop or 15:55
-_In-play · opening range_
+`Exit      98.23`  close
+**-0.32%** · _In-play · opening range_
 
-🟢 **NEW SIGNAL · LONG AAPL**  ·  09:46 ET
+✅ **CLOSED · WIN · LONG AAPL**  ·  09:46 → 15:55
 `Entry    333.84`
 `SL       330.75`
 `TP         none`  held until the stop or 15:55
-_In-play · opening range_
+`Exit     336.68`  close
+**+0.92%** · _In-play · opening range_

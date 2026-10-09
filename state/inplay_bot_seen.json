@@ -8,9 +8,11 @@
   ],
   "exits": [
     "IP-CVS-orh-2026-10-09",
-    "IP-UNH-orh-2026-10-09"
+    "IP-UNH-orh-2026-10-09",
+    "IP-MET-orl-2026-10-09",
+    "IP-AAPL-orh-2026-10-09"
   ],
-  "summary": false,
+  "summary": true,
   "picks": true,
   "cards": {
     "IP-CVS-orh-2026-10-09": "1558112067536556168",
