@@ -2,12 +2,13 @@
   "date": "2026-10-09",
   "seen": {
     "SNAP": "triggering",
-    "AFRM": "above_light_volume",
+    "AFRM": "triggering",
     "SNOW": "above_light_volume",
     "RBLX": "above_light_volume",
     "PLTR": "triggering",
     "DDOG": "above_light_volume",
     "NIO": "at_the_level",
-    "TSLA": "at_the_level"
+    "TSLA": "at_the_level",
+    "FSLR": "at_the_level"
   }
 }
