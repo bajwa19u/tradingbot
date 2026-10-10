@@ -1,6 +1,6 @@
 # Run history
 
-4 run(s). Columns shown are the settings that **changed** between runs — identical settings are hidden.
+5 run(s). Columns shown are the settings that **changed** between runs — identical settings are hidden.
 
 | # | When | Kind | strategy | timeframe | retest_bars | exits | arm_R | Trades | Expectancy | Total R | Win % | Max DD | Δ exp |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -8,6 +8,7 @@
 | 2 | 2026-09-25 20:52 | sweep | None | 1 | 4 | fixed | 0.3 | 68 ⚠ | +0.151R | +10.3 | 0.0 | -2.71% | +0.211 ✅ |
 | 3 | 2026-09-26 13:09 | backtest | break_retest | 5 | 8 | momentum | 0.3 | 405 | -0.036R | -14.6 | 21.0 | -10.41% | -0.187 ❌ |
 | 4 | 2026-10-03 18:19 | backtest | break_retest | 5 | 8 | momentum | 0.3 | 407 | -0.041R | -16.7 | 20.9 | -10.64% | -0.005 ❌ |
+| 5 | 2026-10-10 13:11 | backtest | break_retest | 5 | 8 | momentum | 0.3 | 407 | -0.041R | -16.7 | 20.9 | -10.64% | +0.000 |
 
 ## Best so far
 

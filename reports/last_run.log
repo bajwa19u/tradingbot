@@ -5,33 +5,33 @@ ALPACA_API_KEY    : PKQ6…VA (len 26)
 ALPACA_API_SECRET : 5cge…e9 (len 44)
 
 --- daily bars, iex ---
-    params: {"symbols": "AAPL", "timeframe": "1Day", "start": "2026-09-13", "limit": 5, "feed": "iex"}
+    params: {"symbols": "AAPL", "timeframe": "1Day", "start": "2026-09-20", "limit": 5, "feed": "iex"}
     HTTP 200
-    body: {"bars":{"AAPL":[{"c":333,"h":335.5,"l":331.35,"n":26530,"o":334.7,"t":"2026-09-14T04:00:00Z","v":1335636,"vw":333.718123},{"c":331.335,"h":331.78,"l":328.41,"n":23921,"o":330.445,"t":"2026-09-15T04:00:00Z","v":930284,"vw":330.277368},{"c":332.49,"h":335.47,"l":330.71,"n":17726,"o":332.44,"t":"2026-09-16T04:00:00Z","v":903206,"vw":333.18772},{"c":337.09,"h":338.31,"l":330.23,"n":21262,"o":334.805,"t":"2026-09-17T04:00:00Z","v":894177,"vw":334.916974},{"c":335.73,"h":338.41,"l":332.545,"n":23581,"o":337.96,"t":"2026-09-18T04:00:00Z","v":1141511,"vw":335.289865}]},"next_page_token":"QUFQTHxEfDE3
+    body: {"bars":{"AAPL":[{"c":339,"h":339.62,"l":333.12,"n":20392,"o":335.49,"t":"2026-09-21T04:00:00Z","v":929958,"vw":337.608048},{"c":339.85,"h":345.28,"l":338.84,"n":21175,"o":340.35,"t":"2026-09-22T04:00:00Z","v":986501,"vw":341.224639},{"c":336.87,"h":341.73,"l":335.6,"n":24485,"o":341.075,"t":"2026-09-23T04:00:00Z","v":1168450,"vw":337.239623},{"c":335.88,"h":338.905,"l":334.33,"n":15976,"o":336.72,"t":"2026-09-24T04:00:00Z","v":788509,"vw":336.922831},{"c":341.02,"h":341.67,"l":334.6,"n":18932,"o":335.955,"t":"2026-09-25T04:00:00Z","v":842202,"vw":338.613119}]},"next_page_token":"QUFQTHxEfDE3O
     -> 5 AAPL bars returned
 
 --- 5-minute bars, iex ---
-    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-13", "limit": 5, "feed": "iex"}
+    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-20", "limit": 5, "feed": "iex"}
     HTTP 200
-    body: {"bars":{"AAPL":[{"c":332.6,"h":333.01,"l":332.59,"n":13,"o":333.01,"t":"2026-09-14T12:00:00Z","v":390,"vw":332.754286},{"c":332.5,"h":332.59,"l":332.4,"n":11,"o":332.4,"t":"2026-09-14T12:05:00Z","v":410,"vw":332.506667},{"c":332.5,"h":332.68,"l":332.5,"n":6,"o":332.66,"t":"2026-09-14T12:10:00Z","v":410,"vw":332.586341},{"c":332.73,"h":332.73,"l":332.53,"n":17,"o":332.6,"t":"2026-09-14T12:15:00Z","v":875,"vw":332.630915},{"c":332.8,"h":332.87,"l":332.68,"n":5,"o":332.68,"t":"2026-09-14T12:20:00Z","v":350,"vw":332.759143}]},"next_page_token":"QUFQTHxNfDE3ODkzODg3MDAwMDAwMDAwMDA="}
+    body: {"bars":{"AAPL":[{"c":336.35,"h":336.35,"l":336.35,"n":3,"o":336.35,"t":"2026-09-21T12:15:00Z","v":110,"vw":336.35},{"c":336.2,"h":336.2,"l":336.2,"n":3,"o":336.2,"t":"2026-09-21T12:50:00Z","v":80,"vw":336.2},{"c":336.12,"h":336.12,"l":336.12,"n":3,"o":336.12,"t":"2026-09-21T12:55:00Z","v":74,"vw":336.12},{"c":336.06,"h":336.06,"l":336.04,"n":5,"o":336.04,"t":"2026-09-21T13:00:00Z","v":142,"vw":336.050164},{"c":335.87,"h":335.87,"l":335.87,"n":3,"o":335.87,"t":"2026-09-21T13:05:00Z","v":110,"vw":335.87}]},"next_page_token":"QUFQTHxNfDE3ODk5OTYyNjAwMDAwMDAwMDA="}
     -> 5 AAPL bars returned
 
 --- 5-minute bars, sip ---
-    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-13", "limit": 5, "feed": "sip"}
+    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-20", "limit": 5, "feed": "sip"}
     HTTP 200
-    body: {"bars":{"AAPL":[{"c":331.46,"h":331.46,"l":328.75,"n":4735,"o":330.01,"t":"2026-09-14T08:00:00Z","v":87298,"vw":329.781501},{"c":331.72,"h":332,"l":329.37,"n":520,"o":331.5,"t":"2026-09-14T08:05:00Z","v":16688,"vw":331.787028},{"c":331.71,"h":331.9803,"l":331.4323,"n":220,"o":331.6753,"t":"2026-09-14T08:10:00Z","v":8621,"vw":331.704234},{"c":331.48,"h":331.9,"l":331.365,"n":228,"o":331.8,"t":"2026-09-14T08:15:00Z","v":9757,"vw":331.683635},{"c":331.34,"h":331.5,"l":331.2518,"n":68,"o":331.5,"t":"2026-09-14T08:20:00Z","v":1234,"vw":331.338944}]},"next_page_token":"QUFQTHxNfDE3ODkzNzQzMDAwMDAwM
+    body: {"bars":{"AAPL":[{"c":335.39,"h":335.8,"l":334.02,"n":3548,"o":334.8,"t":"2026-09-21T08:00:00Z","v":51552,"vw":334.946114},{"c":335.5,"h":335.6796,"l":334.8,"n":198,"o":335.51,"t":"2026-09-21T08:05:00Z","v":2574,"vw":335.328497},{"c":335.39,"h":335.65,"l":335.39,"n":302,"o":335.6,"t":"2026-09-21T08:10:00Z","v":6651,"vw":335.564681},{"c":335.3172,"h":335.5719,"l":335.2,"n":228,"o":335.34,"t":"2026-09-21T08:15:00Z","v":4727,"vw":335.31628},{"c":335.2206,"h":335.33,"l":335.2,"n":63,"o":335.3,"t":"2026-09-21T08:20:00Z","v":1045,"vw":335.280313}]},"next_page_token":"QUFQTHxNfDE3ODk5NzkxNjAwMDAwMDAw
     -> 5 AAPL bars returned
 
 --- 5-minute bars, no feed param ---
-    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-13", "limit": 5}
+    params: {"symbols": "AAPL", "timeframe": "5Min", "start": "2026-09-20", "limit": 5}
     HTTP 200
-    body: {"bars":{"AAPL":[{"c":331.46,"h":331.46,"l":328.75,"n":4735,"o":330.01,"t":"2026-09-14T08:00:00Z","v":87298,"vw":329.781501},{"c":331.72,"h":332,"l":329.37,"n":520,"o":331.5,"t":"2026-09-14T08:05:00Z","v":16688,"vw":331.787028},{"c":331.71,"h":331.9803,"l":331.4323,"n":220,"o":331.6753,"t":"2026-09-14T08:10:00Z","v":8621,"vw":331.704234},{"c":331.48,"h":331.9,"l":331.365,"n":228,"o":331.8,"t":"2026-09-14T08:15:00Z","v":9757,"vw":331.683635},{"c":331.34,"h":331.5,"l":331.2518,"n":68,"o":331.5,"t":"2026-09-14T08:20:00Z","v":1234,"vw":331.338944}]},"next_page_token":"QUFQTHxNfDE3ODkzNzQzMDAwMDAwM
+    body: {"bars":{"AAPL":[{"c":335.39,"h":335.8,"l":334.02,"n":3548,"o":334.8,"t":"2026-09-21T08:00:00Z","v":51552,"vw":334.946114},{"c":335.5,"h":335.6796,"l":334.8,"n":198,"o":335.51,"t":"2026-09-21T08:05:00Z","v":2574,"vw":335.328497},{"c":335.39,"h":335.65,"l":335.39,"n":302,"o":335.6,"t":"2026-09-21T08:10:00Z","v":6651,"vw":335.564681},{"c":335.3172,"h":335.5719,"l":335.2,"n":228,"o":335.34,"t":"2026-09-21T08:15:00Z","v":4727,"vw":335.31628},{"c":335.2206,"h":335.33,"l":335.2,"n":63,"o":335.3,"t":"2026-09-21T08:20:00Z","v":1045,"vw":335.280313}]},"next_page_token":"QUFQTHxNfDE3ODk5NzkxNjAwMDAwMDAw
     -> 5 AAPL bars returned
 
 --- most-active screener ---
     params: {"by": "volume", "top": 3}
     HTTP 200
-    body: {"last_updated":"2026-10-02T23:59:00.136979231Z","most_actives":[{"symbol":"NIVF","trade_count":289262,"volume":303219873},{"symbol":"FNGR","trade_count":203621,"volume":253381339},{"symbol":"AMOD","trade_count":1084761,"volume":194430485}]}
+    body: {"last_updated":"2026-10-09T23:59:00.174475292Z","most_actives":[{"symbol":"OFAL","trade_count":562151,"volume":323182355},{"symbol":"ZBAO","trade_count":144986,"volume":208172660},{"symbol":"T","trade_count":414190,"volume":150532540}]}
 
 ==============================================================
 RESULT: at least one bars request returned data.
@@ -40,11 +40,11 @@ RESULT: at least one bars request returned data.
 BACKTEST
 ============================================================
 args: (config defaults)
-2026-10-03 18:17:59,408 INFO Backtesting TSLA, NVDA, AAPL, AMD from 2023-01-01 to now
-2026-10-03 18:18:18,033 INFO   TSLA: 72972 intraday bars
-2026-10-03 18:18:18,033 INFO   NVDA: 72969 intraday bars
-2026-10-03 18:18:18,033 INFO   AAPL: 72968 intraday bars
-2026-10-03 18:18:18,033 INFO   AMD: 72957 intraday bars
+2026-10-10 13:09:50,851 INFO Backtesting TSLA, NVDA, AAPL, AMD from 2023-01-01 to now
+2026-10-10 13:10:17,784 INFO   TSLA: 73362 intraday bars
+2026-10-10 13:10:17,784 INFO   NVDA: 73359 intraday bars
+2026-10-10 13:10:17,784 INFO   AAPL: 73358 intraday bars
+2026-10-10 13:10:17,784 INFO   AMD: 73345 intraday bars
 
 # Break-and-retest backtest
 
@@ -52,13 +52,13 @@ args: (config defaults)
 **Symbols:** TSLA, NVDA, AAPL, AMD  
 **Timeframe:** 5-minute  
 **Target:** 2.0R, risking 1.0% of $10,000  
-**Generated:** 2026-10-03 18:19
+**Generated:** 2026-10-10 13:11
 
 ## Headline
 
 | Metric | Value |
 |---|---|
-| Trades | 407 over 940 days (0.43/day) |
+| Trades | 407 over 945 days (0.43/day) |
 | Win rate | 20.9% |
 | Expectancy | -0.041R per trade |
 | Total | -16.68R · $-413.88 (-4.14%) |
@@ -80,13 +80,13 @@ args: (config defaults)
 
 _This is the filter doing its job — high counts here are healthy._
 
-- `break_volume_too_low` — 8273
-- `no_confirmation_candle` — 3950
-- `no_displacement_before_retest` — 1365
-- `entry_window_closed` — 1081
-- `failed_break` — 910
-- `retest_never_came` — 828
-- `opening_range_too_wide` — 422
+- `break_volume_too_low` — 8316
+- `no_confirmation_candle` — 3961
+- `no_displacement_before_retest` — 1371
+- `entry_window_closed` — 1091
+- `failed_break` — 912
+- `retest_never_came` — 832
+- `opening_range_too_wide` — 426
 - `below_vwap_for_long` — 16
 - `above_vwap_for_short` — 15
 
@@ -184,6 +184,6 @@ _Buckets with n < 20 are marked unreliable - slicing enough ways always finds a 
 | AMD | long | 2026-09-22T10:20 | 617.37 | 617.18 | -0.05 | breakeven |
 | NVDA | long | 2026-10-01T09:50 | 231.72 | 230.19 | -1.05 | stop |
 | AMD | long | 2026-10-02T10:45 | 640.41 | 636.10 | -1.05 | stop |
-2026-10-03 18:19:02,430 INFO Wrote backtest_20261003_181902.json and reports/latest.md
+2026-10-10 13:11:02,991 INFO Wrote backtest_20261010_131102.json and reports/latest.md
 
 exit code: 0

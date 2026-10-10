@@ -4,13 +4,13 @@
 **Symbols:** TSLA, NVDA, AAPL, AMD  
 **Timeframe:** 5-minute  
 **Target:** 2.0R, risking 1.0% of $10,000  
-**Generated:** 2026-10-03 18:19
+**Generated:** 2026-10-10 13:11
 
 ## Headline
 
 | Metric | Value |
 |---|---|
-| Trades | 407 over 940 days (0.43/day) |
+| Trades | 407 over 945 days (0.43/day) |
 | Win rate | 20.9% |
 | Expectancy | -0.041R per trade |
 | Total | -16.68R · $-413.88 (-4.14%) |
@@ -32,13 +32,13 @@
 
 _This is the filter doing its job — high counts here are healthy._
 
-- `break_volume_too_low` — 8273
-- `no_confirmation_candle` — 3950
-- `no_displacement_before_retest` — 1365
-- `entry_window_closed` — 1081
-- `failed_break` — 910
-- `retest_never_came` — 828
-- `opening_range_too_wide` — 422
+- `break_volume_too_low` — 8316
+- `no_confirmation_candle` — 3961
+- `no_displacement_before_retest` — 1371
+- `entry_window_closed` — 1091
+- `failed_break` — 912
+- `retest_never_came` — 832
+- `opening_range_too_wide` — 426
 - `below_vwap_for_long` — 16
 - `above_vwap_for_short` — 15
 
