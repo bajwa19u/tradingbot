@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-09 21:43",
-  "as_of": "2026-10-09",
+  "generated": "2026-10-12 21:44",
+  "as_of": "2026-10-12",
   "settings": {
     "start": "2026-09-28",
     "equity": 2000.0,
@@ -8,7 +8,29 @@
     "halt_drawdown_pct": 25.0
   },
   "symbols": 35,
-  "trades": [],
+  "trades": [
+    {
+      "symbol": "AMD",
+      "entry_date": "2026-10-06",
+      "entry": 649.8548,
+      "stop": 589.0841,
+      "exit_date": "2026-10-12",
+      "exit": 588.7895,
+      "reason": "stop",
+      "r_multiple": -1.005,
+      "bars_held": 4,
+      "mae_r": -1.04,
+      "mfe_r": 0.0,
+      "why": "Coiled 10 days inside $596.20\u2013$645.37 (2.1x ATR, tight), then closed above $645.37 on 1.0x normal volume. Daily range 3.7% \u2014 volatile enough to move.",
+      "pnl": {
+        "move_pct": -9.4,
+        "account_pct": -1.0,
+        "r": -1.005
+      },
+      "target": 832.17,
+      "shares": 0
+    }
+  ],
   "open": [
     {
       "symbol": "AFRM",
@@ -16,25 +38,12 @@
       "entry": 80.73,
       "stop": 66.21,
       "risk_per_share": 14.52,
-      "bars_held": 0,
-      "best_R": 0.0,
+      "bars_held": 1,
+      "best_R": 0.04,
       "target": 124.28,
       "trailing": false,
       "shares": 1,
       "why": "Coiled 10 days inside $67.16\u2013$77.19 (3.2x ATR, tight), then closed above $77.19 on 1.8x normal volume. Daily range 3.9% \u2014 volatile enough to move."
-    },
-    {
-      "symbol": "AMD",
-      "entry_date": "2026-10-06",
-      "entry": 649.85,
-      "stop": 589.08,
-      "risk_per_share": 60.77,
-      "bars_held": 3,
-      "best_R": 0.0,
-      "target": 832.17,
-      "trailing": false,
-      "shares": 0,
-      "why": "Coiled 10 days inside $596.20\u2013$645.37 (2.1x ATR, tight), then closed above $645.37 on 1.0x normal volume. Daily range 3.7% \u2014 volatile enough to move."
     },
     {
       "symbol": "CRWD",
@@ -42,7 +51,7 @@
       "entry": 279.0,
       "stop": 241.52,
       "risk_per_share": 37.48,
-      "bars_held": 3,
+      "bars_held": 4,
       "best_R": 0.0,
       "target": 391.45,
       "trailing": false,
@@ -55,7 +64,7 @@
       "entry": 239.1,
       "stop": 219.37,
       "risk_per_share": 19.73,
-      "bars_held": 4,
+      "bars_held": 5,
       "best_R": 0.21,
       "target": 298.28,
       "trailing": false,
@@ -68,8 +77,8 @@
       "entry": 209.13,
       "stop": 182.95,
       "risk_per_share": 26.19,
-      "bars_held": 0,
-      "best_R": 0.0,
+      "bars_held": 1,
+      "best_R": 0.14,
       "target": 287.7,
       "trailing": false,
       "shares": 0,
@@ -81,7 +90,7 @@
       "entry": 44.96,
       "stop": 39.18,
       "risk_per_share": 5.78,
-      "bars_held": 2,
+      "bars_held": 3,
       "best_R": 0.0,
       "target": 62.3,
       "trailing": false,
@@ -94,8 +103,8 @@
       "entry": 45.72,
       "stop": 37.85,
       "risk_per_share": 7.87,
-      "bars_held": 4,
-      "best_R": 0.2,
+      "bars_held": 5,
+      "best_R": 0.26,
       "target": 69.33,
       "trailing": false,
       "shares": 2,
@@ -107,19 +116,19 @@
       "entry": 93.87,
       "stop": 84.47,
       "risk_per_share": 9.39,
-      "bars_held": 6,
-      "best_R": 0.42,
+      "bars_held": 7,
+      "best_R": 0.64,
       "target": 122.05,
       "trailing": false,
       "shares": 2,
       "why": "Coiled 10 days inside $85.41\u2013$93.33 (2.5x ATR, tight), then closed above $93.33 on 1.7x normal volume. Daily range 3.3% \u2014 volatile enough to move."
     }
   ],
-  "n": 0,
+  "n": 1,
   "wins": 0,
-  "losses": 0,
+  "losses": 1,
   "win_rate_pct": 0.0,
-  "return_pct": 0.0,
-  "max_dd_pct": 0.0,
+  "return_pct": -1.0,
+  "max_dd_pct": -1.0,
   "halted": false
 }
