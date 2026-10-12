@@ -1,10 +1,14 @@
-📊 **2026-10-12** — no trades today.
-_Quiet days are normal for this setup._
+📊 **2026-10-12**
 
-🟢 **NEW SIGNAL · LONG META**  ·  09:37 ET
+**1 trade · 1 won, 0 lost · 100% win rate**
+**+0.04%**
+✅ META 09:37→15:55  +0.04%
+
+_Paper only. No orders were placed._
+
+✅ **CLOSED · WIN · LONG META**  ·  09:37 → 15:55
 `Entry    742.17`
 `SL       727.49`
 `TP       771.52`
-R:R 1:2.0 · risk 1.98% of price · signal 09:38:00 ET
-opening volume 1.0x normal · range 0.56 of daily ATR · gap +1.3% · break-minute volume 1.0x
-_ORB · Big Tech · out by 15:55_
+`Exit     743.16`  closed at the bell
+**+0.04%** · _ORB · Big Tech_

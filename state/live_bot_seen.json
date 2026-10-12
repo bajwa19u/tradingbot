@@ -3,8 +3,10 @@
   "entries": [
     "ORB-META-2026-10-12"
   ],
-  "exits": [],
-  "summary": false,
+  "exits": [
+    "ORB-META-2026-10-12"
+  ],
+  "summary": true,
   "strategy": "bigtech",
   "cards": {
     "ORB-META-2026-10-12": "1559198708803960915"
