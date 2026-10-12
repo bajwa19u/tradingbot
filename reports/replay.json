@@ -1,49 +1,48 @@
 {
-  "date": "2026-10-09",
+  "date": "2026-10-12",
   "signals": [
-    {
-      "symbol": "AVGO",
-      "side": "short",
-      "break_time": "11:45",
-      "entry_time": "11:50",
-      "level": 362.87,
-      "entry": 362.78,
-      "stop": 364.05,
-      "target": 360.25,
-      "shares": 15,
-      "risk": 19.0,
-      "outcome": {
-        "won": 1,
-        "r": 0.98,
-        "unfinished": true
-      }
-    },
     {
       "symbol": "MSFT",
       "side": "short",
-      "break_time": "13:15",
-      "entry_time": "13:20",
-      "level": 534.33,
-      "entry": 533.87,
-      "stop": 535.04,
-      "target": 531.52,
-      "shares": 17,
-      "risk": 19.96,
+      "break_time": "12:40",
+      "entry_time": "12:45",
+      "level": 540.46,
+      "entry": 540.31,
+      "stop": 541.27,
+      "target": 538.39,
+      "shares": 20,
+      "risk": 19.23,
       "outcome": {
         "won": 0,
         "r": -1.0
       }
     },
     {
-      "symbol": "AMZN",
+      "symbol": "MSFT",
       "side": "short",
-      "break_time": "13:15",
-      "entry_time": "13:20",
-      "level": 260.44,
-      "entry": 260.03,
-      "stop": 260.86,
-      "target": 258.37,
-      "shares": 24,
+      "break_time": "12:50",
+      "entry_time": "12:55",
+      "level": 540.3,
+      "entry": 539.79,
+      "stop": 541.06,
+      "target": 537.25,
+      "shares": 15,
+      "risk": 19.04,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "SMCI",
+      "side": "short",
+      "break_time": "12:50",
+      "entry_time": "12:55",
+      "level": 39.38,
+      "entry": 39.24,
+      "stop": 39.57,
+      "target": 38.59,
+      "shares": 61,
       "risk": 19.92,
       "outcome": {
         "won": 0,
@@ -51,32 +50,164 @@
       }
     },
     {
+      "symbol": "GOOGL",
+      "side": "short",
+      "break_time": "12:55",
+      "entry_time": "13:00",
+      "level": 353.4,
+      "entry": 352.62,
+      "stop": 354.02,
+      "target": 349.82,
+      "shares": 14,
+      "risk": 19.57,
+      "outcome": {
+        "won": 0,
+        "r": -0.11,
+        "unfinished": true
+      }
+    },
+    {
       "symbol": "MSFT",
       "side": "short",
-      "break_time": "14:00",
-      "entry_time": "14:05",
-      "level": 533.78,
-      "entry": 533.68,
-      "stop": 534.39,
-      "target": 532.28,
-      "shares": 28,
-      "risk": 19.61,
+      "break_time": "12:45",
+      "entry_time": "13:10",
+      "level": 540.37,
+      "entry": 540.11,
+      "stop": 541.14,
+      "target": 538.06,
+      "shares": 19,
+      "risk": 19.51,
       "outcome": {
         "won": 0,
         "r": -1.0
       }
     },
     {
-      "symbol": "AVGO",
+      "symbol": "AAPL",
       "side": "short",
-      "break_time": "14:30",
-      "entry_time": "14:35",
-      "level": 362.31,
-      "entry": 362.03,
-      "stop": 362.79,
-      "target": 360.51,
-      "shares": 26,
-      "risk": 19.79,
+      "break_time": "13:15",
+      "entry_time": "13:20",
+      "level": 339.41,
+      "entry": 339.35,
+      "stop": 339.92,
+      "target": 338.22,
+      "shares": 35,
+      "risk": 19.86,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "AMD",
+      "side": "short",
+      "break_time": "13:35",
+      "entry_time": "13:40",
+      "level": 590.18,
+      "entry": 590.06,
+      "stop": 591.31,
+      "target": 587.56,
+      "shares": 16,
+      "risk": 19.97,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "MSFT",
+      "side": "short",
+      "break_time": "14:15",
+      "entry_time": "14:20",
+      "level": 539.64,
+      "entry": 539.05,
+      "stop": 540.2,
+      "target": 536.75,
+      "shares": 17,
+      "risk": 19.59,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "META",
+      "side": "short",
+      "break_time": "14:40",
+      "entry_time": "14:45",
+      "level": 746.37,
+      "entry": 745.55,
+      "stop": 749.58,
+      "target": 737.48,
+      "shares": 4,
+      "risk": 16.13,
+      "outcome": {
+        "won": 1,
+        "r": 0.63,
+        "unfinished": true
+      }
+    },
+    {
+      "symbol": "META",
+      "side": "short",
+      "break_time": "14:50",
+      "entry_time": "14:55",
+      "level": 745.43,
+      "entry": 744.69,
+      "stop": 748.5,
+      "target": 737.07,
+      "shares": 5,
+      "risk": 19.04,
+      "outcome": {
+        "won": 1,
+        "r": 0.44,
+        "unfinished": true
+      }
+    },
+    {
+      "symbol": "PLTR",
+      "side": "short",
+      "break_time": "14:55",
+      "entry_time": "15:00",
+      "level": 206.48,
+      "entry": 206.47,
+      "stop": 206.81,
+      "target": 205.8,
+      "shares": 59,
+      "risk": 19.87,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "TSLA",
+      "side": "short",
+      "break_time": "14:50",
+      "entry_time": "15:05",
+      "level": 378.66,
+      "entry": 378.48,
+      "stop": 379.03,
+      "target": 377.36,
+      "shares": 35,
+      "risk": 19.46,
+      "outcome": {
+        "won": 1,
+        "r": 0.76,
+        "unfinished": true
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "side": "short",
+      "break_time": "15:15",
+      "entry_time": "15:20",
+      "level": 259.52,
+      "entry": 259.48,
+      "stop": 259.78,
+      "target": 258.89,
+      "shares": 67,
+      "risk": 19.83,
       "outcome": {
         "won": 0,
         "r": -1.0
@@ -85,18 +216,17 @@
     {
       "symbol": "MU",
       "side": "short",
-      "break_time": "14:55",
-      "entry_time": "15:55",
-      "level": 1030.43,
-      "entry": 1029.13,
-      "stop": 1032.29,
-      "target": 1022.81,
-      "shares": 6,
-      "risk": 18.95,
+      "break_time": "14:45",
+      "entry_time": "15:25",
+      "level": 989.82,
+      "entry": 989.38,
+      "stop": 991.68,
+      "target": 984.8,
+      "shares": 8,
+      "risk": 18.32,
       "outcome": {
         "won": 0,
-        "r": 0.0,
-        "unfinished": true
+        "r": -1.0
       }
     }
   ]
