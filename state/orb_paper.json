@@ -40,7 +40,15 @@
    "vwap_ok": true,
    "spy_ok": false,
    "qqq_ok": false,
-   "same_side_10m": 0
+   "same_side_10m": 0,
+   "exit_bar": "15:55",
+   "exit_reason": "bell",
+   "result_pct": -0.518,
+   "win": false,
+   "entry_cost_pct": 0.072,
+   "exit_cost_pct": 0.019,
+   "result_real_pct": -0.508,
+   "backtest_agrees": "yes"
   },
   {
    "date": "2026-10-12",
@@ -68,7 +76,15 @@
    "vwap_ok": true,
    "spy_ok": true,
    "qqq_ok": true,
-   "same_side_10m": 0
+   "same_side_10m": 0,
+   "exit_bar": "10:07",
+   "exit_reason": "stop",
+   "result_pct": -1.855,
+   "win": false,
+   "entry_cost_pct": 0.028,
+   "exit_cost_pct": 0.019,
+   "result_real_pct": -1.803,
+   "backtest_agrees": "yes"
   },
   {
    "date": "2026-10-12",
@@ -96,8 +112,16 @@
    "vwap_ok": true,
    "spy_ok": true,
    "qqq_ok": true,
-   "same_side_10m": 1
+   "same_side_10m": 1,
+   "exit_bar": "15:55",
+   "exit_reason": "bell",
+   "result_pct": 0.477,
+   "win": true,
+   "entry_cost_pct": -0.092,
+   "exit_cost_pct": 0.094,
+   "result_real_pct": 0.574,
+   "backtest_agrees": "yes"
   }
  ],
- "settled": false
+ "settled": true
 }

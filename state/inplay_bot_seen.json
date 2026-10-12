@@ -11,9 +11,11 @@
   "exits": [
     "IP-SBUX-orl-2026-10-12",
     "IP-LOW-orl-2026-10-12",
-    "IP-FSLR-orh-2026-10-12"
+    "IP-FSLR-orh-2026-10-12",
+    "IP-UNH-orl-2026-10-12",
+    "IP-TGT-orl-2026-10-12"
   ],
-  "summary": false,
+  "summary": true,
   "picks": true,
   "cards": {
     "IP-UNH-orl-2026-10-12": "1559199203270590535",
