@@ -1,8 +1,7 @@
-**Live check — 2026-10-12 11:24 ET** · 275 min to the close
+**Live check — 2026-10-12 11:54 ET** · 245 min to the close
 
-⚪ above level, volume light — **FSLR** `$182.18` vs level `$181.40` (+0.4%) · volume 52% of what it needs
-⚪ right at the level — **PLTR** `$207.58` vs level `$209.19` (-0.8%) · volume 46% of what it needs
-⚪ right at the level — **RBLX** `$48.54` vs level `$49.03` (-1.0%) · volume 14% of what it needs
-⚪ right at the level — **DDOG** `$290.05` vs level `$293.89` (-1.3%) · volume 27% of what it needs
+⚪ above level, volume light — **FSLR** `$182.70` vs level `$181.40` (+0.7%) · volume 57% of what it needs
+⚪ right at the level — **PLTR** `$208.30` vs level `$209.19` (-0.4%) · volume 50% of what it needs
+⚪ right at the level — **RBLX** `$48.45` vs level `$49.03` (-1.2%) · volume 16% of what it needs
 
 ⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
