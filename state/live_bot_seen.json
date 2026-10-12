@@ -1,18 +1,13 @@
 {
-  "date": "2026-10-09",
+  "date": "2026-10-12",
   "entries": [
-    "ORB-NVDA-2026-10-09",
-    "ORB-TSLA-2026-10-09"
+    "ORB-META-2026-10-12"
   ],
-  "exits": [
-    "ORB-TSLA-2026-10-09",
-    "ORB-NVDA-2026-10-09"
-  ],
-  "summary": true,
+  "exits": [],
+  "summary": false,
   "strategy": "bigtech",
   "cards": {
-    "ORB-NVDA-2026-10-09": "1558110794347192363",
-    "ORB-TSLA-2026-10-09": "1558112551437340688"
+    "ORB-META-2026-10-12": "1559198708803960915"
   },
   "expired": [],
   "stale_warned": "",
