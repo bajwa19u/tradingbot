@@ -1,0 +1,12 @@
+id,date,symbol,side,entry_time,exit_time,entry,exit,reason,pct,source
+ORB-MSFT-2026-10-05,2026-10-05,MSFT,long,09:38,15:55,,,bell,-0.69,corrected
+ORB-BAC-2026-10-05,2026-10-05,BAC,short,09:40,10:19,,,stop,-1.05,corrected
+ORB-NVDA-2026-10-05,2026-10-05,NVDA,long,09:41,15:55,,,bell,0.35,corrected
+ORB-AMD-2026-10-06,2026-10-06,AMD,short,09:35,10:35,629.71,650.23,stop,-1.02,replay
+ORB-AAPL-2026-10-07,2026-10-07,AAPL,short,09:35,15:55,332.8,336.55,bell,-0.66,replay
+ORB-MSFT-2026-10-07,2026-10-07,MSFT,short,09:41,15:55,526.63,529.49,bell,-0.6,replay
+ORB-TSLA-2026-10-07,2026-10-07,TSLA,short,09:42,15:55,377.56,378.19,bell,-0.16,replay
+ORB-NVDA-2026-10-09,2026-10-09,NVDA,short,09:35,15:55,231.25,229.69,bell,0.53,replay
+ORB-TSLA-2026-10-09,2026-10-09,TSLA,long,09:42,11:29,386.81,381.14,stop,-1.03,replay
+ORB-META-2026-10-12,2026-10-12,META,long,09:37,15:55,742.17,743.16,bell,0.04,replay
+ORB-AAPL-2026-10-13,2026-10-13,AAPL,short,09:40,15:55,344.01,341.27,bell,0.61,replay
