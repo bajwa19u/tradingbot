@@ -7,6 +7,7 @@ import pandas as pd
 import pytest
 
 from src import inplay_bot as b
+from src.cards import as_text
 
 
 # Pinned to the middle of a session. Without this the end-of-day summary
@@ -93,7 +94,7 @@ def test_a_close_edits_the_card(monkeypatch, tmp_path):
         [], "11:20"))
     edits, posts = [], []
     monkeypatch.setattr(b.dm, "edit", lambda u, m, t: edits.append(m) is None)
-    monkeypatch.setattr(b.dm, "post", lambda u, t: posts.append(t) or "m2")
+    monkeypatch.setattr(b.dm, "post", lambda u, t: posts.append(as_text(t)) or "m2")
     monkeypatch.setenv("DISCORD_WEBHOOK_INPLAY", "https://second")
     b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False, now=MIDDAY)
     assert edits == ["m1"] and not posts
@@ -106,10 +107,10 @@ def test_the_ranking_is_announced_once(monkeypatch, tmp_path):
     monkeypatch.setattr(b, "scan",
                         lambda cfg, now: ([], [("NVDA", 8.2)], "09:36"))
     posts = []
-    monkeypatch.setattr(b.dm, "post", lambda u, t: posts.append(t) or "m")
+    monkeypatch.setattr(b.dm, "post", lambda u, t: posts.append(as_text(t)) or "m")
     monkeypatch.setenv("DISCORD_WEBHOOK_INPLAY", "https://second")
     b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False, now=MIDDAY)
-    assert len(posts) == 1 and "In play" in posts[0] and "NVDA" in posts[0]
+    assert len(posts) == 1 and "Watchlist" in posts[0] and "NVDA" in posts[0]
     b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False, now=MIDDAY)
     assert len(posts) == 1, "the ranking is news once, not every minute"
 
@@ -133,7 +134,7 @@ def test_a_dry_run_sends_nothing(monkeypatch, tmp_path):
     monkeypatch.setattr(b, "STATE", tmp_path)
     monkeypatch.setattr(b, "scan", lambda cfg, now: ([trade()], [], "09:40"))
     sent = []
-    monkeypatch.setattr(b.dm, "post", lambda u, t: sent.append(t) or "m")
+    monkeypatch.setattr(b.dm, "post", lambda u, t: sent.append(as_text(t)) or "m")
     b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=True, now=MIDDAY)
     assert not sent
 
@@ -144,10 +145,10 @@ def test_an_entry_first_seen_late_is_marked_expired(monkeypatch, tmp_path):
     monkeypatch.setattr(b, "REPORTS", tmp_path)
     monkeypatch.setattr(b, "scan", lambda cfg, now: ([trade(id="late-1", entry_time="09:36")], [], "11:00"))
     posts = []
-    monkeypatch.setattr(b.dm, "post", lambda u, txt: posts.append(txt) or "m")
+    monkeypatch.setattr(b.dm, "post", lambda u, txt: posts.append(as_text(txt)) or "m")
     monkeypatch.setenv("DISCORD_WEBHOOK_INPLAY", "https://second")
     b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False, now=MIDDAY)
-    assert posts and posts[0].startswith("⚪ **EXPIRED**")
+    assert posts and posts[0].startswith("⚪ MISSED")
 
 
 def test_a_fresh_entry_is_not_marked(monkeypatch, tmp_path):
@@ -156,7 +157,7 @@ def test_a_fresh_entry_is_not_marked(monkeypatch, tmp_path):
     now = pd.Timestamp("2026-09-30 09:37:05", tz=b.EASTERN)
     monkeypatch.setattr(b, "scan", lambda cfg, n: ([trade(id="fresh-1", entry_time="09:36")], [], "09:36"))
     posts = []
-    monkeypatch.setattr(b.dm, "post", lambda u, txt: posts.append(txt) or "m")
+    monkeypatch.setattr(b.dm, "post", lambda u, txt: posts.append(as_text(txt)) or "m")
     monkeypatch.setenv("DISCORD_WEBHOOK_INPLAY", "https://second")
     b.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False, now=now)
     assert posts and "EXPIRED" not in posts[0]
@@ -216,7 +217,7 @@ def test_a_card_closed_by_mistake_is_reopened(monkeypatch, tmp_path):
     monkeypatch.setattr(b, "scan", lambda cfg, now: ([trade()], [], "11:00"))
     monkeypatch.setenv("DISCORD_WEBHOOK_INPLAY", "https://example.invalid/hook")
     edits = []
-    monkeypatch.setattr(b.dm, "edit", lambda u, m, t: edits.append((m, t)) or True)
+    monkeypatch.setattr(b.dm, "edit", lambda u, m, t: edits.append((m, as_text(t))) or True)
     monkeypatch.setattr(b.dm, "post", lambda u, t: "m2")
     b.tick({"equity": 100000, "risk_pct": 1.0}, dry_run=False, now=MIDDAY)
     assert edits and edits[0][0] == "m1" and "❌" not in edits[0][1] and "✅" not in edits[0][1]

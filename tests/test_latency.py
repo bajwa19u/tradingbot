@@ -10,6 +10,7 @@ import pytest
 
 from src import autotrade
 from src import live_bot as lb
+from src.cards import as_text
 
 ET = "America/New_York"
 
@@ -28,7 +29,7 @@ def wire(monkeypatch, tmp_path, trades, posts):
     monkeypatch.setattr(lb, "REPORTS", tmp_path)
     monkeypatch.setattr(lb, "scan", lambda cfg: ([], "09:40", False))
     monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: [dict(t) for t in trades])
-    monkeypatch.setattr(lb.dm, "post", lambda url, text: posts.append(text) or f"m{len(posts)}")
+    monkeypatch.setattr(lb.dm, "post", lambda url, text: posts.append(as_text(text)) or f"m{len(posts)}")
     monkeypatch.setattr(lb.dm, "edit", lambda url, m, text: True)
     monkeypatch.setattr(lb.autotrade, "ENABLED", False)
 
@@ -52,8 +53,8 @@ def test_a_fresh_signal_shows_its_age_and_is_not_expired(monkeypatch, tmp_path):
     wire(monkeypatch, tmp_path, [trade(id="f1")], posts)
     monkeypatch.setattr(lb, "signal_age", lambda t, now: 6.0)
     lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
-    assert "⏱ 6s" in posts[0] and "EXPIRED" not in posts[0]
-    assert len(posts[0].splitlines()) == 5
+    assert "6 s ago" in posts[0] and "MISSED" not in posts[0] and "BUY PUTS" in posts[0]
+    assert all(k in posts[0] for k in ("Entry: 622.21", "Stop: 627.42", "Target: 611.78", "Reward : risk"))
 
 
 def test_a_late_signal_is_posted_as_expired_and_remembered(monkeypatch, tmp_path):
@@ -61,7 +62,7 @@ def test_a_late_signal_is_posted_as_expired_and_remembered(monkeypatch, tmp_path
     wire(monkeypatch, tmp_path, [trade(id="late")], posts)
     monkeypatch.setattr(lb, "signal_age", lambda t, now: 13 * 60.0)
     lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
-    assert "EXPIRED" in posts[0] and "13 min late" in posts[0]
+    assert "MISSED" in posts[0] and "13 min after" in posts[0] and "Do not enter" in posts[0]
     seen = json.loads((tmp_path / lb.SEEN_FILE).read_text())
     assert "late" in seen["expired"]
     rows = [json.loads(x) for x in (tmp_path / lb.LATENCY_FILE).read_text().splitlines()]
@@ -75,8 +76,8 @@ def test_stale_data_suppresses_new_signals_and_warns_once(monkeypatch, tmp_path)
     monkeypatch.setattr(lb, "stale_since", lambda now: pd.Timestamp("2026-10-01 10:02", tz=ET))
     lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
     lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
-    assert sum("DATA WARNING" in x for x in posts) == 1          # warned once, not every tick
-    assert not any("AMD" in x for x in posts)                   # the signal itself was held back
+    assert sum("Data warning" in x for x in posts) == 1          # warned once, not every tick
+    assert not any("BUY" in x and "AMD" in x for x in posts)    # the signal itself was held back
 
 
 def test_the_auto_trader_never_buys_an_expired_signal():
@@ -121,8 +122,8 @@ def test_a_rejected_key_is_reported_not_silent(monkeypatch, tmp_path):
     monkeypatch.setattr(lb, "in_session", lambda now: True)
     lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
     lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
-    errs = [x for x in posts if "DATA ERROR" in x]
-    assert len(errs) == 1 and "unauthorized" in errs[0]
+    errs = [x for x in posts if "Data error" in x]
+    assert len(errs) == 1 and "Alpaca key was rejected" in errs[0]
 
 
 def test_a_retest_card_names_its_setup():

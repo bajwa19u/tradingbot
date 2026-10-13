@@ -46,6 +46,7 @@ from zoneinfo import ZoneInfo
 import pandas as pd
 
 from .live_bot import seconds_to_next_poll
+from . import cards
 from . import discord_msg as dm
 from . import inplay as ip
 from . import opening as op
@@ -53,7 +54,7 @@ from . import orb_paper
 from .config import REPO_ROOT, Credentials
 from .data import AlpacaError, MarketData
 from .forensics import UNIVERSES
-from .live_bot import SETUP, card, summary_msg
+from .live_bot import SETUP, card, daily_report, summary_msg
 from .paper import settings, shares
 
 EASTERN = ZoneInfo("America/New_York")
@@ -136,6 +137,14 @@ def scan(cfg: dict, now: pd.Timestamp) -> tuple[list[dict], list[tuple], str]:
                         else "—")
 
 
+CHANNEL = "In-Play"
+
+
+def discord_card(t: dict) -> dict:
+    why = f"Opening volume {t['rvol']:.1f}× its normal" if t.get("rvol") else ""
+    return cards.signal_embed({**t, "why_line": why}, CHANNEL, SETUP.get("inplay", "In-play · opening range"))
+
+
 def picks_msg(picks: list[tuple], date: str) -> str:
     if not picks:
         return f"📡 **{date}** — nothing unusual at the open."
@@ -190,32 +199,29 @@ def tick(cfg: dict, dry_run: bool, now: pd.Timestamp | None = None) -> int:
     outbox: list[tuple[str, str, bool]] = []
 
     if picks and not seen["picks"]:
-        outbox.append((picks_msg(picks, now.strftime("%A %d %B")), "", False))
+        outbox.append((cards.picks_embed(picks, now.strftime("%A %-d %B"), "Ranked by opening volume against each stock's own normal"), "", False))
         seen["picks"] = True
     for t in trades:
         if t["exit"] is None and t["id"] in seen["exits"]:
             # recorded as closed but still running (the 5 Oct bug): put the card back
             seen["exits"].remove(t["id"])
-            outbox.append((card({**t, "exit": None}), t["id"], True))
+            outbox.append((discord_card({**t, "exit": None}), t["id"], True))
         if t["id"] not in seen["entries"]:
-            text = card({**t, "exit": None})
             age = entry_age(t, now)
-            if age is not None and age > MAX_AGE_S:
-                # First seen too late to act on (a restart, a late start, a data gap).
-                late = f"{age / 60:.0f} min" if age >= 90 else f"{age:.0f}s"
-                text = f"⚪ **EXPIRED** · seen {late} late, do not chase\n" + text
-            outbox.append((text, t["id"], False))
+            # First seen too late to act on (a restart, a late start, a data gap): MISSED, never a fresh BUY.
+            late = age is not None and age > MAX_AGE_S
+            outbox.append((discord_card({**t, "exit": None, "age_s": age, "expired": late}), t["id"], False))
         if t["exit"] is not None and t["id"] not in seen["exits"]:
-            outbox.append((card(t), t["id"], True))
+            outbox.append((discord_card(t), t["id"], True))
     if now.time() >= pd.Timestamp("16:00").time() and not seen["summary"]:
-        outbox.append((summary_msg(trades, now.strftime("%A %d %B")), "", False))
+        outbox.append((daily_report(trades, now.date(), CHANNEL, "inplay", write=not dry_run), "", False))
         seen["summary"] = True
 
     log.info("%s ET · bars through %s · %d in play · %d trade(s) · %d new",
              now.strftime("%H:%M:%S"), stamp, len(picks), len(trades),
              len(outbox))
     for text, _, _ in outbox:
-        print("\n" + text)
+        print("\n" + cards.as_text(text))
     if dry_run:
         return len(outbox)
 

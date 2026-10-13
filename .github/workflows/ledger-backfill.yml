@@ -1,0 +1,43 @@
+name: Ledger backfill
+# Manual. Fills state/ledger_daytrade.csv and state/ledger_inplay.csv for days
+# before the ledger existed by replaying each channel's rule on that day's bars
+# (5 Oct for the day-trade channel comes from reports/live_corrections.md).
+# Posts nothing.
+on:
+  workflow_dispatch:
+    inputs:
+      start: { description: "first day", default: "2026-10-05" }
+      end: { description: "last day", default: "2026-10-13" }
+concurrency: { group: live-bot, cancel-in-progress: false }
+permissions: { contents: write }
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with: { ref: "${{ github.ref_name }}" }
+      - uses: actions/setup-python@v6
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -r requirements.txt
+      - run: |
+          python -m src.ledger --backfill daytrade --start "${{ inputs.start }}" --end "${{ inputs.end }}" --strategy bigtech
+          python -m src.ledger --backfill inplay --start "${{ inputs.start }}" --end "${{ inputs.end }}"
+          python - <<'PY'
+          import datetime as dt
+          import pandas as pd
+          from src import cards, ledger
+          day = dt.date.fromisoformat("${{ inputs.end }}")
+          for ch, name in (("daytrade", "Day Trades"), ("inplay", "In-Play")):
+              led = ledger.load(ch)
+              today = [dict(r, exit=r["exit"] if r["exit"] == r["exit"] else 0.0) for r in led[led.date == str(day)].to_dict("records")]
+              print("\n" + cards.as_text(cards.daily_report_embed(name, day, today, led, "Each trade sized so a full stop = 1% of the account")))
+          PY
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+      - name: commit
+        run: |
+          git config user.name "github-actions[bot]"; git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add state/ledger_daytrade.csv state/ledger_inplay.csv
+          git diff --cached --quiet || (git commit -m "ledger backfill [skip ci]" && for i in 1 2 3 4 5; do git pull --rebase && git push && break; sleep 5; done)

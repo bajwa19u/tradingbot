@@ -11,6 +11,7 @@ import pandas as pd
 import pytest
 
 from src import live_bot as lb
+from src.cards import as_text
 
 
 def trade(**kw):
@@ -305,9 +306,9 @@ def _tick(monkeypatch, tmp_path, trades, posts, edits, mid="m1"):
     monkeypatch.setattr(lb, "scan", lambda cfg: ([], "09:40", False))
     monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: trades)
     monkeypatch.setattr(lb.dm, "post",
-                        lambda url, text: posts.append(text) or mid)
+                        lambda url, text: posts.append(as_text(text)) or mid)
     monkeypatch.setattr(lb.dm, "edit",
-                        lambda url, m, text: edits.append((m, text)) is None)
+                        lambda url, m, text: edits.append((m, as_text(text))) is None)
     lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
 
 
@@ -316,7 +317,7 @@ def test_an_entry_posts_once_and_its_id_is_remembered(monkeypatch, tmp_path):
     _tick(monkeypatch, tmp_path, [trade(id="t1")], posts, edits)
     import json
     seen = json.loads((tmp_path / lb.SEEN_FILE).read_text())
-    cards = [t for t in posts if "SHORT" in t or "LONG" in t]
+    cards = [t for t in posts if "AMD PUTS" in t or "BUY PUTS · AMD" in t]   # a BUY, or MISSED when the suite runs late in the day
     assert len(cards) == 1 and seen["cards"]["t1"] == "m1"
 
 
@@ -345,7 +346,7 @@ def test_a_close_falls_back_to_its_own_message_if_the_edit_fails(monkeypatch,
     monkeypatch.setattr(lb, "scan", lambda cfg: ([], "09:40", False))
     monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: [
         trade(id="t1", exit=611.0, exit_time="10:40", reason="target", pct=2.0)])
-    monkeypatch.setattr(lb.dm, "post", lambda url, text: posts.append(text) or "m2")
+    monkeypatch.setattr(lb.dm, "post", lambda url, text: posts.append(as_text(text)) or "m2")
     monkeypatch.setattr(lb.dm, "edit", lambda url, m, text: False)
     lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=False)
     assert len(posts) == 1 and "+2.00%" in posts[0]
@@ -370,7 +371,7 @@ def test_a_dry_run_never_touches_discord(monkeypatch, tmp_path):
     monkeypatch.setattr(lb, "REPORTS", tmp_path)
     monkeypatch.setattr(lb, "scan", lambda cfg: ([], "09:40", False))
     monkeypatch.setattr(lb, "opening_scan", lambda cfg, now: [trade(id="t1")])
-    monkeypatch.setattr(lb.dm, "post", lambda url, text: posts.append(text) or "m")
+    monkeypatch.setattr(lb.dm, "post", lambda url, text: posts.append(as_text(text)) or "m")
     monkeypatch.setattr(lb.dm, "edit", lambda url, m, text: edits.append(m) is None)
     lb.tick({"equity": 2000.0, "risk_pct": 1.0}, dry_run=True)
     assert not posts and not edits

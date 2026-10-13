@@ -146,7 +146,7 @@ def test_a_late_breakout_is_never_posted_as_fresh(market, monkeypatch, tmp_path)
     monkeypatch.setattr(lb, "print", lambda *a, **k: sent.append(" ".join(map(str, a))), raising=False)
     lb.tick({"risk_pct": 1.0, "equity": 100000}, dry_run=True)
     entry = [m for m in sent if "AAA" in m]
-    assert entry and "EXPIRED" in entry[0]
+    assert entry and "MISSED" in entry[0] and "Do not enter" in entry[0]
 
 
 # --- the big tech list (5 Oct 2026) ------------------------------------------------

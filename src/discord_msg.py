@@ -27,7 +27,14 @@ TIMEOUT = 20
 LIMIT = 1900
 
 
-def post(url: str, text: str) -> str | None:
+def _payload(msg) -> dict:
+    """A message is either text or an embed (a dict); an embed clears any old text."""
+    if isinstance(msg, dict):
+        return {"content": "", "embeds": [msg]}
+    return {"content": msg[:LIMIT], "embeds": []}
+
+
+def post(url: str, text) -> str | None:
     """Send a message; return its id so it can be edited later.
 
     None means the message did not go out, or went out without an id - in
@@ -38,7 +45,7 @@ def post(url: str, text: str) -> str | None:
         return None
     try:
         resp = requests.post(url, params={"wait": "true"},
-                             json={"content": text[:LIMIT]}, timeout=TIMEOUT)
+                             json=_payload(text), timeout=TIMEOUT)
         if resp.status_code >= 300:
             log.error("Discord %s: %s", resp.status_code, resp.text[:200])
             return None
@@ -48,7 +55,7 @@ def post(url: str, text: str) -> str | None:
         return None
 
 
-def edit(url: str, message_id: str, text: str) -> bool:
+def edit(url: str, message_id: str, text) -> bool:
     """Rewrite a message this webhook created. False if it could not be done.
 
     A message can be gone for reasons that are nobody's fault - deleted by
@@ -59,7 +66,7 @@ def edit(url: str, message_id: str, text: str) -> bool:
         return False
     try:
         resp = requests.patch(f"{url}/messages/{message_id}",
-                              json={"content": text[:LIMIT]}, timeout=TIMEOUT)
+                              json=_payload(text), timeout=TIMEOUT)
         if resp.status_code >= 300:
             log.error("Discord edit %s: %s", resp.status_code, resp.text[:200])
             return False

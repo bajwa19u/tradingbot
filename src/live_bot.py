@@ -53,7 +53,9 @@ from zoneinfo import ZoneInfo
 import pandas as pd
 
 from . import autotrade
+from . import cards
 from . import confidence as conf
+from . import ledger
 from . import discord_msg as dm
 from . import opening as op
 from . import orb_live
@@ -509,6 +511,26 @@ def card(t: dict) -> str:
             f"**{t['pct']:+.2f}%** · {badge}_{setup}_")
 
 
+CHANNEL = "Day Trades"
+SIZING = "Each trade sized so a full stop = 1% of the account"
+
+
+def discord_card(t: dict) -> dict:
+    """The trade's Discord message in the house style (src/cards.py)."""
+    setup = t.get("setup") or SETUP.get(t.get("rule"), t.get("rule", ""))
+    why = orb_live.features_line(t) if t.get("rule") == "inplay_orb" else conf.note(t)
+    return cards.signal_embed({**t, "why_line": why}, CHANNEL, setup)
+
+
+def daily_report(trades: list[dict], day, channel: str, ledger_name: str, write: bool) -> dict:
+    """End-of-day report from the ledger plus today's closed trades."""
+    led = ledger.append(ledger_name, trades, str(day)) if write else \
+        pd.concat([ledger.load(ledger_name), pd.DataFrame(
+            [{"id": t["id"], "date": str(day), "pct": t.get("pct")} for t in trades if t.get("exit") is not None])],
+            ignore_index=True)
+    return cards.daily_report_embed(channel, day, trades, led, SIZING)
+
+
 def entry_msg(t: dict) -> str:
     return card({**t, "exit": None})
 
@@ -672,33 +694,35 @@ def tick(cfg: dict, dry_run: bool) -> int:
             if t["age_s"] is not None and t["age_s"] > MAX_AGE_S.get(t.get("rule"), 360):
                 t["expired"] = True
                 seen["expired"].append(t["id"])
-            outbox.append((card({**t, "exit": None}), t["id"], False))
+            outbox.append((discord_card({**t, "exit": None}), t["id"], False))
         if t["exit"] is not None and t["id"] not in seen["exits"]:
-            outbox.append((card(t), t["id"], True))
+            outbox.append((discord_card(t), t["id"], True))
     if stale is not None:
         last_warn = seen.get("stale_warned") or ""
         if not last_warn or (detected - pd.Timestamp(last_warn)).total_seconds() > 1800:
-            outbox.append((f"⚠️ **DATA WARNING** · newest market data {stale.strftime('%H:%M')} ET · "
-                           f"new signals suppressed until data is fresh", "", False))
+            outbox.append((cards.alert_embed("Data warning", f"Newest market data is from {stale.strftime('%H:%M')} ET. "
+                                             "New signals are held until data is fresh."), "", False))
             seen["stale_warned"] = str(detected)
         log.warning("Stale data: newest bar %s", stale)
     if _ERRORS and in_session(detected):
         last_err = seen.get("error_warned") or ""
         if not last_err or (detected - pd.Timestamp(last_err)).total_seconds() > 1800:
             auth = any("401" in e or "403" in e for e in _ERRORS)
-            outbox.append((f"⚠️ **DATA ERROR** · market data request failed"
-                           + (" (unauthorized: the Alpaca key was rejected, check the repo secrets)" if auth else "")
-                           + " · no signals until it recovers", "", False))
+            outbox.append((cards.alert_embed("Data error", "A market data request failed"
+                                             + (" (the Alpaca key was rejected; check the repo secrets)" if auth else "")
+                                             + ". No signals until it recovers."), "", False))
             seen["error_warned"] = str(detected)
     if day_done and not seen["summary"]:
         lat = latency_line(STATE / LATENCY_FILE, date)
-        outbox.append((summary_msg(trades, now.strftime("%A %d %B")) + (f"\n{lat}" if lat else ""), "", False))
+        if lat:
+            log.info("%s", lat)
+        outbox.append((daily_report(trades, now.date(), CHANNEL, "daytrade", write=not dry_run), "", False))
         seen["summary"] = True
 
     log.info("%s ET · bars through %s · %d trade(s) today · %d new message(s)",
              now.strftime("%H:%M:%S"), stamp, len(trades), len(outbox))
     for text, _, _ in outbox:
-        print("\n" + text)
+        print("\n" + cards.as_text(text))
     if dry_run:
         _TIMES["total"] = round(_time.perf_counter() - t0, 3)
         return len(outbox)
