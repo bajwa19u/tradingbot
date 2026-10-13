@@ -1,48 +1,32 @@
-📊 **2026-10-12**
+📊 **2026-10-13** — no trades today.
+_Quiet days are normal for this setup._
 
-**5 trades · 0 won, 5 lost · 0% win rate**
-**-4.54%**
-❌ UNH 09:35→15:55  -0.45%
-❌ FSLR 09:37→12:49  -1.03%
-❌ SBUX 09:40→10:07  -1.04%
-❌ TGT 09:40→15:55  -0.98%
-❌ LOW 09:48→10:35  -1.04%
-
-
-⚠️ _4 shorts within 15 min — that is one market move read several times, not several independent trades. Count it as roughly one result._
-_Paper only. No orders were placed._
-
-❌ **CLOSED · LOSS · SHORT UNH**  ·  09:35 → 15:55
-`Entry    376.08`
-`SL       380.40`
+🔴 **NEW SIGNAL · SHORT GS**  ·  09:35 ET
+`Entry    904.55`
+`SL       913.44`
 `TP         none`  held until the stop or 15:55
-`Exit     378.03`  close
-**-0.45%** · _In-play · opening range_
+_In-play · opening range_
 
-❌ **CLOSED · LOSS · LONG FSLR**  ·  09:37 → 12:49
-`Entry    183.84`
-`SL       180.50`
+🔴 **NEW SIGNAL · SHORT JPM**  ·  09:35 ET
+`Entry    338.05`
+`SL       340.45`
 `TP         none`  held until the stop or 15:55
-`Exit     180.41`  hit stop
-**-1.03%** · _In-play · opening range_
+_In-play · opening range_
 
-❌ **CLOSED · LOSS · SHORT SBUX**  ·  09:40 → 10:07
-`Entry     90.84`
-`SL        91.94`
+🔴 **NEW SIGNAL · SHORT JNJ**  ·  09:37 ET
+`Entry    252.29`
+`SL       254.74`
 `TP         none`  held until the stop or 15:55
-`Exit      91.98`  hit stop
-**-1.04%** · _In-play · opening range_
+_In-play · opening range_
 
-❌ **CLOSED · LOSS · SHORT TGT**  ·  09:40 → 15:55
-`Entry    151.74`
-`SL       153.49`
+🔴 **NEW SIGNAL · SHORT UNH**  ·  09:40 ET
+`Entry    384.91`
+`SL       389.20`
 `TP         none`  held until the stop or 15:55
-`Exit     153.46`  close
-**-0.98%** · _In-play · opening range_
+_In-play · opening range_
 
-❌ **CLOSED · LOSS · SHORT LOW**  ·  09:48 → 10:35
-`Entry    184.10`
-`SL       186.21`
+🔴 **NEW SIGNAL · SHORT CAT**  ·  09:55 ET
+`Entry    777.39`
+`SL       789.77`
 `TP         none`  held until the stop or 15:55
-`Exit     186.30`  hit stop
-**-1.04%** · _In-play · opening range_
+_In-play · opening range_
