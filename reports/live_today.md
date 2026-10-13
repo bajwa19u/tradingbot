@@ -1,14 +1,10 @@
-📊 **2026-10-12**
+📊 **2026-10-13** — no trades today.
+_Quiet days are normal for this setup._
 
-**1 trade · 1 won, 0 lost · 100% win rate**
-**+0.04%**
-✅ META 09:37→15:55  +0.04%
-
-_Paper only. No orders were placed._
-
-✅ **CLOSED · WIN · LONG META**  ·  09:37 → 15:55
-`Entry    742.17`
-`SL       727.49`
-`TP       771.52`
-`Exit     743.16`  closed at the bell
-**+0.04%** · _ORB · Big Tech_
+🔴 **NEW SIGNAL · SHORT AAPL**  ·  09:40 ET
+`Entry    344.01`
+`SL       348.24`
+`TP       335.55`
+R:R 1:2.0 · risk 1.23% of price · signal 09:41:00 ET
+opening volume 1.5x normal · range 0.54 of daily ATR · gap +1.1% · break-minute volume 1.3x
+_ORB · Big Tech · out by 15:55_
