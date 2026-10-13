@@ -3,8 +3,10 @@
   "entries": [
     "ORB-AAPL-2026-10-13"
   ],
-  "exits": [],
-  "summary": false,
+  "exits": [
+    "ORB-AAPL-2026-10-13"
+  ],
+  "summary": true,
   "strategy": "bigtech",
   "cards": {
     "ORB-AAPL-2026-10-13": "1559561850922733578"
