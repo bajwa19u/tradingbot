@@ -1,4 +1,4 @@
-2026-10-12 21:44:35,851 INFO Screen >= 3.0%: kept 35 of 36
-2026-10-12 21:44:36,092 INFO 1 closed, 7 open, -1.0%, worst drop -1.0%
-2026-10-12 21:44:36,093 INFO Logged 1 event(s) to trade_log.jsonl
-2026-10-12 21:44:36,375 INFO Alert sent.
+2026-10-13 21:55:00,831 INFO Screen >= 3.0%: kept 35 of 36
+2026-10-13 21:55:01,040 INFO 2 closed, 7 open, -2.0%, worst drop -2.0%
+2026-10-13 21:55:01,040 INFO Logged 2 event(s) to trade_log.jsonl
+2026-10-13 21:55:01,382 INFO Alert sent.
