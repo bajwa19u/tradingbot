@@ -7,8 +7,14 @@
     "IP-UNH-orl-2026-10-13",
     "IP-CAT-orl-2026-10-13"
   ],
-  "exits": [],
-  "summary": false,
+  "exits": [
+    "IP-GS-orl-2026-10-13",
+    "IP-JPM-orl-2026-10-13",
+    "IP-JNJ-orl-2026-10-13",
+    "IP-UNH-orl-2026-10-13",
+    "IP-CAT-orl-2026-10-13"
+  ],
+  "summary": true,
   "picks": true,
   "cards": {
     "IP-GS-orl-2026-10-13": "1559561551504085104",
