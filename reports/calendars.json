@@ -204,271 +204,284 @@
         "n": 8,
         "won": 6,
         "lost": 2
+      },
+      "2026-10-13": {
+        "pct": 3.61,
+        "n": 10,
+        "won": 6,
+        "lost": 4
       }
     },
     "summary": {
-      "days": 34,
-      "green": 10,
+      "days": 35,
+      "green": 11,
       "red": 24,
-      "total": -27.74,
+      "total": -24.13,
       "best": 5.65,
       "worst": -9.06,
-      "trades": 372,
-      "won": 161,
-      "lost": 211
+      "trades": 382,
+      "won": 167,
+      "lost": 215
     }
   },
   "contract": {
     "days": {
       "2026-08-25": {
-        "pct": 2.96,
+        "pct": 3.71,
         "n": 11,
         "won": 5,
         "lost": 6,
         "modelled": true
       },
       "2026-08-26": {
-        "pct": 1.42,
+        "pct": 1.27,
         "n": 12,
         "won": 4,
         "lost": 8,
         "modelled": true
       },
       "2026-08-27": {
-        "pct": 53.82,
+        "pct": 54.43,
         "n": 11,
         "won": 6,
         "lost": 5,
         "modelled": true
       },
       "2026-08-28": {
-        "pct": 142.58,
+        "pct": 142.28,
         "n": 12,
         "won": 7,
         "lost": 5,
         "modelled": true
       },
       "2026-08-31": {
-        "pct": 9.33,
+        "pct": 9.08,
         "n": 9,
         "won": 5,
         "lost": 4,
         "modelled": true
       },
       "2026-09-01": {
-        "pct": -0.03,
+        "pct": 0.01,
         "n": 9,
         "won": 2,
         "lost": 7,
         "modelled": true
       },
       "2026-09-02": {
-        "pct": 20.53,
+        "pct": 20.24,
         "n": 13,
         "won": 6,
         "lost": 7,
         "modelled": true
       },
       "2026-09-03": {
-        "pct": 27.37,
+        "pct": 26.16,
         "n": 12,
         "won": 5,
         "lost": 7,
         "modelled": true
       },
       "2026-09-04": {
-        "pct": 132.72,
+        "pct": 132.09,
         "n": 13,
         "won": 8,
         "lost": 5,
         "modelled": true
       },
       "2026-09-08": {
-        "pct": 2.1,
+        "pct": 1.25,
         "n": 11,
         "won": 4,
         "lost": 7,
         "modelled": true
       },
       "2026-09-09": {
-        "pct": -11.81,
+        "pct": -12.67,
         "n": 6,
         "won": 2,
         "lost": 4,
         "modelled": true
       },
       "2026-09-10": {
-        "pct": 15.19,
+        "pct": 15.68,
         "n": 11,
         "won": 4,
         "lost": 7,
         "modelled": true
       },
       "2026-09-11": {
-        "pct": -10.36,
+        "pct": -10.56,
         "n": 11,
         "won": 2,
         "lost": 9,
         "modelled": true
       },
       "2026-09-14": {
-        "pct": -10.79,
+        "pct": -9.19,
         "n": 11,
         "won": 4,
         "lost": 7,
         "modelled": true
       },
       "2026-09-15": {
-        "pct": -13.02,
+        "pct": -13.05,
         "n": 11,
         "won": 2,
         "lost": 9,
         "modelled": true
       },
       "2026-09-16": {
-        "pct": -11.59,
+        "pct": -12.41,
         "n": 10,
         "won": 3,
         "lost": 7,
         "modelled": true
       },
       "2026-09-17": {
-        "pct": -7.26,
+        "pct": -7.37,
         "n": 13,
         "won": 5,
         "lost": 8,
         "modelled": true
       },
       "2026-09-18": {
-        "pct": -5.08,
+        "pct": -6.42,
         "n": 12,
         "won": 4,
         "lost": 8,
         "modelled": true
       },
       "2026-09-21": {
-        "pct": 2.88,
+        "pct": 2.73,
         "n": 12,
         "won": 5,
         "lost": 7,
         "modelled": true
       },
       "2026-09-22": {
-        "pct": -12.91,
+        "pct": -13.32,
         "n": 10,
         "won": 4,
         "lost": 6,
         "modelled": true
       },
       "2026-09-23": {
-        "pct": 29.56,
+        "pct": 29.0,
         "n": 10,
         "won": 6,
         "lost": 4,
         "modelled": true
       },
       "2026-09-24": {
-        "pct": 1.14,
+        "pct": 0.45,
         "n": 12,
         "won": 5,
         "lost": 7,
         "modelled": true
       },
       "2026-09-25": {
-        "pct": -5.34,
+        "pct": 0.75,
         "n": 9,
         "won": 2,
         "lost": 7,
         "modelled": true
       },
       "2026-09-28": {
-        "pct": 7.71,
+        "pct": 7.67,
         "n": 11,
         "won": 7,
         "lost": 4,
         "modelled": true
       },
       "2026-09-29": {
-        "pct": -6.73,
+        "pct": -7.16,
         "n": 11,
         "won": 3,
         "lost": 8,
         "modelled": true
       },
       "2026-09-30": {
-        "pct": -42.38,
+        "pct": -42.47,
         "n": 13,
         "won": 1,
         "lost": 12,
         "modelled": true
       },
       "2026-10-01": {
-        "pct": 33.16,
+        "pct": 35.14,
         "n": 13,
         "won": 4,
         "lost": 9,
         "modelled": true
       },
       "2026-10-02": {
-        "pct": 35.97,
+        "pct": 33.26,
         "n": 11,
         "won": 4,
         "lost": 7,
         "modelled": true
       },
       "2026-10-05": {
-        "pct": -9.47,
+        "pct": -9.63,
         "n": 12,
         "won": 3,
         "lost": 9,
         "modelled": true
       },
       "2026-10-06": {
-        "pct": -38.66,
+        "pct": -38.59,
         "n": 9,
         "won": 0,
         "lost": 9,
         "modelled": true
       },
       "2026-10-07": {
-        "pct": -26.66,
+        "pct": -27.21,
         "n": 12,
         "won": 3,
         "lost": 9,
         "modelled": true
       },
       "2026-10-08": {
-        "pct": 37.01,
+        "pct": 37.11,
         "n": 10,
         "won": 5,
         "lost": 5,
         "modelled": true
       },
       "2026-10-09": {
-        "pct": 9.75,
+        "pct": 9.18,
         "n": 11,
         "won": 5,
         "lost": 6,
         "modelled": true
       },
       "2026-10-12": {
-        "pct": -5.67,
+        "pct": -5.56,
         "n": 8,
         "won": 4,
         "lost": 4,
         "modelled": true
+      },
+      "2026-10-13": {
+        "pct": 2.46,
+        "n": 10,
+        "won": 5,
+        "lost": 5,
+        "modelled": true
       }
     },
     "summary": {
-      "days": 34,
-      "green": 18,
-      "red": 16,
-      "total": 347.44,
-      "best": 142.58,
-      "worst": -42.38,
-      "trades": 372,
-      "won": 139,
-      "lost": 233
+      "days": 35,
+      "green": 21,
+      "red": 14,
+      "total": 348.34,
+      "best": 142.28,
+      "worst": -42.47,
+      "trades": 382,
+      "won": 144,
+      "lost": 238
     },
     "assumptions": {
       "pricing": "Black-Scholes on realised volatility",
@@ -478,5 +491,5 @@
       "measured": false
     }
   },
-  "generated": "2026-10-12 17:50"
+  "generated": "2026-10-13 18:02"
 }
