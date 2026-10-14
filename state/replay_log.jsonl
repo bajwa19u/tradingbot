@@ -10,3 +10,4 @@
 {"date": "2026-10-09", "universe": "core", "trades": 6, "won": 0, "lost": 4, "unfinished": 2, "win_pct": 0.0, "profit_pct": -3.02, "profit_dollars": -60.66}
 {"date": "2026-10-12", "universe": "core", "trades": 14, "won": 0, "lost": 10, "unfinished": 4, "win_pct": 0.0, "profit_pct": -8.28, "profit_dollars": -163.96}
 {"date": "2026-10-13", "universe": "core", "trades": 10, "won": 3, "lost": 6, "unfinished": 1, "win_pct": 33.3, "profit_pct": 0.8, "profit_dollars": 16.54}
+{"date": "2026-10-14", "universe": "core", "trades": 15, "won": 8, "lost": 6, "unfinished": 1, "win_pct": 57.1, "profit_pct": 9.93, "profit_dollars": 186.23}

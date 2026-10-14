@@ -1,33 +1,49 @@
 {
-  "date": "2026-10-13",
+  "date": "2026-10-14",
   "signals": [
     {
-      "symbol": "AAPL",
+      "symbol": "MU",
       "side": "short",
-      "break_time": "12:10",
-      "entry_time": "12:15",
-      "level": 344.39,
-      "entry": 344.21,
-      "stop": 345.29,
-      "target": 342.04,
-      "shares": 18,
-      "risk": 19.5,
+      "break_time": "11:40",
+      "entry_time": "11:45",
+      "level": 930.49,
+      "entry": 929.67,
+      "stop": 934.92,
+      "target": 919.16,
+      "shares": 3,
+      "risk": 15.76,
       "outcome": {
         "won": 1,
         "r": 2.0
+      }
+    },
+    {
+      "symbol": "NVDA",
+      "side": "short",
+      "break_time": "12:10",
+      "entry_time": "12:15",
+      "level": 222.21,
+      "entry": 222.1,
+      "stop": 222.71,
+      "target": 220.89,
+      "shares": 32,
+      "risk": 19.5,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
       }
     },
     {
       "symbol": "AMZN",
       "side": "short",
-      "break_time": "12:25",
-      "entry_time": "12:30",
-      "level": 260.25,
-      "entry": 260.19,
-      "stop": 260.7,
-      "target": 259.18,
-      "shares": 39,
-      "risk": 19.78,
+      "break_time": "12:10",
+      "entry_time": "12:15",
+      "level": 254.97,
+      "entry": 254.84,
+      "stop": 255.58,
+      "target": 253.38,
+      "shares": 27,
+      "risk": 19.74,
       "outcome": {
         "won": 1,
         "r": 2.0
@@ -36,127 +52,191 @@
     {
       "symbol": "GOOGL",
       "side": "short",
-      "break_time": "12:25",
-      "entry_time": "12:35",
-      "level": 355.32,
-      "entry": 354.87,
-      "stop": 356.5,
-      "target": 351.61,
-      "shares": 12,
-      "risk": 19.55,
+      "break_time": "12:10",
+      "entry_time": "12:15",
+      "level": 352.39,
+      "entry": 352.0,
+      "stop": 353.35,
+      "target": 349.3,
+      "shares": 14,
+      "risk": 18.92,
       "outcome": {
         "won": 1,
-        "r": 0.8,
-        "unfinished": true
+        "r": 2.0
       }
     },
     {
-      "symbol": "MU",
+      "symbol": "MSFT",
+      "side": "short",
+      "break_time": "12:10",
+      "entry_time": "12:20",
+      "level": 536.49,
+      "entry": 536.07,
+      "stop": 537.63,
+      "target": 532.96,
+      "shares": 12,
+      "risk": 18.68,
+      "outcome": {
+        "won": 1,
+        "r": 2.0
+      }
+    },
+    {
+      "symbol": "META",
+      "side": "short",
+      "break_time": "12:10",
+      "entry_time": "12:30",
+      "level": 737.35,
+      "entry": 736.96,
+      "stop": 739.81,
+      "target": 731.26,
+      "shares": 7,
+      "risk": 19.96,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "PLTR",
       "side": "short",
       "break_time": "12:55",
       "entry_time": "13:00",
-      "level": 938.3,
-      "entry": 935.39,
-      "stop": 941.6,
-      "target": 922.97,
-      "shares": 3,
-      "risk": 18.64,
-      "outcome": {
-        "won": 0,
-        "r": -1.0
-      }
-    },
-    {
-      "symbol": "PLTR",
-      "side": "short",
-      "break_time": "12:45",
-      "entry_time": "13:00",
-      "level": 206.92,
-      "entry": 206.92,
-      "stop": 207.43,
-      "target": 205.9,
-      "shares": 39,
-      "risk": 19.87,
-      "outcome": {
-        "won": 0,
-        "r": -1.0
-      }
-    },
-    {
-      "symbol": "PLTR",
-      "side": "short",
-      "break_time": "12:35",
-      "entry_time": "13:05",
-      "level": 207.32,
-      "entry": 207.13,
-      "stop": 207.85,
-      "target": 205.7,
+      "level": 203.1,
+      "entry": 203.04,
+      "stop": 203.78,
+      "target": 201.57,
       "shares": 27,
-      "risk": 19.37,
+      "risk": 19.94,
       "outcome": {
-        "won": 0,
-        "r": -1.0
-      }
-    },
-    {
-      "symbol": "SMCI",
-      "side": "short",
-      "break_time": "13:50",
-      "entry_time": "13:55",
-      "level": 39.06,
-      "entry": 39.03,
-      "stop": 39.18,
-      "target": 38.74,
-      "shares": 137,
-      "risk": 20.0,
-      "outcome": {
-        "won": 0,
-        "r": -1.0
+        "won": 1,
+        "r": 2.0
       }
     },
     {
       "symbol": "AAPL",
       "side": "short",
-      "break_time": "13:55",
-      "entry_time": "14:10",
-      "level": 342.86,
-      "entry": 342.65,
-      "stop": 343.38,
-      "target": 341.19,
-      "shares": 27,
-      "risk": 19.69,
-      "outcome": {
-        "won": 1,
-        "r": 2.0
-      }
-    },
-    {
-      "symbol": "GOOGL",
-      "side": "short",
-      "break_time": "14:30",
-      "entry_time": "14:40",
-      "level": 353.6,
-      "entry": 353.48,
-      "stop": 354.2,
-      "target": 352.05,
-      "shares": 27,
-      "risk": 19.36,
+      "break_time": "13:15",
+      "entry_time": "13:20",
+      "level": 343.51,
+      "entry": 342.79,
+      "stop": 344.14,
+      "target": 340.08,
+      "shares": 14,
+      "risk": 18.94,
       "outcome": {
         "won": 0,
         "r": -1.0
       }
     },
     {
-      "symbol": "GOOGL",
+      "symbol": "AMZN",
       "side": "short",
-      "break_time": "14:25",
+      "break_time": "13:25",
+      "entry_time": "13:30",
+      "level": 253.95,
+      "entry": 253.92,
+      "stop": 254.39,
+      "target": 252.98,
+      "shares": 42,
+      "risk": 19.76,
+      "outcome": {
+        "won": 1,
+        "r": 2.0
+      }
+    },
+    {
+      "symbol": "MSFT",
+      "side": "short",
+      "break_time": "14:00",
+      "entry_time": "14:05",
+      "level": 534.52,
+      "entry": 533.94,
+      "stop": 535.32,
+      "target": 531.18,
+      "shares": 14,
+      "risk": 19.3,
+      "outcome": {
+        "won": 0,
+        "r": -0.07,
+        "unfinished": true
+      }
+    },
+    {
+      "symbol": "MSFT",
+      "side": "short",
+      "break_time": "14:05",
+      "entry_time": "14:10",
+      "level": 534.39,
+      "entry": 534.34,
+      "stop": 535.19,
+      "target": 532.64,
+      "shares": 23,
+      "risk": 19.61,
+      "outcome": {
+        "won": 1,
+        "r": 2.0
+      }
+    },
+    {
+      "symbol": "AVGO",
+      "side": "short",
+      "break_time": "14:40",
       "entry_time": "14:45",
-      "level": 353.82,
-      "entry": 353.75,
-      "stop": 354.41,
-      "target": 352.43,
-      "shares": 30,
-      "risk": 19.8,
+      "level": 344.56,
+      "entry": 344.56,
+      "stop": 345.24,
+      "target": 343.18,
+      "shares": 29,
+      "risk": 20.0,
+      "outcome": {
+        "won": 1,
+        "r": 2.0
+      }
+    },
+    {
+      "symbol": "MSFT",
+      "side": "short",
+      "break_time": "14:55",
+      "entry_time": "15:00",
+      "level": 533.6,
+      "entry": 533.33,
+      "stop": 534.28,
+      "target": 531.44,
+      "shares": 21,
+      "risk": 19.85,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "MSFT",
+      "side": "short",
+      "break_time": "15:00",
+      "entry_time": "15:05",
+      "level": 533.45,
+      "entry": 533.17,
+      "stop": 534.13,
+      "target": 531.26,
+      "shares": 20,
+      "risk": 19.12,
+      "outcome": {
+        "won": 0,
+        "r": -1.0
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "side": "short",
+      "break_time": "15:00",
+      "entry_time": "15:05",
+      "level": 253.06,
+      "entry": 253.04,
+      "stop": 253.41,
+      "target": 252.32,
+      "shares": 55,
+      "risk": 19.87,
       "outcome": {
         "won": 0,
         "r": -1.0
