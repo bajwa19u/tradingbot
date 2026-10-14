@@ -1,15 +1,13 @@
 {
-  "date": "2026-10-13",
+  "date": "2026-10-14",
   "entries": [
-    "ORB-AAPL-2026-10-13"
+    "ORB-META-2026-10-14"
   ],
-  "exits": [
-    "ORB-AAPL-2026-10-13"
-  ],
-  "summary": true,
+  "exits": [],
+  "summary": false,
   "strategy": "bigtech",
   "cards": {
-    "ORB-AAPL-2026-10-13": "1559561850922733578"
+    "ORB-META-2026-10-14": "1559922732848906342"
   },
   "expired": [],
   "stale_warned": "",
