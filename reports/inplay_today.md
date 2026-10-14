@@ -1,48 +1,36 @@
-📊 **2026-10-13**
+📊 **2026-10-14**
 
-**5 trades · 5 won, 0 lost · 100% win rate**
-**+6.92%**
-✅ GS 09:35→15:55  +1.36%
-✅ JPM 09:35→15:55  +2.18%
-✅ JNJ 09:37→15:55  +1.46%
-✅ UNH 09:40→15:55  +1.59%
-✅ CAT 09:55→15:55  +0.33%
+**3 trades · 0 won, 3 lost · 0% win rate**
+**-3.16%**
+❌ BLK 09:35→09:59  -1.06%
+❌ MS 09:36→09:44  -1.05%
+❌ BAC 09:52→10:31  -1.05%
 
-
-⚠️ _4 shorts within 15 min (of 5) — that is one market move read several times, not several independent trades. Count it as roughly one result._
 _Paper only. No orders were placed._
 
-✅ **CLOSED · WIN · SHORT GS**  ·  09:35 → 15:55
-`Entry    904.55`
-`SL       913.44`
+❌ **CLOSED · LOSS · LONG BLK**  ·  09:35 → 09:59
+`Entry  1,098.62`
+`SL     1,088.75`
 `TP         none`  held until the stop or 15:55
-`Exit     892.43`  close
-**+1.36%** · _In-play · opening range_
+`Exit   1,088.21`  hit stop
+**-1.06%** · _In-play · opening range_
 
-✅ **CLOSED · WIN · SHORT JPM**  ·  09:35 → 15:55
-`Entry    338.05`
-`SL       340.45`
+❌ **CLOSED · LOSS · LONG MS**  ·  09:36 → 09:44
+`Entry    183.61`
+`SL       181.68`
 `TP         none`  held until the stop or 15:55
-`Exit     332.82`  close
-**+2.18%** · _In-play · opening range_
+`Exit     181.59`  hit stop
+**-1.05%** · _In-play · opening range_
 
-✅ **CLOSED · WIN · SHORT JNJ**  ·  09:37 → 15:55
-`Entry    252.29`
-`SL       254.74`
+🟢 **NEW SIGNAL · LONG JNJ**  ·  09:37 ET
+`Entry    251.19`
+`SL       248.26`
 `TP         none`  held until the stop or 15:55
-`Exit     248.72`  close
-**+1.46%** · _In-play · opening range_
+_In-play · opening range_
 
-✅ **CLOSED · WIN · SHORT UNH**  ·  09:40 → 15:55
-`Entry    384.91`
-`SL       389.20`
+❌ **CLOSED · LOSS · SHORT BAC**  ·  09:52 → 10:31
+`Entry     49.53`
+`SL        50.00`
 `TP         none`  held until the stop or 15:55
-`Exit     378.07`  close
-**+1.59%** · _In-play · opening range_
-
-✅ **CLOSED · WIN · SHORT CAT**  ·  09:55 → 15:55
-`Entry    777.39`
-`SL       789.77`
-`TP         none`  held until the stop or 15:55
-`Exit     773.31`  close
-**+0.33%** · _In-play · opening range_
+`Exit      50.02`  hit stop
+**-1.05%** · _In-play · opening range_
