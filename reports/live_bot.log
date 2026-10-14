@@ -1,644 +1,90 @@
-2026-10-14 14:09:54,062 INFO Day-trade strategy: bigtech
-2026-10-14 14:10:05,182 INFO Polling every 60s until 16:10 ET or for 320 min
-2026-10-14 14:10:06,441 INFO Streaming 10 symbols
-2026-10-14 14:11:00,338 INFO 10:11:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:11:00,338 INFO timings {'fetch_1m': 0.115, 'scan': 0.115, 'discord': 0.0, 'total': 0.115}
-2026-10-14 14:12:00,412 INFO 10:12:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:12:00,413 INFO timings {'fetch_1m': 0.153, 'scan': 0.153, 'discord': 0.0, 'total': 0.153}
-2026-10-14 14:13:00,165 INFO 10:13:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:13:00,165 INFO timings {'fetch_1m': 0.115, 'scan': 0.116, 'discord': 0.0, 'total': 0.116}
-2026-10-14 14:14:00,144 INFO 10:14:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:14:00,144 INFO timings {'fetch_1m': 0.091, 'scan': 0.091, 'discord': 0.0, 'total': 0.091}
-2026-10-14 14:15:00,165 INFO 10:15:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:15:00,165 INFO timings {'fetch_1m': 0.115, 'scan': 0.115, 'discord': 0.0, 'total': 0.115}
-2026-10-14 14:16:00,403 INFO 10:16:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:16:00,404 INFO timings {'fetch_1m': 0.17, 'scan': 0.17, 'discord': 0.0, 'total': 0.171}
-2026-10-14 14:17:00,349 INFO 10:17:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:17:00,349 INFO timings {'fetch_1m': 0.125, 'scan': 0.125, 'discord': 0.0, 'total': 0.125}
-2026-10-14 14:18:00,342 INFO 10:18:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:18:00,342 INFO timings {'fetch_1m': 0.116, 'scan': 0.116, 'discord': 0.0, 'total': 0.117}
-2026-10-14 14:19:00,170 INFO 10:19:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:19:00,170 INFO timings {'fetch_1m': 0.121, 'scan': 0.121, 'discord': 0.0, 'total': 0.122}
-2026-10-14 14:20:00,340 INFO 10:20:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:20:00,341 INFO timings {'fetch_1m': 0.123, 'scan': 0.123, 'discord': 0.0, 'total': 0.123}
-2026-10-14 14:21:00,409 INFO 10:21:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:21:00,409 INFO timings {'fetch_1m': 0.163, 'scan': 0.163, 'discord': 0.0, 'total': 0.164}
-2026-10-14 14:22:00,149 INFO 10:22:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:22:00,149 INFO timings {'fetch_1m': 0.099, 'scan': 0.099, 'discord': 0.0, 'total': 0.099}
-2026-10-14 14:23:00,328 INFO 10:23:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:23:00,328 INFO timings {'fetch_1m': 0.099, 'scan': 0.1, 'discord': 0.0, 'total': 0.1}
-2026-10-14 14:24:00,323 INFO 10:24:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:24:00,323 INFO timings {'fetch_1m': 0.098, 'scan': 0.098, 'discord': 0.0, 'total': 0.099}
-2026-10-14 14:25:00,329 INFO 10:25:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:25:00,329 INFO timings {'fetch_1m': 0.106, 'scan': 0.106, 'discord': 0.0, 'total': 0.107}
-2026-10-14 14:26:00,134 INFO 10:26:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:26:00,134 INFO timings {'fetch_1m': 0.085, 'scan': 0.085, 'discord': 0.0, 'total': 0.085}
-2026-10-14 14:27:00,313 INFO 10:27:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:27:00,314 INFO timings {'fetch_1m': 0.1, 'scan': 0.1, 'discord': 0.0, 'total': 0.1}
-2026-10-14 14:28:00,331 INFO 10:28:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:28:00,331 INFO timings {'fetch_1m': 0.103, 'scan': 0.103, 'discord': 0.0, 'total': 0.103}
-2026-10-14 14:29:00,315 INFO 10:29:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:29:00,315 INFO timings {'fetch_1m': 0.092, 'scan': 0.092, 'discord': 0.0, 'total': 0.092}
-2026-10-14 14:30:00,324 INFO 10:30:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:30:00,324 INFO timings {'fetch_1m': 0.112, 'scan': 0.112, 'discord': 0.0, 'total': 0.113}
-2026-10-14 14:31:00,420 INFO 10:31:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:31:00,420 INFO timings {'fetch_1m': 0.191, 'scan': 0.191, 'discord': 0.0, 'total': 0.191}
-2026-10-14 14:32:00,342 INFO 10:32:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:32:00,342 INFO timings {'fetch_1m': 0.127, 'scan': 0.127, 'discord': 0.0, 'total': 0.127}
-2026-10-14 14:33:00,404 INFO 10:33:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:33:00,404 INFO timings {'fetch_1m': 0.171, 'scan': 0.171, 'discord': 0.0, 'total': 0.172}
-2026-10-14 14:34:00,347 INFO 10:34:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:34:00,347 INFO timings {'fetch_1m': 0.121, 'scan': 0.121, 'discord': 0.0, 'total': 0.121}
-2026-10-14 14:35:00,153 INFO 10:35:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:35:00,153 INFO timings {'fetch_1m': 0.097, 'scan': 0.097, 'discord': 0.0, 'total': 0.097}
-2026-10-14 14:36:00,360 INFO 10:36:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:36:00,360 INFO timings {'fetch_1m': 0.145, 'scan': 0.145, 'discord': 0.0, 'total': 0.145}
-2026-10-14 14:37:00,380 INFO 10:37:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:37:00,380 INFO timings {'fetch_1m': 0.147, 'scan': 0.147, 'discord': 0.0, 'total': 0.147}
-2026-10-14 14:38:00,496 INFO 10:38:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:38:00,496 INFO timings {'fetch_1m': 0.259, 'scan': 0.259, 'discord': 0.0, 'total': 0.259}
-2026-10-14 14:39:00,366 INFO 10:39:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:39:00,366 INFO timings {'fetch_1m': 0.139, 'scan': 0.139, 'discord': 0.0, 'total': 0.14}
-2026-10-14 14:40:00,434 INFO 10:40:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:40:00,434 INFO timings {'fetch_1m': 0.212, 'scan': 0.212, 'discord': 0.0, 'total': 0.212}
-2026-10-14 14:41:01,137 INFO 10:41:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:41:01,137 INFO timings {'fetch_1m': 0.915, 'scan': 0.915, 'discord': 0.0, 'total': 0.915}
-2026-10-14 14:42:00,693 INFO 10:42:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:42:00,694 INFO timings {'fetch_1m': 0.463, 'scan': 0.463, 'discord': 0.0, 'total': 0.464}
-2026-10-14 14:43:00,899 INFO 10:43:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:43:00,899 INFO timings {'fetch_1m': 0.669, 'scan': 0.67, 'discord': 0.0, 'total': 0.67}
-2026-10-14 14:44:00,505 INFO 10:44:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:44:00,505 INFO timings {'fetch_1m': 0.28, 'scan': 0.28, 'discord': 0.0, 'total': 0.281}
-2026-10-14 14:45:00,471 INFO 10:45:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:45:00,471 INFO timings {'fetch_1m': 0.245, 'scan': 0.245, 'discord': 0.0, 'total': 0.246}
-2026-10-14 14:46:00,556 INFO 10:46:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:46:00,556 INFO timings {'fetch_1m': 0.316, 'scan': 0.316, 'discord': 0.0, 'total': 0.317}
-2026-10-14 14:47:00,322 INFO 10:47:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:47:00,322 INFO timings {'fetch_1m': 0.269, 'scan': 0.269, 'discord': 0.0, 'total': 0.269}
-2026-10-14 14:48:00,600 INFO 10:48:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:48:00,600 INFO timings {'fetch_1m': 0.366, 'scan': 0.366, 'discord': 0.0, 'total': 0.367}
-2026-10-14 14:49:00,399 INFO 10:49:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:49:00,399 INFO timings {'fetch_1m': 0.145, 'scan': 0.145, 'discord': 0.0, 'total': 0.146}
-2026-10-14 14:50:00,434 INFO 10:50:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:50:00,434 INFO timings {'fetch_1m': 0.175, 'scan': 0.175, 'discord': 0.0, 'total': 0.176}
-2026-10-14 14:51:00,519 INFO 10:51:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:51:00,519 INFO timings {'fetch_1m': 0.248, 'scan': 0.248, 'discord': 0.0, 'total': 0.248}
-2026-10-14 14:52:00,430 INFO 10:52:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:52:00,430 INFO timings {'fetch_1m': 0.164, 'scan': 0.164, 'discord': 0.0, 'total': 0.164}
-2026-10-14 14:53:00,376 INFO 10:53:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:53:00,376 INFO timings {'fetch_1m': 0.134, 'scan': 0.134, 'discord': 0.0, 'total': 0.134}
-2026-10-14 14:54:00,404 INFO 10:54:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:54:00,404 INFO timings {'fetch_1m': 0.154, 'scan': 0.154, 'discord': 0.0, 'total': 0.155}
-2026-10-14 14:55:02,343 INFO 10:55:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:55:02,343 INFO timings {'fetch_1m': 0.284, 'scan': 0.284, 'discord': 0.0, 'total': 0.285}
-2026-10-14 14:56:00,435 INFO 10:56:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:56:00,435 INFO timings {'fetch_1m': 0.179, 'scan': 0.179, 'discord': 0.0, 'total': 0.179}
-2026-10-14 14:57:00,205 INFO 10:57:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:57:00,205 INFO timings {'fetch_1m': 0.15, 'scan': 0.15, 'discord': 0.0, 'total': 0.151}
-2026-10-14 14:58:00,362 INFO 10:58:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:58:00,362 INFO timings {'fetch_1m': 0.111, 'scan': 0.111, 'discord': 0.0, 'total': 0.112}
-2026-10-14 14:59:00,391 INFO 10:59:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 14:59:00,391 INFO timings {'fetch_1m': 0.122, 'scan': 0.122, 'discord': 0.0, 'total': 0.123}
-2026-10-14 15:00:02,751 INFO 11:00:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:00:02,751 INFO timings {'fetch_1m': 0.487, 'scan': 0.487, 'discord': 0.0, 'total': 0.487}
-2026-10-14 15:01:00,763 INFO 11:01:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:01:00,763 INFO timings {'fetch_1m': 0.509, 'scan': 0.509, 'discord': 0.0, 'total': 0.51}
-2026-10-14 15:02:00,459 INFO 11:02:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:02:00,459 INFO timings {'fetch_1m': 0.2, 'scan': 0.2, 'discord': 0.0, 'total': 0.201}
-2026-10-14 15:03:00,454 INFO 11:03:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:03:00,454 INFO timings {'fetch_1m': 0.204, 'scan': 0.204, 'discord': 0.0, 'total': 0.204}
-2026-10-14 15:04:00,380 INFO 11:04:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:04:00,380 INFO timings {'fetch_1m': 0.131, 'scan': 0.131, 'discord': 0.0, 'total': 0.132}
-2026-10-14 15:05:00,446 INFO 11:05:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:05:00,446 INFO timings {'fetch_1m': 0.196, 'scan': 0.196, 'discord': 0.0, 'total': 0.197}
-2026-10-14 15:06:00,562 INFO 11:06:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:06:00,563 INFO timings {'fetch_1m': 0.301, 'scan': 0.301, 'discord': 0.0, 'total': 0.302}
-2026-10-14 15:07:00,430 INFO 11:07:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:07:00,430 INFO timings {'fetch_1m': 0.176, 'scan': 0.176, 'discord': 0.0, 'total': 0.177}
-2026-10-14 15:08:00,419 INFO 11:08:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:08:00,419 INFO timings {'fetch_1m': 0.157, 'scan': 0.157, 'discord': 0.0, 'total': 0.157}
-2026-10-14 15:09:00,750 INFO 11:09:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:09:00,750 INFO timings {'fetch_1m': 0.484, 'scan': 0.484, 'discord': 0.0, 'total': 0.484}
-2026-10-14 15:10:00,426 INFO 11:10:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:10:00,426 INFO timings {'fetch_1m': 0.177, 'scan': 0.177, 'discord': 0.0, 'total': 0.177}
-2026-10-14 15:11:00,528 INFO 11:11:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:11:00,528 INFO timings {'fetch_1m': 0.273, 'scan': 0.273, 'discord': 0.0, 'total': 0.274}
-2026-10-14 15:12:00,430 INFO 11:12:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:12:00,430 INFO timings {'fetch_1m': 0.163, 'scan': 0.163, 'discord': 0.0, 'total': 0.164}
-2026-10-14 15:13:00,393 INFO 11:13:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:13:00,393 INFO timings {'fetch_1m': 0.145, 'scan': 0.145, 'discord': 0.0, 'total': 0.146}
-2026-10-14 15:14:00,454 INFO 11:14:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:14:00,454 INFO timings {'fetch_1m': 0.199, 'scan': 0.199, 'discord': 0.0, 'total': 0.199}
-2026-10-14 15:15:02,891 INFO 11:15:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:15:02,891 INFO timings {'fetch_1m': 0.615, 'scan': 0.615, 'discord': 0.0, 'total': 0.615}
-2026-10-14 15:16:00,521 INFO 11:16:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:16:00,522 INFO timings {'fetch_1m': 0.244, 'scan': 0.244, 'discord': 0.0, 'total': 0.244}
-2026-10-14 15:17:00,192 INFO 11:17:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:17:00,192 INFO timings {'fetch_1m': 0.137, 'scan': 0.137, 'discord': 0.0, 'total': 0.138}
-2026-10-14 15:18:00,467 INFO 11:18:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:18:00,467 INFO timings {'fetch_1m': 0.204, 'scan': 0.204, 'discord': 0.0, 'total': 0.204}
-2026-10-14 15:19:00,407 INFO 11:19:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:19:00,407 INFO timings {'fetch_1m': 0.149, 'scan': 0.15, 'discord': 0.0, 'total': 0.15}
-2026-10-14 15:20:00,456 INFO 11:20:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:20:00,456 INFO timings {'fetch_1m': 0.21, 'scan': 0.21, 'discord': 0.0, 'total': 0.211}
-2026-10-14 15:21:00,431 INFO 11:21:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:21:00,431 INFO timings {'fetch_1m': 0.151, 'scan': 0.151, 'discord': 0.0, 'total': 0.151}
-2026-10-14 15:22:00,407 INFO 11:22:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:22:00,407 INFO timings {'fetch_1m': 0.151, 'scan': 0.151, 'discord': 0.0, 'total': 0.151}
-2026-10-14 15:23:00,347 INFO 11:23:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:23:00,347 INFO timings {'fetch_1m': 0.103, 'scan': 0.103, 'discord': 0.0, 'total': 0.103}
-2026-10-14 15:24:00,518 INFO 11:24:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:24:00,518 INFO timings {'fetch_1m': 0.272, 'scan': 0.272, 'discord': 0.0, 'total': 0.273}
-2026-10-14 15:25:00,441 INFO 11:25:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:25:00,441 INFO timings {'fetch_1m': 0.173, 'scan': 0.173, 'discord': 0.0, 'total': 0.173}
-2026-10-14 15:26:00,186 INFO 11:26:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:26:00,186 INFO timings {'fetch_1m': 0.14, 'scan': 0.14, 'discord': 0.0, 'total': 0.14}
-2026-10-14 15:27:00,483 INFO 11:27:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:27:00,483 INFO timings {'fetch_1m': 0.218, 'scan': 0.218, 'discord': 0.0, 'total': 0.219}
-2026-10-14 15:28:00,355 INFO 11:28:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:28:00,355 INFO timings {'fetch_1m': 0.109, 'scan': 0.109, 'discord': 0.0, 'total': 0.11}
-2026-10-14 15:29:00,374 INFO 11:29:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:29:00,374 INFO timings {'fetch_1m': 0.101, 'scan': 0.101, 'discord': 0.0, 'total': 0.101}
-2026-10-14 15:30:00,464 INFO 11:30:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:30:00,464 INFO timings {'fetch_1m': 0.194, 'scan': 0.194, 'discord': 0.0, 'total': 0.194}
-2026-10-14 15:31:00,493 INFO 11:31:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:31:00,493 INFO timings {'fetch_1m': 0.222, 'scan': 0.222, 'discord': 0.0, 'total': 0.222}
-2026-10-14 15:32:00,227 INFO 11:32:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:32:00,228 INFO timings {'fetch_1m': 0.163, 'scan': 0.163, 'discord': 0.0, 'total': 0.163}
-2026-10-14 15:33:00,178 INFO 11:33:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:33:00,179 INFO timings {'fetch_1m': 0.105, 'scan': 0.105, 'discord': 0.0, 'total': 0.106}
-2026-10-14 15:34:00,413 INFO 11:34:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:34:00,413 INFO timings {'fetch_1m': 0.155, 'scan': 0.156, 'discord': 0.0, 'total': 0.156}
-2026-10-14 15:35:00,574 INFO 11:35:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:35:00,574 INFO timings {'fetch_1m': 0.146, 'scan': 0.147, 'discord': 0.0, 'total': 0.147}
-2026-10-14 15:36:00,441 INFO 11:36:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:36:00,441 INFO timings {'fetch_1m': 0.182, 'scan': 0.182, 'discord': 0.0, 'total': 0.183}
-2026-10-14 15:37:00,407 INFO 11:37:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:37:00,407 INFO timings {'fetch_1m': 0.143, 'scan': 0.143, 'discord': 0.0, 'total': 0.143}
-2026-10-14 15:38:00,412 INFO 11:38:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:38:00,412 INFO timings {'fetch_1m': 0.142, 'scan': 0.142, 'discord': 0.0, 'total': 0.143}
-2026-10-14 15:39:00,399 INFO 11:39:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:39:00,399 INFO timings {'fetch_1m': 0.126, 'scan': 0.126, 'discord': 0.0, 'total': 0.126}
-2026-10-14 15:40:00,394 INFO 11:40:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:40:00,394 INFO timings {'fetch_1m': 0.115, 'scan': 0.116, 'discord': 0.0, 'total': 0.116}
-2026-10-14 15:41:00,444 INFO 11:41:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:41:00,444 INFO timings {'fetch_1m': 0.196, 'scan': 0.196, 'discord': 0.0, 'total': 0.197}
-2026-10-14 15:42:00,404 INFO 11:42:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:42:00,404 INFO timings {'fetch_1m': 0.139, 'scan': 0.139, 'discord': 0.0, 'total': 0.14}
-2026-10-14 15:43:00,365 INFO 11:43:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:43:00,365 INFO timings {'fetch_1m': 0.094, 'scan': 0.094, 'discord': 0.0, 'total': 0.094}
-2026-10-14 15:44:00,419 INFO 11:44:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:44:00,419 INFO timings {'fetch_1m': 0.148, 'scan': 0.148, 'discord': 0.0, 'total': 0.148}
-2026-10-14 15:45:00,431 INFO 11:45:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:45:00,431 INFO timings {'fetch_1m': 0.163, 'scan': 0.163, 'discord': 0.0, 'total': 0.163}
-2026-10-14 15:46:00,431 INFO 11:46:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:46:00,431 INFO timings {'fetch_1m': 0.162, 'scan': 0.162, 'discord': 0.0, 'total': 0.162}
-2026-10-14 15:47:02,434 INFO 11:47:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:47:02,434 INFO timings {'fetch_1m': 0.182, 'scan': 0.182, 'discord': 0.0, 'total': 0.182}
-2026-10-14 15:48:00,221 INFO 11:48:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:48:00,221 INFO timings {'fetch_1m': 0.163, 'scan': 0.163, 'discord': 0.0, 'total': 0.163}
-2026-10-14 15:49:00,430 INFO 11:49:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:49:00,430 INFO timings {'fetch_1m': 0.164, 'scan': 0.164, 'discord': 0.0, 'total': 0.165}
-2026-10-14 15:50:00,409 INFO 11:50:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:50:00,409 INFO timings {'fetch_1m': 0.142, 'scan': 0.142, 'discord': 0.0, 'total': 0.142}
-2026-10-14 15:51:00,400 INFO 11:51:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:51:00,400 INFO timings {'fetch_1m': 0.134, 'scan': 0.134, 'discord': 0.0, 'total': 0.134}
-2026-10-14 15:52:00,482 INFO 11:52:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:52:00,482 INFO timings {'fetch_1m': 0.216, 'scan': 0.217, 'discord': 0.0, 'total': 0.217}
-2026-10-14 15:53:00,209 INFO 11:53:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:53:00,209 INFO timings {'fetch_1m': 0.157, 'scan': 0.157, 'discord': 0.0, 'total': 0.158}
-2026-10-14 15:54:00,407 INFO 11:54:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:54:00,407 INFO timings {'fetch_1m': 0.146, 'scan': 0.146, 'discord': 0.0, 'total': 0.146}
-2026-10-14 15:55:00,366 INFO 11:55:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:55:00,366 INFO timings {'fetch_1m': 0.106, 'scan': 0.106, 'discord': 0.0, 'total': 0.107}
-2026-10-14 15:56:00,416 INFO 11:56:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:56:00,416 INFO timings {'fetch_1m': 0.159, 'scan': 0.159, 'discord': 0.0, 'total': 0.16}
-2026-10-14 15:57:02,445 INFO 11:57:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:57:02,445 INFO timings {'fetch_1m': 0.158, 'scan': 0.158, 'discord': 0.0, 'total': 0.158}
-2026-10-14 15:58:00,188 INFO 11:58:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:58:00,188 INFO timings {'fetch_1m': 0.142, 'scan': 0.142, 'discord': 0.0, 'total': 0.143}
-2026-10-14 15:59:00,361 INFO 11:59:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 15:59:00,362 INFO timings {'fetch_1m': 0.104, 'scan': 0.104, 'discord': 0.0, 'total': 0.105}
-2026-10-14 16:00:00,381 INFO 12:00:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:00:00,381 INFO timings {'fetch_1m': 0.125, 'scan': 0.125, 'discord': 0.0, 'total': 0.126}
-2026-10-14 16:01:00,611 INFO 12:01:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:01:00,611 INFO timings {'fetch_1m': 0.341, 'scan': 0.341, 'discord': 0.0, 'total': 0.342}
-2026-10-14 16:02:00,417 INFO 12:02:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:02:00,417 INFO timings {'fetch_1m': 0.159, 'scan': 0.159, 'discord': 0.0, 'total': 0.16}
-2026-10-14 16:03:00,487 INFO 12:03:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:03:00,487 INFO timings {'fetch_1m': 0.217, 'scan': 0.217, 'discord': 0.0, 'total': 0.218}
-2026-10-14 16:04:00,441 INFO 12:04:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:04:00,441 INFO timings {'fetch_1m': 0.187, 'scan': 0.187, 'discord': 0.0, 'total': 0.188}
-2026-10-14 16:05:00,445 INFO 12:05:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:05:00,446 INFO timings {'fetch_1m': 0.396, 'scan': 0.396, 'discord': 0.0, 'total': 0.397}
-2026-10-14 16:06:00,762 INFO 12:06:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:06:00,763 INFO timings {'fetch_1m': 0.505, 'scan': 0.505, 'discord': 0.0, 'total': 0.505}
-2026-10-14 16:07:00,485 INFO 12:07:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:07:00,485 INFO timings {'fetch_1m': 0.235, 'scan': 0.235, 'discord': 0.0, 'total': 0.236}
-2026-10-14 16:08:00,531 INFO 12:08:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:08:00,531 INFO timings {'fetch_1m': 0.276, 'scan': 0.276, 'discord': 0.0, 'total': 0.277}
-2026-10-14 16:09:00,428 INFO 12:09:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:09:00,428 INFO timings {'fetch_1m': 0.167, 'scan': 0.167, 'discord': 0.0, 'total': 0.167}
-2026-10-14 16:10:02,491 INFO 12:10:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:10:02,491 INFO timings {'fetch_1m': 0.213, 'scan': 0.214, 'discord': 0.0, 'total': 0.214}
-2026-10-14 16:11:00,420 INFO 12:11:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:11:00,420 INFO timings {'fetch_1m': 0.178, 'scan': 0.178, 'discord': 0.0, 'total': 0.178}
-2026-10-14 16:12:00,422 INFO 12:12:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:12:00,422 INFO timings {'fetch_1m': 0.152, 'scan': 0.152, 'discord': 0.0, 'total': 0.152}
-2026-10-14 16:13:00,640 INFO 12:13:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:13:00,640 INFO timings {'fetch_1m': 0.363, 'scan': 0.363, 'discord': 0.0, 'total': 0.363}
-2026-10-14 16:14:00,438 INFO 12:14:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:14:00,438 INFO timings {'fetch_1m': 0.16, 'scan': 0.161, 'discord': 0.0, 'total': 0.161}
-2026-10-14 16:15:00,623 INFO 12:15:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:15:00,623 INFO timings {'fetch_1m': 0.347, 'scan': 0.347, 'discord': 0.0, 'total': 0.347}
-2026-10-14 16:16:00,553 INFO 12:16:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:16:00,553 INFO timings {'fetch_1m': 0.5, 'scan': 0.5, 'discord': 0.0, 'total': 0.501}
-2026-10-14 16:17:00,778 INFO 12:17:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:17:00,778 INFO timings {'fetch_1m': 0.51, 'scan': 0.511, 'discord': 0.0, 'total': 0.511}
-2026-10-14 16:18:00,649 INFO 12:18:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:18:00,649 INFO timings {'fetch_1m': 0.378, 'scan': 0.378, 'discord': 0.0, 'total': 0.378}
-2026-10-14 16:19:00,388 INFO 12:19:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:19:00,388 INFO timings {'fetch_1m': 0.337, 'scan': 0.337, 'discord': 0.0, 'total': 0.337}
-2026-10-14 16:20:00,628 INFO 12:20:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:20:00,629 INFO timings {'fetch_1m': 0.357, 'scan': 0.357, 'discord': 0.0, 'total': 0.358}
-2026-10-14 16:21:00,729 INFO 12:21:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:21:00,729 INFO timings {'fetch_1m': 0.454, 'scan': 0.454, 'discord': 0.0, 'total': 0.454}
-2026-10-14 16:22:00,656 INFO 12:22:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:22:00,656 INFO timings {'fetch_1m': 0.392, 'scan': 0.392, 'discord': 0.0, 'total': 0.393}
-2026-10-14 16:23:00,474 INFO 12:23:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:23:00,474 INFO timings {'fetch_1m': 0.207, 'scan': 0.207, 'discord': 0.0, 'total': 0.208}
-2026-10-14 16:24:00,558 INFO 12:24:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:24:00,558 INFO timings {'fetch_1m': 0.303, 'scan': 0.304, 'discord': 0.0, 'total': 0.304}
-2026-10-14 16:25:00,635 INFO 12:25:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:25:00,635 INFO timings {'fetch_1m': 0.368, 'scan': 0.368, 'discord': 0.0, 'total': 0.369}
-2026-10-14 16:26:00,698 INFO 12:26:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:26:00,698 INFO timings {'fetch_1m': 0.433, 'scan': 0.433, 'discord': 0.0, 'total': 0.433}
-2026-10-14 16:27:00,609 INFO 12:27:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:27:00,609 INFO timings {'fetch_1m': 0.344, 'scan': 0.344, 'discord': 0.0, 'total': 0.345}
-2026-10-14 16:28:00,707 INFO 12:28:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:28:00,708 INFO timings {'fetch_1m': 0.447, 'scan': 0.447, 'discord': 0.0, 'total': 0.448}
-2026-10-14 16:29:00,701 INFO 12:29:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:29:00,701 INFO timings {'fetch_1m': 0.442, 'scan': 0.442, 'discord': 0.0, 'total': 0.442}
-2026-10-14 16:30:00,547 INFO 12:30:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:30:00,547 INFO timings {'fetch_1m': 0.295, 'scan': 0.295, 'discord': 0.0, 'total': 0.295}
-2026-10-14 16:31:01,008 INFO 12:31:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:31:01,008 INFO timings {'fetch_1m': 0.747, 'scan': 0.747, 'discord': 0.0, 'total': 0.748}
-2026-10-14 16:32:00,811 INFO 12:32:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:32:00,812 INFO timings {'fetch_1m': 0.536, 'scan': 0.536, 'discord': 0.0, 'total': 0.537}
-2026-10-14 16:33:00,807 INFO 12:33:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:33:00,807 INFO timings {'fetch_1m': 0.53, 'scan': 0.53, 'discord': 0.0, 'total': 0.53}
-2026-10-14 16:34:00,534 INFO 12:34:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:34:00,534 INFO timings {'fetch_1m': 0.277, 'scan': 0.277, 'discord': 0.0, 'total': 0.277}
-2026-10-14 16:35:00,906 INFO 12:35:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:35:00,906 INFO timings {'fetch_1m': 0.642, 'scan': 0.642, 'discord': 0.0, 'total': 0.642}
-2026-10-14 16:36:01,046 INFO 12:36:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:36:01,047 INFO timings {'fetch_1m': 0.793, 'scan': 0.793, 'discord': 0.0, 'total': 0.794}
-2026-10-14 16:37:00,746 INFO 12:37:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:37:00,746 INFO timings {'fetch_1m': 0.7, 'scan': 0.7, 'discord': 0.0, 'total': 0.701}
-2026-10-14 16:38:00,541 INFO 12:38:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:38:00,541 INFO timings {'fetch_1m': 0.281, 'scan': 0.281, 'discord': 0.0, 'total': 0.281}
-2026-10-14 16:39:00,205 INFO 12:39:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:39:00,206 INFO timings {'fetch_1m': 0.153, 'scan': 0.153, 'discord': 0.0, 'total': 0.154}
-2026-10-14 16:40:00,509 INFO 12:40:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:40:00,510 INFO timings {'fetch_1m': 0.258, 'scan': 0.258, 'discord': 0.0, 'total': 0.258}
-2026-10-14 16:41:00,625 INFO 12:41:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:41:00,625 INFO timings {'fetch_1m': 0.357, 'scan': 0.357, 'discord': 0.0, 'total': 0.357}
-2026-10-14 16:42:00,454 INFO 12:42:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:42:00,454 INFO timings {'fetch_1m': 0.19, 'scan': 0.19, 'discord': 0.0, 'total': 0.191}
-2026-10-14 16:43:00,434 INFO 12:43:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:43:00,434 INFO timings {'fetch_1m': 0.165, 'scan': 0.165, 'discord': 0.0, 'total': 0.165}
-2026-10-14 16:44:00,473 INFO 12:44:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:44:00,473 INFO timings {'fetch_1m': 0.208, 'scan': 0.208, 'discord': 0.0, 'total': 0.208}
-2026-10-14 16:45:00,486 INFO 12:45:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:45:00,486 INFO timings {'fetch_1m': 0.237, 'scan': 0.237, 'discord': 0.0, 'total': 0.238}
-2026-10-14 16:46:01,040 INFO 12:46:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:46:01,040 INFO timings {'fetch_1m': 0.776, 'scan': 0.776, 'discord': 0.0, 'total': 0.777}
-2026-10-14 16:47:00,747 INFO 12:47:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:47:00,747 INFO timings {'fetch_1m': 0.474, 'scan': 0.474, 'discord': 0.0, 'total': 0.474}
-2026-10-14 16:48:00,647 INFO 12:48:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:48:00,647 INFO timings {'fetch_1m': 0.39, 'scan': 0.391, 'discord': 0.0, 'total': 0.391}
-2026-10-14 16:49:00,576 INFO 12:49:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:49:00,577 INFO timings {'fetch_1m': 0.325, 'scan': 0.325, 'discord': 0.0, 'total': 0.326}
-2026-10-14 16:50:00,457 INFO 12:50:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:50:00,457 INFO timings {'fetch_1m': 0.197, 'scan': 0.197, 'discord': 0.0, 'total': 0.198}
-2026-10-14 16:51:00,866 INFO 12:51:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:51:00,866 INFO timings {'fetch_1m': 0.598, 'scan': 0.599, 'discord': 0.0, 'total': 0.599}
-2026-10-14 16:52:00,630 INFO 12:52:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:52:00,630 INFO timings {'fetch_1m': 0.352, 'scan': 0.352, 'discord': 0.0, 'total': 0.352}
-2026-10-14 16:53:00,571 INFO 12:53:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:53:00,571 INFO timings {'fetch_1m': 0.286, 'scan': 0.286, 'discord': 0.0, 'total': 0.286}
-2026-10-14 16:54:00,560 INFO 12:54:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:54:00,560 INFO timings {'fetch_1m': 0.299, 'scan': 0.299, 'discord': 0.0, 'total': 0.3}
-2026-10-14 16:55:00,483 INFO 12:55:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:55:00,483 INFO timings {'fetch_1m': 0.217, 'scan': 0.217, 'discord': 0.0, 'total': 0.218}
-2026-10-14 16:56:00,497 INFO 12:56:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:56:00,497 INFO timings {'fetch_1m': 0.233, 'scan': 0.233, 'discord': 0.0, 'total': 0.233}
-2026-10-14 16:57:02,635 INFO 12:57:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:57:02,635 INFO timings {'fetch_1m': 0.362, 'scan': 0.362, 'discord': 0.0, 'total': 0.362}
-2026-10-14 16:58:00,449 INFO 12:58:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:58:00,450 INFO timings {'fetch_1m': 0.189, 'scan': 0.19, 'discord': 0.0, 'total': 0.19}
-2026-10-14 16:59:00,427 INFO 12:59:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 16:59:00,428 INFO timings {'fetch_1m': 0.163, 'scan': 0.163, 'discord': 0.0, 'total': 0.164}
-2026-10-14 17:00:00,564 INFO 13:00:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:00:00,564 INFO timings {'fetch_1m': 0.304, 'scan': 0.304, 'discord': 0.0, 'total': 0.305}
-2026-10-14 17:01:00,986 INFO 13:01:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:01:00,986 INFO timings {'fetch_1m': 0.724, 'scan': 0.724, 'discord': 0.0, 'total': 0.724}
-2026-10-14 17:02:00,912 INFO 13:02:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:02:00,912 INFO timings {'fetch_1m': 0.66, 'scan': 0.66, 'discord': 0.0, 'total': 0.66}
-2026-10-14 17:03:01,000 INFO 13:03:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:03:01,000 INFO timings {'fetch_1m': 0.743, 'scan': 0.744, 'discord': 0.0, 'total': 0.744}
-2026-10-14 17:04:00,474 INFO 13:04:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:04:00,474 INFO timings {'fetch_1m': 0.211, 'scan': 0.211, 'discord': 0.0, 'total': 0.211}
-2026-10-14 17:05:00,496 INFO 13:05:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:05:00,496 INFO timings {'fetch_1m': 0.235, 'scan': 0.235, 'discord': 0.0, 'total': 0.236}
-2026-10-14 17:06:00,473 INFO 13:06:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:06:00,473 INFO timings {'fetch_1m': 0.216, 'scan': 0.216, 'discord': 0.0, 'total': 0.217}
-2026-10-14 17:07:01,038 INFO 13:07:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:07:01,038 INFO timings {'fetch_1m': 0.794, 'scan': 0.794, 'discord': 0.0, 'total': 0.795}
-2026-10-14 17:08:00,874 INFO 13:08:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:08:00,874 INFO timings {'fetch_1m': 0.634, 'scan': 0.634, 'discord': 0.0, 'total': 0.634}
-2026-10-14 17:09:00,625 INFO 13:09:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:09:00,625 INFO timings {'fetch_1m': 0.361, 'scan': 0.361, 'discord': 0.0, 'total': 0.362}
-2026-10-14 17:10:00,238 INFO 13:10:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:10:00,238 INFO timings {'fetch_1m': 0.195, 'scan': 0.195, 'discord': 0.0, 'total': 0.195}
-2026-10-14 17:11:00,496 INFO 13:11:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:11:00,496 INFO timings {'fetch_1m': 0.225, 'scan': 0.225, 'discord': 0.0, 'total': 0.226}
-2026-10-14 17:12:00,437 INFO 13:12:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:12:00,437 INFO timings {'fetch_1m': 0.16, 'scan': 0.16, 'discord': 0.0, 'total': 0.161}
-2026-10-14 17:13:00,515 INFO 13:13:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:13:00,515 INFO timings {'fetch_1m': 0.266, 'scan': 0.267, 'discord': 0.0, 'total': 0.267}
-2026-10-14 17:14:00,468 INFO 13:14:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:14:00,468 INFO timings {'fetch_1m': 0.227, 'scan': 0.227, 'discord': 0.0, 'total': 0.228}
-2026-10-14 17:15:00,588 INFO 13:15:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:15:00,589 INFO timings {'fetch_1m': 0.344, 'scan': 0.344, 'discord': 0.0, 'total': 0.344}
-2026-10-14 17:16:02,724 INFO 13:16:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:16:02,724 INFO timings {'fetch_1m': 0.464, 'scan': 0.464, 'discord': 0.0, 'total': 0.465}
-2026-10-14 17:17:00,278 INFO 13:17:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:17:00,279 INFO timings {'fetch_1m': 0.234, 'scan': 0.235, 'discord': 0.0, 'total': 0.235}
-2026-10-14 17:18:00,322 INFO 13:18:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:18:00,323 INFO timings {'fetch_1m': 0.274, 'scan': 0.274, 'discord': 0.0, 'total': 0.275}
-2026-10-14 17:19:00,539 INFO 13:19:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:19:00,539 INFO timings {'fetch_1m': 0.265, 'scan': 0.265, 'discord': 0.0, 'total': 0.266}
-2026-10-14 17:20:00,532 INFO 13:20:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:20:00,532 INFO timings {'fetch_1m': 0.279, 'scan': 0.279, 'discord': 0.0, 'total': 0.279}
-2026-10-14 17:21:00,535 INFO 13:21:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:21:00,535 INFO timings {'fetch_1m': 0.254, 'scan': 0.254, 'discord': 0.0, 'total': 0.255}
-2026-10-14 17:22:00,539 INFO 13:22:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:22:00,539 INFO timings {'fetch_1m': 0.274, 'scan': 0.274, 'discord': 0.0, 'total': 0.275}
-2026-10-14 17:23:00,453 INFO 13:23:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:23:00,453 INFO timings {'fetch_1m': 0.18, 'scan': 0.18, 'discord': 0.0, 'total': 0.18}
-2026-10-14 17:24:02,513 INFO 13:24:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:24:02,513 INFO timings {'fetch_1m': 0.265, 'scan': 0.265, 'discord': 0.0, 'total': 0.266}
-2026-10-14 17:25:00,426 INFO 13:25:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:25:00,426 INFO timings {'fetch_1m': 0.175, 'scan': 0.175, 'discord': 0.0, 'total': 0.175}
-2026-10-14 17:26:00,503 INFO 13:26:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:26:00,503 INFO timings {'fetch_1m': 0.236, 'scan': 0.236, 'discord': 0.0, 'total': 0.236}
-2026-10-14 17:27:00,525 INFO 13:27:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:27:00,525 INFO timings {'fetch_1m': 0.244, 'scan': 0.244, 'discord': 0.0, 'total': 0.244}
-2026-10-14 17:28:00,255 INFO 13:28:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:28:00,255 INFO timings {'fetch_1m': 0.187, 'scan': 0.187, 'discord': 0.0, 'total': 0.188}
-2026-10-14 17:29:00,440 INFO 13:29:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:29:00,440 INFO timings {'fetch_1m': 0.188, 'scan': 0.188, 'discord': 0.0, 'total': 0.189}
-2026-10-14 17:30:00,604 INFO 13:30:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:30:00,604 INFO timings {'fetch_1m': 0.331, 'scan': 0.331, 'discord': 0.0, 'total': 0.332}
-2026-10-14 17:31:00,678 INFO 13:31:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:31:00,679 INFO timings {'fetch_1m': 0.427, 'scan': 0.427, 'discord': 0.0, 'total': 0.428}
-2026-10-14 17:32:00,535 INFO 13:32:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:32:00,535 INFO timings {'fetch_1m': 0.294, 'scan': 0.294, 'discord': 0.0, 'total': 0.294}
-2026-10-14 17:33:00,527 INFO 13:33:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:33:00,527 INFO timings {'fetch_1m': 0.253, 'scan': 0.253, 'discord': 0.0, 'total': 0.253}
-2026-10-14 17:34:00,448 INFO 13:34:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:34:00,448 INFO timings {'fetch_1m': 0.173, 'scan': 0.173, 'discord': 0.0, 'total': 0.173}
-2026-10-14 17:35:00,324 INFO 13:35:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:35:00,324 INFO timings {'fetch_1m': 0.273, 'scan': 0.273, 'discord': 0.0, 'total': 0.274}
-2026-10-14 17:36:00,631 INFO 13:36:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:36:00,631 INFO timings {'fetch_1m': 0.346, 'scan': 0.346, 'discord': 0.0, 'total': 0.346}
-2026-10-14 17:37:00,523 INFO 13:37:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:37:00,523 INFO timings {'fetch_1m': 0.246, 'scan': 0.246, 'discord': 0.0, 'total': 0.247}
-2026-10-14 17:38:00,525 INFO 13:38:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:38:00,525 INFO timings {'fetch_1m': 0.244, 'scan': 0.245, 'discord': 0.0, 'total': 0.245}
-2026-10-14 17:39:02,519 INFO 13:39:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:39:02,519 INFO timings {'fetch_1m': 0.238, 'scan': 0.238, 'discord': 0.0, 'total': 0.238}
-2026-10-14 17:40:02,414 INFO 13:40:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:40:02,414 INFO timings {'fetch_1m': 0.365, 'scan': 0.365, 'discord': 0.0, 'total': 0.365}
-2026-10-14 17:41:02,634 INFO 13:41:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:41:02,634 INFO timings {'fetch_1m': 0.35, 'scan': 0.35, 'discord': 0.0, 'total': 0.351}
-2026-10-14 17:42:00,522 INFO 13:42:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:42:00,522 INFO timings {'fetch_1m': 0.271, 'scan': 0.271, 'discord': 0.0, 'total': 0.271}
-2026-10-14 17:43:00,449 INFO 13:43:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:43:00,449 INFO timings {'fetch_1m': 0.171, 'scan': 0.171, 'discord': 0.0, 'total': 0.171}
-2026-10-14 17:44:02,589 INFO 13:44:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:44:02,589 INFO timings {'fetch_1m': 0.32, 'scan': 0.32, 'discord': 0.0, 'total': 0.32}
-2026-10-14 17:45:00,476 INFO 13:45:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:45:00,476 INFO timings {'fetch_1m': 0.225, 'scan': 0.225, 'discord': 0.0, 'total': 0.226}
-2026-10-14 17:46:02,292 INFO 13:46:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:46:02,292 INFO timings {'fetch_1m': 0.244, 'scan': 0.244, 'discord': 0.0, 'total': 0.244}
-2026-10-14 17:47:00,493 INFO 13:47:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:47:00,493 INFO timings {'fetch_1m': 0.249, 'scan': 0.249, 'discord': 0.0, 'total': 0.249}
-2026-10-14 17:48:00,520 INFO 13:48:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:48:00,520 INFO timings {'fetch_1m': 0.257, 'scan': 0.258, 'discord': 0.0, 'total': 0.258}
-2026-10-14 17:49:00,430 INFO 13:49:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:49:00,430 INFO timings {'fetch_1m': 0.152, 'scan': 0.152, 'discord': 0.0, 'total': 0.153}
-2026-10-14 17:50:00,423 INFO 13:50:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:50:00,423 INFO timings {'fetch_1m': 0.156, 'scan': 0.156, 'discord': 0.0, 'total': 0.157}
-2026-10-14 17:51:00,548 INFO 13:51:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:51:00,548 INFO timings {'fetch_1m': 0.255, 'scan': 0.255, 'discord': 0.0, 'total': 0.255}
-2026-10-14 17:52:00,469 INFO 13:52:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:52:00,470 INFO timings {'fetch_1m': 0.206, 'scan': 0.206, 'discord': 0.0, 'total': 0.206}
-2026-10-14 17:53:00,424 INFO 13:53:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:53:00,424 INFO timings {'fetch_1m': 0.155, 'scan': 0.155, 'discord': 0.0, 'total': 0.156}
-2026-10-14 17:54:00,238 INFO 13:54:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:54:00,239 INFO timings {'fetch_1m': 0.182, 'scan': 0.183, 'discord': 0.0, 'total': 0.183}
-2026-10-14 17:55:00,451 INFO 13:55:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:55:00,451 INFO timings {'fetch_1m': 0.187, 'scan': 0.187, 'discord': 0.0, 'total': 0.188}
-2026-10-14 17:56:00,600 INFO 13:56:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:56:00,600 INFO timings {'fetch_1m': 0.335, 'scan': 0.335, 'discord': 0.0, 'total': 0.336}
-2026-10-14 17:57:00,493 INFO 13:57:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:57:00,493 INFO timings {'fetch_1m': 0.206, 'scan': 0.206, 'discord': 0.0, 'total': 0.206}
-2026-10-14 17:58:00,461 INFO 13:58:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:58:00,461 INFO timings {'fetch_1m': 0.202, 'scan': 0.203, 'discord': 0.0, 'total': 0.203}
-2026-10-14 17:59:00,570 INFO 13:59:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 17:59:00,570 INFO timings {'fetch_1m': 0.297, 'scan': 0.297, 'discord': 0.0, 'total': 0.298}
-2026-10-14 18:00:00,466 INFO 14:00:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:00:00,466 INFO timings {'fetch_1m': 0.2, 'scan': 0.2, 'discord': 0.0, 'total': 0.2}
-2026-10-14 18:01:00,784 INFO 14:01:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:01:00,784 INFO timings {'fetch_1m': 0.501, 'scan': 0.501, 'discord': 0.0, 'total': 0.502}
-2026-10-14 18:02:00,626 INFO 14:02:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:02:00,626 INFO timings {'fetch_1m': 0.569, 'scan': 0.569, 'discord': 0.0, 'total': 0.57}
-2026-10-14 18:03:00,735 INFO 14:03:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:03:00,735 INFO timings {'fetch_1m': 0.455, 'scan': 0.455, 'discord': 0.0, 'total': 0.455}
-2026-10-14 18:04:00,371 INFO 14:04:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:04:00,371 INFO timings {'fetch_1m': 0.325, 'scan': 0.325, 'discord': 0.0, 'total': 0.326}
-2026-10-14 18:05:02,466 INFO 14:05:01 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:05:02,466 INFO timings {'fetch_1m': 0.64, 'scan': 0.64, 'discord': 0.0, 'total': 0.641}
-2026-10-14 18:06:00,817 INFO 14:06:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:06:00,817 INFO timings {'fetch_1m': 0.542, 'scan': 0.542, 'discord': 0.0, 'total': 0.543}
-2026-10-14 18:07:00,960 INFO 14:07:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:07:00,960 INFO timings {'fetch_1m': 0.666, 'scan': 0.666, 'discord': 0.0, 'total': 0.666}
-2026-10-14 18:08:00,875 INFO 14:08:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:08:00,875 INFO timings {'fetch_1m': 0.598, 'scan': 0.598, 'discord': 0.0, 'total': 0.598}
-2026-10-14 18:09:02,658 INFO 14:09:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:09:02,658 INFO timings {'fetch_1m': 0.352, 'scan': 0.352, 'discord': 0.0, 'total': 0.352}
-2026-10-14 18:10:00,674 INFO 14:10:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:10:00,674 INFO timings {'fetch_1m': 0.394, 'scan': 0.395, 'discord': 0.0, 'total': 0.395}
-2026-10-14 18:11:02,891 INFO 14:11:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:11:02,891 INFO timings {'fetch_1m': 0.61, 'scan': 0.61, 'discord': 0.0, 'total': 0.611}
-2026-10-14 18:12:00,738 INFO 14:12:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:12:00,738 INFO timings {'fetch_1m': 0.446, 'scan': 0.446, 'discord': 0.0, 'total': 0.446}
-2026-10-14 18:13:02,616 INFO 14:13:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:13:02,616 INFO timings {'fetch_1m': 0.563, 'scan': 0.563, 'discord': 0.0, 'total': 0.563}
-2026-10-14 18:14:00,707 INFO 14:14:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:14:00,708 INFO timings {'fetch_1m': 0.429, 'scan': 0.429, 'discord': 0.0, 'total': 0.429}
-2026-10-14 18:15:00,542 INFO 14:15:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:15:00,543 INFO timings {'fetch_1m': 0.267, 'scan': 0.267, 'discord': 0.0, 'total': 0.267}
-2026-10-14 18:16:00,940 INFO 14:16:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:16:00,940 INFO timings {'fetch_1m': 0.635, 'scan': 0.635, 'discord': 0.0, 'total': 0.636}
-2026-10-14 18:17:00,754 INFO 14:17:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:17:00,754 INFO timings {'fetch_1m': 0.47, 'scan': 0.47, 'discord': 0.0, 'total': 0.471}
-2026-10-14 18:18:00,524 INFO 14:18:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:18:00,524 INFO timings {'fetch_1m': 0.235, 'scan': 0.235, 'discord': 0.0, 'total': 0.235}
-2026-10-14 18:19:00,560 INFO 14:19:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:19:00,560 INFO timings {'fetch_1m': 0.28, 'scan': 0.28, 'discord': 0.0, 'total': 0.281}
-2026-10-14 18:20:00,525 INFO 14:20:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:20:00,525 INFO timings {'fetch_1m': 0.257, 'scan': 0.257, 'discord': 0.0, 'total': 0.257}
-2026-10-14 18:21:00,571 INFO 14:21:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:21:00,572 INFO timings {'fetch_1m': 0.286, 'scan': 0.286, 'discord': 0.0, 'total': 0.286}
-2026-10-14 18:22:00,726 INFO 14:22:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:22:00,726 INFO timings {'fetch_1m': 0.443, 'scan': 0.443, 'discord': 0.0, 'total': 0.444}
-2026-10-14 18:23:00,789 INFO 14:23:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:23:00,789 INFO timings {'fetch_1m': 0.747, 'scan': 0.747, 'discord': 0.0, 'total': 0.747}
-2026-10-14 18:24:00,339 INFO 14:24:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:24:00,339 INFO timings {'fetch_1m': 0.287, 'scan': 0.287, 'discord': 0.0, 'total': 0.288}
-2026-10-14 18:25:00,500 INFO 14:25:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:25:00,501 INFO timings {'fetch_1m': 0.216, 'scan': 0.216, 'discord': 0.0, 'total': 0.217}
-2026-10-14 18:26:00,551 INFO 14:26:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:26:00,551 INFO timings {'fetch_1m': 0.288, 'scan': 0.288, 'discord': 0.0, 'total': 0.288}
-2026-10-14 18:27:00,807 INFO 14:27:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:27:00,807 INFO timings {'fetch_1m': 0.524, 'scan': 0.524, 'discord': 0.0, 'total': 0.524}
-2026-10-14 18:28:01,389 INFO 14:28:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:28:01,389 INFO timings {'fetch_1m': 1.095, 'scan': 1.095, 'discord': 0.0, 'total': 1.095}
-2026-10-14 18:29:00,707 INFO 14:29:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:29:00,707 INFO timings {'fetch_1m': 0.426, 'scan': 0.426, 'discord': 0.0, 'total': 0.427}
-2026-10-14 18:30:00,602 INFO 14:30:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:30:00,603 INFO timings {'fetch_1m': 0.309, 'scan': 0.31, 'discord': 0.0, 'total': 0.31}
-2026-10-14 18:31:00,990 INFO 14:31:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:31:00,990 INFO timings {'fetch_1m': 0.715, 'scan': 0.715, 'discord': 0.0, 'total': 0.715}
-2026-10-14 18:32:01,134 INFO 14:32:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:32:01,134 INFO timings {'fetch_1m': 0.847, 'scan': 0.848, 'discord': 0.0, 'total': 0.848}
-2026-10-14 18:33:00,428 INFO 14:33:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:33:00,428 INFO timings {'fetch_1m': 0.384, 'scan': 0.385, 'discord': 0.0, 'total': 0.385}
-2026-10-14 18:34:00,785 INFO 14:34:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:34:00,785 INFO timings {'fetch_1m': 0.535, 'scan': 0.535, 'discord': 0.0, 'total': 0.536}
-2026-10-14 18:35:02,991 INFO 14:35:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:35:02,991 INFO timings {'fetch_1m': 0.723, 'scan': 0.723, 'discord': 0.0, 'total': 0.723}
-2026-10-14 18:36:02,423 INFO 14:36:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:36:02,423 INFO timings {'fetch_1m': 2.142, 'scan': 2.142, 'discord': 0.0, 'total': 2.142}
-2026-10-14 18:37:01,841 INFO 14:37:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:37:01,842 INFO timings {'fetch_1m': 1.569, 'scan': 1.569, 'discord': 0.0, 'total': 1.57}
-2026-10-14 18:38:00,731 INFO 14:38:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:38:00,731 INFO timings {'fetch_1m': 0.464, 'scan': 0.464, 'discord': 0.0, 'total': 0.464}
-2026-10-14 18:39:00,672 INFO 14:39:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:39:00,672 INFO timings {'fetch_1m': 0.406, 'scan': 0.406, 'discord': 0.0, 'total': 0.407}
-2026-10-14 18:40:00,750 INFO 14:40:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:40:00,750 INFO timings {'fetch_1m': 0.469, 'scan': 0.469, 'discord': 0.0, 'total': 0.47}
-2026-10-14 18:41:00,782 INFO 14:41:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:41:00,782 INFO timings {'fetch_1m': 0.502, 'scan': 0.502, 'discord': 0.0, 'total': 0.503}
-2026-10-14 18:42:00,590 INFO 14:42:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:42:00,590 INFO timings {'fetch_1m': 0.325, 'scan': 0.326, 'discord': 0.0, 'total': 0.326}
-2026-10-14 18:43:02,702 INFO 14:43:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:43:02,702 INFO timings {'fetch_1m': 0.415, 'scan': 0.416, 'discord': 0.0, 'total': 0.416}
-2026-10-14 18:44:00,576 INFO 14:44:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:44:00,576 INFO timings {'fetch_1m': 0.311, 'scan': 0.311, 'discord': 0.0, 'total': 0.311}
-2026-10-14 18:45:00,590 INFO 14:45:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:45:00,590 INFO timings {'fetch_1m': 0.302, 'scan': 0.302, 'discord': 0.0, 'total': 0.303}
-2026-10-14 18:46:01,240 INFO 14:46:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:46:01,240 INFO timings {'fetch_1m': 0.941, 'scan': 0.941, 'discord': 0.0, 'total': 0.942}
-2026-10-14 18:47:00,596 INFO 14:47:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:47:00,596 INFO timings {'fetch_1m': 0.31, 'scan': 0.31, 'discord': 0.0, 'total': 0.31}
-2026-10-14 18:48:00,545 INFO 14:48:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:48:00,545 INFO timings {'fetch_1m': 0.267, 'scan': 0.267, 'discord': 0.0, 'total': 0.268}
-2026-10-14 18:49:00,348 INFO 14:49:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:49:00,348 INFO timings {'fetch_1m': 0.294, 'scan': 0.294, 'discord': 0.0, 'total': 0.294}
-2026-10-14 18:50:00,979 INFO 14:50:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:50:00,979 INFO timings {'fetch_1m': 0.696, 'scan': 0.696, 'discord': 0.0, 'total': 0.697}
-2026-10-14 18:51:00,931 INFO 14:51:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:51:00,931 INFO timings {'fetch_1m': 0.638, 'scan': 0.638, 'discord': 0.0, 'total': 0.638}
-2026-10-14 18:52:00,614 INFO 14:52:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:52:00,614 INFO timings {'fetch_1m': 0.339, 'scan': 0.339, 'discord': 0.0, 'total': 0.34}
-2026-10-14 18:53:00,811 INFO 14:53:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:53:00,811 INFO timings {'fetch_1m': 0.522, 'scan': 0.522, 'discord': 0.0, 'total': 0.522}
-2026-10-14 18:54:00,608 INFO 14:54:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:54:00,609 INFO timings {'fetch_1m': 0.312, 'scan': 0.312, 'discord': 0.0, 'total': 0.313}
-2026-10-14 18:55:00,271 INFO 14:55:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:55:00,272 INFO timings {'fetch_1m': 0.221, 'scan': 0.221, 'discord': 0.0, 'total': 0.222}
-2026-10-14 18:56:00,296 INFO 14:56:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:56:00,297 INFO timings {'fetch_1m': 0.243, 'scan': 0.243, 'discord': 0.0, 'total': 0.244}
-2026-10-14 18:57:00,490 INFO 14:57:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:57:00,490 INFO timings {'fetch_1m': 0.215, 'scan': 0.215, 'discord': 0.0, 'total': 0.216}
-2026-10-14 18:58:00,544 INFO 14:58:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:58:00,544 INFO timings {'fetch_1m': 0.274, 'scan': 0.274, 'discord': 0.0, 'total': 0.274}
-2026-10-14 18:59:00,544 INFO 14:59:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 18:59:00,545 INFO timings {'fetch_1m': 0.261, 'scan': 0.261, 'discord': 0.0, 'total': 0.262}
-2026-10-14 19:00:00,615 INFO 15:00:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:00:00,615 INFO timings {'fetch_1m': 0.34, 'scan': 0.34, 'discord': 0.0, 'total': 0.34}
-2026-10-14 19:01:01,125 INFO 15:01:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:01:01,125 INFO timings {'fetch_1m': 0.838, 'scan': 0.838, 'discord': 0.0, 'total': 0.839}
-2026-10-14 19:02:00,963 INFO 15:02:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:02:00,963 INFO timings {'fetch_1m': 0.688, 'scan': 0.688, 'discord': 0.0, 'total': 0.688}
-2026-10-14 19:03:00,731 INFO 15:03:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:03:00,731 INFO timings {'fetch_1m': 0.45, 'scan': 0.45, 'discord': 0.0, 'total': 0.451}
-2026-10-14 19:04:00,643 INFO 15:04:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:04:00,643 INFO timings {'fetch_1m': 0.369, 'scan': 0.369, 'discord': 0.0, 'total': 0.37}
-2026-10-14 19:05:00,664 INFO 15:05:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:05:00,664 INFO timings {'fetch_1m': 0.383, 'scan': 0.383, 'discord': 0.0, 'total': 0.383}
-2026-10-14 19:06:02,583 INFO 15:06:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:06:02,584 INFO timings {'fetch_1m': 0.531, 'scan': 0.531, 'discord': 0.0, 'total': 0.532}
-2026-10-14 19:07:00,640 INFO 15:07:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:07:00,640 INFO timings {'fetch_1m': 0.349, 'scan': 0.349, 'discord': 0.0, 'total': 0.349}
-2026-10-14 19:08:00,637 INFO 15:08:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:08:00,637 INFO timings {'fetch_1m': 0.35, 'scan': 0.35, 'discord': 0.0, 'total': 0.351}
-2026-10-14 19:09:02,817 INFO 15:09:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:09:02,817 INFO timings {'fetch_1m': 0.521, 'scan': 0.521, 'discord': 0.0, 'total': 0.521}
-2026-10-14 19:10:01,437 INFO 15:10:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:10:01,438 INFO timings {'fetch_1m': 1.125, 'scan': 1.126, 'discord': 0.0, 'total': 1.126}
-2026-10-14 19:11:00,896 INFO 15:11:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:11:00,896 INFO timings {'fetch_1m': 0.826, 'scan': 0.826, 'discord': 0.0, 'total': 0.827}
-2026-10-14 19:12:00,789 INFO 15:12:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:12:00,789 INFO timings {'fetch_1m': 0.483, 'scan': 0.484, 'discord': 0.0, 'total': 0.484}
-2026-10-14 19:13:00,600 INFO 15:13:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:13:00,600 INFO timings {'fetch_1m': 0.331, 'scan': 0.331, 'discord': 0.0, 'total': 0.332}
-2026-10-14 19:14:00,699 INFO 15:14:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:14:00,700 INFO timings {'fetch_1m': 0.414, 'scan': 0.414, 'discord': 0.0, 'total': 0.415}
-2026-10-14 19:15:00,577 INFO 15:15:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:15:00,577 INFO timings {'fetch_1m': 0.282, 'scan': 0.282, 'discord': 0.0, 'total': 0.282}
-2026-10-14 19:16:01,119 INFO 15:16:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:16:01,119 INFO timings {'fetch_1m': 0.842, 'scan': 0.842, 'discord': 0.0, 'total': 0.842}
-2026-10-14 19:17:00,892 INFO 15:17:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:17:00,892 INFO timings {'fetch_1m': 0.624, 'scan': 0.624, 'discord': 0.0, 'total': 0.624}
-2026-10-14 19:18:01,152 INFO 15:18:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:18:01,152 INFO timings {'fetch_1m': 0.861, 'scan': 0.861, 'discord': 0.0, 'total': 0.861}
-2026-10-14 19:19:00,907 INFO 15:19:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:19:00,907 INFO timings {'fetch_1m': 0.621, 'scan': 0.621, 'discord': 0.0, 'total': 0.622}
-2026-10-14 19:20:00,766 INFO 15:20:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:20:00,766 INFO timings {'fetch_1m': 0.456, 'scan': 0.456, 'discord': 0.0, 'total': 0.456}
-2026-10-14 19:21:00,928 INFO 15:21:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:21:00,928 INFO timings {'fetch_1m': 0.634, 'scan': 0.634, 'discord': 0.0, 'total': 0.635}
-2026-10-14 19:22:00,606 INFO 15:22:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:22:00,606 INFO timings {'fetch_1m': 0.552, 'scan': 0.552, 'discord': 0.0, 'total': 0.552}
-2026-10-14 19:23:00,721 INFO 15:23:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:23:00,722 INFO timings {'fetch_1m': 0.418, 'scan': 0.418, 'discord': 0.0, 'total': 0.419}
-2026-10-14 19:24:00,970 INFO 15:24:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:24:00,970 INFO timings {'fetch_1m': 0.681, 'scan': 0.681, 'discord': 0.0, 'total': 0.682}
-2026-10-14 19:25:03,390 INFO 15:25:02 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:25:03,390 INFO timings {'fetch_1m': 1.115, 'scan': 1.116, 'discord': 0.0, 'total': 1.116}
-2026-10-14 19:26:00,953 INFO 15:26:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:26:00,954 INFO timings {'fetch_1m': 0.68, 'scan': 0.68, 'discord': 0.0, 'total': 0.68}
-2026-10-14 19:27:00,400 INFO 15:27:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:27:00,400 INFO timings {'fetch_1m': 0.352, 'scan': 0.352, 'discord': 0.0, 'total': 0.353}
-2026-10-14 19:28:00,532 INFO 15:28:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:28:00,532 INFO timings {'fetch_1m': 0.238, 'scan': 0.239, 'discord': 0.0, 'total': 0.239}
-2026-10-14 19:29:00,546 INFO 15:29:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:29:00,546 INFO timings {'fetch_1m': 0.273, 'scan': 0.273, 'discord': 0.0, 'total': 0.273}
-2026-10-14 19:30:00,609 INFO 15:30:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
-2026-10-14 19:30:00,609 INFO timings {'fetch_1m': 0.306, 'scan': 0.306, 'discord': 0.0, 'total': 0.306}
-2026-10-14 19:30:05,617 INFO Stream session over at 15:30:05 ET.
+2026-10-14 19:30:45,984 INFO Day-trade strategy: bigtech
+2026-10-14 19:31:04,923 INFO Polling every 60s until 16:10 ET or for 320 min
+2026-10-14 19:31:07,097 INFO Streaming 10 symbols
+2026-10-14 19:32:00,708 INFO 15:32:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:32:00,708 INFO timings {'fetch_1m': 0.418, 'scan': 0.418, 'discord': 0.0, 'total': 0.419}
+2026-10-14 19:33:00,712 INFO 15:33:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:33:00,713 INFO timings {'fetch_1m': 0.43, 'scan': 0.43, 'discord': 0.0, 'total': 0.43}
+2026-10-14 19:34:00,689 INFO 15:34:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:34:00,689 INFO timings {'fetch_1m': 0.384, 'scan': 0.384, 'discord': 0.0, 'total': 0.385}
+2026-10-14 19:35:00,779 INFO 15:35:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:35:00,779 INFO timings {'fetch_1m': 0.461, 'scan': 0.461, 'discord': 0.0, 'total': 0.462}
+2026-10-14 19:36:01,256 INFO 15:36:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:36:01,256 INFO timings {'fetch_1m': 0.946, 'scan': 0.947, 'discord': 0.0, 'total': 0.947}
+2026-10-14 19:37:00,958 INFO 15:37:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:37:00,958 INFO timings {'fetch_1m': 0.646, 'scan': 0.646, 'discord': 0.0, 'total': 0.646}
+2026-10-14 19:38:00,582 INFO 15:38:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:38:00,582 INFO timings {'fetch_1m': 0.511, 'scan': 0.512, 'discord': 0.0, 'total': 0.512}
+2026-10-14 19:39:00,809 INFO 15:39:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:39:00,809 INFO timings {'fetch_1m': 0.496, 'scan': 0.497, 'discord': 0.0, 'total': 0.497}
+2026-10-14 19:40:01,371 INFO 15:40:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:40:01,371 INFO timings {'fetch_1m': 1.078, 'scan': 1.078, 'discord': 0.0, 'total': 1.079}
+2026-10-14 19:41:01,933 INFO 15:41:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:41:01,933 INFO timings {'fetch_1m': 1.627, 'scan': 1.627, 'discord': 0.0, 'total': 1.627}
+2026-10-14 19:42:00,614 INFO 15:42:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:42:00,614 INFO timings {'fetch_1m': 0.546, 'scan': 0.546, 'discord': 0.0, 'total': 0.546}
+2026-10-14 19:43:00,555 INFO 15:43:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:43:00,556 INFO timings {'fetch_1m': 0.255, 'scan': 0.255, 'discord': 0.0, 'total': 0.255}
+2026-10-14 19:44:00,551 INFO 15:44:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:44:00,551 INFO timings {'fetch_1m': 0.258, 'scan': 0.258, 'discord': 0.0, 'total': 0.258}
+2026-10-14 19:45:00,658 INFO 15:45:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:45:00,658 INFO timings {'fetch_1m': 0.303, 'scan': 0.303, 'discord': 0.0, 'total': 0.304}
+2026-10-14 19:46:00,878 INFO 15:46:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:46:00,878 INFO timings {'fetch_1m': 0.547, 'scan': 0.547, 'discord': 0.0, 'total': 0.547}
+2026-10-14 19:47:00,784 INFO 15:47:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:47:00,784 INFO timings {'fetch_1m': 0.482, 'scan': 0.482, 'discord': 0.0, 'total': 0.483}
+2026-10-14 19:48:00,731 INFO 15:48:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:48:00,731 INFO timings {'fetch_1m': 0.412, 'scan': 0.412, 'discord': 0.0, 'total': 0.412}
+2026-10-14 19:49:00,823 INFO 15:49:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:49:00,823 INFO timings {'fetch_1m': 0.513, 'scan': 0.513, 'discord': 0.0, 'total': 0.514}
+2026-10-14 19:50:00,880 INFO 15:50:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:50:00,880 INFO timings {'fetch_1m': 0.274, 'scan': 0.274, 'discord': 0.0, 'total': 0.274}
+2026-10-14 19:51:00,888 INFO 15:51:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:51:00,888 INFO timings {'fetch_1m': 0.551, 'scan': 0.551, 'discord': 0.0, 'total': 0.551}
+2026-10-14 19:52:00,620 INFO 15:52:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:52:00,620 INFO timings {'fetch_1m': 0.3, 'scan': 0.3, 'discord': 0.0, 'total': 0.3}
+2026-10-14 19:53:00,513 INFO 15:53:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:53:00,513 INFO timings {'fetch_1m': 0.421, 'scan': 0.421, 'discord': 0.0, 'total': 0.421}
+2026-10-14 19:54:00,951 INFO 15:54:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:54:00,951 INFO timings {'fetch_1m': 0.454, 'scan': 0.454, 'discord': 0.0, 'total': 0.455}
+2026-10-14 19:55:01,128 INFO 15:55:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:55:01,129 INFO timings {'fetch_1m': 0.458, 'scan': 0.458, 'discord': 0.0, 'total': 0.459}
+2026-10-14 19:56:00,726 INFO 15:56:00 ET · bars through — · 1 trade(s) today · 1 new message(s)
+
+🟢 SOLD · META PUTS · +0.78%
+Bought: 749.14 at 09:35 ET
+Sold: 739.11 at 15:55 ET
+Result: **+0.78%** of account
+Closed by: End of day (15:55)
+Stock move: +1.34%
+Stop · Target: 761.50 · 724.41
+Day Trades · ORB · Big Tech · Levels are the stock price · Signals only, not financial advice
+2026-10-14 19:56:00,987 INFO timings {'fetch_1m': 0.331, 'scan': 0.332, 'discord': 0.261, 'total': 0.593}
+2026-10-14 19:57:00,784 INFO 15:57:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:57:00,784 INFO timings {'fetch_1m': 0.286, 'scan': 0.286, 'discord': 0.0, 'total': 0.286}
+2026-10-14 19:58:00,799 INFO 15:58:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:58:00,799 INFO timings {'fetch_1m': 0.245, 'scan': 0.245, 'discord': 0.0, 'total': 0.245}
+2026-10-14 19:59:01,119 INFO 15:59:00 ET · bars through — · 1 trade(s) today · 0 new message(s)
+2026-10-14 19:59:01,119 INFO timings {'fetch_1m': 0.368, 'scan': 0.369, 'discord': 0.0, 'total': 0.369}
+2026-10-14 20:00:03,901 INFO ⏱ Signal delay: median 2s, slowest 2s
+2026-10-14 20:00:03,907 INFO 16:00:03 ET · bars through — · 1 trade(s) today · 1 new message(s)
+
+📊 Day Trades · Daily Report
+**Wednesday 14 October 2026**
+
+🟢 **META** Puts  ·  09:35 → 15:55  ·  End of day (15:55)  ·  **+0.91%**
+Today: **+0.91%**
+Win rate 100%
+1 won · 0 lost
+Last 5 days: **−0.36%**
+Win rate 50%
+4 won · 4 lost
+Last week (5–9 Oct): **−4.33%**
+Win rate 22%
+2 won · 7 lost
+October to date: **−2.77%**
+Win rate 42%
+5 won · 7 lost
+Each trade sized so a full stop = 1% of the account · Signals only, not financial advice
+2026-10-14 20:00:04,719 INFO timings {'fetch_1m': 0.563, 'scan': 0.563, 'discord': 0.811, 'total': 1.387}
+2026-10-14 20:10:00,856 INFO Stream session over at 16:10:00 ET.
