@@ -9,9 +9,10 @@
   "exits": [
     "IP-MS-orh-2026-10-14",
     "IP-BLK-orh-2026-10-14",
-    "IP-BAC-orl-2026-10-14"
+    "IP-BAC-orl-2026-10-14",
+    "IP-JNJ-orh-2026-10-14"
   ],
-  "summary": false,
+  "summary": true,
   "picks": true,
   "cards": {
     "IP-BLK-orh-2026-10-14": "1559923894809534488",

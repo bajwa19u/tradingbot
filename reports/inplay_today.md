@@ -1,9 +1,10 @@
 📊 **2026-10-14**
 
-**3 trades · 0 won, 3 lost · 0% win rate**
-**-3.16%**
+**4 trades · 1 won, 3 lost · 25% win rate**
+**-2.37%**
 ❌ BLK 09:35→09:59  -1.06%
 ❌ MS 09:36→09:44  -1.05%
+✅ JNJ 09:37→15:55  +0.79%
 ❌ BAC 09:52→10:31  -1.05%
 
 _Paper only. No orders were placed._
@@ -22,11 +23,12 @@ _Paper only. No orders were placed._
 `Exit     181.59`  hit stop
 **-1.05%** · _In-play · opening range_
 
-🟢 **NEW SIGNAL · LONG JNJ**  ·  09:37 ET
+✅ **CLOSED · WIN · LONG JNJ**  ·  09:37 → 15:55
 `Entry    251.19`
 `SL       248.26`
 `TP         none`  held until the stop or 15:55
-_In-play · opening range_
+`Exit     253.49`  close
+**+0.79%** · _In-play · opening range_
 
 ❌ **CLOSED · LOSS · SHORT BAC**  ·  09:52 → 10:31
 `Entry     49.53`
