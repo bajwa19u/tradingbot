@@ -1,1 +1,5 @@
-**Live check 2026-10-14 15:11 ET** — nothing at its level. 48 min to the close.
+**Live check — 2026-10-15 09:44 ET** · 375 min to the close
+
+⚪ right at the level — **TTD** `$12.46` vs level `$12.47` (-0.2%) · volume 10% of what it needs
+
+⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
