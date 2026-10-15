@@ -1,18 +1,18 @@
 📊 **2026-10-15**
 
-**1 trade · 0 won, 1 lost · 0% win rate**
-**-1.04%**
+**2 trades · 1 won, 1 lost · 50% win rate**
+**-0.61%**
+✅ META 09:36→15:55  +0.43%
 ❌ NVDA 09:42→09:55  -1.04%
 
 _Paper only. No orders were placed._
 
-🟢 **NEW SIGNAL · LONG META**  ·  09:36 ET
+✅ **CLOSED · WIN · LONG META**  ·  09:36 → 15:55
 `Entry    730.41`
 `SL       715.14`
 `TP       760.93`
-R:R 1:2.0 · risk 2.09% of price · signal 09:37:00 ET
-opening volume 1.5x normal · range 0.61 of daily ATR · gap -1.6% · break-minute volume 2.2x
-_ORB · Big Tech · out by 15:55_
+`Exit     737.35`  closed at the bell
+**+0.43%** · _ORB · Big Tech_
 
 ❌ **CLOSED · LOSS · LONG NVDA**  ·  09:42 → 09:55
 `Entry    215.90`

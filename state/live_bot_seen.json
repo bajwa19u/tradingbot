@@ -5,9 +5,10 @@
     "ORB-NVDA-2026-10-15"
   ],
   "exits": [
-    "ORB-NVDA-2026-10-15"
+    "ORB-NVDA-2026-10-15",
+    "ORB-META-2026-10-15"
   ],
-  "summary": false,
+  "summary": true,
   "strategy": "bigtech",
   "cards": {
     "ORB-META-2026-10-15": "1560285620780142603",
