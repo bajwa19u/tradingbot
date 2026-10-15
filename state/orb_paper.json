@@ -40,7 +40,15 @@
    "vwap_ok": true,
    "spy_ok": false,
    "qqq_ok": false,
-   "same_side_10m": 0
+   "same_side_10m": 0,
+   "exit_bar": "09:44",
+   "exit_reason": "stop",
+   "result_pct": -1.34,
+   "win": false,
+   "entry_cost_pct": -0.066,
+   "exit_cost_pct": 0.021,
+   "result_real_pct": -1.195,
+   "backtest_agrees": "yes"
   },
   {
    "date": "2026-10-15",
@@ -68,7 +76,15 @@
    "vwap_ok": true,
    "spy_ok": true,
    "qqq_ok": true,
-   "same_side_10m": 1
+   "same_side_10m": 1,
+   "exit_bar": "15:55",
+   "exit_reason": "bell",
+   "result_pct": 5.347,
+   "win": true,
+   "entry_cost_pct": 0.107,
+   "exit_cost_pct": -0.003,
+   "result_real_pct": 5.343,
+   "backtest_agrees": "yes"
   },
   {
    "date": "2026-10-15",
@@ -96,7 +112,15 @@
    "vwap_ok": true,
    "spy_ok": true,
    "qqq_ok": true,
-   "same_side_10m": 0
+   "same_side_10m": 0,
+   "exit_bar": "11:04",
+   "exit_reason": "stop",
+   "result_pct": -2.605,
+   "win": false,
+   "entry_cost_pct": -0.132,
+   "exit_cost_pct": 0.035,
+   "result_real_pct": -2.409,
+   "backtest_agrees": "yes"
   },
   {
    "date": "2026-10-15",
@@ -124,7 +148,15 @@
    "vwap_ok": true,
    "spy_ok": true,
    "qqq_ok": true,
-   "same_side_10m": 0
+   "same_side_10m": 0,
+   "exit_bar": "10:48",
+   "exit_reason": "stop",
+   "result_pct": -2.807,
+   "win": false,
+   "entry_cost_pct": -0.277,
+   "exit_cost_pct": 0.043,
+   "result_real_pct": -2.473,
+   "backtest_agrees": "yes"
   },
   {
    "date": "2026-10-15",
@@ -152,7 +184,15 @@
    "vwap_ok": true,
    "spy_ok": true,
    "qqq_ok": true,
-   "same_side_10m": 2
+   "same_side_10m": 2,
+   "exit_bar": "15:55",
+   "exit_reason": "bell",
+   "result_pct": 0.324,
+   "win": true,
+   "entry_cost_pct": -0.02,
+   "exit_cost_pct": 0.007,
+   "result_real_pct": 0.436,
+   "backtest_agrees": "yes"
   },
   {
    "date": "2026-10-15",
@@ -180,7 +220,15 @@
    "vwap_ok": true,
    "spy_ok": true,
    "qqq_ok": true,
-   "same_side_10m": 3
+   "same_side_10m": 3,
+   "exit_bar": "09:55",
+   "exit_reason": "stop",
+   "result_pct": -1.351,
+   "win": false,
+   "entry_cost_pct": -0.005,
+   "exit_cost_pct": 0.005,
+   "result_real_pct": -1.251,
+   "backtest_agrees": "yes"
   },
   {
    "date": "2026-10-15",
@@ -208,8 +256,16 @@
    "vwap_ok": true,
    "spy_ok": false,
    "qqq_ok": false,
-   "same_side_10m": 2
+   "same_side_10m": 2,
+   "exit_bar": "09:51",
+   "exit_reason": "stop",
+   "result_pct": -1.054,
+   "win": false,
+   "entry_cost_pct": -0.046,
+   "exit_cost_pct": 0.011,
+   "result_real_pct": -0.919,
+   "backtest_agrees": "yes"
   }
  ],
- "settled": false
+ "settled": true
 }

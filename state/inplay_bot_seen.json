@@ -9,9 +9,10 @@
   "exits": [
     "IP-SHW-orh-2026-10-15",
     "IP-WMT-orh-2026-10-15",
-    "IP-CAT-orl-2026-10-15"
+    "IP-CAT-orl-2026-10-15",
+    "IP-SHOP-orh-2026-10-15"
   ],
-  "summary": false,
+  "summary": true,
   "picks": true,
   "cards": {
     "IP-CAT-orl-2026-10-15": "1560286369492901890",

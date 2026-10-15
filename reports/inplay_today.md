@@ -1,9 +1,10 @@
 📊 **2026-10-15**
 
-**3 trades · 0 won, 3 lost · 0% win rate**
-**-3.13%**
+**4 trades · 1 won, 3 lost · 25% win rate**
+**-0.27%**
 ❌ CAT 09:35→10:38  -1.03%
 ❌ WMT 09:35→09:42  -1.05%
+✅ SHOP 09:36→15:55  +2.86%
 ❌ SHW 09:36→09:40  -1.05%
 
 _Paper only. No orders were placed._
@@ -22,11 +23,12 @@ _Paper only. No orders were placed._
 `Exit     120.13`  hit stop
 **-1.05%** · _In-play · opening range_
 
-🟢 **NEW SIGNAL · LONG SHOP**  ·  09:36 ET
+✅ **CLOSED · WIN · LONG SHOP**  ·  09:36 → 15:55
 `Entry    168.89`
 `SL       165.74`
 `TP         none`  held until the stop or 15:55
-_In-play · opening range_
+`Exit     177.93`  close
+**+2.86%** · _In-play · opening range_
 
 ❌ **CLOSED · LOSS · LONG SHW**  ·  09:36 → 09:40
 `Entry    339.34`
