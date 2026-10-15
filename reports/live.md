@@ -1,4 +1,4 @@
-**Live check — 2026-10-15 13:32 ET** · 147 min to the close
+**Live check — 2026-10-15 14:05 ET** · 114 min to the close
 
 ⚪ above level, volume light — **TTD** `$13.01` vs level `$12.47` (+4.2%) · volume 68% of what it needs
 ⚪ right at the level — **RBLX** `$49.60` vs level `$50.11` (-1.0%) · volume 23% of what it needs
