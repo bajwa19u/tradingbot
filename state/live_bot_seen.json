@@ -1,15 +1,17 @@
 {
-  "date": "2026-10-14",
+  "date": "2026-10-15",
   "entries": [
-    "ORB-META-2026-10-14"
+    "ORB-META-2026-10-15",
+    "ORB-NVDA-2026-10-15"
   ],
   "exits": [
-    "ORB-META-2026-10-14"
+    "ORB-NVDA-2026-10-15"
   ],
-  "summary": true,
+  "summary": false,
   "strategy": "bigtech",
   "cards": {
-    "ORB-META-2026-10-14": "1559922732848906342"
+    "ORB-META-2026-10-15": "1560285620780142603",
+    "ORB-NVDA-2026-10-15": "1560287131119652959"
   },
   "expired": [],
   "stale_warned": "",
