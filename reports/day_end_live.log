@@ -1,3 +1,3 @@
-2026-10-15 20:49:57,365 INFO Day-trade strategy: bigtech
-2026-10-15 20:50:06,675 INFO 16:50:06 ET · bars through — · 2 trade(s) today · 0 new message(s)
-2026-10-15 20:50:06,675 INFO timings {'fetch_1m': 0.332, 'scan': 0.333, 'discord': 0.0, 'total': 0.333}
+2026-10-15 21:48:29,587 INFO Day-trade strategy: bigtech
+2026-10-15 21:48:37,492 INFO 17:48:37 ET · bars through — · 2 trade(s) today · 0 new message(s)
+2026-10-15 21:48:37,493 INFO timings {'fetch_1m': 0.116, 'scan': 0.116, 'discord': 0.0, 'total': 0.116}
