@@ -1,5 +1,1 @@
-**Live check — 2026-10-16 11:33 ET** · 266 min to the close
-
-⚪ right at the level — **UPST** `$24.43` vs level `$24.75` (-1.3%) · volume 31% of what it needs
-
-⚠️ **Not a trade yet.** The tested rule enters at the CLOSING price. Anything here can fall back below its level before 16:00, and intraday breaks that fail are the main way this setup loses. The 17:30 run is what counts.
+**Live check 2026-10-16 12:09 ET** — nothing at its level. 230 min to the close.
