@@ -1,22 +1,18 @@
-📊 **2026-10-15**
+📊 **2026-10-16** — no trades today.
+_Quiet days are normal for this setup._
 
-**2 trades · 1 won, 1 lost · 50% win rate**
-**-0.61%**
-✅ META 09:36→15:55  +0.43%
-❌ NVDA 09:42→09:55  -1.04%
+🔴 **NEW SIGNAL · SHORT AAPL**  ·  09:35 ET
+`Entry    343.89`
+`SL       347.92`
+`TP       335.82`
+R:R 1:2.0 · risk 1.17% of price · signal 09:36:00 ET
+opening volume 1.0x normal · range 0.57 of daily ATR · gap +1.2% · break-minute volume 1.0x
+_ORB · Big Tech · out by 15:55_
 
-_Paper only. No orders were placed._
-
-✅ **CLOSED · WIN · LONG META**  ·  09:36 → 15:55
-`Entry    730.41`
-`SL       715.14`
-`TP       760.93`
-`Exit     737.35`  closed at the bell
-**+0.43%** · _ORB · Big Tech_
-
-❌ **CLOSED · LOSS · LONG NVDA**  ·  09:42 → 09:55
-`Entry    215.90`
-`SL       213.09`
-`TP       221.52`
-`Exit     213.09`  hit stop
-**-1.04%** · _ORB · Big Tech_
+🔴 **NEW SIGNAL · SHORT MSFT**  ·  09:37 ET
+`Entry    539.00`
+`SL       544.05`
+`TP       528.91`
+R:R 1:2.0 · risk 0.94% of price · signal 09:38:00 ET
+opening volume 0.8x normal · range 0.36 of daily ATR · gap +0.3% · break-minute volume 1.4x
+_ORB · Big Tech · out by 15:55_
