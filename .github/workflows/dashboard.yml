@@ -1,0 +1,37 @@
+name: Dashboard
+# Rebuilds the analytics dashboard (reports/dashboard.html, .json, .md) from the
+# records the other jobs commit: the channel ledgers, the paper records, the
+# month replay, the latency log and this repo's Actions run history.
+# Reads files and the Actions API only. Posts nothing, trades nothing, needs no
+# market data and no secrets beyond the job's own read token.
+#
+# 19:05 ET in summer (18:05 in winter): after the last day-end catch-up (22:20 UTC)
+# and the month replay (22:10 UTC), so the day is complete.
+on:
+  schedule:
+    - cron: "5 23 * * 1-5"
+  workflow_dispatch:
+concurrency: { group: dashboard, cancel-in-progress: false }
+permissions:
+  contents: write
+  actions: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # The branch's latest commit, not the one this run was queued on (CLAUDE.md, 8 Oct audit).
+      - uses: actions/checkout@v5
+        with: { ref: "${{ github.ref_name }}" }
+      - uses: actions/setup-python@v6
+        with: { python-version: "3.12", cache: pip }
+      - run: pip install -r requirements.txt
+      - run: python -m src.dashboard
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          DAYTRADE_STRATEGY: ${{ vars.DAYTRADE_STRATEGY }}
+      - name: commit
+        run: |
+          git config user.name "github-actions[bot]"; git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/dashboard.html reports/dashboard.json reports/dashboard.md
+          git diff --cached --quiet || (git commit -m "dashboard [skip ci]" && for i in 1 2 3 4 5; do git pull --rebase && git push && break; sleep 5; done)

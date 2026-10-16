@@ -19,6 +19,10 @@ from .config import REPO_ROOT
 
 STATE = REPO_ROOT / "state"
 COLS = ["id", "date", "symbol", "side", "entry_time", "exit_time", "entry", "exit", "reason", "pct", "source"]
+# Added 15 Oct 2026 for the dashboard's trade explorer: the plan and the setup
+# conditions the bots already compute. Rows written before then leave them blank,
+# which the dashboard shows as "not recorded" (never as zero).
+EXTRA = ["stop", "target", "setup", "level", "rvol", "or_width_atr", "gap_pct", "vwap_ok", "spy_ok"]
 ET = "America/New_York"
 
 # 5 Oct 2026, day-trade channel: what was actually posted (reports/live_corrections.md)
@@ -48,9 +52,13 @@ def append(channel: str, trades: list[dict], date: str, source: str = "live") ->
     old = load(channel)
     new = [dict(id=t["id"], date=date, symbol=t["symbol"], side=t["side"], entry_time=t.get("entry_time"),
                 exit_time=t.get("exit_time"), entry=t.get("entry"), exit=t.get("exit"), reason=t.get("reason"),
-                pct=t.get("pct"), source=t.get("source", source))
+                pct=t.get("pct"), source=t.get("source", source),
+                stop=t.get("stop"), target=t.get("target"), setup=t.get("setup"), level=t.get("level"),
+                rvol=t.get("rvol5", t.get("rvol")), or_width_atr=t.get("or_width_atr"), gap_pct=t.get("gap"),
+                vwap_ok=t.get("vwap_ok"), spy_ok=t.get("spy_ok"))
            for t in trades if t.get("exit") is not None and t["id"] not in set(old["id"])]
-    out = pd.concat([old, pd.DataFrame(new, columns=COLS)], ignore_index=True) if new else old
+    out = pd.concat([old, pd.DataFrame(new, columns=COLS + EXTRA)], ignore_index=True) if new else old
+    out = out[[c for c in COLS + EXTRA if c in out.columns] + [c for c in out.columns if c not in COLS + EXTRA]]
     out = out.sort_values(["date", "entry_time"], kind="stable")
     STATE.mkdir(exist_ok=True)
     out.to_csv(path(channel), index=False)

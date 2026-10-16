@@ -129,7 +129,16 @@ preearn-screen.yml   the two-gate earnings screen
 smoke.yml            09:00 ET, can the paper account trade today
 live-open.yml        the open, polling
 live-bot.yml         the rest of the session
+dashboard.yml        19:05 ET, rebuilds reports/dashboard.{html,json,md}
 ```
+
+**The dashboard** (`src/dashboard.py`, page template `tools/dashboard_template.html`)
+reads the ledgers, paper records, month replay, research JSONs, latency log and
+Actions run history, and writes one self-contained page. `metrics()` is the one
+calculation; the page carries a port and `tests/test_dashboard.py` checks they
+agree. Books are never summed across each other (units differ). Run it locally
+with `python -m src.dashboard` (uses `gh` for run history, or `--no-actions`)
+and open `reports/dashboard.html`.
 
 `python -m pytest -q` works locally and should stay green.
 
