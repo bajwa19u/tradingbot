@@ -1,7 +1,8 @@
 {
-  "date": "2026-10-15",
+  "date": "2026-10-16",
   "seen": {
-    "TTD": "above_light_volume",
-    "RBLX": "above_light_volume"
+    "UPST": "at_the_level",
+    "TTD": "at_the_level",
+    "RBLX": "at_the_level"
   }
 }
