@@ -40,7 +40,15 @@
    "vwap_ok": true,
    "spy_ok": true,
    "qqq_ok": true,
-   "same_side_10m": 0
+   "same_side_10m": 0,
+   "exit_bar": "15:55",
+   "exit_reason": "bell",
+   "result_pct": 0.082,
+   "win": true,
+   "entry_cost_pct": 0.318,
+   "exit_cost_pct": 0.03,
+   "result_real_pct": -0.166,
+   "backtest_agrees": "yes"
   },
   {
    "date": "2026-10-16",
@@ -68,8 +76,16 @@
    "vwap_ok": true,
    "spy_ok": true,
    "qqq_ok": true,
-   "same_side_10m": 1
+   "same_side_10m": 1,
+   "exit_bar": "09:55",
+   "exit_reason": "stop",
+   "result_pct": -1.706,
+   "win": false,
+   "entry_cost_pct": 0.099,
+   "exit_cost_pct": 0.042,
+   "result_real_pct": -1.746,
+   "backtest_agrees": "yes"
   }
  ],
- "settled": false
+ "settled": true
 }

@@ -10,9 +10,12 @@
   ],
   "exits": [
     "IP-MCD-orh-2026-10-16",
-    "IP-HON-orh-2026-10-16"
+    "IP-HON-orh-2026-10-16",
+    "IP-TRV-orh-2026-10-16",
+    "IP-SBUX-orh-2026-10-16",
+    "IP-ALL-orh-2026-10-16"
   ],
-  "summary": false,
+  "summary": true,
   "picks": true,
   "cards": {
     "IP-TRV-orh-2026-10-16": "1560648783803719691",
