@@ -12,6 +12,7 @@ swing `reports/audit_swing.md` in bajwa19u/vwap-ema-swing (its PR). Same file in
 | untouched data | 2024-25 year -0.020% (272 trades); forward -0.023% (16) | forward 1 trade; holdout was used as a veto, so optimistic |
 | strategy changes promoted | none (5 pre-registered, all failed) | none (none justified by evidence; settled list not re-tested) |
 | fixes | late signals (REST lag), 10:05 blind window | weekly retune broken + could change live rule on noise, stale-checkout, options model and README wrong |
+| on the live bot's own data | backtest matches all 13 posted/replayed trades 6-16 Oct | holdout +1.65% a trade (225 trades); the 17-min delay costs ~0.04% a trade |
 | recommendation | observation only, or switch the channel back; do not trade it | keep as signals; validate on the live-data record first |
 
 ## Before / After table
