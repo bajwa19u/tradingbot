@@ -1,6 +1,6 @@
 # Paper account
 
-**Forward test since 2026-09-28 · bars through 2026-10-15 · 35 symbols · generated 2026-10-15 21:56**
+**Forward test since 2026-09-28 · bars through 2026-10-16 · 35 symbols · generated 2026-10-16 21:54**
 
 Not a backtest. These are the trades the rule would have taken since the day it was chosen, on bars it had never seen when the choice was made.
 
@@ -18,19 +18,19 @@ Sized at 1% of $2,000 risked per trade.
 
 | Symbol | Entered | Entry | Stop | Target | Shares | Best so far |
 |---|---|---|---|---|---|---|
-| **ABNB** | 2026-10-15 | $174.36 | $156.43 | $228.15 | 1 | 0.0R |
+| **ABNB** | 2026-10-15 | $174.36 | $156.43 | $228.15 | 1 | 0.13R |
 | **AFRM** | 2026-10-09 | $80.73 | $66.21 | $124.28 | 1 | 0.04R |
 | **FSLR** | 2026-10-13 | $186.85 | $166.59 | $247.64 | — too small | 0.0R |
 | **PLTR** | 2026-10-09 | $209.13 | $182.95 | $287.70 | — too small | 0.14R |
-| **TTD** | 2026-10-15 | $13.12 | $11.46 | $18.08 | 12 | 0.0R |
+| **TTD** | 2026-10-15 | $13.12 | $11.46 | $18.08 | 12 | 0.11R |
 | **U** | 2026-10-05 | $45.72 | $37.85 | $69.33 | 2 | 0.26R |
 | **ZM** | 2026-10-01 | $93.87 | $84.47 | $122.05 | 2 | 0.64R |
 
-- **ABNB** — Coiled 10 days inside $157.82–$167.39 (2.1x ATR, tight), then closed above $167.39 on 1.5x normal volume. Daily range 2.7% — volatile enough to move.
+- **ABNB** — Coiled 10 days inside $157.82–$167.39 (2.1x ATR, tight), then closed above $167.39 on 1.7x normal volume. Daily range 2.7% — volatile enough to move.
 - **AFRM** — Coiled 10 days inside $67.16–$77.19 (3.2x ATR, tight), then closed above $77.19 on 1.8x normal volume. Daily range 3.9% — volatile enough to move.
 - **FSLR** — Coiled 10 days inside $168.80–$186.16 (2.4x ATR, tight), then closed above $186.16 on 1.2x normal volume. Daily range 3.9% — volatile enough to move.
 - **PLTR** — Coiled 10 days inside $184.91–$204.32 (3.0x ATR, tight), then closed above $204.32 on 2.4x normal volume. Daily range 3.1% — volatile enough to move.
-- **TTD** — Coiled 10 days inside $11.62–$12.47 (1.6x ATR, tight), then closed above $12.47 on 1.3x normal volume. Daily range 4.1% — volatile enough to move.
+- **TTD** — Coiled 10 days inside $11.62–$12.47 (1.6x ATR, tight), then closed above $12.47 on 1.5x normal volume. Daily range 4.1% — volatile enough to move.
 - **U** — Coiled 10 days inside $38.47–$45.31 (3.3x ATR, tight), then closed above $45.31 on 1.1x normal volume. Daily range 4.5% — volatile enough to move.
 - **ZM** — Coiled 10 days inside $85.41–$93.33 (2.5x ATR, tight), then closed above $93.33 on 1.7x normal volume. Daily range 3.3% — volatile enough to move.
 
