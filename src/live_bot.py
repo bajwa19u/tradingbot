@@ -25,7 +25,7 @@ Three design choices that matter:
 The opening window is covered by a POLLING run, not by cron. GitHub's
 scheduled workflows are routinely several minutes late, which is survivable
 at 11am and useless at 09:31. One job starts before the bell and checks
-every forty-five seconds until 10:05; cron only has to be roughly on time
+every forty-five seconds until 10:35; cron only has to be roughly on time
 once, to start it.
 
 The day is REPLAYED in full on every run, and what has already been announced
@@ -77,7 +77,7 @@ log = logging.getLogger("live_bot")
 
 OPEN_T, CLOSE_T = "09:45", "15:55"      # the retest rule's window
 BELL = "09:30"                          # the opening rule's window starts here
-OPENING_LAST_RUN = "10:05"              # after this the polling job stops
+OPENING_LAST_RUN = "10:35"              # after this the polling job stops (live-open.yml --until)
 
 # The opening rule runs in OBSERVATION mode, and the distinction is the whole
 # point of this block.

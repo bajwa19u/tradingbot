@@ -6,7 +6,14 @@ name: Live bot — the open
 # survivable at 11am and useless at 09:31, which is exactly when the rule
 # this job exists for fires. So cron only has to be roughly on time once: it
 # starts this job before the bell, and the job then checks every forty-five
-# seconds on its own clock until 10:05 ET.
+# seconds on its own clock until 10:35 ET.
+#
+# 10:35, not 10:05 (audit, 17 Oct 2026): the five-minute job's cron is often
+# 8-21 minutes late, and when nothing was queued at 10:05 the bot was blind
+# until it started (gaps of 9, 21, 7, 14 and 9 minutes on 2, 9, 14, 15 and
+# 16 Oct, state/latency.jsonl) - stops and targets in that window were
+# posted late. Polling to 10:35 gives cron half an hour to queue the next
+# run, which takes over the moment this one exits.
 #
 # START EARLY, THEN WAIT. This job exists because GitHub's scheduler is
 # routinely minutes late, and on 29 September it proved the point by not
@@ -20,7 +27,7 @@ name: Live bot — the open
 #
 # The 13:xx and 14:xx pairs are the same time in summer and winter - UTC has
 # no daylight-saving awareness - and the one that is wrong for the season
-# starts, sees it is past 10:05 Eastern, and exits in seconds. The later pair
+# starts, sees it is past 10:35 Eastern, and exits in seconds. The later pair
 # is a backstop for a skipped first firing; if the first is still polling,
 # this one queues behind it and then exits immediately.
 #
@@ -42,7 +49,7 @@ on:
       until:
         description: "Poll until this Eastern time"
         required: false
-        default: "10:05"
+        default: "10:35"
       every:
         description: "Seconds between checks"
         required: false
@@ -62,7 +69,7 @@ permissions:
 jobs:
   open:
     runs-on: ubuntu-latest
-    timeout-minutes: 100
+    timeout-minutes: 130
     steps:
       # The branch's LATEST commit, not the one this run was queued on. A run
       # that waits in the concurrency queue otherwise starts from state that is
@@ -96,7 +103,7 @@ jobs:
           set -uo pipefail
           mkdir -p reports state
           touch /tmp/runmark
-          ARGS=(--until "${IN_UNTIL:-10:05}" --every "${IN_EVERY:-45}" --stream)
+          ARGS=(--until "${IN_UNTIL:-10:35}" --every "${IN_EVERY:-45}" --stream)
           if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
           if [ "${IN_FORCE:-false}" = "true" ]; then ARGS+=(--force); fi
           set +e

@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import json
 import logging
+import time
 
 import numpy as np
 import pandas as pd
@@ -46,6 +47,13 @@ RULES = {"inplay_orb": (CANDIDATE, "ORB · Stocks in Play"),
          "bigtech": (replace(CANDIDATE, universe="bigtech"), "ORB · Big Tech")}
 RULE, SETUP_NAME = RULES["inplay_orb"]
 PICKS_FILE = REPO_ROOT / "state" / "orb_live_picks.json"
+# The websocket wakes the bot as soon as a minute's bars arrive, but the bars
+# below are read over REST, which can trail the stream by a few seconds. A
+# read missing the minute that just closed forward-fills it, and the break is
+# then seen a whole minute late (4 of 9 big tech signals, 9-16 Oct 2026, were
+# posted 60 s after their bar). Re-read briefly instead of waiting a minute.
+LAG_RETRIES, LAG_WAIT_S = 4, 1.5
+_sleep = time.sleep
 _FEED: Feed | None = None
 
 
@@ -115,6 +123,12 @@ def scan(now: pd.Timestamp, md_factory, risk_pct: float, dry_run: bool = False
     syms = [s for s, _ in chosen]
     f.history(now.date(), syms + ["SPY", "QQQ"])
     D = f.today_days(syms + ["SPY", "QQQ"], now, k_end)
+    want = now.normalize() + pd.Timedelta(hours=9, minutes=30 + k_end - 1)   # the minute that just closed
+    for _ in range(LAG_RETRIES):
+        if f.laggard is None or f.laggard >= want:
+            break
+        _sleep(LAG_WAIT_S)
+        D = f.today_days(syms + ["SPY", "QQQ"], now, k_end)
     if "SPY" not in D or "QQQ" not in D:
         return [], f.newest
     sa, qa = D["SPY"].c > D["SPY"].vwap, D["QQQ"].c > D["QQQ"].vwap

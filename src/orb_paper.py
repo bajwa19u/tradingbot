@@ -81,6 +81,7 @@ class Feed:
         self.hist: dict[str, dict] = {}       # symbol -> {date: 5x390 array}, sessions before today
         self.hist_for = None
         self.newest: pd.Timestamp | None = None   # start time of the newest bar fetched today
+        self.laggard: pd.Timestamp | None = None  # the oldest "last closed bar" among the names read today
         self.quotes_md = None                     # SIP client for real costs at settle time (optional)
 
     # ------------------------------------------------------------------ data
@@ -114,7 +115,7 @@ class Feed:
         open_ts = now.normalize() + pd.Timedelta(hours=9, minutes=30)
         stamps = [df.index[-1].tz_convert(orr.EASTERN) for df in got.values() if df is not None and len(df)]
         self.newest = max(stamps) if stamps else None
-        out = {}
+        out, lasts = {}, []
         for s in symbols:
             df = got.get(s)
             prior = self.hist.get(s, {})
@@ -122,12 +123,15 @@ class Feed:
                 continue
             idx = df.index.tz_convert(orr.EASTERN)
             df = df[(idx >= open_ts) & (idx < open_ts + pd.Timedelta(minutes=k_end))]
+            if len(df):
+                lasts.append(df.index[-1].tz_convert(orr.EASTERN))
             arr = orr.to_days(df, min_bars=1).get(today)
             if arr is None:
                 continue
             days = {**prior, today: arr}
             ds = sorted(days)
             out[s] = orr.make_day(days, ds, len(ds) - 1, orr._true_ranges(days, ds))
+        self.laggard = min(lasts) if lasts else None
         return out
 
     # ------------------------------------------------------------------ the rule

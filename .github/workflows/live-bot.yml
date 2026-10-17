@@ -8,9 +8,11 @@ name: Live bot
 # POLLS, like the opening job. Cron is only what starts it. On 1 October the
 # "every five minutes" schedule ran at 10:13 and then not again until 10:35,
 # so signals arrived too old to trade and options were sold long after their
-# stop or target. One run now checks every 60 seconds for up to 320 minutes
+# stop or target. One run now checks every 60 seconds for up to 335 minutes
 # (GitHub stops any job at six hours); the next cron run waits in the
-# concurrency queue and takes over the moment this one exits.
+# concurrency queue and takes over the moment this one exits. 335 so a run
+# that takes over from the open job at 10:35 lasts to 16:10 instead of
+# handing over again at 15:55, the minute the bell exits are posted.
 #
 # The cron window is wide because UTC has no daylight-saving awareness; the
 # script checks real Eastern time and exits outside 09:45-16:10.
@@ -42,7 +44,7 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 345
+    timeout-minutes: 355
     steps:
       # The branch's LATEST commit, not the one this run was queued on. A run
       # that waits in the concurrency queue otherwise starts from state that is
@@ -73,7 +75,7 @@ jobs:
           set -uo pipefail
           mkdir -p reports state
           touch /tmp/runmark
-          ARGS=(--until 16:10 --every 60 --for 320 --stream)
+          ARGS=(--until 16:10 --every 60 --for 335 --stream)
           if [ "${IN_DRY:-false}" = "true" ]; then ARGS+=(--dry-run); fi
           if [ "${IN_FORCE:-false}" = "true" ]; then ARGS+=(--force); fi
           set +e

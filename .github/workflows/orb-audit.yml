@@ -1,0 +1,40 @@
+name: ORB audit
+# The profitability audit of the live day-trade rule (src/orb_audit.py):
+# baseline, reproduction, five pre-registered changes, the in-play re-check.
+# Runs on pushes to the audit branch that touch it, or by hand. Writes
+# reports/orb_audit.*. Posts nothing, trades nothing.
+on:
+  workflow_dispatch:
+  push:
+    branches: [profitability-audit]
+    paths: ["src/orb_audit.py", ".github/workflows/orb-audit.yml"]
+permissions: { contents: write }
+concurrency: { group: orb-audit, cancel-in-progress: false }
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v5
+        with: { ref: "${{ github.ref_name }}" }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/minute_iex_audit.pkl
+          key: minute-iex-audit-2024-09-03-2026-10-16
+      - run: python -m src.orb_audit
+        env: { ALPACA_API_KEY: "${{ secrets.ALPACA_API_KEY }}", ALPACA_API_SECRET: "${{ secrets.ALPACA_API_SECRET }}" }
+      - if: always() && steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: cache/minute_iex_audit.pkl
+          key: minute-iex-audit-2024-09-03-2026-10-16
+      - name: commit
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"; git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/orb_audit.md reports/orb_audit.json reports/orb_audit_trades.csv 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "orb audit [skip ci]" && for i in 1 2 3 4 5; do git pull --rebase && git push && break; sleep 5; done)
