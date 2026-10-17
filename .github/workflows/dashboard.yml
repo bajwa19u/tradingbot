@@ -1,7 +1,7 @@
 name: Dashboard
-# Rebuilds the analytics dashboard (reports/dashboard.html, .json, .md) from the
-# records the other jobs commit: the channel ledgers, the paper records, the
-# month replay, the latency log and this repo's Actions run history.
+# Rebuilds the dashboard (reports/dashboard.html, .json, .md): one record per bot,
+# the day-trade ledger and its backtest from this repo, the swing bot's ledger and
+# backtest from the public bajwa19u/vwap-ema-swing repo, and both repos' run history.
 # Reads files and the Actions API only. Posts nothing, trades nothing, needs no
 # market data and no secrets beyond the job's own read token.
 #
