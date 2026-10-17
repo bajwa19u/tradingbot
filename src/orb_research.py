@@ -171,6 +171,7 @@ class P:
     cluster_max: int = 99          # same-side signals allowed in any 10-minute span
     slip: float = 0.0005
     delay: int = 0                 # 1 = fill at the next minute's open
+    delay_fill: str = "open"       # open | close: with delay, fill at that minute's open or (a full minute late) its close
     gap: str = "any"               # any | with: only breaks in the direction of the overnight gap
     crowd: int = 0                 # min same-side signals in the last 10 min, itself included (prior-only)
     spy_trend: bool = False        # SPY's move since its open must agree with the trade's direction
@@ -279,7 +280,7 @@ def first_signal(x: Day, sa: np.ndarray, qa: np.ndarray, p: P, k_end: int, spy: 
         kk = k + p.delay
         if kk >= FLAT_IDX:
             return None
-        raw = x.c[k] if p.delay == 0 else x.o[kk]
+        raw = x.c[k] if p.delay == 0 else (x.c[kk] if p.delay_fill == "close" else x.o[kk])
         entry = raw * (1 + side * p.slip)
         stop = stop_for(x, k, side, p.stop, level)
         if side * (entry - stop) <= 0 or abs(entry - stop) / entry > p.max_risk:
