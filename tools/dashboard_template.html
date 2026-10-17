@@ -1,0 +1,517 @@
+<title>Trading Bot Desk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a trading desk on one screen. Period rail on top, the two bots side by
+   side as summary cards, then one bot's charts below (picked by card or tab).
+   Cool slate neutrals; each bot keeps one identity hue; green and red only on results. */
+:root {
+  --bg: #f4f6f9; --surface: #ffffff; --sunk: #eef1f5; --line: #e2e6ec; --line-2: #ccd3dc;
+  --ink: #111722; --ink-2: #47515f; --muted: #79828f;
+  --dt: #2a78d6; --sw: #b87400;
+  --gain: #12865a; --gain-soft: #e3f3eb; --loss: #cc3a3a; --loss-soft: #fbe9e9;
+  --bt-wash: rgba(110, 120, 135, 0.09); --shadow: 0 1px 2px rgba(17, 23, 34, 0.05), 0 4px 16px rgba(17, 23, 34, 0.04);
+  --sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --r: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1015; --surface: #151a21; --sunk: #1b2129; --line: #252c36; --line-2: #343d49;
+    --ink: #edf0f4; --ink-2: #b4bcc7; --muted: #848e9b;
+    --dt: #4a92ec; --sw: #e3a531;
+    --gain: #2bb57b; --gain-soft: rgba(43, 181, 123, 0.14); --loss: #ec6a6a; --loss-soft: rgba(236, 106, 106, 0.14);
+    --bt-wash: rgba(150, 160, 175, 0.08); --shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1015; --surface: #151a21; --sunk: #1b2129; --line: #252c36; --line-2: #343d49;
+  --ink: #edf0f4; --ink-2: #b4bcc7; --muted: #848e9b;
+  --dt: #4a92ec; --sw: #e3a531;
+  --gain: #2bb57b; --gain-soft: rgba(43, 181, 123, 0.14); --loss: #ec6a6a; --loss-soft: rgba(236, 106, 106, 0.14);
+  --bt-wash: rgba(150, 160, 175, 0.08); --shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--sans); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 20px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 20px; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--dt); outline-offset: 2px; }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.gain { color: var(--gain); } .loss { color: var(--loss); } .flat { color: var(--ink-2); }
+
+/* header */
+.top { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: end; justify-content: space-between; }
+.top h1 { margin: 0; font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; text-wrap: balance; }
+.top p { margin: 2px 0 0; color: var(--muted); font-size: 0.86rem; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.seg { display: inline-flex; background: var(--sunk); border: 1px solid var(--line); border-radius: 999px; padding: 3px; gap: 2px; flex-wrap: wrap; }
+.seg button { border: 0; background: none; padding: 6px 13px; border-radius: 999px; cursor: pointer; font-size: 0.86rem; font-weight: 500; color: var(--ink-2); }
+.seg button:hover { color: var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); font-weight: 600; }
+.seg.small button { padding: 4px 10px; font-size: 0.8rem; }
+
+/* bot cards */
+.bots { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.bot { position: relative; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 18px 18px 14px; cursor: pointer; display: grid; gap: 14px; min-width: 0; container-type: inline-size; transition: border-color .15s, box-shadow .15s; }
+.bot:hover { border-color: var(--line-2); }
+.bot[aria-pressed="true"] { border-color: var(--c); box-shadow: 0 0 0 1px var(--c), var(--shadow); }
+.bot-head { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.bot-name { display: flex; align-items: center; gap: 9px; font-weight: 650; font-size: 1.05rem; }
+.swatch { width: 10px; height: 10px; border-radius: 3px; background: var(--c); flex: none; }
+.bot-strat { margin: -8px 0 0; color: var(--ink-2); font-size: 0.86rem; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 0.76rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: var(--sunk); color: var(--ink-2); }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+.pill.ok::before { background: var(--gain); } .pill.failing { color: var(--loss); background: var(--loss-soft); } .pill.failing::before { background: var(--loss); }
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.tile { background: var(--sunk); border-radius: 9px; padding: 10px 12px; min-width: 0; }
+.tile .k { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+.tile .v { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: clamp(0.95rem, 5.1cqi, 1.6rem); font-weight: 500; line-height: 1.25; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile .s { font-size: 0.76rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile .sep { color: var(--muted); margin: 0 0.12em; }
+.wl { display: flex; height: 5px; border-radius: 3px; overflow: hidden; gap: 2px; margin-top: 6px; background: var(--line); }
+.wl i { display: block; } .wl .w { background: var(--gain); } .wl .l { background: var(--loss); }
+.spark { height: 46px; margin: -2px -4px 0; }
+.bot-foot { font-size: 0.78rem; color: var(--muted); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.bt-tag { display: inline-flex; align-items: center; gap: 6px; }
+.bt-tag::before { content: ""; width: 12px; height: 8px; border-radius: 2px; background: repeating-linear-gradient(135deg, var(--line-2) 0 2px, transparent 2px 4px); }
+
+/* detail */
+.detail { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: grid; gap: 18px; min-width: 0; }
+.detail-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; }
+.detail-head h2 { margin: 0; font-size: 1.15rem; letter-spacing: -0.01em; }
+.detail-head p { margin: 2px 0 0; color: var(--muted); font-size: 0.84rem; max-width: 70ch; }
+.tabs { display: inline-flex; gap: 4px; border-bottom: 1px solid var(--line); }
+.tabs button { border: 0; background: none; padding: 8px 12px; cursor: pointer; font-weight: 600; font-size: 0.9rem; color: var(--muted);
+  border-bottom: 2px solid transparent; margin-bottom: -1px; display: inline-flex; align-items: center; gap: 8px; }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--c); }
+.grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 16px; }
+.panel { border: 1px solid var(--line); border-radius: 10px; padding: 14px 14px 8px; min-width: 0; display: grid; gap: 6px; align-content: start; }
+.panel.wide { grid-column: 1 / -1; }
+.ph { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.ph h3 { margin: 0; font-size: 0.95rem; font-weight: 650; }
+.ph span { font-size: 0.78rem; color: var(--muted); }
+.chart { height: 300px; width: 100%; }
+.chart.tall { height: 340px; } .chart.short { height: 260px; }
+.empty { display: grid; place-items: center; text-align: center; color: var(--muted); font-size: 0.9rem; min-height: 160px; padding: 20px; }
+.tw { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
+th { text-align: left; font-weight: 600; font-size: 0.74rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; padding: 6px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 9px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td.r, th.r { text-align: right; }
+tr:last-child td { border-bottom: 0; }
+.chip { font-size: 0.72rem; padding: 2px 7px; border-radius: 999px; background: var(--sunk); color: var(--ink-2); font-weight: 600; }
+footer { color: var(--muted); font-size: 0.8rem; display: grid; gap: 6px; max-width: 90ch; }
+footer p { margin: 0; }
+@media (max-width: 760px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .chart { height: 260px; } .chart.tall { height: 280px; }
+  .detail { padding: 14px; }
+}
+@media (max-width: 420px) {
+  .bots { grid-template-columns: minmax(0, 1fr); }
+  .tile { padding: 9px 9px; }
+  .controls, #period { max-width: 100%; }
+  #period { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .seg button { padding: 5px 9px; white-space: nowrap; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Trading Bot Desk</h1>
+      <p id="sub"></p>
+    </div>
+    <div class="controls">
+      <div class="seg" id="period" role="group" aria-label="Period"></div>
+      <div class="seg small" id="theme" role="group" aria-label="Theme">
+        <button data-t="auto" aria-pressed="true">Auto</button><button data-t="light">Light</button><button data-t="dark">Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="bots" id="bots" aria-label="Bots"></section>
+
+  <section class="detail" id="detail" aria-label="Bot detail">
+    <div class="detail-head">
+      <div><h2 id="d-title"></h2><p id="d-sub"></p></div>
+      <div class="tabs" role="tablist" id="tabs" aria-label="Bot"></div>
+    </div>
+    <div class="grid">
+      <div class="panel wide" id="p-main">
+        <div class="ph"><h3 id="main-title">Profit over time</h3><span id="main-note"></span></div>
+        <div class="chart tall" id="c-equity"></div>
+        <div class="tw" id="today-list" hidden></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><h3 id="bars-title">Profit by day</h3><span id="bars-note"></span></div>
+        <div class="chart" id="c-bars"></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><h3>Winners vs losers</h3><span id="donut-note"></span></div>
+        <div class="chart" id="c-donut"></div>
+      </div>
+      <div class="panel wide">
+        <div class="ph"><h3>By ticker</h3>
+          <div class="seg small" id="tk-metric" role="group" aria-label="Ticker measure">
+            <button data-m="profit" aria-pressed="true">Profit</button><button data-m="win">Win %</button><button data-m="n">Trades</button>
+          </div></div>
+        <div class="chart" id="c-ticker"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<script>
+const D = /*__DASHBOARD_DATA__*/null;
+
+// ------------------------------------------------------------ the one metric (port of src/dashboard.py metrics)
+function metrics(rets) {
+  const r = [];
+  for (const v of rets) { const x = (v === null || v === undefined || typeof v === "boolean") ? NaN : Number(v); if (Number.isFinite(x)) r.push(x); }
+  const n = r.length, wins = r.filter(x => x > 0), losses = r.filter(x => x < 0);
+  const out = { n, wins: wins.length, losses: losses.length, flat: n - wins.length - losses.length,
+    win_rate: null, total: null, avg: null, avg_win: null, avg_loss: null, pf: null, max_dd: null, cur_dd: null,
+    sd: null, ci_low: null, ci_high: null, best: null, worst: null };
+  if (!n) return out;
+  let cum = 0, peak = 0, mdd = 0;
+  for (const x of r) { cum += x; peak = Math.max(peak, cum); mdd = Math.max(mdd, peak - cum); }
+  const sum = a => a.reduce((s, x) => s + x, 0), gl = -sum(losses);
+  Object.assign(out, { win_rate: 100 * wins.length / n, total: cum, avg: cum / n,
+    avg_win: wins.length ? sum(wins) / wins.length : null, avg_loss: losses.length ? sum(losses) / losses.length : null,
+    pf: gl > 0 ? sum(wins) / gl : null, max_dd: mdd, cur_dd: peak - cum, best: Math.max(...r), worst: Math.min(...r) });
+  if (n > 1) {
+    const mean = cum / n, sd = Math.sqrt(r.reduce((s, x) => s + (x - mean) ** 2, 0) / (n - 1)), half = 1.96 * sd / Math.sqrt(n);
+    Object.assign(out, { sd, ci_low: mean - half, ci_high: mean + half });
+  }
+  for (const k in out) if (typeof out[k] === "number" && !["n", "wins", "losses", "flat"].includes(k)) out[k] = Math.round(out[k] * 1e4) / 1e4;
+  return out;
+}
+// end metrics
+
+// ------------------------------------------------------------ dates and numbers
+const DAY = 864e5;
+const ts = s => Date.parse(s + "T00:00:00Z");
+const iso = t => new Date(t).toISOString().slice(0, 10);
+const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const WD = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const dShort = s => { const d = new Date(ts(s)); return `${d.getUTCDate()} ${MON[d.getUTCMonth()]}`; };
+const dLong = s => { const d = new Date(ts(s)); return `${WD[d.getUTCDay()]} ${d.getUTCDate()} ${MON[d.getUTCMonth()]} ${d.getUTCFullYear()}`; };
+const dDay = s => { const d = new Date(ts(s)); return `${WD[d.getUTCDay()]} ${d.getUTCDate()} ${MON[d.getUTCMonth()]}`; };
+const dMonth = s => { const d = new Date(ts(s)); return `${MON[d.getUTCMonth()]} ${d.getUTCFullYear()}`; };
+const withYear = (s, ref) => s.slice(0, 4) === ref.slice(0, 4) ? dShort(s) : `${dShort(s)} ${s.slice(0, 4)}`;
+const pct = (v, dp = 2) => v === null || v === undefined ? "–" : (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(Math.abs(v) >= 100 ? 1 : dp) + "%";
+const cls = v => v === null || v === undefined ? "" : v > 0 ? "gain" : v < 0 ? "loss" : "flat";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+// ------------------------------------------------------------ state
+const BOT_KEYS = Object.keys(D.bots);
+const COLOR = { daytrade: "--dt", swing: "--sw" };
+const PERIODS = [
+  { k: "today", label: "Today" },
+  { k: "week", label: "Week", days: 7, bucket: "day" },
+  { k: "month", label: "Month", days: 30, bucket: "day" },
+  { k: "quarter", label: "3 months", days: 91, bucket: "week" },
+  { k: "year", label: "Year", days: 365, bucket: "week" },
+  { k: "all", label: "All", bucket: "month" },
+];
+const store = { get(k, d) { try { return localStorage.getItem("desk:" + k) || d; } catch (e) { return d; } },
+                set(k, v) { try { localStorage.setItem("desk:" + k, v); } catch (e) {} } };
+const S = { period: store.get("period", "month"), bot: store.get("bot", BOT_KEYS[0]), tk: "profit", theme: store.get("theme", "auto") };
+if (!PERIODS.some(p => p.k === S.period)) S.period = "month";
+if (!D.bots[S.bot]) S.bot = BOT_KEYS[0];
+
+const tok = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const period = () => PERIODS.find(p => p.k === S.period);
+function inPeriod(t, p) {
+  if (p.k === "today") return t.date === D.as_of;
+  if (p.days) return t.date > iso(ts(D.as_of) - p.days * DAY);
+  return true;
+}
+const tradesOf = (bot, p = period()) => D.trades.filter(t => t.bot === bot && inPeriod(t, p));
+const isBacktest = (bot, date) => { const s = D.bots[bot].live_start; return !s || date < s; };
+
+function spanNote(bot, ts_) {
+  if (!ts_.length) return "";
+  const s = D.bots[bot].live_start, bt = ts_.filter(t => t.kind === "backtest"), real = ts_.filter(t => t.kind === "real");
+  if (real.length && bt.length) return `<span class="bt-tag">Backtest to ${dShort(iso(ts(s) - DAY))}</span><span>Posted live from ${dShort(s)}</span>`;
+  if (bt.length) return `<span class="bt-tag">Backtest (live from ${s ? dShort(s) : "not yet"})</span>`;
+  return `<span>Posted live</span>`;
+}
+
+// ------------------------------------------------------------ cards
+function statusPill(st) {
+  if (!st || st.state === "unknown") return `<span class="pill">Status unknown</span>`;
+  const when = st.last_run ? new Date(st.last_run).toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", minute: "2-digit" }) : "";
+  if (st.state === "failing") return `<span class="pill failing" title="Latest run of its workflow failed">Last run failed</span>`;
+  return `<span class="pill ok" title="Last successful run ${esc(when)} ET">Running${when ? " · " + esc(when) : ""}</span>`;
+}
+
+function renderCards() {
+  const p = period(), el = document.getElementById("bots");
+  el.innerHTML = BOT_KEYS.map(k => {
+    const b = D.bots[k], ts_ = tradesOf(k), m = metrics(ts_.map(t => t.ret));
+    const none = !m.n;
+    const empty = p.k === "today" ? `No trades closed ${dDay(D.as_of)}` : "No trades in this period";
+    const emptyShort = p.k === "today" ? "none today" : "none";
+    const wl = m.n ? `<div class="wl" aria-hidden="true"><i class="w" style="flex:${m.wins}"></i><i class="l" style="flex:${m.losses}"></i></div>` : "";
+    return `<button class="bot" data-bot="${k}" aria-pressed="${k === S.bot}" style="--c:var(${COLOR[k]})">
+      <div class="bot-head"><span class="bot-name"><span class="swatch"></span>${esc(b.name)}</span>${statusPill(b.status)}</div>
+      <p class="bot-strat">${esc(b.strategy)}</p>
+      <div class="tiles">
+        <div class="tile"><div class="k">Win %</div><div class="v">${none ? "–" : Math.round(m.win_rate) + "%"}</div><div class="s">${none ? emptyShort : `of ${m.n} trade${m.n === 1 ? "" : "s"}`}</div></div>
+        <div class="tile"><div class="k">Profit</div><div class="v ${cls(m.total)}">${pct(m.total)}</div><div class="s">${esc(b.unit)}</div></div>
+        <div class="tile"><div class="k">Won / lost</div><div class="v">${none ? "–" : `<span class="gain">${m.wins}</span><span class="sep">/</span><span class="loss">${m.losses}</span>`}</div>${wl || `<div class="s">&nbsp;</div>`}</div>
+      </div>
+      <div class="spark" id="spark-${k}" aria-hidden="true"></div>
+      <div class="bot-foot">${spanNote(k, ts_) || `<span>${empty}</span>`}</div>
+    </button>`;
+  }).join("");
+  el.querySelectorAll(".bot").forEach(b => b.addEventListener("click", () => selectBot(b.dataset.bot)));
+  BOT_KEYS.forEach(k => drawSpark(k));
+}
+
+// ------------------------------------------------------------ charts
+const charts = {};
+function chart(id) {
+  const el = document.getElementById(id);
+  if (!charts[id] || charts[id].getDom() !== el) { charts[id]?.dispose(); charts[id] = echarts.init(el, null, { renderer: "canvas" }); }
+  return charts[id];
+}
+function base() {
+  const ink2 = tok("--ink-2"), muted = tok("--muted"), line = tok("--line");
+  return {
+    textStyle: { fontFamily: tok("--sans").split(",")[0].replace(/"/g, ""), color: ink2 },
+    animationDuration: 400,
+    tooltip: { backgroundColor: tok("--surface"), borderColor: tok("--line-2"), textStyle: { color: tok("--ink"), fontSize: 12 },
+               extraCssText: "box-shadow:0 6px 20px rgba(0,0,0,.12);border-radius:8px;" },
+    axisLabel: { color: muted, fontSize: 11 },
+    split: { lineStyle: { color: line } },
+    axisLine: { lineStyle: { color: tok("--line-2") } },
+  };
+}
+const axisFmt = v => (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v) + "%";
+
+function dailyCurve(ts_) {
+  const byDay = new Map();
+  for (const t of ts_) { const e = byDay.get(t.date) || { pnl: 0, n: 0, w: 0, l: 0 }; e.pnl += t.ret; e.n++; t.ret > 0 ? e.w++ : t.ret < 0 ? e.l++ : 0; byDay.set(t.date, e); }
+  const days = [...byDay.keys()].sort();
+  let cum = 0;
+  const pts = days.map(d => { const e = byDay.get(d); cum += e.pnl; return { d, cum, ...e }; });
+  return pts;
+}
+
+function drawSpark(k) {
+  const ts_ = tradesOf(k), el = document.getElementById("spark-" + k);
+  if (period().k === "today" || ts_.length < 2) { charts["spark-" + k]?.dispose(); delete charts["spark-" + k]; el.style.height = "0"; return; }
+  el.style.height = "";
+  const pts = dailyCurve(ts_), c = tok(COLOR[k]);
+  chart("spark-" + k).setOption({
+    animation: false, grid: { left: 4, right: 4, top: 4, bottom: 4 },
+    xAxis: { type: "time", show: false }, yAxis: { type: "value", show: false, scale: true },
+    series: [{ type: "line", data: [[ts(pts[0].d) - DAY, 0], ...pts.map(p => [ts(p.d), p.cum])], showSymbol: false, lineStyle: { width: 1.6, color: c },
+               areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: c + "33" }, { offset: 1, color: c + "00" }]) }, silent: true }],
+  }, true);
+}
+
+function drawEquity(k, ts_) {
+  const B = base(), c = tok(COLOR[k]), pts = dailyCurve(ts_), s = D.bots[k].live_start;
+  const first = ts(pts[0].d) - DAY, last = ts(pts[pts.length - 1].d);
+  const data = [[first, 0], ...pts.map(p => [ts(p.d), +p.cum.toFixed(4)])];
+  const btEnd = s ? Math.min(ts(s), last) : last;
+  const markArea = btEnd > first ? { silent: true, itemStyle: { color: tok("--bt-wash") },
+      label: { show: true, position: "insideTopLeft", color: tok("--muted"), fontSize: 11, formatter: "Backtest" },
+      data: [[{ xAxis: first }, { xAxis: btEnd }]] } : undefined;
+  const markLine = s && ts(s) > first && ts(s) <= last ? { silent: true, symbol: "none", lineStyle: { color: tok("--muted"), type: "dashed", width: 1 },
+      label: { formatter: "Live from " + dShort(s), color: tok("--ink-2"), fontSize: 11, position: "insideStartTop" },
+      data: [{ xAxis: ts(s) }] } : undefined;
+  const byTs = new Map(pts.map(p => [ts(p.d), p]));
+  const big = pts.length > 60;
+  chart("c-equity").setOption({
+    ...B, grid: { left: 8, right: 16, top: 24, bottom: big ? 52 : 8, containLabel: true },
+    tooltip: { ...B.tooltip, trigger: "axis", axisPointer: { type: "line", lineStyle: { color: tok("--line-2") } },
+      formatter: ps => { const p = byTs.get(ps[0].value[0]); if (!p) return "Start";
+        return `<b>${dLong(p.d)}</b>${isBacktest(k, p.d) ? ` <span style="color:${tok("--muted")}">· backtest</span>` : ""}<br>
+          Running total <b>${pct(p.cum)}</b><br>That day ${pct(p.pnl)} · ${p.n} trade${p.n > 1 ? "s" : ""} (${p.w} won, ${p.l} lost)`; } },
+    xAxis: { type: "time", axisLine: B.axisLine, axisLabel: { ...B.axisLabel, hideOverlap: true }, splitLine: { show: false }, axisTick: { show: false } },
+    yAxis: { type: "value", axisLabel: { ...B.axisLabel, formatter: axisFmt }, splitLine: B.split, scale: true },
+    dataZoom: big ? [{ type: "slider", height: 18, bottom: 8, borderColor: tok("--line"), fillerColor: tok("--bt-wash"),
+      dataBackground: { lineStyle: { color: tok("--line-2") }, areaStyle: { color: tok("--sunk") } }, textStyle: { color: tok("--muted"), fontSize: 10 },
+      handleStyle: { color: tok("--surface"), borderColor: tok("--line-2") }, moveHandleSize: 0, labelFormatter: v => dShort(iso(v)) }] : [],
+    series: [{ name: D.bots[k].name, type: "line", data, showSymbol: pts.length < 25, symbolSize: 6, step: false,
+      lineStyle: { width: 2, color: c }, itemStyle: { color: c },
+      areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: c + "40" }, { offset: 1, color: c + "05" }]) },
+      markArea, markLine }],
+  }, true);
+}
+
+function bucketKey(date, how) {
+  if (how === "trade") return date;
+  if (how === "day") return date;
+  if (how === "month") return date.slice(0, 7) + "-01";
+  const d = new Date(ts(date)), dow = (d.getUTCDay() + 6) % 7;     // Monday-start weeks
+  return iso(ts(date) - dow * DAY);
+}
+
+function drawBars(k, ts_, how) {
+  const B = base(), gain = tok("--gain"), loss = tok("--loss");
+  let rows;
+  if (how === "trade") {
+    rows = ts_.map(t => ({ label: `${t.sym} ${t.et || ""}`.trim(), pnl: t.ret, n: 1, w: +(t.ret > 0), l: +(t.ret < 0), bt: t.kind === "backtest", t }));
+  } else {
+    const m = new Map();
+    for (const t of ts_) { const key = bucketKey(t.date, how), e = m.get(key) || { key, pnl: 0, n: 0, w: 0, l: 0, bt: true };
+      e.pnl += t.ret; e.n++; t.ret > 0 ? e.w++ : t.ret < 0 ? e.l++ : 0; e.bt = e.bt && t.kind === "backtest"; m.set(key, e); }
+    rows = [...m.values()].sort((a, b) => a.key < b.key ? -1 : 1);
+    rows.forEach(r => r.label = how === "month" ? dMonth(r.key) : how === "week" ? "wk " + withYear(r.key, D.as_of) : withYear(r.key, D.as_of));
+  }
+  chart("c-bars").setOption({
+    ...B, grid: { left: 8, right: 12, top: 12, bottom: 8, containLabel: true },
+    tooltip: { ...B.tooltip, trigger: "axis", axisPointer: { type: "shadow", shadowStyle: { color: tok("--bt-wash") } },
+      formatter: ps => { const r = rows[ps[0].dataIndex];
+        const head = how === "trade" ? `<b>${esc(r.t.sym)}</b> ${esc(r.t.side || "")} · ${esc(r.t.et || "")}–${esc(r.t.xt || "")} · ${esc(r.t.why || "")}`
+          : `<b>${how === "week" ? "Week of " + dShort(r.key) : how === "month" ? dMonth(r.key) : dLong(r.key)}</b>${r.bt ? ` <span style="color:${tok("--muted")}">· backtest</span>` : ""}`;
+        return `${head}<br>Profit <b>${pct(r.pnl)}</b>${how === "trade" ? "" : `<br>${r.n} trade${r.n > 1 ? "s" : ""}: ${r.w} won, ${r.l} lost`}`; } },
+    xAxis: { type: "category", data: rows.map(r => r.label), axisLine: B.axisLine, axisTick: { show: false },
+             axisLabel: { ...B.axisLabel, hideOverlap: true } },
+    yAxis: { type: "value", axisLabel: { ...B.axisLabel, formatter: axisFmt }, splitLine: B.split },
+    series: [{ type: "bar", barMaxWidth: 28, data: rows.map(r => ({ value: +r.pnl.toFixed(4),
+      itemStyle: { color: r.pnl >= 0 ? gain : loss, opacity: r.bt ? 0.45 : 1, borderRadius: r.pnl >= 0 ? [4, 4, 0, 0] : [0, 0, 4, 4] } })) }],
+  }, true);
+}
+
+function drawDonut(k, m) {
+  const B = base();
+  const data = [{ name: "Winners", value: m.wins, itemStyle: { color: tok("--gain") } },
+                { name: "Losers", value: m.losses, itemStyle: { color: tok("--loss") } }];
+  if (m.flat) data.push({ name: "Flat", value: m.flat, itemStyle: { color: tok("--line-2") } });
+  chart("c-donut").setOption({
+    ...B,
+    tooltip: { ...B.tooltip, trigger: "item", formatter: p => `<b>${p.name}</b><br>${p.value} trade${p.value === 1 ? "" : "s"} · ${p.percent.toFixed(0)}%` },
+    legend: { bottom: 0, icon: "roundRect", itemWidth: 10, itemHeight: 10, textStyle: { color: tok("--ink-2") } },
+    title: { text: Math.round(m.win_rate) + "%", subtext: "win rate", left: "center", top: "37%",
+             textStyle: { fontFamily: "IBM Plex Mono", fontWeight: 500, fontSize: 24, color: tok("--ink") }, subtextStyle: { color: tok("--muted"), fontSize: 11 }, itemGap: 2 },
+    series: [{ type: "pie", radius: ["54%", "76%"], center: ["50%", "45%"], avoidLabelOverlap: true, label: { show: false },
+               itemStyle: { borderColor: tok("--surface"), borderWidth: 2, borderRadius: 4 }, data }],
+  }, true);
+}
+
+function drawTicker(k, ts_) {
+  const B = base(), m = new Map();
+  for (const t of ts_) { const e = m.get(t.sym) || []; e.push(t.ret); m.set(t.sym, e); }
+  let rows = [...m.entries()].map(([sym, r]) => ({ sym, ...metrics(r) }));
+  const key = S.tk === "profit" ? "total" : S.tk === "win" ? "win_rate" : "n";
+  if (rows.length > 15) rows = rows.sort((a, b) => b.n - a.n).slice(0, 15);           // the 15 most traded
+  rows.sort((a, b) => a[key] - b[key]);
+  const gain = tok("--gain"), loss = tok("--loss"), c = tok(COLOR[k]);
+  const el = document.getElementById("c-ticker");
+  el.style.height = Math.max(180, rows.length * 26 + 40) + "px";
+  chart("c-ticker").resize();
+  chart("c-ticker").setOption({
+    ...B, grid: { left: 8, right: 52, top: 8, bottom: 8, containLabel: true },
+    tooltip: { ...B.tooltip, trigger: "axis", axisPointer: { type: "shadow", shadowStyle: { color: tok("--bt-wash") } },
+      formatter: ps => { const r = rows[ps[0].dataIndex];
+        return `<b>${esc(r.sym)}</b><br>${r.n} trade${r.n > 1 ? "s" : ""}: ${r.wins} won, ${r.losses} lost<br>Win ${Math.round(r.win_rate)}% · profit <b>${pct(r.total)}</b>`; } },
+    xAxis: { type: "value", axisLabel: { ...B.axisLabel, formatter: S.tk === "n" ? v => v : S.tk === "win" ? v => v + "%" : axisFmt }, splitLine: B.split,
+             max: S.tk === "win" ? 100 : undefined },
+    yAxis: { type: "category", data: rows.map(r => r.sym), axisLine: B.axisLine, axisTick: { show: false }, axisLabel: { color: tok("--ink-2"), fontSize: 12, fontFamily: "IBM Plex Mono" } },
+    series: [{ type: "bar", barMaxWidth: 16, data: rows.map(r => {
+        const v = r[key], col = S.tk === "profit" ? (v >= 0 ? gain : loss) : c;
+        return { value: +(+v).toFixed(4), itemStyle: { color: col, borderRadius: v >= 0 ? [0, 4, 4, 0] : [4, 0, 0, 4] } }; }),
+      label: { show: true, position: "right", color: tok("--muted"), fontSize: 11, fontFamily: "IBM Plex Mono",
+               formatter: p => S.tk === "profit" ? pct(p.value, 1) : S.tk === "win" ? Math.round(p.value) + "%" : p.value } }],
+  }, true);
+}
+
+function todayList(k, ts_) {
+  const swing = D.bots[k].hold === "days";
+  return `<table><thead><tr><th>Ticker</th><th>Side</th><th>${swing ? "Held" : "In – out (ET)"}</th><th>Exit</th><th class="r">Result</th></tr></thead><tbody>${
+    ts_.map(t => `<tr><td class="num"><b>${esc(t.sym)}</b></td><td>${esc(t.side || "–")}</td>
+      <td class="num">${swing ? `${dShort(t.entry_date)} → ${dShort(t.date)}` : `${esc(t.et || "–")} – ${esc(t.xt || "–")}`}</td>
+      <td>${esc(t.why || "–")}${t.kind === "backtest" ? ` <span class="chip">backtest</span>` : ""}</td>
+      <td class="r num ${cls(t.ret)}">${pct(t.ret)}</td></tr>`).join("")}</tbody></table>`;
+}
+
+function showEmpty(id, msg) {
+  charts[id]?.dispose(); delete charts[id];
+  const el = document.getElementById(id); el.style.height = ""; el.innerHTML = `<div class="empty">${esc(msg)}</div>`;
+}
+
+function renderDetail() {
+  const k = S.bot, b = D.bots[k], p = period(), ts_ = tradesOf(k), m = metrics(ts_.map(t => t.ret));
+  document.getElementById("detail").style.setProperty("--c", `var(${COLOR[k]})`);
+  document.getElementById("d-title").textContent = `${b.name} · ${p.k === "today" ? dLong(D.as_of) : p.label === "All" ? "all trades" : "last " + p.label.toLowerCase()}`;
+  document.getElementById("d-sub").textContent = `${b.detail} Results are ${b.unit_long}.`;
+  document.getElementById("tabs").innerHTML = BOT_KEYS.map(x => `<button role="tab" aria-selected="${x === k}" data-bot="${x}" style="--c:var(${COLOR[x]})"><span class="swatch"></span>${esc(D.bots[x].name)}</button>`).join("");
+  document.querySelectorAll("#tabs button").forEach(t => t.addEventListener("click", () => selectBot(t.dataset.bot)));
+
+  const today = p.k === "today", how = today ? "trade" : p.bucket;
+  const eq = document.getElementById("c-equity"), list = document.getElementById("today-list");
+  document.getElementById("main-title").textContent = today ? "Trades closed today" : "Profit over time";
+  document.getElementById("main-note").textContent = today ? dLong(D.as_of) : m.n ? `running total, ${b.unit}` : "";
+  document.getElementById("bars-title").textContent = { trade: "Profit by trade", day: "Profit by day", week: "Profit by week", month: "Profit by month" }[how];
+  document.getElementById("bars-note").textContent = m.n && ts_.some(t => t.kind === "backtest") && !today ? "faded bars are backtest" : "";
+  document.getElementById("donut-note").textContent = m.n ? `${m.n} trade${m.n > 1 ? "s" : ""}` : "";
+
+  if (!m.n) {
+    const last = D.trades.filter(t => t.bot === k).map(t => t.date).sort().pop();
+    const msg = (today ? `No ${b.name.toLowerCase()} trades closed on ${dDay(D.as_of)}.` : "No trades in this period.") + (last ? ` Last trade closed ${dDay(last)}.` : "");
+    eq.hidden = today; list.hidden = !today;
+    if (today) list.innerHTML = `<div class="empty">${esc(msg)}</div>`; else showEmpty("c-equity", msg);
+    ["c-bars", "c-donut", "c-ticker"].forEach(id => showEmpty(id, "Nothing to chart."));
+    return;
+  }
+  ["c-equity", "c-bars", "c-donut", "c-ticker"].forEach(id => { const el = document.getElementById(id); if (el.querySelector(".empty")) el.innerHTML = ""; });
+  if (today) { eq.hidden = true; list.hidden = false; list.innerHTML = todayList(k, ts_); charts["c-equity"]?.dispose(); delete charts["c-equity"]; }
+  else { list.hidden = true; eq.hidden = false; drawEquity(k, ts_); }
+  drawBars(k, ts_, how);
+  drawDonut(k, m);
+  drawTicker(k, ts_);
+}
+
+function renderFoot() {
+  const lines = BOT_KEYS.map(k => { const b = D.bots[k];
+    return `<p><b>${esc(b.name)}</b>: ${b.live_start ? `posted live from ${dLong(b.live_start)}; before that, the same rule backtested` : "no live posts yet; backtest only"}${
+      b.first ? ` (record starts ${dLong(b.first)})` : ""}. Results are ${esc(b.unit_long)}.</p>`; });
+  const bad = (D.checks || []).filter(c => !c.ok);
+  document.getElementById("foot").innerHTML = lines.join("") +
+    `<p>The two bots use different units, so their numbers are never added together. Profit is the plain sum of trade results, not compounded.</p>` +
+    `<p>Built ${esc(D.generated)} · ${bad.length ? `<span class="loss">${bad.length} record check(s) failed, see reports/dashboard.md</span>` : "all record checks passed"}.</p>`;
+}
+
+// ------------------------------------------------------------ wiring
+function renderAll() {
+  document.getElementById("sub").textContent = `Data through ${dLong(D.as_of)} · signals only, no orders`;
+  document.getElementById("period").innerHTML = PERIODS.map(p => `<button data-p="${p.k}" aria-pressed="${p.k === S.period}">${p.label}</button>`).join("");
+  document.querySelectorAll("#period button").forEach(b => b.addEventListener("click", () => { S.period = b.dataset.p; store.set("period", S.period); renderAll(); }));
+  document.querySelectorAll("#tk-metric button").forEach(b => b.setAttribute("aria-pressed", b.dataset.m === S.tk));
+  renderCards(); renderDetail(); renderFoot();
+}
+function selectBot(k) { S.bot = k; store.set("bot", k); document.querySelectorAll(".bot").forEach(b => b.setAttribute("aria-pressed", b.dataset.bot === k)); renderDetail(); }
+document.querySelectorAll("#tk-metric button").forEach(b => b.addEventListener("click", () => {
+  S.tk = b.dataset.m; document.querySelectorAll("#tk-metric button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  const ts_ = tradesOf(S.bot); if (ts_.length) drawTicker(S.bot, ts_); }));
+function applyTheme() {
+  const r = document.documentElement;
+  if (S.theme === "auto") r.removeAttribute("data-theme"); else r.setAttribute("data-theme", S.theme);
+  document.querySelectorAll("#theme button").forEach(b => b.setAttribute("aria-pressed", b.dataset.t === S.theme));
+}
+document.querySelectorAll("#theme button").forEach(b => b.addEventListener("click", () => { S.theme = b.dataset.t; store.set("theme", S.theme); applyTheme(); renderAll(); }));
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => { if (S.theme === "auto") renderAll(); });
+let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => Object.values(charts).forEach(c => c.resize()), 120); });
+
+applyTheme();
+if (window.echarts) renderAll();
+else document.getElementById("bots").innerHTML = `<div class="empty">The chart library did not load. Check the connection and reload the page.</div>`;
+</script>

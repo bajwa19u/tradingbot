@@ -21,6 +21,8 @@ import json
 import os
 import sys
 
+from dataclasses import replace
+
 import numpy as np
 
 from . import orb_research as orr
@@ -29,6 +31,34 @@ from .orb_live import RULES
 from .orb_paper import CANDIDATE, bar_label
 
 OUT = REPO_ROOT / "reports" / "orb_month.json"
+
+
+# For a pick that did not trade: the one rule change that would have let it, run
+# with the same entry, stop, exit and costs. It answers "what did this filter
+# keep out", not "what was the stock's best move" - the entry is still the first
+# completed close outside the range, decided with nothing from later bars.
+ALTERNATIVES = {"range too narrow": ("no range filter", dict(orw=(0.0, 9e9))),
+                "no breakout before 09:45": ("entries until 10:00", dict(window_end=30))}
+
+
+def alternative(x, sa, qa, spy, p: orr.P, outcome: str) -> dict | None:
+    """What ALTERNATIVES[outcome] would have done on this pick, or None if no alternative is defined."""
+    if outcome not in ALTERNATIVES:
+        return None
+    name, change = ALTERNATIVES[outcome]
+    q = replace(p, **change)
+    sig = orr.first_signal(x, sa, qa, q, orr.FLAT_IDX - 1, spy)
+    if sig is None:
+        return {"rule": name, "result_pct": None}
+    R, j, why = orr.exit_r(x, sig["kk"], sig["sign"], sig["entry"], sig["stop"], q)
+    return {"rule": name, "side": sig["side"], "entry_time": bar_label(sig["k"]), "exit_time": bar_label(j),
+            "exit_reason": why, "result_pct": round(float(R), 3)}
+
+
+def day_move_pct(x) -> float | None:
+    """Open to 15:55 close, for context only: nobody could have traded the whole of it."""
+    o, c = float(x.o[0]), float(x.c[orr.FLAT_IDX])
+    return round((c / o - 1) * 100, 2) if o > 0 else None
 
 
 def day_rows(D: dict, d, p: orr.P = CANDIDATE) -> tuple[list[dict], list[dict]]:
@@ -40,10 +70,12 @@ def day_rows(D: dict, d, p: orr.P = CANDIDATE) -> tuple[list[dict], list[dict]]:
         x = D[s][d]
         ratio = x.or_w / x.atr if x.atr > 0 else 0.0
         pick = {"symbol": s, "rank": rank, "rvol5": round(float(x.rvol5), 2), "or_width_atr": round(ratio, 2),
-                "gap_pct": round(float(x.gap) * 100, 2) if x.gap == x.gap else None}
+                "gap_pct": round(float(x.gap) * 100, 2) if x.gap == x.gap else None,
+                "day_move_pct": day_move_pct(x)}
         sig = orr.first_signal(x, sa, qa, p, orr.FLAT_IDX - 1, spy)
         if sig is None:
             pick["outcome"] = ("range too narrow" if ratio < p.orw[0] else "no breakout before 09:45")
+            pick["alt"] = alternative(x, sa, qa, spy, p, pick["outcome"])
             picks.append(pick)
             continue
         R, j, why = orr.exit_r(x, sig["kk"], sig["sign"], sig["entry"], sig["stop"], p)

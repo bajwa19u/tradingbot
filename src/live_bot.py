@@ -749,7 +749,8 @@ def tick(cfg: dict, dry_run: bool) -> int:
             lat_rows.append({"id": tid, "rule": t.get("rule"), "entry_bar": t.get("entry_time"),
                              "detected_age_s": t.get("age_s"),
                              "posted_age_s": signal_age(t, posted) if t else None,
-                             "expired": bool(t.get("expired")), "posted_at": str(posted)})
+                             "expired": bool(t.get("expired")), "posted_at": str(posted),
+                             "delivered": bool(mid)})       # Discord returned a message id
             if mid:
                 seen["cards"][tid] = mid
             seen["entries"].append(tid)

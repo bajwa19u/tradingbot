@@ -129,7 +129,19 @@ preearn-screen.yml   the two-gate earnings screen
 smoke.yml            09:00 ET, can the paper account trade today
 live-open.yml        the open, polling
 live-bot.yml         the rest of the session
+dashboard.yml        19:05 ET, rebuilds reports/dashboard.{html,json,md}
 ```
+
+**The dashboard** (`src/dashboard.py`, page template `tools/dashboard_template.html`)
+shows two bots, one record each: the day-trade bot (ledger rows marked `live`, and
+before its first live post the audit's backtest `reports/orb_audit_trades.csv`, else
+the month replay) and the swing bot (bajwa19u/vwap-ema-swing `state/ledger.csv`, and
+before that its `reports/audit_trades.csv`, read over HTTPS from the public repo).
+No live/paper/backtest picker: the chart marks where the backtest ends. `metrics()`
+is the one calculation; the page carries a port and `tests/test_dashboard.py` checks
+they agree. The two bots are never summed (% of account vs % stock move). Run it
+locally with `python -m src.dashboard` (uses `gh` for run history, or `--no-actions`)
+and open `reports/dashboard.html`.
 
 `python -m pytest -q` works locally and should stay green.
 
