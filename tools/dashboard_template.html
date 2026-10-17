@@ -3,269 +3,242 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: a terminal-style desk. Sticky header with the book + filters, one
-   section at a time below it. Dark first; light is the alternate. Accent is a
-   cool periwinkle; green/red/amber appear only on results and states. */
+/* Layout: a light corporate report. One header with two pages and a single
+   filter bar; summaries first, detail opens in place on click. Navy ink, one
+   restrained blue accent; green and red only on results. Light by design. */
 :root {
-  --bg: #0f1317; --surface: #151a20; --surface-2: #1b2129; --line: #262e38; --line-2: #33404d;
-  --ink: #e4e8ec; --muted: #9aa5b1; --faint: #6b7682;
-  --accent: #8aa8f0; --accent-soft: #1d2638;
-  --up: #52c08e; --up-soft: #15291f; --down: #ec7a7f; --down-soft: #301a1d;
-  --warn: #e3b05a; --warn-soft: #2e2615;
-  --sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --r: 10px;
-  color-scheme: dark;
-}
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --bg: #f3f5f7; --surface: #ffffff; --surface-2: #f7f9fb; --line: #dde3e8; --line-2: #c9d1d9;
-    --ink: #151a1f; --muted: #56616c; --faint: #85909b;
-    --accent: #3556a8; --accent-soft: #e5ebf7;
-    --up: #1f7a4f; --up-soft: #e2f2e9; --down: #b23b40; --down-soft: #f7e3e4;
-    --warn: #8a5a00; --warn-soft: #f8edd6;
-    color-scheme: light;
-  }
-}
-:root[data-theme="light"] {
-  --bg: #f3f5f7; --surface: #ffffff; --surface-2: #f7f9fb; --line: #dde3e8; --line-2: #c9d1d9;
-  --ink: #151a1f; --muted: #56616c; --faint: #85909b;
-  --accent: #3556a8; --accent-soft: #e5ebf7;
-  --up: #1f7a4f; --up-soft: #e2f2e9; --down: #b23b40; --down-soft: #f7e3e4;
-  --warn: #8a5a00; --warn-soft: #f8edd6;
+  --bg: #f5f6f8; --surface: #ffffff; --subtle: #f9fafb; --line: #e4e7ec; --line-2: #cdd3db;
+  --ink: #172133; --muted: #5a6575; --faint: #8b94a2;
+  --accent: #2557c4; --accent-soft: #edf2fc;
+  --up: #1d7a4e; --up-soft: #e6f3ec; --down: #b5373c; --down-soft: #fbeaea;
+  --warn: #8f5d00; --warn-soft: #fbf2de;
+  --s-daytrade: #2a78d6; --s-inplay: #e0662f; --s-swing: #6250d6; --s-all: #172133;
+  --sans: "Source Sans 3", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r: 8px;
   color-scheme: light;
 }
 * { box-sizing: border-box; }
 html, body { background: var(--bg); color: var(--ink); }
-body { margin: 0; font: 400 14.5px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
-.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
-h1 { font-size: 19px; } h2 { font-size: 17px; } h3 { font-size: 14.5px; }
+body { margin: 0; font: 400 15px/1.5 var(--sans); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+.wrap { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.005em; text-wrap: balance; }
+h1 { font-size: 18px; } h2 { font-size: 17px; } h3 { font-size: 15px; }
 p { margin: 0; }
-.mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
-.up { color: var(--up); } .down { color: var(--down); } .muted { color: var(--muted); } .faint { color: var(--faint); }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 button, select, input { font: inherit; color: var(--ink); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.up { color: var(--up); } .down { color: var(--down); } .muted { color: var(--muted); } .faint { color: var(--faint); }
+.num { text-align: right; white-space: nowrap; }
 
-header.top { z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
-.bar1 { display: flex; align-items: center; gap: 14px 22px; flex-wrap: wrap; padding-block: 12px 8px; }
-.brand { display: flex; align-items: baseline; gap: 10px; }
-.brand small { color: var(--faint); font: 400 12px var(--mono); }
-nav.tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; min-width: 0; flex: 1; }
-nav.tabs button { background: none; border: 0; color: var(--muted); padding: 6px 11px; border-radius: 7px; cursor: pointer; white-space: nowrap; font-size: 14px; }
-nav.tabs button:hover { color: var(--ink); background: var(--surface); }
-nav.tabs button[aria-selected="true"] { color: var(--ink); background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line-2); }
-.filters { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: end; padding-block: 4px 12px; }
-.f { display: grid; gap: 3px; min-width: 0; }
-.f label { font-size: 11px; color: var(--faint); letter-spacing: .05em; text-transform: uppercase; }
-.f select, .f input { background: var(--surface); border: 1px solid var(--line); border-radius: 7px; padding: 6px 8px; min-width: 0; max-width: 100%; }
-.f input[type="date"] { width: 140px; }
-.f input[type="search"] { width: 120px; }
-.btn { background: var(--surface); border: 1px solid var(--line); border-radius: 7px; padding: 6px 11px; cursor: pointer; white-space: nowrap; }
-.btn:hover { border-color: var(--line-2); }
-.btn.sm { padding: 3px 9px; font-size: 13px; }
-.chipset { display: flex; gap: 4px; flex-wrap: wrap; }
-.chipset button { background: var(--surface); border: 1px solid var(--line); color: var(--muted); border-radius: 99px; padding: 4px 10px; cursor: pointer; font-size: 12.5px; }
-.chipset button[aria-pressed="true"] { color: var(--ink); border-color: var(--accent); background: var(--accent-soft); }
+/* header */
+header.top { background: var(--surface); border-bottom: 1px solid var(--line); }
+.bar { display: flex; align-items: center; gap: 10px 28px; flex-wrap: wrap; min-height: 58px; padding-block: 8px; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand i { width: 22px; height: 22px; border-radius: 5px; background: var(--ink); display: grid; place-items: center; }
+.brand i::after { content: ""; width: 10px; height: 6px; border-left: 2px solid var(--surface); border-bottom: 2px solid var(--surface); transform: translateY(-1px) skewY(-25deg); }
+nav.tabs { display: flex; gap: 4px; align-self: stretch; }
+nav.tabs button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 0 4px; margin: 0 8px; color: var(--muted); cursor: pointer; font-weight: 500; }
+nav.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.meta { margin-left: auto; color: var(--faint); font-size: 13px; text-align: right; }
 
-main { padding-block: 22px 40px; display: grid; gap: 22px; }
-section.page { display: grid; gap: 18px; }
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; min-width: 0; }
-.card > h3, .card > header { margin-bottom: 10px; }
-.card header { display: flex; justify-content: space-between; align-items: baseline; gap: 8px 14px; flex-wrap: wrap; }
-.card header p { color: var(--muted); font-size: 13px; }
-.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.note { font-size: 13px; color: var(--muted); max-width: 95ch; }
-.src { font: 400 11.5px var(--mono); color: var(--faint); }
+/* filters */
+.filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding-block: 16px 6px; }
+.fld { display: flex; align-items: center; gap: 8px; }
+.fld[hidden] { display: none; }
+.fld > label { font-size: 13px; color: var(--muted); }
+select, input[type="date"], input[type="search"] { background: var(--surface); border: 1px solid var(--line-2); border-radius: 6px; padding: 6px 9px; min-width: 0; max-width: 100%; }
+input[type="search"] { width: 170px; }
+.seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line-2); border-radius: 6px; overflow: hidden; background: var(--surface); }
+.seg button { background: none; border: 0; border-left: 1px solid var(--line); padding: 6px 11px; cursor: pointer; color: var(--muted); white-space: nowrap; }
+.seg button:first-child { border-left: 0; }
+.seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.seg button:disabled { color: var(--line-2); cursor: not-allowed; }
+.linkbtn { background: none; border: 0; color: var(--accent); cursor: pointer; padding: 4px 2px; font-size: 14px; }
+.context { color: var(--muted); font-size: 13.5px; padding-bottom: 14px; }
+.context b { color: var(--ink); font-weight: 600; }
 
-/* verdict + status */
-.verdict { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: var(--r); border: 1px solid var(--line); background: var(--surface); }
-.verdict b { font-weight: 600; }
-.pill { display: inline-flex; align-items: center; gap: 5px; font: 500 11px var(--mono); letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; white-space: nowrap; border: 1px solid transparent; }
-.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-.pill.neg, .pill.serious, .pill.fail { color: var(--down); background: var(--down-soft); }
-.pill.pos, .pill.ok { color: var(--up); background: var(--up-soft); }
-.pill.few, .pill.noise, .pill.warning, .pill.warn { color: var(--warn); background: var(--warn-soft); }
-.pill.info, .pill.none, .pill.past { color: var(--muted); background: var(--surface-2); border-color: var(--line); }
-.pill.unseen { color: var(--up); background: var(--up-soft); }
-.pill.insample { color: var(--warn); background: var(--warn-soft); }
-.pill.reused { color: var(--down); background: var(--down-soft); }
+main { padding-block: 4px 48px; display: grid; gap: 20px; }
+section.page { display: grid; gap: 20px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px 20px; min-width: 0; }
+.panel[hidden] { display: none; }
+.ph { display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; margin-bottom: 14px; }
+.ph p { color: var(--muted); font-size: 13.5px; }
+.note { color: var(--muted); font-size: 13.5px; max-width: 90ch; }
+.small { font-size: 12.5px; color: var(--faint); }
 
-/* KPI tiles */
-.kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 11px 13px; display: grid; gap: 2px; min-width: 0; }
-.kpi > span { font-size: 11.5px; color: var(--faint); letter-spacing: .04em; text-transform: uppercase; display: flex; gap: 5px; align-items: center; }
-.kpi b { font: 500 21px var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; overflow-wrap: anywhere; }
-.kpi small { font: 400 12px var(--mono); color: var(--muted); }
-.tip { display: inline-grid; place-items: center; width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--line-2); color: var(--faint); font: 500 9.5px var(--sans); cursor: help; text-transform: none; letter-spacing: 0; }
+/* KPI strip */
+.kpis { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); }
+.kpi { padding: 14px 18px; border-left: 1px solid var(--line); min-width: 0; display: grid; gap: 2px; align-content: start; }
+.kpi:first-child { border-left: 0; }
+.kpi .l { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+.kpi .v { font-size: 25px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; overflow-wrap: anywhere; }
+.kpi .s { font-size: 12.5px; color: var(--faint); }
+.tip { display: inline-grid; place-items: center; width: 15px; height: 15px; border-radius: 50%; border: 1px solid var(--line-2); color: var(--faint); font-size: 10px; font-weight: 600; cursor: help; }
 
 /* tables */
 .tw { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-th { text-align: left; font-weight: 500; font-size: 11.5px; color: var(--faint); letter-spacing: .03em; padding: 0 10px 8px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
-th[data-k] { cursor: pointer; } th[data-k]:hover { color: var(--ink); }
-th.sorted::after { content: " ↓"; } th.sorted.asc::after { content: " ↑"; }
-td { padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); white-space: nowrap; vertical-align: top; }
-tr:last-child td { border-bottom: 0; }
-td.n, th.n { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
-tbody tr.click { cursor: pointer; } tbody tr.click:hover td { background: var(--surface-2); }
-tbody tr.on td { background: var(--accent-soft); }
-td.wrap { white-space: normal; min-width: 220px; }
-.small-n { color: var(--warn); font: 500 10.5px var(--mono); margin-left: 4px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-weight: 600; font-size: 12.5px; color: var(--muted); padding: 8px 12px 8px 0; border-bottom: 1px solid var(--line-2); white-space: nowrap; }
+th.num { text-align: right; }
+th[data-k] { cursor: pointer; user-select: none; } th[data-k]:hover { color: var(--ink); }
+th.sorted::after { content: " ▾"; color: var(--accent); } th.sorted.asc::after { content: " ▴"; }
+td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); vertical-align: middle; }
+tr:last-child > td { border-bottom: 0; }
+tr.click { cursor: pointer; } tr.click:hover > td { background: var(--subtle); }
+tr.open > td { background: var(--accent-soft); }
+td.detail-cell { padding: 0; background: var(--subtle); }
 .na { color: var(--faint); }
+.flag { display: inline-block; font-size: 11px; font-weight: 600; color: var(--warn); background: var(--warn-soft); border-radius: 4px; padding: 0 5px; margin-left: 6px; vertical-align: 1px; }
+.botname { display: flex; align-items: center; gap: 9px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; flex: none; display: inline-block; }
+.strat { color: var(--muted); font-size: 13px; }
+.caret { color: var(--faint); font-size: 12px; width: 14px; display: inline-block; }
 
-/* heatmap */
-.heat { display: grid; gap: 3px; font: 400 12px var(--mono); }
-.heat .h { color: var(--faint); font-size: 11px; display: flex; align-items: center; }
-.heat .c { border-radius: 5px; padding: 6px 4px; text-align: center; min-width: 0; border: 1px solid var(--line); }
-.heat .c small { display: block; color: var(--muted); font-size: 10.5px; }
+/* status */
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; padding: 2px 9px; border-radius: 99px; white-space: nowrap; }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.pill.ok { color: var(--up); background: var(--up-soft); }
+.pill.attention, .pill.warning { color: var(--warn); background: var(--warn-soft); }
+.pill.failing, .pill.serious { color: var(--down); background: var(--down-soft); }
+.pill.unknown, .pill.info, .pill.past { color: var(--muted); background: var(--subtle); border: 1px solid var(--line); }
 
-/* charts */
+/* chart */
 .chart { position: relative; }
 .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
-.chart text { font: 10.5px var(--mono); fill: var(--faint); }
-.gl { stroke: var(--line); stroke-width: 1; }
-.zero { stroke: var(--line-2); stroke-dasharray: 3 3; }
-.ttip { position: absolute; pointer-events: none; background: var(--surface-2); border: 1px solid var(--line-2); border-radius: 7px; padding: 6px 9px; font: 12px var(--mono); color: var(--ink); white-space: nowrap; transform: translate(-50%, calc(-100% - 10px)); z-index: 5; }
+.chart text { font: 12px var(--sans); fill: var(--faint); }
+.gl { stroke: var(--line); }
+.zero { stroke: var(--line-2); }
+.ttip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line-2); box-shadow: 0 4px 14px rgba(23, 33, 51, .08); border-radius: 6px; padding: 8px 10px; font-size: 13px; white-space: nowrap; z-index: 5; }
 .ttip[hidden] { display: none; }
-.empty { color: var(--faint); font-size: 13px; padding: 18px 0; text-align: center; }
+.ttip b { font-weight: 600; }
+.ttip .row { display: flex; align-items: center; gap: 7px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend button { display: inline-flex; align-items: center; gap: 7px; background: var(--surface); border: 1px solid var(--line-2); border-radius: 99px; padding: 3px 11px; cursor: pointer; font-size: 13px; color: var(--ink); }
+.legend button[aria-pressed="false"] { color: var(--faint); border-style: dashed; }
+.legend button[aria-pressed="false"] .dot { background: transparent !important; box-shadow: inset 0 0 0 1.5px var(--line-2); }
+.empty { color: var(--muted); font-size: 14px; padding: 28px 8px; text-align: center; }
 
-/* trade detail */
-.detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: 16px; }
-dl.kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 14px; margin: 0; font-size: 13px; }
-dl.kv dt { color: var(--faint); }
-dl.kv dd { margin: 0; font-family: var(--mono); overflow-wrap: anywhere; }
-.issues { display: grid; gap: 8px; }
-.issue { display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: 4px 10px; align-items: baseline; padding: 9px 0; border-top: 1px solid var(--line); font-size: 13.5px; }
-.issue:first-child { border-top: 0; }
-.issue .area { font: 500 12px var(--mono); color: var(--muted); }
-details > summary { cursor: pointer; color: var(--muted); font-size: 13px; }
-.err { padding: 24px; border: 1px solid var(--down); border-radius: var(--r); background: var(--down-soft); }
-.wl { display: flex; height: 26px; border-radius: 6px; overflow: hidden; gap: 2px; }
-.wl div { display: grid; place-items: center; font: 500 12px var(--mono); color: var(--bg); min-width: 0; }
+/* drill-down */
+.drill { padding: 16px 20px 20px; display: grid; gap: 16px; }
+.subtabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.subtabs button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 7px 10px; color: var(--muted); cursor: pointer; font-size: 14px; }
+.subtabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
+.mini-kpis { display: flex; flex-wrap: wrap; gap: 8px 28px; }
+.mini-kpis div { display: grid; }
+.mini-kpis > div > span { font-size: 12.5px; color: var(--muted); }
+.mini-kpis b { font-size: 17px; font-weight: 600; }
+.cols2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.box { min-width: 0; }
+.box > h3 { margin-bottom: 8px; font-size: 14px; }
+.warns { display: grid; }
+.warn { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: baseline; padding: 9px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.warn:first-child { border-top: 0; }
+.health { display: grid; }
+.hrow { display: grid; grid-template-columns: minmax(0, 1.2fr) auto minmax(0, 1.4fr); gap: 6px 14px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.hrow:first-child { border-top: 0; }
+details.method summary { cursor: pointer; color: var(--muted); font-size: 14px; }
+details.method dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 18px; margin: 12px 0 0; font-size: 14px; }
+details.method dt { font-weight: 600; }
+details.method dd { margin: 0; color: var(--muted); }
+.err { padding: 16px 18px; border: 1px solid var(--down); background: var(--down-soft); border-radius: var(--r); }
+.closebtn { background: none; border: 1px solid var(--line-2); border-radius: 6px; padding: 4px 10px; cursor: pointer; color: var(--muted); }
 
-@media (min-width: 901px) { header.top { position: sticky; top: env(safe-area-inset-top, 0px); } }
-@media (max-width: 900px) { .grid2, .grid3, .detail { grid-template-columns: minmax(0, 1fr); } }
-@media (max-width: 520px) { .f input[type="date"] { width: 128px; } .kpi b { font-size: 18px; } }
-@media (prefers-reduced-motion: no-preference) { section.page:not([hidden]) { animation: fade .25s ease-out; } @keyframes fade { from { opacity: .4; } } }
+@media (max-width: 980px) {
+  .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .kpi:nth-child(4) { border-left: 0; }
+  .kpi:nth-child(n+4) { border-top: 1px solid var(--line); }
+  .cols2 { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kpi:nth-child(odd) { border-left: 0; } .kpi:nth-child(4) { border-left: 1px solid var(--line); }
+  .kpi:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .meta { margin-left: 0; text-align: left; width: 100%; }
+  .hrow { grid-template-columns: minmax(0, 1fr) auto; }
+  .hrow > :last-child { grid-column: 1 / -1; }
+  .panel { padding: 14px; }
+}
 </style>
 
 <header class="top">
-  <div class="wrap">
-    <div class="bar1">
-      <div class="brand"><h1>Trading Bot Analytics</h1><small id="stamp"></small></div>
-      <nav class="tabs" role="tablist" aria-label="Sections">
-        <button role="tab" data-tab="overview">Performance</button>
-        <button role="tab" data-tab="breakdown">Strategy &amp; tickers</button>
-        <button role="tab" data-tab="trades">Trades</button>
-        <button role="tab" data-tab="setups">Rejected setups</button>
-        <button role="tab" data-tab="lab">Strategy lab</button>
-        <button role="tab" data-tab="health">Bot health</button>
-      </nav>
-    </div>
-    <div class="filters" id="filters">
-      <div class="f"><label for="f-book">Book</label><select id="f-book"></select></div>
-      <div class="f"><label for="f-src">Records</label><select id="f-src">
-        <option value="all">All rows</option><option value="live">Posted / seen live only</option><option value="noreplay">Exclude replays</option></select></div>
-      <div class="f"><label for="f-from">From</label><input type="date" id="f-from"></div>
-      <div class="f"><label for="f-to">To</label><input type="date" id="f-to"></div>
-      <div class="f"><label>Period</label><div class="chipset" id="f-preset">
-        <button data-p="all" aria-pressed="true">All</button><button data-p="5">5 sessions</button><button data-p="10">10</button><button data-p="20">20</button></div></div>
-      <div class="f"><label for="f-sym">Ticker</label><select id="f-sym"></select></div>
-      <div class="f"><label for="f-side">Side</label><select id="f-side"><option value="">Both</option><option>long</option><option>short</option></select></div>
-      <button class="btn sm" id="f-reset" type="button">Reset</button>
-    </div>
+  <div class="wrap bar">
+    <div class="brand"><i aria-hidden="true"></i><h1>Trading Bot Analytics</h1></div>
+    <nav class="tabs" role="tablist" aria-label="Pages">
+      <button role="tab" data-tab="overview">Overview</button>
+      <button role="tab" data-tab="stocks">Stock Analysis</button>
+    </nav>
+    <div class="meta" id="meta"></div>
   </div>
 </header>
 
+<div class="wrap">
+  <div class="filters" id="filters">
+    <div class="fld"><label for="f-bot">Bot</label><select id="f-bot"></select></div>
+    <div class="fld"><label>Period</label><div class="seg" id="f-period" role="group" aria-label="Period">
+      <button data-p="today">Today</button><button data-p="7">7 days</button><button data-p="30">30 days</button><button data-p="90">90 days</button><button data-p="all">All</button><button data-p="custom">Custom</button></div></div>
+    <div class="fld" id="f-custom" hidden><input type="date" id="f-from" aria-label="From"><span class="faint">to</span><input type="date" id="f-to" aria-label="To"></div>
+    <div class="fld"><label>Data</label><div class="seg" id="f-mode" role="group" aria-label="Data type"></div></div>
+    <div class="fld stock-only"><label for="f-side">Direction</label><select id="f-side"><option value="">Long and short</option><option value="long">Long</option><option value="short">Short</option></select></div>
+    <div class="fld stock-only"><input type="search" id="f-q" placeholder="Search ticker" aria-label="Search ticker"></div>
+    <button class="linkbtn" id="f-reset" type="button">Reset filters</button>
+  </div>
+  <p class="context" id="context"></p>
+</div>
+
 <main class="wrap" id="app">
+  <!-- ============================ OVERVIEW ============================ -->
   <section class="page" data-page="overview">
-    <div class="verdict" id="ov-verdict"></div>
     <div class="kpis" id="ov-kpis"></div>
-    <div class="grid2">
-      <div class="card"><header><h3>Equity, cumulative result</h3><p id="ov-eq-unit"></p></header><div class="chart" id="ov-eq"></div></div>
-      <div class="card"><header><h3>Drawdown from the running peak</h3><p>same unit, never above zero</p></header><div class="chart" id="ov-dd"></div></div>
+    <p class="note" id="ov-note" hidden></p>
+
+    <div class="panel">
+      <div class="ph"><div><h2>Performance</h2><p id="ch-sub"></p></div>
+        <div class="seg" id="ch-view" role="group" aria-label="Chart view"><button data-v="cum" aria-pressed="true">Cumulative P&amp;L</button><button data-v="dd">Drawdown</button></div></div>
+      <div class="legend" id="ch-legend" style="margin-bottom:10px"></div>
+      <div class="chart" id="ch-main"></div>
     </div>
-    <div class="grid2">
-      <div class="card"><header><h3>By session</h3><p>sum of trades closed that day</p></header><div class="chart" id="ov-day"></div></div>
-      <div class="card"><header><h3>By week</h3><p>ISO weeks, Monday start</p></header><div class="chart" id="ov-week"></div></div>
+
+    <div class="panel">
+      <div class="ph"><div><h2>Bot comparison</h2><p>Select a bot to see its detail. All figures use the filters above.</p></div></div>
+      <div class="tw"><table id="bots"></table></div>
     </div>
-    <div class="grid2">
-      <div class="card"><header><h3>Winners against losers</h3><p id="ov-wl-cap"></p></header><div id="ov-wl"></div><div class="chart" id="ov-hist" style="margin-top:14px"></div></div>
-      <div class="card"><header><h3>Why trades ended</h3><p>exit reason, with the result each produced</p></header><div class="tw" id="ov-exit"></div></div>
+
+    <div class="cols2">
+      <div class="panel"><div class="ph"><div><h2>Recent trades</h2><p id="rc-sub"></p></div></div><div class="tw" id="recent"></div></div>
+      <div class="panel"><div class="ph"><div><h2>Bot health</h2><p>Last successful run, data freshness and open warnings</p></div></div><div id="health"></div></div>
     </div>
-    <div class="card"><header><h3>Every book side by side</h3><p>Paper, live and backtest are separate records in their own units. Totals are never added across books.</p></header><div class="tw" id="ov-books"></div></div>
-    <div class="card"><header><h3>Open positions</h3><p id="ov-open-cap"></p></header><div class="tw" id="ov-open"></div></div>
+
+    <div class="panel"><details class="method" id="method"><summary>How these numbers are calculated</summary><div id="method-body"></div></details></div>
   </section>
 
-  <section class="page" data-page="breakdown" hidden>
-    <p class="note" id="bd-note"></p>
-    <div class="card"><header><h3>Over time</h3><p>rolling average of the last 10 trades: is it improving or deteriorating?</p></header><div class="chart" id="bd-roll"></div></div>
-    <div class="grid2">
-      <div class="card"><header><h3>Ticker ranking</h3><p>sorted by net result, not win rate</p></header><div class="tw" id="bd-sym"></div></div>
-      <div class="card"><header><h3>Weekday × entry time</h3><p>average per trade, trades in each cell</p></header><div id="bd-heat"></div></div>
+  <!-- ============================ STOCKS ============================ -->
+  <section class="page" data-page="stocks" hidden>
+    <div class="panel">
+      <div class="ph"><div><h2 id="rk-title">Stocks</h2><p id="rk-def"></p></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <select id="rk-view" aria-label="Ranking">
+            <option value="traded">Most traded</option><option value="best">Best performers</option><option value="worst">Worst performers</option><option value="total">Highest total P&amp;L</option><option value="lowexp">Lowest expectancy</option></select>
+          <div class="seg" id="rk-n" role="group" aria-label="How many"><button data-n="5">Top 5</button><button data-n="10" aria-pressed="true">Top 10</button></div>
+          <div class="seg" id="rk-metric" role="group" aria-label="Chart metric"><button data-m="pnl" aria-pressed="true">P&amp;L</button><button data-m="n">Trades</button></div>
+        </div></div>
+      <div class="chart" id="rk-chart"></div>
+      <p class="note" id="rk-conc" style="margin-top:10px"></p>
     </div>
-    <div class="grid2">
-      <div class="card"><header><h3>Long against short</h3></header><div class="tw" id="bd-side"></div></div>
-      <div class="card"><header><h3>Strategy version</h3><p>setup name recorded on each trade</p></header><div class="tw" id="bd-setup"></div></div>
-    </div>
-    <div class="card"><header><h3>Market conditions at entry</h3><p>only fields this book recorded; anything else is listed as not recorded</p></header><div id="bd-cond" class="grid3"></div></div>
-  </section>
 
-  <section class="page" data-page="trades" hidden>
-    <div class="card">
-      <header><h3 id="tr-title">Trades</h3>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><input type="search" id="tr-q" placeholder="Search symbol, id, exit…" aria-label="Search trades" class="btn" style="width:210px;cursor:text"><button class="btn sm" id="tr-copy" type="button">Copy CSV</button><span class="src" id="tr-copied"></span></div></header>
-      <div class="tw" style="max-height:520px;overflow-y:auto"><table id="tr-table"></table></div>
-    </div>
-    <div class="card" id="tr-detail"><p class="empty">Select a trade to inspect it.</p></div>
-  </section>
+    <div class="panel" id="stock-detail" hidden></div>
 
-  <section class="page" data-page="setups" hidden>
-    <p class="note">Every name the live rule looked at in the month replay, and the rule that kept each one out. A blocked pick that later moved is not evidence the filter is wrong: only an explicitly defined alternative rule, with a realistic entry and the same stop, exit and costs, can say that.</p>
-    <div class="kpis" id="su-kpis"></div>
-    <div class="grid2">
-      <div class="card"><header><h3>Why picks did not trade</h3><p id="su-cap"></p></header><div class="chart" id="su-reasons"></div></div>
-      <div class="card"><header><h3>What the blocked trades would have done</h3><p id="su-alt-cap"></p></header><div class="tw" id="su-alt"></div></div>
+    <div class="panel">
+      <div class="ph"><div><h2>All stocks</h2><p id="st-sub"></p></div></div>
+      <div class="tw"><table id="stocks"></table></div>
     </div>
-    <div class="card"><header><h3>Measured over 12 months (5 Oct study)</h3><p class="src" id="su-study-src"></p></header><div class="tw" id="su-study"></div><p class="note" style="margin-top:10px">Recent = the 63 sessions where changes were looked for (in-sample). Earlier = 189 sessions used only to confirm. Removing the range filter more than doubles the trades and loses on both ranges; that is the evidence for keeping it.</p></div>
-    <div class="card"><header><h3>Every pick</h3><p>filters above apply (dates, ticker)</p></header><div class="tw" style="max-height:460px;overflow-y:auto" id="su-picks"></div></div>
-  </section>
-
-  <section class="page" data-page="lab" hidden>
-    <p class="note">Baselines and candidates from the research runs, next to the forward record. Research results were in R at 1% risk; they are shown here as % of the account per trade (1R = 1%). The ORB paper record is in % stock move, a different unit. Only the forward rows are on dates no study chose.</p>
-    <div class="card"><header><h3>Compare two runs</h3><p>the checks below say whether the comparison is fair</p></header>
-      <div class="filters" style="padding:0 0 12px"><div class="f" style="flex:1;min-width:220px"><label for="lab-a">Baseline</label><select id="lab-a"></select></div><div class="f" style="flex:1;min-width:220px"><label for="lab-b">Candidate</label><select id="lab-b"></select></div></div>
-      <div id="lab-cmp"></div></div>
-    <div class="card"><header><h3>All runs</h3><p id="lab-floor"></p></header><div class="tw" id="lab-rows"></div></div>
-    <div class="grid2">
-      <div class="card"><header><h3>Go-live gates</h3></header><div id="lab-gates"></div></div>
-      <div class="card"><header><h3>Configuration differences</h3><p>research candidate (2 Oct) against the rule live now</p></header><div class="tw" id="lab-diff"></div></div>
-    </div>
-    <div class="card"><header><h3>Forward equity, one book per chart</h3><p>own axis each, because the units differ</p></header><div class="grid3" id="lab-eq"></div></div>
-  </section>
-
-  <section class="page" data-page="health" hidden>
-    <div class="kpis" id="he-kpis"></div>
-    <div class="card"><header><h3>Confirmed issues</h3><p>from the latency log, the announce records and Actions run history</p></header><div class="issues" id="he-issues"></div></div>
-    <div class="card"><header><h3>Live bot sessions</h3><p>a poll is a scan; a signal is a confirmed setup; delivered means Discord returned a message id</p></header><div class="tw" id="he-lat"></div></div>
-    <div class="grid2">
-      <div class="card"><header><h3>Last session's announce record</h3></header><div class="tw" id="he-seen"></div></div>
-      <div class="card"><header><h3>Configuration</h3></header><div class="tw" id="he-cfg"></div></div>
-    </div>
-    <div class="card"><header><h3>Scheduled workflows</h3><p id="he-act-cap"></p></header><div class="tw" id="he-act"></div></div>
-    <div class="card"><header><h3>Data integrity</h3><p>checks run when this page was built</p></header><div class="tw" id="he-int"></div></div>
-    <div class="card"><header><h3>Sources</h3></header><div class="tw" id="he-src"></div></div>
   </section>
 </main>
 
 <script>
 const D = /*__DASHBOARD_DATA__*/null;
 
-// ---------------------------------------------------------------- the one metric (port of src/dashboard.py metrics)
+// ------------------------------------------------------------ the one metric (port of src/dashboard.py metrics)
 function metrics(rets) {
   const r = [];
   for (const v of rets) { const x = (v === null || v === undefined || typeof v === "boolean") ? NaN : Number(v); if (Number.isFinite(x)) r.push(x); }
@@ -287,418 +260,413 @@ function metrics(rets) {
   for (const k in out) if (typeof out[k] === "number" && !["n", "wins", "losses", "flat"].includes(k)) out[k] = Math.round(out[k] * 1e4) / 1e4;
   return out;
 }
-function verdictOf(m, unitLabel) {
-  const SMALL = D.thresholds.small_n;
-  if (!m.n) return { state: "none", text: "No closed trades in this selection." };
-  if (m.total !== null && m.total <= 0) return { state: "neg", text: `No. Net ${sg(m.total)} (${unitLabel}) over ${m.n} closed trades, ${m.wins} won, ${m.losses} lost.` };
-  if (m.n < SMALL) return { state: "few", text: `Net ${sg(m.total)} over ${m.n} trades: too few to judge (under ${SMALL}). Read it as a record, not a result.` };
-  if (m.ci_low !== null && m.ci_low > 0) return { state: "pos", text: `Net ${sg(m.total)} over ${m.n} trades and the 95% interval of the average trade stays above zero.` };
-  return { state: "noise", text: `Net ${sg(m.total)} over ${m.n} trades, but the 95% interval of the average trade includes zero: not distinguishable from noise.` };
+function verdictOf(m) {
+  if (!m.n) return "none";
+  if (m.total !== null && m.total <= 0) return "neg";
+  if (m.n < D.thresholds.small_n) return "few";
+  return m.ci_low !== null && m.ci_low > 0 ? "pos" : "noise";
 }
-window.__dash = { metrics, verdictOf };   // used by the parity test
+window.__dash = { metrics, verdictOf };
 
-// ---------------------------------------------------------------- formatting
+// ------------------------------------------------------------ formatting
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const NA = '<span class="na">N/A</span>';
 const isNum = v => typeof v === "number" && Number.isFinite(v);
-function sg(v, d = 2) { return isNum(v) ? (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(d) : "N/A"; }
-function pc(v, d = 2) { return isNum(v) ? `<span class="${v > 0 ? "up" : v < 0 ? "down" : ""}">${sg(v, d)}%</span>` : NA; }
-function plain(v, d = 2) { return isNum(v) ? v.toFixed(d) : NA; }
+const NA = '<span class="na">—</span>';
+const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+function signed(v, d = 2) { return (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(d); }
+function pct(v, d = 2) { return isNum(v) ? `<span class="${v > 0 ? "up" : v < 0 ? "down" : ""}">${signed(v, d)}%</span>` : NA; }
+function pctPlain(v, d = 2) { return isNum(v) ? signed(v, d) + "%" : "—"; }
 function rate(v) { return isNum(v) ? v.toFixed(0) + "%" : NA; }
-function ddv(v) { return isNum(v) ? (v > 0 ? `<span class="down">−${v.toFixed(2)}%</span>` : "0.00%") : NA; }
-function px(v) { return isNum(v) ? v.toFixed(2) : NA; }
-function rec(v) { return v === null || v === undefined || v === "" ? '<span class="na">not recorded</span>' : esc(v); }
-function yn(v) { return v === true ? "yes" : v === false ? "no" : '<span class="na">not recorded</span>'; }
-function nFlag(n) { const t = D.thresholds; return n < t.tiny_n ? '<span class="small-n" title="Too few trades to compare">too few</span>' : n < t.small_n ? '<span class="small-n" title="Fewer than ' + t.small_n + ' trades: treat as anecdote">small</span>' : ""; }
+function ratio(v) { return isNum(v) ? v.toFixed(2) : NA; }
+function dd(v) { return isNum(v) ? (v > 0 ? `<span class="down">−${v.toFixed(2)}%</span>` : "0.00%") : NA; }
+function price(v) { return isNum(v) ? v.toFixed(2) : NA; }
+function fdate(s, year = true) { if (!s || !/^\d{4}-\d\d-\d\d/.test(s)) return s || "—"; const [y, m, d] = s.slice(0, 10).split("-"); return `${+d} ${MON[+m - 1]}${year ? " " + y : ""}`; }
+function fUtcEt(iso) {
+  if (!iso) return null;
+  const t = new Date(iso); if (isNaN(t)) return null;
+  const p = new Intl.DateTimeFormat("en-GB", { timeZone: "America/New_York", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(t);
+  const g = k => (p.find(x => x.type === k) || {}).value;
+  return `${g("day")} ${g("month")}, ${g("hour")}:${g("minute")} ET`;
+}
+function fhold(t) { return isNum(t.hold_min) ? (t.hold_min >= 60 ? `${Math.floor(t.hold_min / 60)}h ${String(Math.round(t.hold_min % 60)).padStart(2, "0")}m` : `${Math.round(t.hold_min)}m`) : isNum(t.hold_days) ? `${t.hold_days} day${t.hold_days === 1 ? "" : "s"}` : NA; }
+function sizeFlag(n) { return n < D.thresholds.tiny_n ? `<span class="flag" title="Fewer than ${D.thresholds.tiny_n} trades: not enough to compare">small</span>` : n < D.thresholds.small_n ? `<span class="flag" title="Fewer than ${D.thresholds.small_n} trades: treat with caution">small</span>` : ""; }
 const tip = t => `<span class="tip" title="${esc(t)}" aria-label="${esc(t)}">?</span>`;
-const WD = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const wdOf = d => new Date(d + "T12:00:00Z").getUTCDay();
-function isoWeek(d) { const t = new Date(d + "T12:00:00Z"); const day = (t.getUTCDay() + 6) % 7; t.setUTCDate(t.getUTCDate() - day); return t.toISOString().slice(0, 10); }
+const BOT_KEYS = ["daytrade", "inplay", "swing"];
+const color = k => `var(--s-${k})`;
+const UNIT = "% of account, 1% risked per trade";
+const STATE_LBL = { ok: "Running", attention: "Needs attention", failing: "Failing", unknown: "Unknown" };
 
-// ---------------------------------------------------------------- charts (SVG, one axis each)
+// ------------------------------------------------------------ state & filters
+const DEFAULTS = { bot: "all", period: "30", from: "", to: "", mode: "live", side: "", q: "" };
+const ST = Object.assign({ tab: "overview", openBot: null, botTab: "perf", chartView: "cum", hidden: new Set(),
+  stock: null, rkView: "traded", rkN: 10, rkMetric: "pnl", sort: { k: "n", asc: false } }, DEFAULTS);
+try { const s = JSON.parse(localStorage.getItem("tba-view") || "{}"); if (s.tab === "stocks") ST.tab = "stocks"; } catch (e) {}
+
+function addDays(iso, n) { const t = new Date(iso + "T12:00:00Z"); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); }
+function periodRange() {
+  const a = D.as_of;
+  if (ST.period === "today") return [a, a];
+  if (ST.period === "all") return ["", ""];
+  if (ST.period === "custom") return [ST.from, ST.to];
+  return [addDays(a, -(+ST.period - 1)), a];
+}
+function periodText() {
+  const [f, t] = periodRange();
+  const lbl = { today: "Today", 7: "Last 7 days", 30: "Last 30 days", 90: "Last 90 days", all: "All history", custom: "Custom range" }[ST.period];
+  if (!f && !t) return lbl;
+  return `${lbl} (${f ? fdate(f, f.slice(0, 4) !== (t || f).slice(0, 4)) : "start"} – ${t ? fdate(t) : "latest"})`;
+}
+const botsSel = () => ST.bot === "all" ? BOT_KEYS : [ST.bot];
+function inPeriod(t) { const [f, to] = periodRange(); return (!f || t.date >= f) && (!to || t.date <= to); }
+/** Closed trades for the given bots in the selected data type and period (plus the stock-page filters when asked). */
+function select(bots = botsSel(), o = {}) {
+  const q = ST.q.trim().toUpperCase();
+  return D.trades.filter(t => t.bot && bots.includes(t.bot) && t.mode === ST.mode && t.status === "closed" && inPeriod(t)
+    && (!o.stockFilters || ((!ST.side || t.side === ST.side) && (!q || (t.symbol || "").includes(q)))))
+    .sort((a, b) => (a.date + (a.exit_time || "")).localeCompare(b.date + (b.exit_time || "")));
+}
+const botHasMode = (k, m = ST.mode) => !!(D.bots[k] && D.bots[k].modes[m]);
+
+function initFilters() {
+  $("#f-bot").innerHTML = `<option value="all">All bots</option>` + BOT_KEYS.map(k => `<option value="${k}">${esc(D.bots[k].name)}</option>`).join("");
+  $("#f-mode").innerHTML = Object.entries(D.modes).map(([k, l]) => `<button data-m="${k}">${l}</button>`).join("");
+  $("#f-bot").onchange = e => { ST.bot = e.target.value; ST.openBot = null; ST.stock = null; fitMode(); render(); };
+  $("#f-period").onclick = e => { const b = e.target.closest("button"); if (!b) return; ST.period = b.dataset.p; render(); };
+  $("#f-mode").onclick = e => { const b = e.target.closest("button"); if (!b || b.disabled) return; ST.mode = b.dataset.m; ST.stock = null; render(); };
+  $("#f-from").onchange = e => { ST.from = e.target.value; render(); };
+  $("#f-to").onchange = e => { ST.to = e.target.value; render(); };
+  $("#f-side").onchange = e => { ST.side = e.target.value; render(); };
+  $("#f-q").oninput = e => { ST.q = e.target.value; render(); };
+  $("#f-reset").onclick = () => { Object.assign(ST, DEFAULTS, { openBot: null, stock: null }); $("#f-q").value = ""; $("#f-side").value = ""; $("#f-from").value = $("#f-to").value = ""; render(); };
+  document.querySelectorAll("nav.tabs button").forEach(b => b.onclick = () => { ST.tab = b.dataset.tab; try { localStorage.setItem("tba-view", JSON.stringify({ tab: ST.tab })); } catch (e) {} render(); });
+  $("#ch-view").onclick = e => { const b = e.target.closest("button"); if (!b) return; ST.chartView = b.dataset.v; renderChart(); };
+  $("#rk-view").onchange = e => { ST.rkView = e.target.value; renderStocks(); };
+  $("#rk-n").onclick = e => { const b = e.target.closest("button"); if (!b) return; ST.rkN = +b.dataset.n; renderStocks(); };
+  $("#rk-metric").onclick = e => { const b = e.target.closest("button"); if (!b) return; ST.rkMetric = b.dataset.m; renderStocks(); };
+}
+/** A single bot with no record in the selected data type switches to the type it has. */
+function fitMode() { if (ST.bot !== "all" && !botHasMode(ST.bot)) ST.mode = Object.keys(D.bots[ST.bot].modes)[0]; }
+function latestDate() { return D.trades.filter(t => t.bot).map(t => t.date).sort().pop() || D.as_of; }
+function syncControls() {
+  document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === ST.tab)));
+  document.querySelectorAll("section.page").forEach(s => s.hidden = s.dataset.page !== ST.tab);
+  document.querySelectorAll(".stock-only").forEach(e => e.hidden = ST.tab !== "stocks");
+  document.querySelectorAll("#f-period button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.p === ST.period)));
+  document.querySelectorAll("#f-mode button").forEach(b => { b.setAttribute("aria-pressed", String(b.dataset.m === ST.mode)); b.disabled = !botsSel().some(k => botHasMode(k, b.dataset.m)); b.title = b.disabled ? "No bot in this selection has " + b.textContent.toLowerCase() + " data" : ""; });
+  $("#f-custom").hidden = ST.period !== "custom";
+  $("#f-bot").value = ST.bot;
+  const without = botsSel().filter(k => !botHasMode(k));
+  $("#context").innerHTML = `Showing <b>${ST.bot === "all" ? "All bots" : esc(D.bots[ST.bot].name)}</b> · <b>${D.modes[ST.mode]}</b> data · <b>${esc(periodText())}</b> · results in ${UNIT}` +
+    (without.length ? ` · <span class="faint">${without.map(k => esc(D.bots[k].name)).join(", ")} ${without.length > 1 ? "have" : "has"} no ${D.modes[ST.mode].toLowerCase()} record</span>` : "");
+  $("#meta").innerHTML = `Records through ${fdate(latestDate())}<br>Built ${esc(D.generated)}`;
+}
+
+// ------------------------------------------------------------ charts
 function niceTicks(lo, hi, n = 4) {
   if (lo === hi) { lo -= 1; hi += 1; }
-  const span = hi - lo, step0 = span / n, mag = 10 ** Math.floor(Math.log10(step0));
+  const step0 = (hi - lo) / n, mag = 10 ** Math.floor(Math.log10(step0));
   const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => s >= step0);
-  const a = Math.floor(lo / step) * step, b = Math.ceil(hi / step) * step, out = [];
-  for (let v = a; v <= b + step / 2; v += step) out.push(Math.round(v * 1e6) / 1e6);
+  const out = []; for (let v = Math.floor(lo / step) * step; v <= Math.ceil(hi / step) * step + step / 2; v += step) out.push(Math.round(v * 1e6) / 1e6);
   return out;
 }
-function frame(el, h, yTicks, fmtY) {
-  const W = Math.max(280, Math.round(el.clientWidth || 560)), H = h, L = 46, R = 10, T = 10, B = 24;
-  const y0 = yTicks[0], y1 = yTicks[yTicks.length - 1];
-  const Y = v => T + (H - T - B) * (1 - (v - y0) / (y1 - y0 || 1));
-  let g = "";
-  for (const t of yTicks) g += `<line class="${t === 0 ? "zero" : "gl"}" x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}"/><text x="${L - 6}" y="${Y(t) + 3.5}" text-anchor="end">${fmtY(t)}</text>`;
-  return { W, H, L, R, T, B, Y, g };
-}
-function attachHover(el, svgW, xs, label) {
+/** Lines over trading sessions. series: [{key,label,color,pts:{date: {y, day, n}}}] */
+function lineChart(el, series, o = {}) {
+  el.innerHTML = "";
+  const dates = [...new Set(series.flatMap(s => Object.keys(s.pts)))].sort();
+  if (!dates.length || !series.length) { el.innerHTML = `<p class="empty">${o.empty || "No closed trades match these filters."}</p>`; return; }
+  const ys = series.flatMap(s => Object.values(s.pts).map(p => p.y)).concat([0]);
+  const ticks = niceTicks(Math.min(...ys), Math.max(...ys));
+  const W = Math.max(300, Math.round(el.clientWidth || 700)), H = o.h || 280, L = 52, R = 14, T = 12, B = 30;
+  const n = dates.length, X = i => L + (W - L - R) * (n === 1 ? 0.5 : i / (n - 1));
+  const Y = v => T + (H - T - B) * (1 - (v - ticks[0]) / (ticks[ticks.length - 1] - ticks[0] || 1));
+  let g = ticks.map(t => `<line class="${t === 0 ? "zero" : "gl"}" x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}"/><text x="${L - 8}" y="${Y(t) + 4}" text-anchor="end">${t > 0 ? "+" : t < 0 ? "−" : ""}${Math.abs(t)}%</text>`).join("");
+  const every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor((W - L) / 90))));
+  dates.forEach((d, i) => { if (i % every === 0 || i === n - 1) g += `<text x="${X(i)}" y="${H - 8}" text-anchor="${n === 1 ? "middle" : i === 0 ? "start" : i === n - 1 ? "end" : "middle"}">${fdate(d, false)}</text>`; });
+  let lines = "";
+  for (const s of series) {
+    let path = "", started = false, lastI = -1;
+    dates.forEach((d, i) => { const p = s.pts[d]; if (!p) return; path += `${started ? "L" : "M"}${X(i).toFixed(1)},${Y(p.y).toFixed(1)}`; started = true; lastI = i; });
+    if (!started) continue;
+    lines += `<path d="${path}" fill="none" stroke="${s.color}" stroke-width="${s.key === "all" ? 2.5 : 2}" stroke-linejoin="round"/>`;
+    const lp = s.pts[dates[lastI]];
+    lines += `<circle cx="${X(lastI)}" cy="${Y(lp.y)}" r="3.5" fill="${s.color}" stroke="var(--surface)" stroke-width="1.5"/>`;
+  }
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria || "Performance chart")}">${g}<line class="cross" x1="0" x2="0" y1="${T}" y2="${H - B}" stroke="var(--line-2)" style="opacity:0"/>${lines}</svg>`;
   const tt = document.createElement("div"); tt.className = "ttip"; tt.hidden = true; el.appendChild(tt);
   const svg = el.querySelector("svg"), cross = svg.querySelector(".cross");
   svg.addEventListener("mousemove", e => {
-    const rect = svg.getBoundingClientRect(), sx = (e.clientX - rect.left) * svgW / rect.width;
-    let i = 0, best = Infinity; xs.forEach((x, k) => { const d = Math.abs(x - sx); if (d < best) { best = d; i = k; } });
-    const html = label(i); if (!html) { tt.hidden = true; return; }
-    tt.innerHTML = html; tt.hidden = false;
-    tt.style.left = (xs[i] * rect.width / svgW) + "px"; tt.style.top = (e.clientY - rect.top) + "px";
-    if (cross) { cross.setAttribute("x1", xs[i]); cross.setAttribute("x2", xs[i]); cross.style.opacity = 1; }
+    const rc = svg.getBoundingClientRect(), sx = (e.clientX - rc.left) * W / rc.width;
+    let i = n === 1 ? 0 : Math.round((sx - L) / ((W - L - R) / (n - 1))); i = Math.max(0, Math.min(n - 1, i));
+    const d = dates[i];
+    tt.innerHTML = `<b>${fdate(d)}</b>` + series.map(s => { const p = s.pts[d]; return p ? `<div class="row"><span class="dot" style="background:${s.color}"></span>${esc(s.label)}: ${pctPlain(p.y)}${isNum(p.day) ? ` <span class="faint">(day ${pctPlain(p.day)}, ${p.n} trade${p.n === 1 ? "" : "s"})</span>` : ""}</div>` : ""; }).join("");
+    tt.hidden = false;
+    const x = X(i) * rc.width / W; tt.style.left = Math.min(Math.max(0, x - 120), Math.max(0, rc.width - 280)) + "px"; tt.style.top = "8px";
+    cross.setAttribute("x1", X(i)); cross.setAttribute("x2", X(i)); cross.style.opacity = 1;
   });
-  svg.addEventListener("mouseleave", () => { tt.hidden = true; if (cross) cross.style.opacity = 0; });
+  svg.addEventListener("mouseleave", () => { tt.hidden = true; cross.style.opacity = 0; });
 }
-function lineChart(el, pts, o = {}) {
+/** Horizontal bars, one per label; click calls o.onClick(item). */
+function hbar(el, items, o = {}) {
   el.innerHTML = "";
-  if (!pts.length) { el.innerHTML = '<p class="empty">No closed trades in this selection.</p>'; return; }
-  const ys = pts.map(p => p.y).concat([0]);
-  const ticks = niceTicks(Math.min(...ys), Math.max(...ys));
-  const f = frame(el, o.h || 210, ticks, o.fmtY || (v => v + "%"));
-  const n = pts.length, X = i => f.L + (f.W - f.L - f.R) * (n === 1 ? 0.5 : i / (n - 1));
-  const xs = pts.map((_, i) => X(i));
-  const line = pts.map((p, i) => `${i ? "L" : "M"}${X(i).toFixed(1)},${f.Y(p.y).toFixed(1)}`).join("");
-  const area = `${line}L${X(n - 1).toFixed(1)},${f.Y(0)}L${X(0).toFixed(1)},${f.Y(0)}Z`;
-  const col = o.color || "var(--accent)";
-  const last = pts[n - 1];
-  const labels = [0, Math.floor((n - 1) / 2), n - 1].filter((v, i, a) => a.indexOf(v) === i)
-    .map(i => `<text x="${X(i)}" y="${f.H - 6}" text-anchor="${i === 0 ? "start" : i === n - 1 ? "end" : "middle"}">${esc(pts[i].x)}</text>`).join("");
-  el.innerHTML = `<svg viewBox="0 0 ${f.W} ${f.H}" role="img" aria-label="${esc(o.aria || "chart")}">${f.g}
-    <path d="${area}" fill="${col}" fill-opacity="0.12" stroke="none"/>
-    <path d="${line}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round"/>
-    <circle cx="${X(n - 1)}" cy="${f.Y(last.y)}" r="4" fill="${col}" stroke="var(--surface)" stroke-width="2"/>
-    <line class="cross" x1="0" x2="0" y1="${f.T}" y2="${f.H - f.B}" stroke="var(--line-2)" style="opacity:0"/>${labels}</svg>`;
-  attachHover(el, f.W, xs, i => o.tip ? o.tip(pts[i], i) : `${esc(pts[i].x)} · ${sg(pts[i].y)}%`);
-}
-function barChart(el, items, o = {}) {
-  el.innerHTML = "";
-  if (!items.length) { el.innerHTML = '<p class="empty">Nothing to show for this selection.</p>'; return; }
-  const ys = items.map(p => p.y).concat([0]);
-  const ticks = niceTicks(Math.min(...ys), Math.max(...ys));
-  const f = frame(el, o.h || 200, ticks, o.fmtY || (v => v + "%"));
-  const n = items.length, band = (f.W - f.L - f.R) / n, bw = Math.max(2, Math.min(38, band - 2));
-  const xs = items.map((_, i) => f.L + band * i + band / 2);
-  let bars = "";
-  items.forEach((p, i) => {
-    const y0 = f.Y(0), y1 = f.Y(p.y), top = Math.min(y0, y1), hgt = Math.max(1, Math.abs(y1 - y0));
-    const col = o.color ? o.color(p) : p.y >= 0 ? "var(--up)" : "var(--down)";
-    bars += `<rect x="${(xs[i] - bw / 2).toFixed(1)}" y="${top.toFixed(1)}" width="${bw.toFixed(1)}" height="${hgt.toFixed(1)}" rx="${Math.min(3, bw / 3)}" fill="${col}"/>`;
+  if (!items.length) { el.innerHTML = `<p class="empty">${o.empty || "Nothing matches these filters."}</p>`; return; }
+  const W = Math.max(300, Math.round(el.clientWidth || 700)), rowH = 26, L = o.labelW || 70, R = 120, H = items.length * rowH + 8;
+  const vals = items.map(i => i.v), lo = Math.min(0, ...vals), hi = Math.max(0, ...vals), span = hi - lo || 1;
+  const X = v => L + (W - L - R) * (v - lo) / span;
+  let g = `<line class="zero" x1="${X(0)}" x2="${X(0)}" y1="0" y2="${H}"/>`;
+  items.forEach((it, i) => {
+    const y = 4 + i * rowH, x0 = X(Math.min(0, it.v)), w = Math.max(1.5, Math.abs(X(it.v) - X(0)));
+    const col = o.neutral ? "var(--accent)" : it.v >= 0 ? "var(--up)" : "var(--down)";
+    g += `<g class="hb" data-i="${i}" style="cursor:${o.onClick ? "pointer" : "default"}"><rect x="0" y="${y}" width="${W}" height="${rowH - 2}" fill="transparent"/>
+      <text x="${L - 10}" y="${y + 16}" text-anchor="end" style="fill:var(--ink);font-weight:600">${esc(it.label)}</text>
+      <rect x="${x0}" y="${y + 5}" width="${w}" height="${rowH - 12}" rx="2" fill="${col}"/>
+      <text x="${it.v >= 0 ? X(it.v) + 6 : X(it.v) - 6}" y="${y + 16}" text-anchor="${it.v >= 0 ? "start" : "end"}">${esc(it.text)}</text></g>`;
   });
-  const every = Math.ceil(n / Math.max(1, Math.floor((f.W - f.L) / 70)));
-  const labels = items.map((p, i) => i % every === 0 || i === n - 1 ? `<text x="${xs[i]}" y="${f.H - 6}" text-anchor="middle">${esc(p.short || p.x)}</text>` : "").join("");
-  el.innerHTML = `<svg viewBox="0 0 ${f.W} ${f.H}" role="img" aria-label="${esc(o.aria || "bar chart")}">${f.g}${bars}${labels}</svg>`;
-  attachHover(el, f.W, xs, i => o.tip ? o.tip(items[i]) : `${esc(items[i].x)} · ${sg(items[i].y)}%${items[i].n !== undefined ? " · " + items[i].n + " trades" : ""}`);
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria || "Bar chart")}">${g}</svg>`;
+  if (o.onClick) el.querySelectorAll(".hb").forEach(nd => nd.addEventListener("click", () => o.onClick(items[+nd.dataset.i])));
+}
+/** Cumulative (or drawdown) series by session for a list of trades. */
+function cumSeries(ts, view = "cum") {
+  const byDay = new Map(); ts.forEach(t => { const r = byDay.get(t.date) || { s: 0, n: 0 }; r.s += t.ret; r.n++; byDay.set(t.date, r); });
+  const pts = {}; let cum = 0, peak = 0;
+  [...byDay.keys()].sort().forEach(d => { const r = byDay.get(d); cum += r.s; peak = Math.max(peak, cum); pts[d] = { y: +(view === "dd" ? cum - peak : cum).toFixed(4), day: +r.s.toFixed(4), n: r.n }; });
+  return pts;
 }
 
-// ---------------------------------------------------------------- state + filters
-const ST = { tab: "overview", book: "daytrade", src: "all", from: "", to: "", preset: "all", sym: "", side: "", q: "", sel: null, sort: { k: "date", asc: false } };
-try { const saved = JSON.parse(localStorage.getItem("tbdash") || "{}"); if (saved.book && D && D.books[saved.book]) ST.book = saved.book; if (saved.tab) ST.tab = saved.tab; } catch (e) {}
-function save() { try { localStorage.setItem("tbdash", JSON.stringify({ book: ST.book, tab: ST.tab })); } catch (e) {} }
-const book = () => D.books[ST.book];
-const bookTrades = () => D.trades.filter(t => t.book === ST.book);
-function srcOk(t) { if (ST.src === "live") return t.source === "live"; if (ST.src === "noreplay") return t.source !== "replay"; return true; }
-function sessionDates() { return [...new Set(bookTrades().filter(srcOk).map(t => t.date))].sort(); }
-function dateRange() {
-  if (ST.preset !== "all") { const ds = sessionDates(), n = +ST.preset; return [ds[Math.max(0, ds.length - n)] || "", ""]; }
-  return [ST.from, ST.to];
-}
-function filtered(opts = {}) {
-  const [f, t] = dateRange();
-  return bookTrades().filter(x => srcOk(x) && (!f || x.date >= f) && (!t || x.date <= t)
-    && (!ST.sym || x.symbol === ST.sym) && (!ST.side || x.side === ST.side) && (opts.all || x.status === "closed"));
-}
-function initFilters() {
-  const sel = $("#f-book");
-  sel.innerHTML = Object.entries(D.books).map(([k, b]) => `<option value="${k}">${esc(b.title)} · ${esc(b.kind)}</option>`).join("");
-  sel.value = ST.book;
-  sel.onchange = () => { ST.book = sel.value; ST.sym = ""; ST.sel = null; save(); render(); };
-  $("#f-src").onchange = e => { ST.src = e.target.value; render(); };
-  $("#f-from").onchange = e => { ST.from = e.target.value; setPreset("all", false); render(); };
-  $("#f-to").onchange = e => { ST.to = e.target.value; setPreset("all", false); render(); };
-  $("#f-sym").onchange = e => { ST.sym = e.target.value; render(); };
-  $("#f-side").onchange = e => { ST.side = e.target.value; render(); };
-  $("#f-preset").onclick = e => { const b = e.target.closest("button"); if (!b) return; ST.from = ST.to = ""; $("#f-from").value = $("#f-to").value = ""; setPreset(b.dataset.p, true); };
-  $("#f-reset").onclick = () => { Object.assign(ST, { src: "all", from: "", to: "", sym: "", side: "", q: "" }); $("#f-src").value = "all"; $("#f-from").value = $("#f-to").value = ""; $("#f-side").value = ""; $("#tr-q").value = ""; setPreset("all", true); };
-  document.querySelectorAll("nav.tabs button").forEach(b => b.onclick = () => { ST.tab = b.dataset.tab; save(); render(); });
-}
-function setPreset(p, rerender) { ST.preset = p; document.querySelectorAll("#f-preset button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.p === p))); if (rerender) render(); }
-
-// ---------------------------------------------------------------- shared table builder
-function statTable(groups, label, o = {}) {
-  if (!groups.length) return '<p class="empty">Not recorded for this book.</p>';
-  const rows = groups.map(([g, ts]) => [g, metrics(ts.map(t => t.ret)), ts]);
-  if (o.sort !== false) rows.sort((a, b) => (b[1].total ?? -1e9) - (a[1].total ?? -1e9));
-  return `<table><thead><tr><th>${esc(label)}</th><th class="n">trades</th><th class="n">won / lost</th><th class="n">win %</th><th class="n">net</th><th class="n">avg</th><th class="n">PF ${tip("Profit factor: gross winnings ÷ gross losses. Above 1 makes money.")}</th><th class="n">worst drop</th><th class="n">95% CI avg ${tip("Range the true average per trade plausibly sits in. If it spans zero, the result is not distinguishable from luck.")}</th></tr></thead><tbody>
-  ${rows.map(([g, m]) => `<tr><td>${esc(g)}${nFlag(m.n)}</td><td class="n">${m.n}</td><td class="n">${m.wins} / ${m.losses}</td><td class="n">${m.n >= D.thresholds.tiny_n ? rate(m.win_rate) : NA}</td><td class="n">${pc(m.total)}</td><td class="n">${pc(m.avg, 3)}</td><td class="n">${plain(m.pf)}</td><td class="n">${ddv(m.max_dd)}</td><td class="n">${isNum(m.ci_low) ? sg(m.ci_low) + " … " + sg(m.ci_high) : NA}</td></tr>`).join("")}</tbody></table>`;
-}
-function groupBy(ts, fn) { const m = new Map(); for (const t of ts) { const k = fn(t); if (k === null || k === undefined) continue; if (!m.has(k)) m.set(k, []); m.get(k).push(t); } return [...m.entries()]; }
-const timeBucket = t => { const s = t.entry_time || ""; if (!/^\d\d:\d\d$/.test(s)) return null; const m = +s.slice(0, 2) * 60 + +s.slice(3); if (m < 575) return "09:30–09:34"; if (m < 580) return "09:35–09:39"; if (m < 585) return "09:40–09:44"; if (m < 600) return "09:45–09:59"; if (m < 690) return "10:00–11:29"; return "11:30+"; };
-
-// ---------------------------------------------------------------- overview
-function renderOverview() {
-  const b = book(), ts = filtered(), m = metrics(ts.map(t => t.ret)), v = verdictOf(m, b.unit_label);
-  $("#ov-verdict").innerHTML = `<span class="pill ${v.state}">${{ neg: "losing", pos: "profitable", few: "too few", noise: "noise", none: "empty" }[v.state]}</span><div><b>Profitable after costs?</b> ${esc(v.text)}<div class="src" style="margin-top:4px">${esc(b.title)} · ${esc(b.unit_label)} · costs: ${esc(b.costs)}</div></div>`;
-  const ci = isNum(m.ci_low) ? `${sg(m.ci_low)} … ${sg(m.ci_high)}` : "N/A";
+// ------------------------------------------------------------ overview
+function renderKpis(el, ts, scopeText) {
+  const m = metrics(ts.map(t => t.ret));
   const K = [
-    ["Net result", pc(m.total), b.unit === "acct" ? "realized, % of account" : "realized, sum of % moves", "Sum of every closed trade's result. Realized only; open positions are excluded."],
-    ["Win rate", rate(m.win_rate), `${m.wins} won · ${m.losses} lost${m.flat ? " · " + m.flat + " flat" : ""}`, "Winning trades ÷ closed trades. On its own it says nothing about profit."],
-    ["Closed trades", String(m.n), `${new Set(ts.map(t => t.date)).size} sessions`, "Resolved trades. Always equals wins + losses + flat."],
-    ["Avg per trade", pc(m.avg, 3), `95% CI ${ci}`, "Net ÷ trades: the expectancy in this book's unit."],
-    ["Avg winner / loser", `${pc(m.avg_win)} <span class="faint">/</span> ${pc(m.avg_loss)}`, "", "Average of winning trades, and of losing trades."],
-    ["Profit factor", plain(m.pf), m.pf === null && m.n ? "no losing trade" : "", "Gross winnings ÷ gross losses. Below 1 loses money."],
-    ["Max drawdown", ddv(m.max_dd), "largest fall from a peak", "Largest drop of the cumulative result from its running high, in this book's unit."],
-    ["Current drawdown", ddv(m.cur_dd), "below the running peak now", "How far the latest cumulative result sits under its high."],
+    ["Total P&L", pct(m.total), "realized · " + scopeText, "Sum of closed-trade results in % of account (1% risked per trade). Realized only; open positions are excluded."],
+    ["Win rate", rate(m.win_rate), m.n ? `${m.wins} won · ${m.losses} lost${m.flat ? " · " + m.flat + " flat" : ""}` : "no closed trades", "Winning trades divided by closed trades. Read it with average win and loss."],
+    ["Profit factor", ratio(m.pf), m.n && m.pf === null ? "no losing trade" : "gross wins ÷ gross losses", "Above 1.00 makes money; below 1.00 loses."],
+    ["Expectancy", pct(m.avg, 3), "average per trade" + (isNum(m.ci_low) ? ` · 95% CI ${pctPlain(m.ci_low)} to ${pctPlain(m.ci_high)}` : ""), "Average result per closed trade. If its 95% interval spans zero, the result is indistinguishable from luck."],
+    ["Max drawdown", dd(m.max_dd), "largest fall from a peak", "Largest drop of cumulative P&L from its running high, trades in time order."],
+    ["Closed trades", String(m.n), `${new Set(ts.map(t => t.date)).size} sessions${m.n && m.n < D.thresholds.small_n ? " · small sample" : ""}`, "Resolved trades. Always equals wins + losses + flat."],
   ];
-  if (ST.book === "orb_paper") { const mr = metrics(ts.map(t => t.ret_real)); K.push(["With real costs", pc(mr.total), `${mr.n} trades with NBBO quotes · avg ${sg(mr.avg, 3)}%`, "Same trades re-costed with the consolidated NBBO a few seconds after each signal and at the exit."]); }
-  $("#ov-kpis").innerHTML = K.map(([l, v, s, t]) => `<div class="kpi"><span>${l} ${tip(t)}</span><b>${v}</b><small>${s}</small></div>`).join("");
-
-  let cum = 0, peak = 0; const eq = [], dd = [];
-  ts.forEach(t => { cum += t.ret; peak = Math.max(peak, cum); eq.push({ x: t.date, y: +cum.toFixed(4), t }); dd.push({ x: t.date, y: +(cum - peak).toFixed(4), t }); });
-  $("#ov-eq-unit").textContent = b.unit_label + ", not compounded · trades in order";
-  const tipT = (p) => `${esc(p.t.date)} ${esc(p.t.symbol)} ${esc(p.t.side || "")} · trade ${sg(p.t.ret)}% · total ${sg(p.y)}%`;
-  lineChart($("#ov-eq"), eq, { tip: tipT, aria: "Cumulative result" });
-  lineChart($("#ov-dd"), dd, { color: "var(--down)", tip: p => `${esc(p.x)} · drawdown ${sg(p.y)}%`, aria: "Drawdown" });
-  const day = groupBy(ts, t => t.date).map(([d, a]) => ({ x: d, short: d.slice(5), y: +a.reduce((s, t) => s + t.ret, 0).toFixed(3), n: a.length })).sort((a, b) => a.x < b.x ? -1 : 1);
-  barChart($("#ov-day"), day, { aria: "Result by session" });
-  const wk = groupBy(ts, t => isoWeek(t.date)).map(([d, a]) => ({ x: "week of " + d, short: d.slice(5), y: +a.reduce((s, t) => s + t.ret, 0).toFixed(3), n: a.length })).sort((a, b) => a.x < b.x ? -1 : 1);
-  barChart($("#ov-week"), wk, { aria: "Result by week" });
-  const tot = m.n || 1;
-  $("#ov-wl-cap").textContent = m.n ? `${m.wins} won, ${m.losses} lost${m.flat ? ", " + m.flat + " flat" : ""}` : "";
-  $("#ov-wl").innerHTML = m.n ? `<div class="wl"><div style="flex:${m.wins || 0.0001};background:var(--up)" title="${m.wins} winners">${m.wins || ""}</div>${m.flat ? `<div style="flex:${m.flat};background:var(--faint)">${m.flat}</div>` : ""}<div style="flex:${m.losses || 0.0001};background:var(--down)" title="${m.losses} losers">${m.losses || ""}</div></div>
-    <p class="note" style="margin-top:8px">Winners average ${pc(m.avg_win)}, losers ${pc(m.avg_loss)}. Winning on ${rate(m.win_rate)} of trades breaks even only if the average winner is at least ${isNum(m.avg_loss) && m.win_rate ? (Math.abs(m.avg_loss) * (100 - m.win_rate) / m.win_rate).toFixed(2) + "%" : "N/A"}.</p>` : '<p class="empty">No closed trades.</p>';
-  const edges = [-3, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 3];
-  const hist = []; for (let i = 0; i <= edges.length; i++) { const lo = i ? edges[i - 1] : -Infinity, hi = i < edges.length ? edges[i] : Infinity; const c = ts.filter(t => t.ret >= lo && t.ret < hi).length; hist.push({ x: `${isFinite(lo) ? lo : "<"}…${isFinite(hi) ? hi : ">"}%`, short: isFinite(lo) ? String(lo) : "<" + hi, y: c, mid: isFinite(lo) ? lo : hi - 1 }); }
-  barChart($("#ov-hist"), hist, { h: 150, fmtY: v => v, color: p => p.mid >= 0 ? "var(--up)" : "var(--down)", tip: p => `${p.x}: ${p.y} trades`, aria: "Distribution of trade results" });
-  $("#ov-exit").innerHTML = statTable(groupBy(ts, t => t.reason || "not recorded"), "exit reason");
-  // all books, unfiltered
-  $("#ov-books").innerHTML = `<table><thead><tr><th>book</th><th>kind</th><th>unit</th><th class="n">trades</th><th class="n">won / lost</th><th class="n">win %</th><th class="n">net</th><th class="n">avg</th><th class="n">PF</th><th class="n">worst drop</th><th>dates</th><th>verdict</th></tr></thead><tbody>${Object.entries(D.books).map(([k, bk]) => {
-    const s = D.summary[k], a = s.all, rows = [[bk.title, a, s.verdict]];
-    if (s.live) rows.push(["  · live only", s.live, s.live_verdict]);
-    if (s.real_costs && s.real_costs.n) rows.push(["  · with real costs", s.real_costs, null]);
-    return rows.map(([nm, mm, vv], i) => `<tr class="${k === ST.book && !i ? "on" : ""}"><td>${esc(nm)}${nFlag(mm.n)}</td><td>${i ? "" : esc(bk.kind)}</td><td class="faint">${i ? "" : esc(bk.unit === "acct" ? "% account" : "% move")}</td><td class="n">${mm.n}</td><td class="n">${mm.wins} / ${mm.losses}</td><td class="n">${rate(mm.win_rate)}</td><td class="n">${pc(mm.total)}</td><td class="n">${pc(mm.avg, 3)}</td><td class="n">${plain(mm.pf)}</td><td class="n">${ddv(mm.max_dd)}</td><td class="mono faint">${i ? "" : esc((s.first || "") + " … " + (s.last || ""))}</td><td>${vv ? `<span class="pill ${vv.state}">${vv.state === "neg" ? "losing" : vv.state === "pos" ? "profitable" : vv.state === "few" ? "too few" : vv.state}</span>` : ""}</td></tr>`).join("");
-  }).join("")}</tbody></table>`;
-  const op = D.open.filter(p => p.book === ST.book);
-  $("#ov-open-cap").textContent = ST.book === "swing_paper" ? `${op.length} open in the swing paper record (as of ${D.swing_meta.as_of || "N/A"}). Never counted in the statistics above.` : "Only the swing paper record keeps open positions between runs. The day-trade books are flat by 15:55.";
-  $("#ov-open").innerHTML = op.length ? `<table><thead><tr><th>symbol</th><th>entered</th><th class="n">entry</th><th class="n">stop</th><th class="n">target</th><th class="n">best so far ${tip("Highest favourable excursion since entry, as % of account at 1% risk.")}</th><th class="n">unrealized</th><th>sizeable</th></tr></thead><tbody>${op.map(p => `<tr><td>${esc(p.symbol)}</td><td class="mono">${esc(p.entry_date)}</td><td class="n">${px(p.entry)}</td><td class="n">${px(p.stop)}</td><td class="n">${px(p.target)}</td><td class="n">${pc(p.best_acct)}</td><td class="n" title="${esc(p.note)}">${NA}</td><td>${p.sizeable ? "yes" : '<span class="faint">one share risks more than 1%</span>'}</td></tr>`).join("")}</tbody></table><p class="note" style="margin-top:8px">Unrealized P&amp;L is N/A: the paper record stores no mark price.</p>` : '<p class="empty">No open positions recorded for this book.</p>';
+  el.innerHTML = K.map(([l, v, s, t]) => `<div class="kpi"><div class="l">${l} ${tip(t)}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join("");
+  return m;
+}
+function renderOverview() {
+  const ts = select();
+  const m = renderKpis($("#ov-kpis"), ts, ST.bot === "all" ? "all bots" : D.bots[ST.bot].name);
+  const open = ST.mode === "paper" && botsSel().includes("swing") ? D.open.length : 0;
+  const notes = [];
+  if (open) notes.push(`${open} open position${open > 1 ? "s" : ""} not included. Unrealized P&L is not available: the paper record stores no current prices.`);
+  const v = verdictOf(m);
+  if (v === "few") notes.push(`Fewer than ${D.thresholds.small_n} closed trades: too few to judge whether this is profitable.`);
+  if (v === "noise") notes.push("Positive, but the 95% interval of the average trade includes zero.");
+  $("#ov-note").hidden = !notes.length; $("#ov-note").textContent = notes.join(" ");
+  renderChart(); renderBots(); renderRecent(); renderHealth(); renderMethod();
+}
+function renderChart() {
+  document.querySelectorAll("#ch-view button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === ST.chartView)));
+  const bots = botsSel().filter(k => select([k]).length);
+  const series = bots.map(k => ({ key: k, label: D.bots[k].name, color: color(k), pts: cumSeries(select([k]), ST.chartView) }));
+  if (bots.length > 1) series.push({ key: "all", label: "Selected bots combined", color: color("all"), pts: cumSeries(select(bots), ST.chartView) });
+  $("#ch-legend").innerHTML = series.map(s => `<button data-k="${s.key}" aria-pressed="${!ST.hidden.has(s.key)}"><span class="dot" style="background:${s.color}"></span>${esc(s.label)}</button>`).join("");
+  $("#ch-legend").querySelectorAll("button").forEach(b => b.onclick = () => { const k = b.dataset.k; ST.hidden.has(k) ? ST.hidden.delete(k) : ST.hidden.add(k); renderChart(); });
+  $("#ch-sub").textContent = (ST.chartView === "cum" ? "Cumulative realized P&L" : "Drawdown from the running peak") + ` by session, ${UNIT}.` + (bots.length > 1 ? " The combined line adds the bots' daily results." : "");
+  const without = botsSel().filter(k => !botHasMode(k)).map(k => D.bots[k].name);
+  lineChart($("#ch-main"), series.filter(s => !ST.hidden.has(s.key)), { aria: "Cumulative P&L by bot",
+    empty: `No closed ${D.modes[ST.mode].toLowerCase()} trades for this selection and period.` + (without.length ? ` ${without.join(" and ")} ${without.length > 1 ? "have" : "has"} no ${D.modes[ST.mode].toLowerCase()} record.` : "") });
+}
+function statusCell(b) {
+  const when = fUtcEt(b.last_success);
+  return `<span class="pill ${b.state}">${STATE_LBL[b.state]}</span><div class="small">${when ? "Last success " + when : D.health.actions ? "No successful run found" : "Run history unavailable"}</div>`;
+}
+function renderBots() {
+  const rows = BOT_KEYS.filter(k => ST.bot === "all" || k === ST.bot).map(k => {
+    const b = D.bots[k], ts = select([k]), m = metrics(ts.map(t => t.ret)), has = botHasMode(k);
+    const vals = has ? `<td class="num">${pct(m.total)}</td><td class="num">${rate(m.win_rate)}</td><td class="num">${ratio(m.pf)}</td><td class="num">${pct(m.avg, 3)}</td><td class="num">${m.n}${sizeFlag(m.n)}</td><td class="num">${dd(m.max_dd)}</td>`
+      : `<td colspan="6" class="faint" style="text-align:center">No ${D.modes[ST.mode].toLowerCase()} record · reports ${Object.keys(b.modes).map(x => D.modes[x].toLowerCase()).join(" and ")} data</td>`;
+    const isOpen = ST.openBot === k;
+    return `<tr class="click ${isOpen ? "open" : ""}" data-k="${k}" tabindex="0" aria-expanded="${isOpen}"><td><div class="botname"><span class="caret">${isOpen ? "▾" : "▸"}</span><span class="dot" style="background:${color(k)}"></span><div><b>${esc(b.name)}</b><div class="strat">${esc(b.strategy)}</div></div></div></td>${vals}<td>${statusCell(b)}</td></tr>` +
+      (isOpen ? `<tr><td colspan="8" class="detail-cell"><div class="drill" id="drill"></div></td></tr>` : "");
+  }).join("");
+  $("#bots").innerHTML = `<thead><tr><th>Bot</th><th class="num">P&amp;L</th><th class="num">Win rate</th><th class="num">Profit factor</th><th class="num">Expectancy</th><th class="num">Trades</th><th class="num">Max drawdown</th><th>Status</th></tr></thead><tbody>${rows}</tbody>`;
+  $("#bots").querySelectorAll("tr.click").forEach(tr => { const go = () => { ST.openBot = ST.openBot === tr.dataset.k ? null : tr.dataset.k; ST.botTab = "perf"; renderBots(); }; tr.onclick = go; tr.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } }; });
+  if (ST.openBot) renderDrill(ST.openBot);
 }
 
-// ---------------------------------------------------------------- breakdown
-function renderBreakdown() {
-  const ts = filtered();
-  $("#bd-note").innerHTML = `${esc(book().title)}: ${ts.length} closed trades in this selection. Groups under ${D.thresholds.tiny_n} trades show no win rate; under ${D.thresholds.small_n} they are marked small. Rankings use net result and the confidence interval, never win rate alone.`;
-  const roll = []; const W = 10;
-  ts.forEach((t, i) => { if (i + 1 >= Math.min(W, ts.length)) { const s = ts.slice(Math.max(0, i + 1 - W), i + 1); roll.push({ x: t.date, y: +(s.reduce((a, x) => a + x.ret, 0) / s.length).toFixed(4), n: s.length }); } });
-  lineChart($("#bd-roll"), roll, { tip: p => `${esc(p.x)} · avg of last ${p.n}: ${sg(p.y, 3)}%`, aria: "Rolling average per trade" });
-  $("#bd-sym").innerHTML = statTable(groupBy(ts, t => t.symbol), "ticker");
-  $("#bd-side").innerHTML = statTable(groupBy(ts, t => t.side), "side", { sort: false });
-  $("#bd-setup").innerHTML = statTable(groupBy(ts, t => t.setup || "not recorded"), "setup");
-  // heatmap
-  const buckets = [...new Set(ts.map(timeBucket).filter(Boolean))].sort();
-  if (!buckets.length) { $("#bd-heat").innerHTML = '<p class="empty">Entry times are not intraday for this book.</p>'; }
-  else {
-    const days = [1, 2, 3, 4, 5];
-    let h = `<div class="heat" style="grid-template-columns:44px repeat(${buckets.length},minmax(0,1fr))"><div></div>${buckets.map(b => `<div class="h" style="justify-content:center">${b}</div>`).join("")}`;
-    for (const d of days) {
-      h += `<div class="h">${WD[d]}</div>`;
-      for (const b of buckets) {
-        const c = ts.filter(t => wdOf(t.date) === d && timeBucket(t) === b), m = metrics(c.map(t => t.ret));
-        const a = m.avg, inten = isNum(a) ? Math.min(1, Math.abs(a) / 1.2) : 0;
-        const bg = !m.n ? "transparent" : `color-mix(in srgb, ${a >= 0 ? "var(--up)" : "var(--down)"} ${Math.round(12 + inten * 50)}%, var(--surface))`;
-        h += `<div class="c" style="background:${bg}" title="${WD[d]} ${b}: ${m.n} trades, avg ${sg(a, 3)}%, net ${sg(m.total)}%">${m.n ? sg(a) : "·"}<small>${m.n ? m.n + (m.n < D.thresholds.tiny_n ? " ⚠" : "") : ""}</small></div>`;
-      }
-    }
-    $("#bd-heat").innerHTML = h + `</div><p class="note" style="margin-top:8px">⚠ under ${D.thresholds.tiny_n} trades. With this few, a cell is anecdote.</p>`;
-  }
-  const C = [
-    ["With / against overnight gap", t => t.f.gap_side],
-    ["Stock above VWAP in trade direction", t => t.f.vwap_ok === undefined || t.f.vwap_ok === null ? null : t.f.vwap_ok ? "aligned" : "not aligned"],
-    ["SPY with the trade (above/below VWAP)", t => t.f.spy_ok === undefined || t.f.spy_ok === null ? null : t.f.spy_ok ? "with SPY" : "against SPY"],
-    ["Opening range ÷ daily ATR", t => !isNum(t.f.orw_atr) ? null : t.f.orw_atr < 0.35 ? "< 0.35" : t.f.orw_atr < 0.5 ? "0.35–0.50" : t.f.orw_atr < 0.8 ? "0.50–0.80" : "≥ 0.80"],
-    ["Opening relative volume", t => !isNum(t.f.rvol) ? null : t.f.rvol < 1 ? "< 1×" : t.f.rvol < 2 ? "1–2×" : t.f.rvol < 4 ? "2–4×" : "≥ 4×"],
-    ["Records", t => t.source || "not recorded"],
-  ];
-  $("#bd-cond").innerHTML = C.map(([lbl, fn]) => { const g = groupBy(ts, fn); return `<div style="min-width:0"><h3 style="margin-bottom:8px">${esc(lbl)}</h3><div class="tw">${g.length ? statTable(g, "bucket") : `<p class="empty">Not recorded for ${esc(book().title)}.</p>`}</div></div>`; }).join("") +
-    `<div style="min-width:0"><h3 style="margin-bottom:8px">Market regime</h3><p class="empty">Not recorded. No book stores a daily regime label; SPY-vs-VWAP at entry is the only market field kept (ORB paper record).</p></div>`;
+// ------------------------------------------------------------ bot drill-down
+function groupStats(ts, keyFn, label, o = {}) {
+  const g = new Map(); ts.forEach(t => { const k = keyFn(t); if (k === null || k === undefined) return; if (!g.has(k)) g.set(k, []); g.get(k).push(t); });
+  if (!g.size) return `<p class="empty">${o.empty || "Not recorded."}</p>`;
+  let rows = [...g.entries()].map(([k, a]) => [k, metrics(a.map(t => t.ret))]);
+  if (o.sort !== false) rows.sort((a, b) => (b[1].total ?? -1e9) - (a[1].total ?? -1e9));
+  if (o.limit) rows = rows.slice(0, o.limit);
+  return `<table><thead><tr><th>${esc(label)}</th><th class="num">Trades</th><th class="num">P&amp;L</th><th class="num">Win rate</th><th class="num">Expectancy</th></tr></thead><tbody>${rows.map(([k, m]) => `<tr><td>${esc(k)}</td><td class="num">${m.n}${sizeFlag(m.n)}</td><td class="num">${pct(m.total)}</td><td class="num">${m.n >= D.thresholds.tiny_n ? rate(m.win_rate) : `<span class="faint">${m.wins}/${m.n}</span>`}</td><td class="num">${pct(m.avg, 3)}</td></tr>`).join("")}</tbody></table>`;
 }
-
-// ---------------------------------------------------------------- trades
-const TCOLS = [["date", "date"], ["entry_time", "entry"], ["symbol", "symbol"], ["side", "side"], ["setup", "setup"], ["source", "record"], ["entry", "entry px", 1], ["stop", "stop", 1], ["target", "target", 1], ["exit", "exit px", 1], ["exit_time", "exit"], ["reason", "reason"], ["ret", "result", 1]];
-function tradeRows() {
-  const q = ST.q.trim().toLowerCase();
-  let ts = filtered({ all: true });
-  if (q) ts = ts.filter(t => [t.id, t.symbol, t.reason, t.side, t.source, t.setup, t.date].some(v => String(v || "").toLowerCase().includes(q)));
-  const { k, asc } = ST.sort;
-  return ts.slice().sort((a, b) => { const x = a[k], y = b[k]; const c = x === y ? 0 : x === null || x === undefined ? 1 : y === null || y === undefined ? -1 : x < y ? -1 : 1; return asc ? c : -c; });
+const entryBucket = t => { const s = t.entry_time || ""; if (!/^\d\d:\d\d$/.test(s)) return null; const m = +s.slice(0, 2) * 60 + +s.slice(3); return m < 575 ? "09:30–09:34" : m < 580 ? "09:35–09:39" : m < 585 ? "09:40–09:44" : m < 600 ? "09:45–09:59" : "10:00 or later"; };
+function tradeTable(ts, o = {}) {
+  if (!ts.length) return `<p class="empty">No closed trades match these filters.</p>`;
+  const rows = ts.slice().reverse();
+  return `<table><thead><tr><th>Date</th>${o.bot ? "<th>Bot</th>" : ""}<th>Ticker</th><th>Direction</th><th class="num">Entry</th><th class="num">Stop</th><th class="num">Target</th><th class="num">Exit</th><th>Exit reason</th><th class="num">Held</th><th class="num">Result</th></tr></thead><tbody>${rows.map(t => `<tr><td>${fdate(t.date)}${t.entry_time && /^\d\d:\d\d$/.test(t.entry_time) ? ` <span class="faint">${esc(t.entry_time)}</span>` : ""}</td>${o.bot ? `<td><span class="dot" style="background:${color(t.bot)}"></span> ${esc(D.bots[t.bot].name)}</td>` : ""}<td><b>${esc(t.symbol)}</b></td><td>${esc(t.side || "—")}</td><td class="num">${price(t.entry)}</td><td class="num">${price(t.stop)}</td><td class="num">${price(t.target)}</td><td class="num">${price(t.exit)}</td><td>${esc(t.reason || "—")}</td><td class="num">${fhold(t)}</td><td class="num">${pct(t.ret)}</td></tr>`).join("")}</tbody></table>` +
+    (ts.some(t => t.entry === null || t.stop === null) ? `<p class="small" style="margin-top:8px">— means the record does not store that field (older ledger rows keep only the result).</p>` : "");
 }
-function renderTrades() {
-  const ts = tradeRows();
-  $("#tr-title").textContent = `${book().title} · ${ts.length} records`;
-  $("#tr-table").innerHTML = `<thead><tr>${TCOLS.map(([k, l, n]) => `<th data-k="${k}" class="${n ? "n " : ""}${ST.sort.k === k ? "sorted" + (ST.sort.asc ? " asc" : "") : ""}">${l}</th>`).join("")}</tr></thead><tbody>${ts.map(t => `<tr class="click ${ST.sel === t.id ? "on" : ""}" data-id="${esc(t.id)}" tabindex="0">${TCOLS.map(([k, , n]) => k === "ret" ? `<td class="n">${t.status === "closed" ? pc(t.ret) : `<span class="faint">${esc(t.status)}</span>`}</td>` : n ? `<td class="n">${px(t[k])}</td>` : `<td class="${k === "symbol" ? "" : "mono"}">${t[k] === null || t[k] === undefined ? '<span class="na">—</span>' : esc(t[k])}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${TCOLS.length}" class="empty">No trades match.</td></tr>`}</tbody>`;
-  $("#tr-table").querySelectorAll("th[data-k]").forEach(th => th.onclick = () => { const k = th.dataset.k; ST.sort = { k, asc: ST.sort.k === k ? !ST.sort.asc : false }; renderTrades(); });
-  $("#tr-table").querySelectorAll("tr.click").forEach(tr => { const pick = () => { ST.sel = tr.dataset.id; renderTrades(); }; tr.onclick = pick; tr.onkeydown = e => { if (e.key === "Enter") pick(); }; });
-  renderDetail();
-}
-function ladder(t) {
-  const lv = [["stop", t.stop, "var(--down)"], ["entry", t.entry, "var(--accent)"], ["target", t.target, "var(--up)"], ["exit", t.exit, "var(--ink)"], ["OR high", t.f.or_high, "var(--faint)"], ["OR low", t.f.or_low, "var(--faint)"]].filter(x => isNum(x[1]));
-  if (lv.length < 2) return '<p class="empty">Not enough recorded price levels to draw.</p>';
-  const vals = lv.map(x => x[1]), lo = Math.min(...vals), hi = Math.max(...vals), H = 230, W = 280, T = 14, B = 14;
-  const Y = v => T + (H - T - B) * (1 - (v - lo) / (hi - lo || 1));
-  const sorted = lv.slice().sort((a, b) => b[1] - a[1]); let lastY = -99;
-  const marks = sorted.map(([n, v, c]) => { let y = Y(v); const ly = Math.max(y, lastY + 13); lastY = ly; return `<line x1="40" x2="150" y1="${y}" y2="${y}" stroke="${c}" stroke-width="2" ${n.startsWith("OR") ? 'stroke-dasharray="4 3"' : ""}/><text x="158" y="${ly + 3.5}" fill="${c}" style="fill:${c}">${n} ${v.toFixed(2)}</text>`; }).join("");
-  return `<div class="chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Recorded price levels">${marks}</svg></div><p class="note">Levels only, drawn from the recorded values. Minute bars are not stored in the repo, so the breakout and confirmation candles cannot be drawn without fabricating them.</p>`;
-}
-function renderDetail() {
-  const t = D.trades.find(x => x.id === ST.sel && x.book === ST.book);
-  if (!t) { $("#tr-detail").innerHTML = '<p class="empty">Select a trade to inspect it.</p>'; return; }
-  const unit = book().unit_label;
-  const F = Object.entries(t.f || {});
-  const rows = [["Trade id", t.id], ["Book", book().title], ["Record", t.source], ["Setup / version", t.setup], ["Date", t.date], ["Symbol", t.symbol], ["Side", t.side],
-    ["Entry time", t.entry_time], ["Exit time", t.exit_time], ["Entry price", isNum(t.entry) ? t.entry.toFixed(2) : null], ["Stop", isNum(t.stop) ? t.stop.toFixed(2) : null], ["Target", isNum(t.target) ? t.target.toFixed(2) : null],
-    ["Exit price", isNum(t.exit) ? t.exit.toFixed(2) : null], ["Exit reason", t.reason], ["Result (net of modelled costs)", isNum(t.ret) ? sg(t.ret) + "% · " + unit : null],
-    ["Result with real costs", isNum(t.ret_real) ? sg(t.ret_real) + "%" : null], ["Stock move", isNum(t.move) ? sg(t.move) + "%" : null], ["Gross result (before costs)", null],
-    ["Position size", null], ["MFE", isNum(t.mfe) ? sg(t.mfe) + "% of account" : null], ["MAE", isNum(t.mae) ? sg(t.mae) + "% of account" : null],
-    ["Signal latency", isNum(t.latency_s) ? t.latency_s + " s after bar close" : null], ["Expired", t.expired === null ? null : t.expired ? "yes" : "no"]];
-  $("#tr-detail").innerHTML = `<header><h3>${esc(t.symbol)} ${esc(t.side || "")} · ${esc(t.date)}</h3><span class="pill ${t.ret > 0 ? "pos" : t.ret < 0 ? "neg" : "info"}">${t.status === "closed" ? sg(t.ret) + "%" : esc(t.status)}</span></header>
-  <div class="detail"><div style="min-width:0"><dl class="kv">${rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${rec(v)}</dd>`).join("")}</dl>
-  <h3 style="margin:14px 0 8px">Conditions and confirmation</h3><dl class="kv">${F.length ? F.map(([k, v]) => `<dt>${esc(k.replace(/_/g, " "))}</dt><dd>${typeof v === "boolean" ? yn(v) : isNum(v) ? v : rec(v)}</dd>`).join("") : "<dt>—</dt><dd>none recorded</dd>"}</dl>
-  <p class="note" style="margin-top:10px">Gross P&amp;L and position size are not recorded: results are stored net of the modelled slippage, and share counts are deliberately kept out of shared records. MFE/MAE exist only in the swing paper record.</p></div>
-  <div style="min-width:0">${ladder(t)}</div></div>`;
-}
-function copyCSV() {
-  const ts = tradeRows(), cols = ["id", "book", "date", "symbol", "side", "setup", "source", "entry_time", "exit_time", "entry", "stop", "target", "exit", "reason", "ret", "ret_real", "status"];
-  const q = v => v === null || v === undefined ? "" : /[",\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v);
-  const csv = [cols.join(",")].concat(ts.map(t => cols.map(c => q(t[c])).join(","))).join("\n");
-  const done = m => { $("#tr-copied").textContent = m; setTimeout(() => $("#tr-copied").textContent = "", 2500); };
-  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(csv).then(() => done(`Copied ${ts.length} rows`), () => fallback());
-  else fallback();
-  function fallback() { const ta = document.createElement("textarea"); ta.value = csv; ta.style.cssText = "width:100%;height:120px;margin-top:8px"; $("#tr-detail").prepend(ta); ta.select(); done("Select-all and copy the box below"); }
-}
-
-// ---------------------------------------------------------------- setups
-function renderSetups() {
-  const S = D.setups, [f, t] = ST.preset === "all" ? [ST.from, ST.to] : dateRange();
-  const picks = S.picks.filter(p => (!f || p.date >= f) && (!t || p.date <= t) && (!ST.sym || p.symbol === ST.sym));
-  const cnt = {}; picks.forEach(p => cnt[p.outcome || "not recorded"] = (cnt[p.outcome || "not recorded"] || 0) + 1);
-  const traded = D.trades.filter(x => x.book === "month_replay" && (!f || x.date >= f) && (!t || x.date <= t) && (!ST.sym || x.symbol === ST.sym));
-  const mt = metrics(traded.map(x => x.ret));
-  $("#su-kpis").innerHTML = [["Setups evaluated", picks.length, `${new Set(picks.map(p => p.date)).size} sessions · ${esc(D.month_meta.strategy || "")}`],
-    ["Accepted", cnt.traded || 0, picks.length ? `${(100 * (cnt.traded || 0) / picks.length).toFixed(0)}% of picks` : ""],
-    ["Rejected", picks.length - (cnt.traded || 0), Object.entries(cnt).filter(([k]) => k !== "traded").map(([k, v]) => `${v} ${k}`).join(" · ")],
-    ["Accepted: net", pc(mt.total), `${mt.wins} won · ${mt.losses} lost · win ${rate(mt.win_rate)}`]].map(([l, v, s]) => `<div class="kpi"><span>${l}</span><b>${v}</b><small>${s}</small></div>`).join("");
-  $("#su-cap").textContent = `${D.month_meta.start || ""} … ${D.month_meta.end || ""}, month replay (backtest)`;
-  const items = Object.entries(cnt).map(([k, v]) => ({ x: k, short: k.length > 14 ? k.slice(0, 13) + "…" : k, y: v })).sort((a, b) => b.y - a.y);
-  barChart($("#su-reasons"), items, { fmtY: v => v, color: p => p.x === "traded" ? "var(--accent)" : "var(--warn)", tip: p => `${esc(p.x)}: ${p.y} picks`, aria: "Picks by outcome" });
-  if (!S.alt_recorded) {
-    $("#su-alt-cap").textContent = "Not recorded yet";
-    $("#su-alt").innerHTML = `<p class="note">The month replay starts recording, for each blocked pick, what one explicitly defined alternative would have done: <b>no range filter</b> for "range too narrow", <b>entries until 10:00</b> for "no breakout before 09:45". Same first-close entry, stop, exit and 0.05% costs. Its next scheduled run (16:50 ET) fills this table. Until then, the 12-month study below is the evidence.</p>`;
+function renderDrill(k) {
+  const b = D.bots[k], el = $("#drill"), ts = select([k]), m = metrics(ts.map(t => t.ret));
+  const tabs = [["perf", "Performance"], ["trades", "Trades"], ["breakdown", "Breakdown"], ["compare", "Backtest vs live"], ["quality", "Data quality"]];
+  let body = "";
+  if (ST.botTab === "perf") {
+    body = `<p class="note">${esc(b.detail)}</p><p class="small">${esc(D.modes[ST.mode])}: ${esc(b.modes[ST.mode] || "no record in this data type")}</p>
+      <div class="mini-kpis">${[["P&L", pct(m.total)], ["Trades", m.n], ["Won / lost", m.n ? `${m.wins} / ${m.losses}` : "—"], ["Average win", pct(m.avg_win)], ["Average loss", pct(m.avg_loss)], ["Best trade", pct(m.best)], ["Worst trade", pct(m.worst)], ["Current drawdown", dd(m.cur_dd)]].map(([l, v]) => `<div><span>${l}</span><b>${v}</b></div>`).join("")}</div>
+      <div class="chart" id="drill-chart"></div>`;
+  } else if (ST.botTab === "trades") {
+    body = `<div class="tw" style="max-height:440px;overflow:auto">${tradeTable(ts)}</div>`;
+  } else if (ST.botTab === "breakdown") {
+    body = `<div class="cols2"><div class="box"><h3>Long against short</h3><div class="tw">${groupStats(ts, t => t.side, "Direction", { sort: false })}</div></div>
+      <div class="box"><h3>Exit reason</h3><div class="tw">${groupStats(ts, t => t.reason || "not recorded", "Exit")}</div></div>
+      <div class="box"><h3>By ticker (top 8 by P&amp;L)</h3><div class="tw">${groupStats(ts, t => t.symbol, "Ticker", { limit: 8 })}</div><button class="linkbtn" data-go="stocks">Open Stock Analysis for this bot →</button></div>
+      <div class="box"><h3>${b.hold === "intraday" ? "Entry time" : "Holding period"}</h3><div class="tw">${b.hold === "intraday" ? groupStats(ts, entryBucket, "Entry (ET)", { sort: false }) : groupStats(ts, t => isNum(t.hold_days) ? (t.hold_days <= 2 ? "1–2 days" : t.hold_days <= 5 ? "3–5 days" : "6+ days") : null, "Held", { sort: false })}</div></div></div>${k === "daytrade" ? rejected() : ""}`;
+  } else if (ST.botTab === "compare") {
+    body = compareModes(k);
   } else {
-    const groups = {}; picks.filter(p => p.outcome !== "traded" && p.alt_rule).forEach(p => (groups[p.alt_rule] = groups[p.alt_rule] || []).push(p));
-    $("#su-alt-cap").textContent = "alternative rule per rejection reason, same costs";
-    $("#su-alt").innerHTML = `<table><thead><tr><th>alternative</th><th class="n">blocked picks</th><th class="n">would trade</th><th class="n">won / lost</th><th class="n">net</th><th class="n">avg</th><th>read</th></tr></thead><tbody>${Object.entries(groups).map(([k, ps]) => { const m = metrics(ps.map(p => p.alt_ret)); return `<tr><td>${esc(k)}</td><td class="n">${ps.length}</td><td class="n">${m.n}</td><td class="n">${m.wins} / ${m.losses}</td><td class="n">${pc(m.total)}</td><td class="n">${pc(m.avg, 3)}</td><td class="wrap">${m.n < D.thresholds.small_n ? "too few to judge" : m.total <= 0 ? "the filter kept out losers" : "worth a holdout test, not a switch"}</td></tr>`; }).join("")}</tbody></table>`;
+    body = quality(k);
   }
-  const st = S.study || [];
-  $("#su-study-src").textContent = S.study_source;
-  $("#su-study").innerHTML = st.length > 1 ? `<table><thead><tr>${st[0].slice(0, 11).map((h, i) => `<th class="${i ? "n" : ""}">${esc(h)}</th>`).join("")}</tr></thead><tbody>${st.slice(1).map(r => `<tr>${r.slice(0, 11).map((c, i) => `<td class="${i ? "n" : ""}">${i && /^[+-]/.test(c) && /%$/.test(c) ? `<span class="${c[0] === "+" ? "up" : "down"}">${esc(c)}</span>` : esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>` : '<p class="empty">Study table not found.</p>';
-  $("#su-picks").innerHTML = picks.length ? `<table><thead><tr><th>date</th><th>symbol</th><th>outcome</th><th class="n">open rvol</th><th class="n">range ÷ ATR</th><th class="n">gap</th><th class="n">day move ${tip("Open to 15:55 close. Context only: no rule could have captured all of it.")}</th><th>alternative</th><th class="n">alt result</th></tr></thead><tbody>${picks.slice().reverse().map(p => `<tr><td class="mono">${esc(p.date)}</td><td>${esc(p.symbol)}</td><td><span class="pill ${p.outcome === "traded" ? "ok" : "warning"}">${esc(p.outcome)}</span></td><td class="n">${isNum(p.rvol) ? p.rvol.toFixed(2) + "×" : NA}</td><td class="n">${plain(p.orw_atr)}</td><td class="n">${pc(p.gap_pct)}</td><td class="n">${isNum(p.day_move) ? pc(p.day_move) : '<span class="na">not recorded</span>'}</td><td>${p.outcome === "traded" ? "" : rec(p.alt_rule)}</td><td class="n">${p.outcome === "traded" ? "" : p.alt_rule ? (isNum(p.alt_ret) ? pc(p.alt_ret) : '<span class="faint">no trade</span>') : NA}</td></tr>`).join("")}</tbody></table>` : '<p class="empty">No picks in this selection.</p>';
+  el.innerHTML = `<div class="subtabs" role="tablist">${tabs.map(([id, l]) => `<button role="tab" data-t="${id}" aria-selected="${ST.botTab === id}">${l}</button>`).join("")}</div>${body}`;
+  el.querySelectorAll(".subtabs button").forEach(x => x.onclick = e => { e.stopPropagation(); ST.botTab = x.dataset.t; renderDrill(k); });
+  el.querySelectorAll("[data-go=stocks]").forEach(x => x.onclick = () => { ST.bot = k; ST.tab = "stocks"; render(); window.scrollTo(0, 0); });
+  if (ST.botTab === "perf") lineChart($("#drill-chart"), [{ key: k, label: b.name, color: color(k), pts: cumSeries(ts) }], { h: 200, aria: b.name + " cumulative P&L" });
+}
+function rejected() {
+  const [f, t] = periodRange();
+  const picks = (D.setups.picks || []).filter(p => (!f || p.date >= f) && (!t || p.date <= t));
+  if (!picks.length) return "";
+  const c = {}; picks.forEach(p => c[p.outcome] = (c[p.outcome] || 0) + 1);
+  const alt = picks.filter(p => p.outcome !== "traded" && p.alt_rule);
+  const am = metrics(alt.map(p => p.alt_ret));
+  return `<div class="box"><h3>Entry filter: what the rule looked at (backtest month)</h3><p class="note">${picks.length} stock-days evaluated: ${Object.entries(c).map(([k2, v]) => `${v} ${esc(k2)}`).join(", ")}. ` +
+    (alt.length ? `With the blocking filter off (same entry, stop, exit and costs), the blocked picks would have made ${pctPlain(am.total)} over ${am.n} trades.` : `What the blocked picks would have done is recorded from the next backtest run. The 12-month study found that removing the range filter more than doubles trades and loses on both date ranges (reports/orb_bigtech.md).`) + `</p></div>`;
+}
+function compareModes(k) {
+  const b = D.bots[k], modes = Object.keys(b.modes);
+  if (modes.length < 2) return `<p class="note">${esc(b.name)} keeps only a ${modes.map(x => D.modes[x].toLowerCase()).join(" ")} record in this repo, so there is no backtest of the current settings to compare against.</p>`;
+  const [f, t] = periodRange();
+  const by = md => D.trades.filter(x => x.bot === k && x.mode === md && x.status === "closed" && (!f || x.date >= f) && (!t || x.date <= t));
+  const live = by("live"), bt = by("backtest"), liveDays = new Set(live.map(x => x.date));
+  const btSame = bt.filter(x => liveDays.has(x.date));
+  const row = (lbl, ts2, note) => { const m = metrics(ts2.map(x => x.ret)); return `<tr><td>${lbl}<div class="small">${note}</div></td><td class="num">${m.n}${sizeFlag(m.n)}</td><td class="num">${pct(m.total)}</td><td class="num">${rate(m.win_rate)}</td><td class="num">${ratio(m.pf)}</td><td class="num">${pct(m.avg, 3)}</td></tr>`; };
+  const ints = k === "daytrade" ? D.integrity.filter(c => c.check === "live posts match the month replay") : [];
+  return `<div class="tw"><table><thead><tr><th>Record</th><th class="num">Trades</th><th class="num">P&amp;L</th><th class="num">Win rate</th><th class="num">Profit factor</th><th class="num">Expectancy</th></tr></thead><tbody>
+    ${row("Live", live, "trades posted to Discord")}${row("Backtest, same sessions as live", btSame, "the like-for-like pair")}${row("Backtest, all sessions in period", bt, esc(b.modes.backtest))}</tbody></table></div>
+    <p class="note">Only the same-session pair compares like with like; different sessions compare markets as well as rules.${ints.length ? ` Trade-by-trade check: ${esc(ints[0].detail)}.` : ""}</p>`;
+}
+function quality(k) {
+  const b = D.bots[k], w = b.warnings || [];
+  const books = { daytrade: ["daytrade", "month_replay"], inplay: ["inplay"], swing: ["swing_paper"] }[k];
+  const ints = D.integrity.filter(c => books.includes(c.book));
+  const a = b.announce;
+  return `<div class="cols2"><div class="box"><h3>Warnings</h3><div class="warns">${w.length ? w.map(i => `<div class="warn"><span class="pill ${i.level}">${i.level === "serious" ? "Action" : "Watch"}</span><span>${esc(i.text)}</span></div>`).join("") : '<p class="note">No open warnings for this bot.</p>'}</div>
+    ${a ? `<p class="note" style="margin-top:10px">Last announce record (${fdate(a.date)}): ${a.entries} entr${a.entries === 1 ? "y" : "ies"}, ${a.with_message_id} accepted by Discord, ${a.exits} result${a.exits === 1 ? "" : "s"}, daily summary ${a.summary ? "posted" : "not posted"}.</p>` : ""}
+    ${k === "daytrade" && D.excluded.daytrade_replay ? `<p class="note" style="margin-top:10px">${D.excluded.daytrade_replay} backfilled ledger rows are left out of the live figures; the backtest covers those sessions.</p>` : ""}
+    ${k === "inplay" ? `<p class="note" style="margin-top:10px">The ORB candidate paper record also runs inside this job but trades a different rule (top 10, stop to entry at +1x). It is research, not this bot, so it is not counted here.</p>` : ""}</div>
+    <div class="box"><h3>Record checks</h3><table><tbody>${ints.map(c => `<tr><td><span class="pill ${c.ok ? "ok" : "failing"}">${c.ok ? "Pass" : "Fail"}</span></td><td>${esc(c.check)}<div class="small">${esc(c.detail)}</div></td></tr>`).join("")}</tbody></table>
+    <p class="small" style="margin-top:8px">Workflows: ${b.workflows.map(esc).join(", ")}</p></div></div>`;
 }
 
-// ---------------------------------------------------------------- lab
-const statusOf = r => r.split === "forward" ? ["unseen", "forward"] : /reused|used again|no longer/.test(r.holdout_status || "") ? ["reused", "holdout reused"] : /in-sample/.test(r.holdout_status || "") ? ["insample", "in-sample"] : ["info", r.split];
-function labLabel(r, i) { return `${r.study} · ${r.label} · ${r.split}`; }
-function renderLab() {
-  const L = D.lab, rows = L.rows;
-  $("#lab-floor").textContent = `Noise floor for N variants tried (√(2 ln N) standard errors): ${Object.entries(L.noise_floor).map(([n, v]) => `N=${n}: ${v}`).join(" · ")}`;
-  $("#lab-rows").innerHTML = `<table><thead><tr><th>study</th><th>run</th><th>split</th><th>status</th><th class="n">trades</th><th class="n">win %</th><th class="n">avg</th><th class="n">net</th><th class="n">PF</th><th class="n">worst drop</th><th>unit</th><th>costs</th><th class="n">variants tried</th><th>source</th></tr></thead><tbody>${rows.map(r => { const [c, l] = statusOf(r); return `<tr><td>${esc(r.study)}</td><td>${esc(r.label)}${nFlag(r.trades || 0)}</td><td class="mono faint">${esc(r.split)}</td><td><span class="pill ${c}">${esc(l)}</span></td><td class="n">${r.trades ?? NA}</td><td class="n">${rate(r.win_rate)}</td><td class="n">${pc(r.avg, 3)}</td><td class="n">${pc(r.total)}</td><td class="n">${plain(r.pf)}</td><td class="n">${ddv(r.max_dd)}</td><td class="faint">${r.unit === "acct" ? "% account" : "% move"}</td><td class="faint">${esc(r.slippage)}</td><td class="n">${r.variants ?? NA}</td><td class="src">${esc(r.source)}</td></tr>`; }).join("")}</tbody></table>`;
-  const opts = rows.map((r, i) => `<option value="${i}">${esc(labLabel(r, i))}</option>`).join("");
-  const a = $("#lab-a"), b = $("#lab-b");
-  if (!a.options.length) {
-    a.innerHTML = b.innerHTML = opts;
-    const base = rows.findIndex(r => r.study === "Big tech list" && /current rule/.test(r.label) && /earlier/.test(r.split));
-    const cand = rows.findIndex(r => r.study === "Forward record" && /Day-trade channel · posted live/.test(r.label));
-    a.value = String(base >= 0 ? base : 0); b.value = String(cand >= 0 ? cand : 1);
-    a.onchange = b.onchange = renderLab;
-  }
-  const A = rows[+a.value], B = rows[+b.value], warns = [];
-  if (A.unit !== B.unit) warns.push(["fail", "Different units (% of account against % stock move). The numbers cannot be compared directly."]);
-  if (A.universe !== B.universe) warns.push(["warn", `Different universes: ${A.universe} against ${B.universe}.`]);
-  if (A.slippage !== B.slippage) warns.push(["warn", `Different cost assumptions: ${A.slippage} against ${B.slippage}.`]);
-  if (A.dates !== B.dates) warns.push(["info", `Different dates: ${A.dates} against ${B.dates}. Different dates compare markets as well as rules.`]);
-  for (const R of [A, B]) { const [c] = statusOf(R); if (c === "insample") warns.push(["warn", `${R.label} (${R.split}) is in-sample: it is where the rule was chosen.`]); if (c === "reused") warns.push(["fail", `${R.label} (${R.split}) is a holdout that has been used more than once. It is not unseen data.`]); }
-  if (B.variants && B.variants > 1) warns.push(["info", `The candidate came out of ${B.variants} variants; the noise floor for that many is ${(Math.sqrt(2 * Math.log(B.variants))).toFixed(2)} standard errors.`]);
-  if ((A.trades || 0) < D.thresholds.small_n || (B.trades || 0) < D.thresholds.small_n) warns.push(["warn", `At least one side has fewer than ${D.thresholds.small_n} trades.`]);
-  const fair = !warns.some(w => w[0] === "fail");
-  const better = isNum(A.avg) && isNum(B.avg) ? B.avg - A.avg : null;
-  const line = (R) => `<td class="n">${R.trades ?? NA}</td><td class="n">${rate(R.win_rate)}</td><td class="n">${pc(R.avg, 3)}</td><td class="n">${pc(R.total)}</td><td class="n">${plain(R.pf)}</td><td class="n">${ddv(R.max_dd)}</td><td class="mono faint">${esc(R.dates)}</td>`;
-  $("#lab-cmp").innerHTML = `<div class="tw"><table><thead><tr><th></th><th class="n">trades</th><th class="n">win %</th><th class="n">avg</th><th class="n">net</th><th class="n">PF</th><th class="n">worst drop</th><th>dates</th></tr></thead><tbody><tr><td>Baseline</td>${line(A)}</tr><tr><td>Candidate</td>${line(B)}</tr></tbody></table></div>
-    <div class="issues" style="margin-top:10px">${warns.map(([c, t]) => `<div class="issue" style="grid-template-columns:auto minmax(0,1fr)"><span class="pill ${c}">${c === "fail" ? "invalid" : c === "warn" ? "caution" : "note"}</span><span>${esc(t)}</span></div>`).join("") || '<div class="issue" style="grid-template-columns:auto minmax(0,1fr)"><span class="pill ok">ok</span><span>Same unit, universe, costs and dates.</span></div>'}</div>
-    <p class="note" style="margin-top:10px">${!fair ? "This comparison is not valid as it stands." : better === null ? "" : `Candidate minus baseline: ${sg(better, 3)}% per trade. ${better > 0 ? "Not an improvement until it holds on independent forward data with enough trades." : "No improvement."}`}</p>`;
-  const G = L.gates;
-  $("#lab-gates").innerHTML = Object.entries(G).map(([k, g]) => `<h3 style="margin:4px 0 6px">${esc(k)} <span class="pill ${g.passed ? "ok" : "fail"}">${g.passed ? "passed" : "failed"}</span></h3><table><tbody>${Object.entries(g.lines || {}).map(([l, ok]) => `<tr><td class="wrap">${esc(l)}</td><td><span class="pill ${ok ? "ok" : "fail"}">${ok ? "pass" : "fail"}</span></td></tr>`).join("")}</tbody></table>`).join("");
-  const pa = (rows.find(r => r.study === "ORB in-play research") || {}).params || {}, pb = (rows.find(r => r.label === "improved") || {}).params || {};
-  const keys = [...new Set([...Object.keys(pa), ...Object.keys(pb)])].filter(k => pa[k] !== pb[k]);
-  $("#lab-diff").innerHTML = keys.length ? `<table><thead><tr><th>setting</th><th>research candidate</th><th>live (orb_paper.CANDIDATE)</th></tr></thead><tbody>${keys.map(k => `<tr><td class="mono">${esc(k)}</td><td class="mono">${rec(pa[k])}</td><td class="mono">${rec(pb[k])}</td></tr>`).join("")}</tbody></table><p class="note" style="margin-top:8px">The big-tech channel runs the live parameters with universe='bigtech'.</p>` : '<p class="empty">No parameter records found.</p>';
-  const host = $("#lab-eq"); host.innerHTML = "";
-  for (const k of ["daytrade", "inplay", "orb_paper", "swing_paper", "month_replay"]) {
-    const ts = D.trades.filter(t => t.book === k && t.status === "closed"); let c = 0;
-    const div = document.createElement("div"); div.style.minWidth = "0";
-    div.innerHTML = `<h3 style="margin-bottom:6px">${esc(D.books[k].title)}</h3><p class="src">${esc(D.books[k].unit_label)} · ${ts.length} trades</p><div class="chart"></div>`;
-    host.appendChild(div);
-    lineChart(div.querySelector(".chart"), ts.map(t => ({ x: t.date, y: +(c += t.ret).toFixed(4), t })), { h: 150, color: D.books[k].kind === "backtest" ? "var(--faint)" : "var(--accent)", tip: p => `${esc(p.x)} ${esc(p.t.symbol)} · total ${sg(p.y)}%` });
-  }
+// ------------------------------------------------------------ recent, health, method
+function renderRecent() {
+  const ts = select().slice(-8).reverse();
+  $("#rc-sub").textContent = `Latest closed ${D.modes[ST.mode].toLowerCase()} trades in the selection`;
+  $("#recent").innerHTML = ts.length ? `<table><tbody>${ts.map(t => `<tr><td style="width:18px"><span class="dot" style="background:${color(t.bot)}" title="${esc(D.bots[t.bot].name)}"></span></td><td><b>${esc(t.symbol)}</b> <span class="faint">${esc(t.side || "")}</span><div class="small">${fdate(t.date)}${t.entry_time && /^\d\d:\d\d$/.test(t.entry_time) ? " · " + esc(t.entry_time) + "–" + esc(t.exit_time || "") : ""} · ${esc(t.reason || "")}</div></td><td class="num">${pct(t.ret)}</td></tr>`).join("")}</tbody></table>` : `<p class="empty">No closed trades in this selection.</p>`;
 }
-
-// ---------------------------------------------------------------- health
-function sigSym(id) { const p = String(id || "").split("-"); return ["ORB", "IP", "OPEN"].includes(p[0]) ? p[1] : p[0]; }
+function freshText(v) { if (!v) return "not recorded"; return v.length > 10 ? fdate(v) + v.slice(10) + " ET" : fdate(v); }
 function renderHealth() {
-  const H = D.health, days = H.latency.days || [], last = days[days.length - 1] || {};
-  const allSig = days.flatMap(d => d.signals.map(s => ({ ...s, date: d.date })));
-  const inSess = allSig.filter(s => s.posted && s.posted >= "09:30" && s.posted < "16:00" && !s.expired && isNum(s.detected_s));
-  const med = a => { if (!a.length) return null; const s = a.slice().sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; };
-  const act = H.actions || [], tests = act.find(a => a.file === "tests.yml"), lb = act.find(a => a.file === "live-bot.yml");
-  const serious = H.issues.filter(i => i.level === "serious").length;
-  $("#he-kpis").innerHTML = [
-    ["Open issues", `<span class="${serious ? "down" : "up"}">${serious}</span>`, `${H.issues.filter(i => i.level === "warning").length} warnings`],
-    ["Last scan", esc(last.last_tick ? last.last_tick.slice(0, 16) : "N/A"), last.date ? `${last.ticks} in-session polls on ${last.date}` : ""],
-    ["Scan duration", isNum(last.scan_med) ? last.scan_med.toFixed(2) + " s" : NA, isNum(last.scan_max) ? `median · max ${last.scan_max.toFixed(2)} s` : ""],
-    ["Signal age at detection", isNum(med(inSess.map(s => s.detected_s))) ? med(inSess.map(s => s.detected_s)).toFixed(1) + " s" : NA, `median of ${inSess.length} on-time signals, last ${days.length} sessions`],
-    ["Live bot (Actions)", lb ? esc(lb.last_conclusion || "N/A") : NA, lb && lb.last_success ? "last success " + lb.last_success.slice(0, 16).replace("T", " ") + " UTC" : esc(H.actions_source)],
-    ["Tests", tests ? `<span class="${tests.last_conclusion === "success" ? "up" : "down"}">${esc(tests.last_conclusion || "N/A")}</span>` : NA, tests && tests.last_run ? tests.last_run.slice(0, 10) : ""],
-  ].map(([l, v, s]) => `<div class="kpi"><span>${l}</span><b>${v}</b><small>${s}</small></div>`).join("");
-  const cur = H.issues.filter(i => i.level !== "past"), past = H.issues.filter(i => i.level === "past");
-  const row = i => `<div class="issue"><span class="pill ${i.level}">${i.level}</span><span class="area">${esc(i.area)}</span><span>${esc(i.text)}</span></div>`;
-  $("#he-issues").innerHTML = (cur.map(row).join("") || '<p class="empty">No current issues.</p>') + (past.length ? `<details style="margin-top:8px"><summary>${past.length} earlier issue(s), before the last 5 sessions</summary><div class="issues">${past.map(row).join("")}</div></details>` : "");
-  $("#he-lat").innerHTML = days.length ? `<table><thead><tr><th>session</th><th class="n">polls</th><th>first – last</th><th>gaps &gt;10 min</th><th>stale data</th><th class="n">scan med / p95 / max</th><th>signals: bar → detected / posted, delivered</th></tr></thead><tbody>${days.slice().reverse().map(d => `<tr><td class="mono">${d.date}</td><td class="n">${d.ticks}</td><td class="mono">${d.first || "—"} – ${d.last || "—"}</td><td class="wrap mono">${d.gaps.map(g => `<span class="${g.minutes >= 30 ? "down" : "faint"}">${g.start}–${g.end}</span>`).join(" ") || '<span class="up">none</span>'}</td><td class="mono">${d.stale.map(s => `<span class="down">${s.start}–${s.end} (bar ${s.newest_bar})</span>`).join(" ") || '<span class="up">none</span>'}</td><td class="n">${[d.scan_med, d.scan_p95, d.scan_max].map(v => isNum(v) ? v.toFixed(2) : "—").join(" / ")}</td><td class="wrap mono">${d.signals.map(s => `${esc(sigSym(s.id))} ${esc(s.entry_bar)}→${isNum(s.detected_s) ? s.detected_s.toFixed(1) : "?"}/${isNum(s.posted_s) ? s.posted_s.toFixed(1) : "?"}s${s.expired ? ' <span class="down">expired</span>' : ""}${s.delivered === true ? ' <span class="up">✓</span>' : s.delivered === false ? ' <span class="down">✗ not delivered</span>' : ""}`).join("<br>") || '<span class="faint">none</span>'}</td></tr>`).join("")}</tbody></table><p class="note" style="margin-top:8px">Polls inside 09:30–16:00 ET. Detected = seconds from the bar's close until the scan found it; posted = until Discord accepted it. ✓ appears once the delivery flag is logged.</p>` : '<p class="empty">No latency log found.</p>';
-  $("#he-seen").innerHTML = `<table><thead><tr><th>channel</th><th>date</th><th class="n">entries</th><th class="n">with Discord id</th><th class="n">results</th><th>summary</th></tr></thead><tbody>${H.seen.map(s => `<tr><td>${esc(s.channel)}</td><td class="mono">${esc(s.date || "N/A")}</td><td class="n">${s.entries}</td><td class="n ${s.with_message_id < s.entries ? "down" : "up"}">${s.with_message_id}</td><td class="n">${s.exits}</td><td>${s.summary ? "posted" : '<span class="faint">no</span>'}</td></tr>`).join("")}</tbody></table><p class="note" style="margin-top:8px">A Discord message id means the webhook accepted the post, so the webhook is working on that date. The ids themselves are not shown.</p>`;
-  $("#he-cfg").innerHTML = `<table><tbody>${H.config.map(c => `<tr><td class="wrap">${esc(c.item)}</td><td class="mono">${esc(c.value)}</td><td><span class="pill ${c.state}">${esc(c.state)}</span></td><td class="wrap faint">${esc(c.note)}</td></tr>`).join("")}</tbody></table>`;
-  $("#he-act-cap").textContent = `Source: ${H.actions_source}. Cron times are UTC (ET is UTC−4 in summer). Start delay = run start minus the cron time it was due. "cancelled" usually means a queued run was replaced by a newer one in the same concurrency group.`;
-  $("#he-act").innerHTML = act.length ? `<table><thead><tr><th>workflow</th><th>schedule (UTC)</th><th>last run</th><th>last result</th><th>last success</th><th>last 7 days</th><th class="n">start delay med / max</th></tr></thead><tbody>${act.filter(a => a.scheduled || a.file === "tests.yml" || a.file === "live-signals.yml").map(a => `<tr><td>${esc(a.name)}<div class="src">${esc(a.file)}</div></td><td class="mono wrap">${a.crons.map(esc).join("<br>") || '<span class="faint">none</span>'}</td><td class="mono">${a.last_run ? esc(a.last_run.slice(0, 16).replace("T", " ")) : NA}</td><td><span class="pill ${a.last_conclusion === "success" ? "ok" : a.last_conclusion === "failure" ? "fail" : "info"}">${esc(a.last_conclusion || "none")}</span></td><td class="mono">${a.last_success ? esc(a.last_success.slice(0, 16).replace("T", " ")) : NA}</td><td class="mono">${Object.entries(a.week).map(([k, v]) => `${v} ${k}`).join(", ") || "—"}</td><td class="n">${isNum(a.start_delay_med_min) ? a.start_delay_med_min + " / " + a.start_delay_max_min + " min" : NA}</td></tr>`).join("")}</tbody></table>` : `<p class="empty">Actions run history unavailable: ${esc(H.actions_source)}.</p>`;
-  $("#he-int").innerHTML = `<table><tbody>${D.integrity.map(c => `<tr><td><span class="pill ${c.ok ? "ok" : "fail"}">${c.ok ? "ok" : "fail"}</span></td><td>${esc(D.books[c.book] ? D.books[c.book].title : c.book)}</td><td>${esc(c.check)}</td><td class="mono faint wrap">${esc(c.detail)}</td></tr>`).join("")}</tbody></table>`;
-  $("#he-src").innerHTML = `<table><thead><tr><th>book</th><th>file</th><th>kind</th><th>costs</th><th>dates</th><th class="wrap">about</th></tr></thead><tbody>${Object.entries(D.books).map(([k, b]) => `<tr><td>${esc(b.title)}</td><td class="mono">${esc(b.source)}</td><td>${esc(b.kind)}</td><td class="wrap faint">${esc(b.costs)}</td><td class="mono">${esc((D.summary[k].first || "—") + " … " + (D.summary[k].last || "—"))}</td><td class="wrap faint">${esc(b.about)}</td></tr>`).join("")}</tbody></table>`;
+  const rows = BOT_KEYS.map(k => { const b = D.bots[k];
+    return `<div class="hrow"><div class="botname"><span class="dot" style="background:${color(k)}"></span><div><b>${esc(b.name)}</b><div class="small">${esc(b.freshness.label)}: ${esc(freshText(b.freshness.value))}</div></div></div><span class="pill ${b.state}">${STATE_LBL[b.state]}</span><div class="small">${fUtcEt(b.last_success) ? "Last successful run " + fUtcEt(b.last_success) : "No run history"}${b.failures.length ? ` · <span class="down">${b.failures.length} failed run${b.failures.length > 1 ? "s" : ""} this week</span>` : ""}</div></div>`; }).join("");
+  const ws = (D.health.issues || []).filter(i => i.level === "serious" || i.level === "warning");
+  $("#health").innerHTML = `<div class="health">${rows}</div>` + (ws.length ? `<h3 style="margin:14px 0 4px;font-size:14px">Warnings</h3><div class="warns">${ws.map(i => `<div class="warn"><span class="pill ${i.level}">${i.level === "serious" ? "Action" : "Watch"}</span><span>${esc(i.text)}${i.bot ? ` <span class="faint">· ${esc(D.bots[i.bot].name)}</span>` : ""}</span></div>`).join("")}</div>` : `<p class="note" style="margin-top:12px">No open warnings.</p>`) +
+    (D.health.actions ? "" : `<p class="small" style="margin-top:10px">Run history could not be read when this page was built (${esc(D.health.actions_source)}), so run status shows as unknown.</p>`);
+}
+function renderMethod() {
+  const items = [
+    ["Unit", "Every bot records each trade as a share of the account with 1% of the account at risk, so results compare across bots. Dollar P&L is not shown: the two Discord bots record no account size. The swing bot's paper account is $2,000 (1% = $20)."],
+    ["Data types", "Live = trades the bots posted to Discord. Paper = the swing bot's forward test. Backtest = rules replayed on past bars. They are never added together."],
+    ["All bots", "The selected bots' trades go into one time-ordered list and the same metrics are computed on it. The chart's combined line adds daily results. Each trade belongs to one bot, so nothing is counted twice; day-trade backfill rows are left out because the backtest covers those sessions."],
+    ["Periods", `Calendar days ending ${fdate(D.as_of)}, the latest session closed when the page was built. Today = that session only.`],
+    ["Costs", "Results are net of each bot's modelled slippage (0.05% a side intraday, 0.03% swing). They are not broker fills."],
+    ["Definitions", "A win is a result above zero. Expectancy is the average result per closed trade. Profit factor is gross wins divided by gross losses. Max drawdown is the largest fall of cumulative P&L from its running high."],
+    ["Small samples", `Groups under ${D.thresholds.small_n} trades are flagged "small"; groups under ${D.thresholds.tiny_n} show wins out of trades instead of a win rate. Rankings never use win rate alone.`],
+    ["Record checks", `${D.integrity.filter(c => c.ok).length} of ${D.integrity.length} passed when the page was built: unique trade ids, trades = wins + losses + flat, open positions kept out, live posts match the backtest on shared sessions, swing totals match src/paper.py.`],
+  ];
+  $("#method-body").innerHTML = `<dl>${items.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("")}</dl>`;
 }
 
-// ---------------------------------------------------------------- render
+// ------------------------------------------------------------ stock analysis
+const MIN_RANK = 3;
+const RANKS = {
+  traded: { title: "Most traded stocks", def: "Ranked by number of closed trades.", sort: (a, b) => b.m.n - a.m.n || (b.m.total - a.m.total) },
+  best: { title: "Best performers", def: `Ranked by expectancy (average result per trade), stocks with at least ${MIN_RANK} trades.`, min: MIN_RANK, sort: (a, b) => b.m.avg - a.m.avg },
+  worst: { title: "Worst performers", def: "Ranked by total P&L, lowest first.", sort: (a, b) => a.m.total - b.m.total },
+  total: { title: "Highest total P&L", def: "Ranked by total P&L, highest first.", sort: (a, b) => b.m.total - a.m.total },
+  lowexp: { title: "Lowest expectancy", def: `Ranked by expectancy, lowest first, stocks with at least ${MIN_RANK} trades.`, min: MIN_RANK, sort: (a, b) => a.m.avg - b.m.avg },
+};
+function stockRows() {
+  const g = new Map(); select(botsSel(), { stockFilters: true }).forEach(t => { if (!g.has(t.symbol)) g.set(t.symbol, []); g.get(t.symbol).push(t); });
+  return [...g.entries()].map(([s, ts]) => {
+    const mins = ts.map(t => t.hold_min).filter(isNum), days = ts.map(t => t.hold_days).filter(isNum);
+    return { s, ts, m: metrics(ts.map(t => t.ret)), bots: [...new Set(ts.map(t => t.bot))],
+      hold: mins.length === ts.length ? { hold_min: mins.reduce((a, b) => a + b, 0) / mins.length } : days.length === ts.length ? { hold_days: +(days.reduce((a, b) => a + b, 0) / days.length).toFixed(1) } : null };
+  });
+}
+function renderStocks() {
+  const rows = stockRows(), R = RANKS[ST.rkView];
+  document.querySelectorAll("#rk-n button").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.n === ST.rkN)));
+  document.querySelectorAll("#rk-metric button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.m === ST.rkMetric)));
+  $("#rk-view").value = ST.rkView;
+  const eligible = rows.filter(r => !R.min || r.m.n >= R.min).sort(R.sort).slice(0, ST.rkN);
+  $("#rk-title").textContent = `${R.title} · top ${ST.rkN}`;
+  $("#rk-def").textContent = `${R.def} ${D.modes[ST.mode]} data, ${periodText().toLowerCase()}. Select a bar to open the stock.`;
+  const items = eligible.map(r => ST.rkMetric === "pnl" ? { label: r.s, v: r.m.total, text: `${pctPlain(r.m.total)} · ${r.m.n} trade${r.m.n === 1 ? "" : "s"}`, r } : { label: r.s, v: r.m.n, text: `${r.m.n} trade${r.m.n === 1 ? "" : "s"} · ${pctPlain(r.m.total)}`, r });
+  hbar($("#rk-chart"), items, { neutral: ST.rkMetric === "n", aria: R.title, onClick: it => { ST.stock = it.r.s; renderStocks(); $("#stock-detail").scrollIntoView({ block: "nearest", behavior: "smooth" }); },
+    empty: R.min && rows.length ? `No stock has ${R.min} or more trades in this selection, so this ranking would rest on one or two trades. Try a longer period or Backtest data.` : "No closed trades match these filters." });
+  const gross = rows.reduce((a, r) => a + Math.abs(r.m.total || 0), 0), top3 = rows.slice().sort((a, b) => Math.abs(b.m.total) - Math.abs(a.m.total)).slice(0, 3);
+  const share = gross ? top3.reduce((a, r) => a + Math.abs(r.m.total), 0) / gross * 100 : null;
+  const losers = rows.filter(r => r.m.n >= MIN_RANK && r.m.total < 0 && r.m.wins / r.m.n < 0.5).map(r => r.s);
+  $("#rk-conc").innerHTML = rows.length ? `${rows.length} stock${rows.length === 1 ? "" : "s"} traded. ${isNum(share) && rows.length > 3 ? `The 3 largest contributors (${top3.map(r => esc(r.s)).join(", ")}) make up ${share.toFixed(0)}% of absolute P&L. ` : ""}${losers.length ? `Losing on most trades (${MIN_RANK}+ trades): ${losers.map(esc).join(", ")}.` : `No stock with ${MIN_RANK}+ trades loses on most of them.`}` : "";
+  const cols = [["s", "Ticker"], ["n", "Trades", 1], ["total", "P&L", 1], ["win_rate", "Win rate", 1], ["pf", "Profit factor", 1], ["avg", "Expectancy", 1], ["avg_win", "Avg win", 1], ["avg_loss", "Avg loss", 1], ["hold", "Avg held", 1], ["max_dd", "Max drawdown", 1], ["bots", "Bots"]];
+  const key = r => ST.sort.k === "s" ? r.s : ST.sort.k === "hold" ? (r.hold ? (r.hold.hold_min ?? r.hold.hold_days * 390) : null) : ST.sort.k === "bots" ? r.bots.length : ST.sort.k === "n" ? r.m.n : r.m[ST.sort.k];
+  const sorted = rows.slice().sort((a, b) => { const x = key(a), y = key(b); const c = x === y ? 0 : x === null || x === undefined ? 1 : y === null || y === undefined ? -1 : x < y ? -1 : 1; return ST.sort.asc ? c : -c; });
+  $("#st-sub").textContent = `${rows.length} stock${rows.length === 1 ? "" : "s"} · select a column to sort, a row to open the stock`;
+  $("#stocks").innerHTML = rows.length ? `<thead><tr>${cols.map(([k, l, n]) => `<th data-k="${k}" class="${n ? "num " : ""}${ST.sort.k === k ? "sorted" + (ST.sort.asc ? " asc" : "") : ""}">${l}</th>`).join("")}</tr></thead><tbody>${sorted.map(r => `<tr class="click ${ST.stock === r.s ? "open" : ""}" data-s="${esc(r.s)}" tabindex="0"><td><b>${esc(r.s)}</b></td><td class="num">${r.m.n}${sizeFlag(r.m.n)}</td><td class="num">${pct(r.m.total)}</td><td class="num">${r.m.n >= D.thresholds.tiny_n ? rate(r.m.win_rate) : `<span class="faint" title="Too few trades for a rate">${r.m.wins}/${r.m.n}</span>`}</td><td class="num">${ratio(r.m.pf)}</td><td class="num">${pct(r.m.avg, 3)}</td><td class="num">${pct(r.m.avg_win)}</td><td class="num">${pct(r.m.avg_loss)}</td><td class="num">${r.hold ? fhold(r.hold) : NA}</td><td class="num">${dd(r.m.max_dd)}</td><td>${r.bots.map(b => `<span class="dot" style="background:${color(b)};margin-right:3px" title="${esc(D.bots[b].name)}"></span>`).join("")}</td></tr>`).join("")}</tbody>` : `<tbody><tr><td class="empty">No closed trades match these filters.</td></tr></tbody>`;
+  $("#stocks").querySelectorAll("th[data-k]").forEach(th => th.onclick = () => { const k = th.dataset.k; ST.sort = { k, asc: ST.sort.k === k ? !ST.sort.asc : k === "s" }; renderStocks(); });
+  $("#stocks").querySelectorAll("tr.click").forEach(tr => { const go = () => { ST.stock = ST.stock === tr.dataset.s ? null : tr.dataset.s; renderStocks(); if (ST.stock) $("#stock-detail").scrollIntoView({ block: "nearest", behavior: "smooth" }); }; tr.onclick = go; tr.onkeydown = e => { if (e.key === "Enter") go(); }; });
+  renderStockDetail(rows);
+}
+function renderStockDetail(rows) {
+  const el = $("#stock-detail"), r = rows.find(x => x.s === ST.stock);
+  if (!r) { el.hidden = true; return; }
+  el.hidden = false;
+  const m = r.m, ts = r.ts;
+  const edges = [-2, -1, -0.5, 0, 0.5, 1, 2], bins = [];
+  for (let i = 0; i <= edges.length; i++) { const lo = i ? edges[i - 1] : -Infinity, hi = i < edges.length ? edges[i] : Infinity; bins.push({ label: isFinite(lo) && isFinite(hi) ? `${lo} to ${hi}%` : isFinite(hi) ? `below ${hi}%` : `${lo}% or more`, v: ts.filter(t => t.ret >= lo && t.ret < hi).length }); }
+  el.innerHTML = `<div class="ph"><div><h2>${esc(r.s)}</h2><p>${D.modes[ST.mode]} data · ${esc(periodText())} · ${r.bots.map(b => esc(D.bots[b].name)).join(", ")}</p></div><button class="closebtn" id="sd-close" type="button">Close</button></div>
+    <div class="mini-kpis" style="margin-bottom:16px">${[["P&L", pct(m.total)], ["Trades", m.n + (m.n < D.thresholds.small_n ? " (small sample)" : "")], ["Won / lost", `${m.wins} / ${m.losses}`], ["Expectancy", pct(m.avg, 3)], ["Average win", pct(m.avg_win)], ["Average loss", pct(m.avg_loss)], ["Profit factor", ratio(m.pf)], ["Max drawdown", dd(m.max_dd)]].map(([l, v]) => `<div><span>${l}</span><b>${v}</b></div>`).join("")}</div>
+    <div class="cols2"><div class="box"><h3>Cumulative P&amp;L</h3><div class="chart" id="sd-chart"></div></div>
+      <div class="box"><h3>Result distribution</h3><div class="chart" id="sd-dist"></div></div>
+      <div class="box"><h3>By bot</h3><div class="tw">${groupStats(ts, t => D.bots[t.bot].name, "Bot")}</div></div>
+      <div class="box"><h3>Long against short</h3><div class="tw">${groupStats(ts, t => t.side, "Direction", { sort: false })}</div>
+        <h3 style="margin:14px 0 8px;font-size:14px">Exit reason</h3><div class="tw">${groupStats(ts, t => t.reason || "not recorded", "Exit")}</div></div></div>
+    <div class="box" style="margin-top:16px"><h3>Trade history</h3><div class="tw" style="max-height:360px;overflow:auto">${tradeTable(ts, { bot: true })}</div></div>`;
+  $("#sd-close").onclick = () => { ST.stock = null; renderStocks(); };
+  lineChart($("#sd-chart"), r.bots.map(b => ({ key: b, label: D.bots[b].name, color: color(b), pts: cumSeries(ts.filter(t => t.bot === b)) })), { h: 200, aria: r.s + " cumulative P&L" });
+  hbar($("#sd-dist"), bins.map(b => ({ label: b.label, v: b.v, text: String(b.v) })), { neutral: true, labelW: 110, aria: "Distribution of trade results" });
+}
+
+// ------------------------------------------------------------ boot
 function render() {
-  document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === ST.tab)));
-  document.querySelectorAll("section.page").forEach(s => s.hidden = s.dataset.page !== ST.tab);
-  $("#filters").style.display = ["lab", "health"].includes(ST.tab) ? "none" : "";
-  const syms = [...new Set(bookTrades().map(t => t.symbol))].sort();
-  if (ST.tab === "setups") syms.splice(0, syms.length, ...[...new Set(D.setups.picks.map(p => p.symbol))].sort());
-  $("#f-sym").innerHTML = `<option value="">All</option>` + syms.map(s => `<option ${s === ST.sym ? "selected" : ""}>${esc(s)}</option>`).join("");
-  $("#f-book").disabled = ST.tab === "setups";
-  try {
-    ({ overview: renderOverview, breakdown: renderBreakdown, trades: renderTrades, setups: renderSetups, lab: renderLab, health: renderHealth })[ST.tab]();
-  } catch (e) {
-    const page = document.querySelector(`section.page[data-page="${ST.tab}"]`);
-    page.insertAdjacentHTML("afterbegin", `<div class="err"><b>This section failed to render.</b> ${esc(e.message)}. The data file may be malformed; rebuild it with <span class="mono">python -m src.dashboard</span>.</div>`);
-    console.error(e);
-  }
+  syncControls();
+  try { ST.tab === "overview" ? renderOverview() : renderStocks(); }
+  catch (e) { console.error(e); const p = document.querySelector(`section.page[data-page="${ST.tab}"]`); p.insertAdjacentHTML("afterbegin", `<div class="err"><b>This page could not be drawn.</b> ${esc(e.message)}. Rebuild the data with <code>python -m src.dashboard</code>.</div>`); }
 }
 function boot() {
-  if (!D || D.schema !== 1) {
-    $("#app").innerHTML = `<div class="err"><b>No dashboard data.</b> This page is a template. Build it with <span class="mono">python -m src.dashboard</span> and open <span class="mono">reports/dashboard.html</span>.</div>`;
-    $("#filters").style.display = "none"; return;
+  if (!D || D.schema !== 1 || !D.bots) {
+    $("#filters").hidden = true; $("#context").hidden = true;
+    $("#app").innerHTML = `<div class="err"><b>No dashboard data.</b> This file is the template. Build the dashboard with <code>python -m src.dashboard</code> and open <code>reports/dashboard.html</code>.</div>`; return;
   }
-  $("#stamp").textContent = "data as of " + D.generated;
   initFilters();
-  $("#tr-q").oninput = e => { ST.q = e.target.value; renderTrades(); };
-  $("#tr-copy").onclick = copyCSV;
   let t; window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(render, 150); });
   render();
 }

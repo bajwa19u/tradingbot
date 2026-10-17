@@ -106,6 +106,70 @@ BOOKS = {
 }
 
 
+# The three bots, as the workflows run them. Each trade record is tagged with one
+# bot and one mode; the page never sums across modes. The ORB candidate paper
+# record rides inside the in-play job but trades a different rule, so it belongs
+# to no bot and is shown only as research.
+BOTS = {
+    "daytrade": dict(
+        name="Day-trade bot", strategy="Opening-range breakout on 6 big tech stocks",
+        detail="Posts to the Discord day-trade channel. First 1-minute close outside the 09:30-09:34 range "
+               "before 09:45, range at least 0.35 of daily ATR, stop at the session extreme, target 2x risk, "
+               "out by 15:55. Ran the in-play list on 5 Oct, big tech from 6 Oct.",
+        workflows=["live-open.yml", "live-bot.yml", "day-end.yml"], hold="intraday",
+        modes={"live": "Trades posted to Discord (5 Oct is the corrected live record).",
+               "backtest": "The live rule replayed on the last 21 sessions (src/orb_month.py)."}),
+    "inplay": dict(
+        name="In-play bot", strategy="Opening-range breakout on the day's top 5 stocks in play",
+        detail="Posts to the Discord in-play channel. Ranks a wide list by first-5-minute relative volume at "
+               "09:35, trades the top 5, wide stop at 0.5 ATR, no target, out at 15:55.",
+        workflows=["inplay-live.yml"], hold="intraday",
+        modes={"live": "Trades posted to Discord.",
+               "backtest": "Sessions before the ledger existed, re-run on that day's bars (ledger backfill)."}),
+    "swing": dict(
+        name="Swing bot", strategy="Volatility-screened breakout on daily bars, held for days",
+        detail="Signals at 15:45 ET (preclose), scored after the close (paper). A 10-day coil breaks out "
+               "on volume; 1% risk per trade on a $2,000 paper account. Failed its out-of-sample test "
+               "before going on paper.",
+        workflows=["preclose.yml", "paper.yml", "live.yml"], hold="days",
+        modes={"paper": "Forward paper test since 28 Sep, replayed daily by src/paper.py."}),
+}
+MODES = {"live": "Live", "paper": "Paper", "backtest": "Backtest"}
+
+
+def bot_mode(t: dict) -> tuple[str | None, str | None]:
+    """(bot, mode) for one trade record, or (None, None) when it belongs to no bot view.
+
+    Day-trade ledger rows marked 'replay' are left out: every one of those sessions
+    is also in the month replay, so counting both would count the trade twice."""
+    b, src = t["book"], t.get("source")
+    if b == "daytrade":
+        return ("daytrade", "live") if src in ("live", "corrected") else (None, None)
+    if b == "month_replay":
+        return "daytrade", "backtest"
+    if b == "inplay":
+        return "inplay", "live" if src == "live" else "backtest"
+    if b == "swing_paper":
+        return "swing", "paper"
+    return None, None
+
+
+def hold_minutes(t: dict) -> float | None:
+    """Minutes between entry and exit for intraday trades (HH:MM on one day)."""
+    a, b = t.get("entry_time") or "", t.get("exit_time") or ""
+    if not (re.fullmatch(r"\d\d:\d\d", a) and re.fullmatch(r"\d\d:\d\d", b)):
+        return None
+    m = (int(b[:2]) * 60 + int(b[3:])) - (int(a[:2]) * 60 + int(a[3:]))
+    return float(m) if m >= 0 else None
+
+
+def as_of_session(now_et: datetime) -> str:
+    """The latest weekday whose session has closed by `now_et`: what 'Today' means on the page."""
+    d = now_et.date() if now_et.hour >= 16 else now_et.date() - timedelta(days=1)
+    while d.weekday() > 4:
+        d -= timedelta(days=1)
+    return d.isoformat()
+
 # --------------------------------------------------------------------------- helpers
 def num(v):
     """A finite float, or None for blanks, NaN and junk. Never 0 for missing."""
@@ -735,19 +799,19 @@ def issues(health: dict, books: dict) -> list[dict]:
     for d in days:
         lvl = "serious" if d["date"] in recent else "past"
         for s in d["stale"]:
-            out.append(dict(level=lvl, area="Market data", date=d["date"],
+            out.append(dict(level=lvl, area="Market data", date=d["date"], bot="daytrade",
                             text=f"{d['date']}: data stale {s['start']}-{s['end']} ET (newest bar stuck at "
                                  f"{s['newest_bar']}, {s['ticks']} polls). New signals were held."))
         for g in d["gaps"]:
             if g["minutes"] >= 30:
-                out.append(dict(level=lvl, area="Coverage", date=d["date"],
+                out.append(dict(level=lvl, area="Coverage", date=d["date"], bot="daytrade",
                                 text=f"{d['date']}: no live-bot scan logged {g['start']}-{g['end']} ET "
                                      f"({g['minutes']} min). A signal in that window could not post on time."))
     short = [(d["date"], g) for d in days if d["date"] in recent for g in d["gaps"] if g["minutes"] < 30]
     if short:
         worst = max(g["minutes"] for _, g in short)
         when = sorted({g["start"] for _, g in short})
-        out.append(dict(level="warning", area="Coverage", date=max(d for d, _ in short),
+        out.append(dict(level="warning", area="Coverage", date=max(d for d, _ in short), bot="daytrade",
                         text=f"Last 5 sessions: {len(short)} poll gap(s) of 10-29 min (worst {worst} min), starting at "
                              f"{', '.join(when)} ET. 10:04 is when the opening job hands over to the session job; "
                              f"stops and targets hit in a gap post late."))
@@ -757,28 +821,29 @@ def issues(health: dict, books: dict) -> list[dict]:
     fresh = [s for s in sigs if not s["expired"] and s["detected_s"] is not None]
     late = [s for s in fresh if s["detected_s"] > 30]
     if late:
-        out.append(dict(level="warning", area="Latency", date=max(d["date"] for d in days),
+        out.append(dict(level="warning", area="Latency", date=max(d["date"] for d in days), bot="daytrade",
                         text=f"Last 5 sessions: {len(late)} of {len(fresh)} on-time signals were first detected "
                              f"about {statistics.median(s['detected_s'] for s in late):.0f} s after their bar closed, "
                              f"i.e. one poll late (still inside the 120 s expiry). The others took "
                              f"{statistics.median([s['detected_s'] for s in fresh if s['detected_s'] <= 30] or [0]):.1f} s."))
     if sigs and all(s["delivered"] is None for s in sigs):
-        out.append(dict(level="info", area="Delivery", date=None,
+        out.append(dict(level="info", area="Delivery", date=None, bot="daytrade",
                         text="Discord delivery per signal was not logged before this dashboard; the live bot now "
                              "records it. Until then delivery is inferred from saved Discord message ids."))
     for a in health.get("actions") or []:
         if a["failures"]:
             out.append(dict(level="serious", area="Actions", date=a["failures"][0]["at"][:10],
+                            bot=next((k for k, b in BOTS.items() if a["file"] in b["workflows"]), None),
                             text=f"{a['name']}: {len(a['failures'])} failed run(s) in the last 7 days, latest {a['failures'][0]['at']}."))
     tests = next((a for a in health.get("actions") or [] if a["file"] == "tests.yml"), None)
     if tests and tests["last_conclusion"] not in (None, "success"):
-        out.append(dict(level="serious", area="Tests", date=None, text=f"Last test run: {tests['last_conclusion']}."))
+        out.append(dict(level="serious", area="Tests", date=None, bot=None, text=f"Last test run: {tests['last_conclusion']}."))
     replay = sum(1 for t in books["daytrade"] if t["source"] == "replay")
     if replay:
-        out.append(dict(level="info", area="Records", date=None,
+        out.append(dict(level="info", area="Records", date=None, bot="daytrade",
                         text=f"{replay} of {len(books['daytrade'])} day-trade ledger rows are replays, not posts. "
-                             f"Use the 'posted live' filter for what subscribers actually saw."))
-    out.append(dict(level="info", area="Records", date=None,
+                             f"They are left out of the bot views: the month replay covers the same sessions."))
+    out.append(dict(level="info", area="Records", date=None, bot="inplay",
                     text="The in-play channel writes no latency log, so its signal ages are not tracked."))
     rank = {"serious": 0, "warning": 1, "info": 2, "past": 3}
     return sorted(out, key=lambda x: (rank[x["level"]], -int((x.get("date") or "0").replace("-", "") or 0)))
@@ -814,6 +879,41 @@ def integrity(books: dict, month_trades: list[dict]) -> list[dict]:
                               f"{len(only_live)} only live, {len(only_bt)} only in replay, "
                               f"{len(diff)} with results >0.05 apart"))
     return checks
+
+
+# --------------------------------------------------------------------------- bot status
+def bot_status(trades: list[dict], health: dict, sw_meta: dict) -> dict:
+    """Per bot: its workflows' last runs, how fresh its records are, and its warnings.
+    A bot is never called healthy just because its workflow exists: with no run
+    history the status is 'unknown'."""
+    acts = {a["file"]: a for a in health.get("actions") or []}
+    seen = {s["channel"]: s for s in health.get("seen") or []}
+    lat = (health.get("latency") or {}).get("days") or []
+    out = {}
+    for key, b in BOTS.items():
+        runs = [acts[w] for w in b["workflows"] if w in acts]
+        last_ok = max((a["last_success"] for a in runs if a["last_success"]), default=None)
+        fails = sorted((f for a in runs for f in a["failures"]), key=lambda f: f["at"], reverse=True)
+        mine = [t for t in trades if t["bot"] == key]
+        latest = max((t["date"] for t in mine), default=None)
+        if key == "daytrade":
+            fresh = dict(label="Last live-bot scan", value=lat[-1]["last_tick"][:16] if lat and lat[-1]["last_tick"] else None)
+            rec = seen.get("Day-trade channel")
+        elif key == "inplay":
+            fresh = dict(label="Last announce record", value=(seen.get("In-play channel") or {}).get("date"))
+            rec = seen.get("In-play channel")
+        else:
+            fresh = dict(label="Paper record generated", value=sw_meta.get("generated"))
+            rec = None
+        state = "unknown" if not runs else "failing" if fails else "ok" if last_ok else "unknown"
+        warn = [i for i in health.get("issues", []) if i.get("bot") == key and i["level"] in ("serious", "warning")]
+        if state == "ok" and any(i["level"] == "serious" for i in warn):
+            state = "attention"
+        out[key] = {k: b[k] for k in ("name", "strategy", "detail", "hold", "modes", "workflows")}
+        out[key].update(state=state, last_success=last_ok, failures=fails[:5], latest_trade=latest,
+                        freshness=fresh, announce=rec, warnings=warn,
+                        open=sum(1 for t in mine if t["status"] == "open"))
+    return out
 
 
 # --------------------------------------------------------------------------- build
@@ -852,9 +952,16 @@ def build(with_actions: bool = True) -> dict:
                   actions_source=how, config=config_checks(flows))
     health["issues"] = issues(health, books)
     trades = [t for ts in books.values() for t in ts]
+    for t in trades:
+        t["bot"], t["mode"] = bot_mode(t)
+        t["hold_min"] = hold_minutes(t) if t["book"] != "swing_paper" else None
+        t["hold_days"] = num((t.get("f") or {}).get("bars_held")) if t["book"] == "swing_paper" else None
+    bots = bot_status(trades, health, sw_meta)
     data = dict(
         schema=SCHEMA, generated=now.astimezone(ET).strftime("%Y-%m-%d %H:%M ET"),
         generated_utc=now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        as_of=as_of_session(now.astimezone(ET)), bots=bots, modes=MODES,
+        excluded=dict(daytrade_replay=sum(1 for t in books["daytrade"] if t["source"] == "replay")),
         thresholds=dict(small_n=SMALL_N, tiny_n=TINY_N),
         books=BOOKS, summary=summary, trades=trades, open=sw_open,
         swing_meta=sw_meta, setups=setups(mo),

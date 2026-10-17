@@ -1,7 +1,133 @@
 {
  "schema": 1,
- "generated": "2026-10-16 05:00 ET",
- "generated_utc": "2026-10-16T09:00:18Z",
+ "generated": "2026-10-17 00:05 ET",
+ "generated_utc": "2026-10-17T04:05:37Z",
+ "as_of": "2026-10-16",
+ "bots": {
+  "daytrade": {
+   "name": "Day-trade bot",
+   "strategy": "Opening-range breakout on 6 big tech stocks",
+   "detail": "Posts to the Discord day-trade channel. First 1-minute close outside the 09:30-09:34 range before 09:45, range at least 0.35 of daily ATR, stop at the session extreme, target 2x risk, out by 15:55. Ran the in-play list on 5 Oct, big tech from 6 Oct.",
+   "hold": "intraday",
+   "modes": {
+    "live": "Trades posted to Discord (5 Oct is the corrected live record).",
+    "backtest": "The live rule replayed on the last 21 sessions (src/orb_month.py)."
+   },
+   "workflows": [
+    "live-open.yml",
+    "live-bot.yml",
+    "day-end.yml"
+   ],
+   "state": "attention",
+   "last_success": "2026-10-16T22:48:53Z",
+   "failures": [],
+   "latest_trade": "2026-10-15",
+   "freshness": {
+    "label": "Last live-bot scan",
+    "value": "2026-10-15 18:46"
+   },
+   "announce": {
+    "channel": "Day-trade channel",
+    "date": "2026-10-15",
+    "entries": 2,
+    "with_message_id": 2,
+    "exits": 2,
+    "summary": true,
+    "strategy": "bigtech",
+    "expired": 0
+   },
+   "warnings": [
+    {
+     "level": "serious",
+     "area": "Market data",
+     "date": "2026-10-15",
+     "bot": "daytrade",
+     "text": "2026-10-15: data stale 12:59-14:11 ET (newest bar stuck at 12:56, 55 polls). New signals were held."
+    },
+    {
+     "level": "warning",
+     "area": "Coverage",
+     "date": "2026-10-15",
+     "bot": "daytrade",
+     "text": "Last 5 sessions: 2 poll gap(s) of 10-29 min (worst 21 min), starting at 10:04 ET. 10:04 is when the opening job hands over to the session job; stops and targets hit in a gap post late."
+    },
+    {
+     "level": "warning",
+     "area": "Latency",
+     "date": "2026-10-15",
+     "bot": "daytrade",
+     "text": "Last 5 sessions: 4 of 7 on-time signals were first detected about 61 s after their bar closed, i.e. one poll late (still inside the 120 s expiry). The others took 1.3 s."
+    }
+   ],
+   "open": 0
+  },
+  "inplay": {
+   "name": "In-play bot",
+   "strategy": "Opening-range breakout on the day's top 5 stocks in play",
+   "detail": "Posts to the Discord in-play channel. Ranks a wide list by first-5-minute relative volume at 09:35, trades the top 5, wide stop at 0.5 ATR, no target, out at 15:55.",
+   "hold": "intraday",
+   "modes": {
+    "live": "Trades posted to Discord.",
+    "backtest": "Sessions before the ledger existed, re-run on that day's bars (ledger backfill)."
+   },
+   "workflows": [
+    "inplay-live.yml"
+   ],
+   "state": "ok",
+   "last_success": "2026-10-16T20:15:33Z",
+   "failures": [],
+   "latest_trade": "2026-10-15",
+   "freshness": {
+    "label": "Last announce record",
+    "value": "2026-10-15"
+   },
+   "announce": {
+    "channel": "In-play channel",
+    "date": "2026-10-15",
+    "entries": 4,
+    "with_message_id": 4,
+    "exits": 4,
+    "summary": true,
+    "strategy": null,
+    "expired": 0
+   },
+   "warnings": [],
+   "open": 0
+  },
+  "swing": {
+   "name": "Swing bot",
+   "strategy": "Volatility-screened breakout on daily bars, held for days",
+   "detail": "Signals at 15:45 ET (preclose), scored after the close (paper). A 10-day coil breaks out on volume; 1% risk per trade on a $2,000 paper account. Failed its out-of-sample test before going on paper.",
+   "hold": "days",
+   "modes": {
+    "paper": "Forward paper test since 28 Sep, replayed daily by src/paper.py."
+   },
+   "workflows": [
+    "preclose.yml",
+    "paper.yml",
+    "live.yml"
+   ],
+   "state": "ok",
+   "last_success": "2026-10-16T21:55:00Z",
+   "failures": [],
+   "latest_trade": "2026-10-15",
+   "freshness": {
+    "label": "Paper record generated",
+    "value": "2026-10-15 21:56"
+   },
+   "announce": null,
+   "warnings": [],
+   "open": 0
+  }
+ },
+ "modes": {
+  "live": "Live",
+  "paper": "Paper",
+  "backtest": "Backtest"
+ },
+ "excluded": {
+  "daytrade_replay": 8
+ },
  "thresholds": {
   "small_n": 30,
   "tiny_n": 10
@@ -338,7 +464,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "daytrade",
+   "mode": "live",
+   "hold_min": 39.0,
+   "hold_days": null
   },
   {
    "id": "ORB-MSFT-2026-10-05",
@@ -371,7 +501,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "daytrade",
+   "mode": "live",
+   "hold_min": 377.0,
+   "hold_days": null
   },
   {
    "id": "ORB-NVDA-2026-10-05",
@@ -404,7 +538,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "daytrade",
+   "mode": "live",
+   "hold_min": 374.0,
+   "hold_days": null
   },
   {
    "id": "ORB-AMD-2026-10-06",
@@ -437,7 +575,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 60.0,
+   "hold_days": null
   },
   {
    "id": "ORB-AAPL-2026-10-07",
@@ -470,7 +612,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "ORB-MSFT-2026-10-07",
@@ -503,7 +649,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 374.0,
+   "hold_days": null
   },
   {
    "id": "ORB-TSLA-2026-10-07",
@@ -536,7 +686,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 373.0,
+   "hold_days": null
   },
   {
    "id": "ORB-TSLA-2026-10-09",
@@ -569,7 +723,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 107.0,
+   "hold_days": null
   },
   {
    "id": "ORB-NVDA-2026-10-09",
@@ -602,7 +760,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "ORB-META-2026-10-12",
@@ -635,7 +797,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 378.0,
+   "hold_days": null
   },
   {
    "id": "ORB-AAPL-2026-10-13",
@@ -668,7 +834,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 375.0,
+   "hold_days": null
   },
   {
    "id": "ORB-META-2026-10-14",
@@ -701,7 +871,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "daytrade",
+   "mode": "live",
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "ORB-NVDA-2026-10-15",
@@ -734,7 +908,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "daytrade",
+   "mode": "live",
+   "hold_min": 13.0,
+   "hold_days": null
   },
   {
    "id": "ORB-META-2026-10-15",
@@ -767,7 +945,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "daytrade",
+   "mode": "live",
+   "hold_min": 379.0,
+   "hold_days": null
   },
   {
    "id": "IP-DKNG-orh-2026-10-05",
@@ -800,7 +982,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 16.0,
+   "hold_days": null
   },
   {
    "id": "IP-DE-orl-2026-10-05",
@@ -833,7 +1019,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 17.0,
+   "hold_days": null
   },
   {
    "id": "IP-BAC-orl-2026-10-05",
@@ -866,7 +1056,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 40.0,
+   "hold_days": null
   },
   {
    "id": "IP-LIN-orl-2026-10-05",
@@ -899,7 +1093,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 86.0,
+   "hold_days": null
   },
   {
    "id": "IP-GD-orh-2026-10-06",
@@ -932,7 +1130,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 378.0,
+   "hold_days": null
   },
   {
    "id": "IP-UPS-orh-2026-10-06",
@@ -965,7 +1167,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 371.0,
+   "hold_days": null
   },
   {
    "id": "IP-ECL-orh-2026-10-06",
@@ -998,7 +1204,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 361.0,
+   "hold_days": null
   },
   {
    "id": "IP-U-orl-2026-10-07",
@@ -1031,7 +1241,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 375.0,
+   "hold_days": null
   },
   {
    "id": "IP-ENPH-orh-2026-10-07",
@@ -1064,7 +1278,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 370.0,
+   "hold_days": null
   },
   {
    "id": "IP-RBLX-orh-2026-10-07",
@@ -1097,7 +1315,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 370.0,
+   "hold_days": null
   },
   {
    "id": "IP-CMI-orl-2026-10-07",
@@ -1130,7 +1352,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 369.0,
+   "hold_days": null
   },
   {
    "id": "IP-ETN-orl-2026-10-07",
@@ -1163,7 +1389,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 368.0,
+   "hold_days": null
   },
   {
    "id": "IP-PLTR-orl-2026-10-08",
@@ -1196,7 +1426,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 6.0,
+   "hold_days": null
   },
   {
    "id": "IP-PEP-orh-2026-10-08",
@@ -1229,7 +1463,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 378.0,
+   "hold_days": null
   },
   {
    "id": "IP-BABA-orl-2026-10-08",
@@ -1262,7 +1500,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 377.0,
+   "hold_days": null
   },
   {
    "id": "IP-AFL-orh-2026-10-08",
@@ -1295,7 +1537,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 368.0,
+   "hold_days": null
   },
   {
    "id": "IP-CVS-orh-2026-10-09",
@@ -1328,7 +1574,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 9.0,
+   "hold_days": null
   },
   {
    "id": "IP-UNH-orh-2026-10-09",
@@ -1361,7 +1611,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 30.0,
+   "hold_days": null
   },
   {
    "id": "IP-MET-orl-2026-10-09",
@@ -1394,7 +1648,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 377.0,
+   "hold_days": null
   },
   {
    "id": "IP-AAPL-orh-2026-10-09",
@@ -1427,7 +1685,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 369.0,
+   "hold_days": null
   },
   {
    "id": "IP-SBUX-orl-2026-10-12",
@@ -1460,7 +1722,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 27.0,
+   "hold_days": null
   },
   {
    "id": "IP-LOW-orl-2026-10-12",
@@ -1493,7 +1759,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 47.0,
+   "hold_days": null
   },
   {
    "id": "IP-FSLR-orh-2026-10-12",
@@ -1526,7 +1796,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 192.0,
+   "hold_days": null
   },
   {
    "id": "IP-UNH-orl-2026-10-12",
@@ -1559,7 +1833,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "IP-TGT-orl-2026-10-12",
@@ -1592,7 +1870,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 375.0,
+   "hold_days": null
   },
   {
    "id": "IP-GS-orl-2026-10-13",
@@ -1625,7 +1907,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "IP-JPM-orl-2026-10-13",
@@ -1658,7 +1944,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "IP-JNJ-orl-2026-10-13",
@@ -1691,7 +1981,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 378.0,
+   "hold_days": null
   },
   {
    "id": "IP-UNH-orl-2026-10-13",
@@ -1724,7 +2018,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 375.0,
+   "hold_days": null
   },
   {
    "id": "IP-CAT-orl-2026-10-13",
@@ -1757,7 +2055,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "backtest",
+   "hold_min": 360.0,
+   "hold_days": null
   },
   {
    "id": "IP-MS-orh-2026-10-14",
@@ -1790,7 +2092,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "live",
+   "hold_min": 8.0,
+   "hold_days": null
   },
   {
    "id": "IP-BLK-orh-2026-10-14",
@@ -1823,7 +2129,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "live",
+   "hold_min": 24.0,
+   "hold_days": null
   },
   {
    "id": "IP-BAC-orl-2026-10-14",
@@ -1856,7 +2166,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "live",
+   "hold_min": 39.0,
+   "hold_days": null
   },
   {
    "id": "IP-JNJ-orh-2026-10-14",
@@ -1889,7 +2203,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "live",
+   "hold_min": 378.0,
+   "hold_days": null
   },
   {
    "id": "IP-SHW-orh-2026-10-15",
@@ -1922,7 +2240,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "live",
+   "hold_min": 4.0,
+   "hold_days": null
   },
   {
    "id": "IP-WMT-orh-2026-10-15",
@@ -1955,7 +2277,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "live",
+   "hold_min": 7.0,
+   "hold_days": null
   },
   {
    "id": "IP-CAT-orl-2026-10-15",
@@ -1988,7 +2314,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "live",
+   "hold_min": 63.0,
+   "hold_days": null
   },
   {
    "id": "IP-SHOP-orh-2026-10-15",
@@ -2021,7 +2351,11 @@
     "vwap_ok": null,
     "spy_ok": null,
     "level": null
-   }
+   },
+   "bot": "inplay",
+   "mode": "live",
+   "hold_min": 379.0,
+   "hold_days": null
   },
   {
    "id": "OP-BAC-2026-10-05",
@@ -2066,7 +2400,11 @@
     "backtest_agrees": "missed live",
     "entry_cost_pct": 0.037,
     "exit_cost_pct": 0.009
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 39.0,
+   "hold_days": null
   },
   {
    "id": "OP-MSFT-2026-10-05",
@@ -2111,7 +2449,11 @@
     "backtest_agrees": "missed live",
     "entry_cost_pct": 0.068,
     "exit_cost_pct": 0.013
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 377.0,
+   "hold_days": null
   },
   {
    "id": "OP-NVDA-2026-10-05",
@@ -2156,7 +2498,11 @@
     "backtest_agrees": "missed live",
     "entry_cost_pct": 0.021,
     "exit_cost_pct": -0.013
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 374.0,
+   "hold_days": null
   },
   {
    "id": "OP-AMD-2026-10-06",
@@ -2201,7 +2547,11 @@
     "backtest_agrees": "missed live",
     "entry_cost_pct": 0.162,
     "exit_cost_pct": 0.028
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 60.0,
+   "hold_days": null
   },
   {
    "id": "OP-PLTR-2026-10-06",
@@ -2246,7 +2596,11 @@
     "backtest_agrees": "missed live",
     "entry_cost_pct": -0.018,
     "exit_cost_pct": -0.044
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 379.0,
+   "hold_days": null
   },
   {
    "id": "OP-CRWD-2026-10-06",
@@ -2291,7 +2645,11 @@
     "backtest_agrees": "missed live",
     "entry_cost_pct": 0.12,
     "exit_cost_pct": -0.013
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 377.0,
+   "hold_days": null
   },
   {
    "id": "OP-AAPL-2026-10-07",
@@ -2336,7 +2694,11 @@
     "backtest_agrees": "missed live",
     "entry_cost_pct": 0.012,
     "exit_cost_pct": 0.009
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "OP-PEP-2026-10-07",
@@ -2381,7 +2743,11 @@
     "backtest_agrees": "missed live",
     "entry_cost_pct": 0.068,
     "exit_cost_pct": 0.073
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "OP-MSFT-2026-10-07",
@@ -2426,7 +2792,11 @@
     "backtest_agrees": "missed live",
     "entry_cost_pct": -0.047,
     "exit_cost_pct": -0.002
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 374.0,
+   "hold_days": null
   },
   {
    "id": "OP-PEP-2026-10-08",
@@ -2471,7 +2841,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": 0.215,
     "exit_cost_pct": 0.016
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 378.0,
+   "hold_days": null
   },
   {
    "id": "OP-GOOGL-2026-10-08",
@@ -2516,7 +2890,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": -0.165,
     "exit_cost_pct": -0.0
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 375.0,
+   "hold_days": null
   },
   {
    "id": "OP-PLTR-2026-10-08",
@@ -2561,7 +2939,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": null,
     "exit_cost_pct": 0.023
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 375.0,
+   "hold_days": null
   },
   {
    "id": "OP-UNH-2026-10-09",
@@ -2606,7 +2988,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": 0.34,
     "exit_cost_pct": 0.049
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 24.0,
+   "hold_days": null
   },
   {
    "id": "OP-PLTR-2026-10-09",
@@ -2651,7 +3037,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": -0.315,
     "exit_cost_pct": 0.01
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 102.0,
+   "hold_days": null
   },
   {
    "id": "OP-TSLA-2026-10-09",
@@ -2696,7 +3086,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": 0.061,
     "exit_cost_pct": 0.009
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 107.0,
+   "hold_days": null
   },
   {
    "id": "OP-MRK-2026-10-09",
@@ -2741,7 +3135,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": 0.028,
     "exit_cost_pct": -0.024
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 379.0,
+   "hold_days": null
   },
   {
    "id": "OP-PLTR-2026-10-12",
@@ -2786,7 +3184,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": 0.028,
     "exit_cost_pct": 0.019
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 32.0,
+   "hold_days": null
   },
   {
    "id": "OP-UNH-2026-10-12",
@@ -2831,7 +3233,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": 0.072,
     "exit_cost_pct": 0.019
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "OP-CRM-2026-10-12",
@@ -2876,7 +3282,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": -0.092,
     "exit_cost_pct": 0.094
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 371.0,
+   "hold_days": null
   },
   {
    "id": "OP-CAT-2026-10-13",
@@ -2921,7 +3331,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": 0.119,
     "exit_cost_pct": 0.056
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 13.0,
+   "hold_days": null
   },
   {
    "id": "OP-JPM-2026-10-13",
@@ -2966,7 +3380,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": -0.238,
     "exit_cost_pct": 0.018
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 79.0,
+   "hold_days": null
   },
   {
    "id": "OP-JNJ-2026-10-13",
@@ -3011,7 +3429,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": -0.069,
     "exit_cost_pct": 0.026
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 378.0,
+   "hold_days": null
   },
   {
    "id": "OP-AAPL-2026-10-13",
@@ -3056,7 +3478,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": -0.015,
     "exit_cost_pct": -0.018
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 375.0,
+   "hold_days": null
   },
   {
    "id": "OP-UNH-2026-10-13",
@@ -3101,7 +3527,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": 0.026,
     "exit_cost_pct": 0.032
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 375.0,
+   "hold_days": null
   },
   {
    "id": "OP-CRWD-2026-10-14",
@@ -3146,7 +3576,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": -0.056,
     "exit_cost_pct": 0.049
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 39.0,
+   "hold_days": null
   },
   {
    "id": "OP-GS-2026-10-14",
@@ -3191,7 +3625,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": 0.045,
     "exit_cost_pct": 0.035
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 157.0,
+   "hold_days": null
   },
   {
    "id": "OP-MS-2026-10-14",
@@ -3236,7 +3674,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": -0.256,
     "exit_cost_pct": -0.019
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 379.0,
+   "hold_days": null
   },
   {
    "id": "OP-JPM-2026-10-14",
@@ -3281,7 +3723,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": 0.098,
     "exit_cost_pct": 0.004
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 378.0,
+   "hold_days": null
   },
   {
    "id": "OP-UNH-2026-10-14",
@@ -3326,7 +3772,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": 0.008,
     "exit_cost_pct": -0.044
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 375.0,
+   "hold_days": null
   },
   {
    "id": "OP-WMT-2026-10-15",
@@ -3371,7 +3821,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": -0.066,
     "exit_cost_pct": 0.021
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 9.0,
+   "hold_days": null
   },
   {
    "id": "OP-HD-2026-10-15",
@@ -3416,7 +3870,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": -0.046,
     "exit_cost_pct": 0.011
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 7.0,
+   "hold_days": null
   },
   {
    "id": "OP-NVDA-2026-10-15",
@@ -3461,7 +3919,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": -0.005,
     "exit_cost_pct": 0.005
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 13.0,
+   "hold_days": null
   },
   {
    "id": "OP-CAT-2026-10-15",
@@ -3506,7 +3968,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": -0.277,
     "exit_cost_pct": 0.043
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 73.0,
+   "hold_days": null
   },
   {
    "id": "OP-ETN-2026-10-15",
@@ -3551,7 +4017,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": -0.132,
     "exit_cost_pct": 0.035
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 89.0,
+   "hold_days": null
   },
   {
    "id": "OP-SHOP-2026-10-15",
@@ -3596,7 +4066,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": 0.107,
     "exit_cost_pct": -0.003
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 379.0,
+   "hold_days": null
   },
   {
    "id": "OP-UNH-2026-10-15",
@@ -3641,7 +4115,11 @@
     "backtest_agrees": "yes",
     "entry_cost_pct": -0.02,
     "exit_cost_pct": 0.007
-   }
+   },
+   "bot": null,
+   "mode": null,
+   "hold_min": 374.0,
+   "hold_days": null
   },
   {
    "id": "SW-AMD-2026-10-06",
@@ -3669,7 +4147,11 @@
    "f": {
     "bars_held": 4.0,
     "why": "Coiled 10 days inside $596.20\u2013$645.37 (2.1x ATR, tight), then closed above $645.37 on 1.0x normal volume. Daily range 3.7% \u2014 volatile enough to move."
-   }
+   },
+   "bot": "swing",
+   "mode": "paper",
+   "hold_min": null,
+   "hold_days": 4.0
   },
   {
    "id": "SW-SMCI-2026-10-07",
@@ -3697,7 +4179,11 @@
    "f": {
     "bars_held": 4.0,
     "why": "Coiled 10 days inside $39.85\u2013$44.72 (2.2x ATR, tight), then closed above $44.72 on 1.1x normal volume. Daily range 5.0% \u2014 volatile enough to move."
-   }
+   },
+   "bot": "swing",
+   "mode": "paper",
+   "hold_min": null,
+   "hold_days": 4.0
   },
   {
    "id": "SW-NVDA-2026-10-05",
@@ -3725,7 +4211,11 @@
    "f": {
     "bars_held": 8.0,
     "why": "Coiled 10 days inside $221.13\u2013$237.84 (2.8x ATR, tight), then closed above $237.84 on 1.3x normal volume. Daily range 2.5% \u2014 volatile enough to move."
-   }
+   },
+   "bot": "swing",
+   "mode": "paper",
+   "hold_min": null,
+   "hold_days": 8.0
   },
   {
    "id": "SW-CRWD-2026-10-06",
@@ -3753,7 +4243,11 @@
    "f": {
     "bars_held": 7.0,
     "why": "Coiled 10 days inside $244.76\u2013$274.14 (2.7x ATR, tight), then closed above $274.14 on 1.4x normal volume. Daily range 3.9% \u2014 volatile enough to move."
-   }
+   },
+   "bot": "swing",
+   "mode": "paper",
+   "hold_min": null,
+   "hold_days": 7.0
   },
   {
    "id": "BT-AAPL-2026-09-17",
@@ -3786,7 +4280,11 @@
     "rank": 5.0,
     "risk_pct": 1.12,
     "hold_min": 146.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 146.0,
+   "hold_days": null
   },
   {
    "id": "BT-MSFT-2026-09-17",
@@ -3819,7 +4317,11 @@
     "rank": 6.0,
     "risk_pct": 1.55,
     "hold_min": 380.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "BT-META-2026-09-17",
@@ -3852,7 +4354,11 @@
     "rank": 4.0,
     "risk_pct": 1.51,
     "hold_min": 374.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 374.0,
+   "hold_days": null
   },
   {
    "id": "BT-META-2026-09-18",
@@ -3885,7 +4391,11 @@
     "rank": 4.0,
     "risk_pct": 1.84,
     "hold_min": 380.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "BT-META-2026-09-21",
@@ -3918,7 +4428,11 @@
     "rank": 4.0,
     "risk_pct": 3.51,
     "hold_min": 372.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 372.0,
+   "hold_days": null
   },
   {
    "id": "BT-META-2026-09-22",
@@ -3951,7 +4465,11 @@
     "rank": 4.0,
     "risk_pct": 2.87,
     "hold_min": 380.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "BT-MSFT-2026-09-22",
@@ -3984,7 +4502,11 @@
     "rank": 6.0,
     "risk_pct": 1.48,
     "hold_min": 379.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 379.0,
+   "hold_days": null
   },
   {
    "id": "BT-AAPL-2026-09-23",
@@ -4017,7 +4539,11 @@
     "rank": 5.0,
     "risk_pct": 0.93,
     "hold_min": 377.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 377.0,
+   "hold_days": null
   },
   {
    "id": "BT-AMD-2026-09-24",
@@ -4050,7 +4576,11 @@
     "rank": 2.0,
     "risk_pct": 2.1,
     "hold_min": 380.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "BT-META-2026-09-24",
@@ -4083,7 +4613,11 @@
     "rank": 4.0,
     "risk_pct": 2.46,
     "hold_min": 379.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 379.0,
+   "hold_days": null
   },
   {
    "id": "BT-META-2026-09-25",
@@ -4116,7 +4650,11 @@
     "rank": 4.0,
     "risk_pct": 2.2,
     "hold_min": 380.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "BT-MSFT-2026-09-25",
@@ -4149,7 +4687,11 @@
     "rank": 6.0,
     "risk_pct": 2.68,
     "hold_min": 380.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "BT-TSLA-2026-09-25",
@@ -4182,7 +4724,11 @@
     "rank": 1.0,
     "risk_pct": 4.51,
     "hold_min": 374.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 374.0,
+   "hold_days": null
   },
   {
    "id": "BT-NVDA-2026-09-28",
@@ -4215,7 +4761,11 @@
     "rank": 3.0,
     "risk_pct": 1.44,
     "hold_min": 71.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 71.0,
+   "hold_days": null
   },
   {
    "id": "BT-META-2026-09-28",
@@ -4248,7 +4798,11 @@
     "rank": 4.0,
     "risk_pct": 3.72,
     "hold_min": 379.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 379.0,
+   "hold_days": null
   },
   {
    "id": "BT-TSLA-2026-09-28",
@@ -4281,7 +4835,11 @@
     "rank": 1.0,
     "risk_pct": 1.41,
     "hold_min": 375.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 375.0,
+   "hold_days": null
   },
   {
    "id": "BT-NVDA-2026-09-29",
@@ -4314,7 +4872,11 @@
     "rank": 3.0,
     "risk_pct": 1.18,
     "hold_min": 379.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 379.0,
+   "hold_days": null
   },
   {
    "id": "BT-TSLA-2026-09-29",
@@ -4347,7 +4909,11 @@
     "rank": 1.0,
     "risk_pct": 1.8,
     "hold_min": 378.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 378.0,
+   "hold_days": null
   },
   {
    "id": "BT-MSFT-2026-09-30",
@@ -4380,7 +4946,11 @@
     "rank": 6.0,
     "risk_pct": 1.16,
     "hold_min": 378.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 378.0,
+   "hold_days": null
   },
   {
    "id": "BT-NVDA-2026-10-01",
@@ -4413,7 +4983,11 @@
     "rank": 3.0,
     "risk_pct": 1.0,
     "hold_min": 94.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 94.0,
+   "hold_days": null
   },
   {
    "id": "BT-AAPL-2026-10-01",
@@ -4446,7 +5020,11 @@
     "rank": 5.0,
     "risk_pct": 1.14,
     "hold_min": 117.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 117.0,
+   "hold_days": null
   },
   {
    "id": "BT-TSLA-2026-10-02",
@@ -4479,7 +5057,11 @@
     "rank": 1.0,
     "risk_pct": 2.85,
     "hold_min": 376.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 376.0,
+   "hold_days": null
   },
   {
    "id": "BT-MSFT-2026-10-05",
@@ -4512,7 +5094,11 @@
     "rank": 6.0,
     "risk_pct": 1.38,
     "hold_min": 377.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 377.0,
+   "hold_days": null
   },
   {
    "id": "BT-NVDA-2026-10-05",
@@ -4545,7 +5131,11 @@
     "rank": 3.0,
     "risk_pct": 1.12,
     "hold_min": 374.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 374.0,
+   "hold_days": null
   },
   {
    "id": "BT-AMD-2026-10-05",
@@ -4578,7 +5168,11 @@
     "rank": 2.0,
     "risk_pct": 1.84,
     "hold_min": 371.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 371.0,
+   "hold_days": null
   },
   {
    "id": "BT-AMD-2026-10-06",
@@ -4611,7 +5205,11 @@
     "rank": 2.0,
     "risk_pct": 3.26,
     "hold_min": 60.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 60.0,
+   "hold_days": null
   },
   {
    "id": "BT-AAPL-2026-10-07",
@@ -4644,7 +5242,11 @@
     "rank": 5.0,
     "risk_pct": 1.78,
     "hold_min": 380.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "BT-MSFT-2026-10-07",
@@ -4677,7 +5279,11 @@
     "rank": 6.0,
     "risk_pct": 0.99,
     "hold_min": 374.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 374.0,
+   "hold_days": null
   },
   {
    "id": "BT-TSLA-2026-10-07",
@@ -4710,7 +5316,11 @@
     "rank": 1.0,
     "risk_pct": 1.32,
     "hold_min": 373.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 373.0,
+   "hold_days": null
   },
   {
    "id": "BT-TSLA-2026-10-09",
@@ -4743,7 +5353,11 @@
     "rank": 1.0,
     "risk_pct": 1.47,
     "hold_min": 107.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 107.0,
+   "hold_days": null
   },
   {
    "id": "BT-NVDA-2026-10-09",
@@ -4776,7 +5390,11 @@
     "rank": 3.0,
     "risk_pct": 1.19,
     "hold_min": 380.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "BT-META-2026-10-12",
@@ -4809,7 +5427,11 @@
     "rank": 4.0,
     "risk_pct": 1.98,
     "hold_min": 378.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 378.0,
+   "hold_days": null
   },
   {
    "id": "BT-AAPL-2026-10-13",
@@ -4842,7 +5464,11 @@
     "rank": 5.0,
     "risk_pct": 1.23,
     "hold_min": 375.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 375.0,
+   "hold_days": null
   },
   {
    "id": "BT-META-2026-10-14",
@@ -4875,7 +5501,11 @@
     "rank": 4.0,
     "risk_pct": 1.65,
     "hold_min": 380.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 380.0,
+   "hold_days": null
   },
   {
    "id": "BT-NVDA-2026-10-15",
@@ -4908,7 +5538,11 @@
     "rank": 3.0,
     "risk_pct": 1.3,
     "hold_min": 13.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 13.0,
+   "hold_days": null
   },
   {
    "id": "BT-META-2026-10-15",
@@ -4941,7 +5575,11 @@
     "rank": 4.0,
     "risk_pct": 2.09,
     "hold_min": 379.0
-   }
+   },
+   "bot": "daytrade",
+   "mode": "backtest",
+   "hold_min": 379.0,
+   "hold_days": null
   }
  ],
  "open": [
@@ -8415,14 +9053,14 @@
     ],
     "dispatch": true,
     "scheduled": true,
-    "last_run": "2026-10-15T21:59:45Z",
+    "last_run": "2026-10-16T22:01:00Z",
     "last_conclusion": "success",
-    "last_success": "2026-10-15T22:00:31Z",
+    "last_success": "2026-10-16T22:01:43Z",
     "week": {
      "success": 5
     },
     "failures": [],
-    "start_delay_med_min": 19.8,
+    "start_delay_med_min": 21.0,
     "start_delay_max_min": 22.2
    },
    {
@@ -8463,14 +9101,14 @@
     ],
     "dispatch": true,
     "scheduled": true,
-    "last_run": "2026-10-15T22:46:22Z",
+    "last_run": "2026-10-16T22:47:20Z",
     "last_conclusion": "success",
-    "last_success": "2026-10-15T22:47:11Z",
+    "last_success": "2026-10-16T22:48:53Z",
     "week": {
      "success": 15
     },
     "failures": [],
-    "start_delay_med_min": 26.4,
+    "start_delay_med_min": 27.3,
     "start_delay_max_min": 32.1
    },
    {
@@ -8479,9 +9117,9 @@
     "crons": [],
     "dispatch": true,
     "scheduled": false,
-    "last_run": "2026-10-02T20:35:14Z",
-    "last_conclusion": "success",
-    "last_success": "2026-10-02T20:41:57Z",
+    "last_run": null,
+    "last_conclusion": null,
+    "last_success": null,
     "week": {},
     "failures": [],
     "start_delay_med_min": null,
@@ -8552,15 +9190,15 @@
     ],
     "dispatch": true,
     "scheduled": true,
-    "last_run": "2026-10-15T19:27:53Z",
+    "last_run": "2026-10-16T19:25:03Z",
     "last_conclusion": "success",
-    "last_success": "2026-10-15T20:15:31Z",
+    "last_success": "2026-10-16T20:15:33Z",
     "week": {
      "success": 15,
-     "cancelled": 9
+     "cancelled": 7
     },
     "failures": [],
-    "start_delay_med_min": 16.9,
+    "start_delay_med_min": 19.0,
     "start_delay_max_min": 40.0
    },
    {
@@ -8597,9 +9235,9 @@
     "crons": [],
     "dispatch": true,
     "scheduled": false,
-    "last_run": "2026-10-02T14:25:49Z",
-    "last_conclusion": "success",
-    "last_success": "2026-10-02T14:26:17Z",
+    "last_run": null,
+    "last_conclusion": null,
+    "last_success": null,
     "week": {},
     "failures": [],
     "start_delay_med_min": null,
@@ -8629,16 +9267,16 @@
     ],
     "dispatch": true,
     "scheduled": true,
-    "last_run": "2026-10-15T21:57:18Z",
+    "last_run": "2026-10-16T22:13:43Z",
     "last_conclusion": "success",
-    "last_success": "2026-10-15T21:57:37Z",
+    "last_success": "2026-10-16T22:14:05Z",
     "week": {
-     "success": 39,
-     "cancelled": 60
+     "success": 37,
+     "cancelled": 53
     },
     "failures": [],
-    "start_delay_med_min": 5.1,
-    "start_delay_max_min": 15.8
+    "start_delay_med_min": 5.3,
+    "start_delay_max_min": 23.7
    },
    {
     "file": "live-open.yml",
@@ -8651,15 +9289,15 @@
     ],
     "dispatch": true,
     "scheduled": true,
-    "last_run": "2026-10-15T14:34:21Z",
+    "last_run": "2026-10-16T14:33:29Z",
     "last_conclusion": "cancelled",
-    "last_success": "2026-10-15T14:05:28Z",
+    "last_success": "2026-10-16T14:05:24Z",
     "week": {
-     "cancelled": 11,
-     "success": 9
+     "cancelled": 12,
+     "success": 8
     },
     "failures": [],
-    "start_delay_med_min": 16.4,
+    "start_delay_med_min": 17.7,
     "start_delay_max_min": 39.3
    },
    {
@@ -8684,14 +9322,14 @@
     ],
     "dispatch": true,
     "scheduled": true,
-    "last_run": "2026-10-15T21:07:55Z",
+    "last_run": "2026-10-16T21:03:54Z",
     "last_conclusion": "success",
-    "last_success": "2026-10-15T21:08:14Z",
+    "last_success": "2026-10-16T21:04:19Z",
     "week": {
-     "success": 65
+     "success": 60
     },
     "failures": [],
-    "start_delay_med_min": 18.7,
+    "start_delay_med_min": 19.4,
     "start_delay_max_min": 32.9
    },
    {
@@ -8742,9 +9380,9 @@
     "crons": [],
     "dispatch": true,
     "scheduled": false,
-    "last_run": "2026-10-02T22:38:31Z",
-    "last_conclusion": "success",
-    "last_success": "2026-10-02T22:41:42Z",
+    "last_run": null,
+    "last_conclusion": null,
+    "last_success": null,
     "week": {},
     "failures": [],
     "start_delay_med_min": null,
@@ -8772,14 +9410,14 @@
     ],
     "dispatch": true,
     "scheduled": true,
-    "last_run": "2026-10-15T22:08:48Z",
+    "last_run": "2026-10-16T22:09:27Z",
     "last_conclusion": "success",
-    "last_success": "2026-10-15T22:10:07Z",
+    "last_success": "2026-10-16T22:10:44Z",
     "week": {
      "success": 10
     },
     "failures": [],
-    "start_delay_med_min": 18.3,
+    "start_delay_med_min": 19.7,
     "start_delay_max_min": 22.8
    },
    {
@@ -8802,9 +9440,9 @@
     "crons": [],
     "dispatch": true,
     "scheduled": false,
-    "last_run": "2026-10-02T21:21:14Z",
-    "last_conclusion": "success",
-    "last_success": "2026-10-02T21:22:56Z",
+    "last_run": null,
+    "last_conclusion": null,
+    "last_success": null,
     "week": {},
     "failures": [],
     "start_delay_med_min": null,
@@ -8846,9 +9484,9 @@
     ],
     "dispatch": true,
     "scheduled": true,
-    "last_run": "2026-10-15T21:56:15Z",
+    "last_run": "2026-10-16T21:54:39Z",
     "last_conclusion": "success",
-    "last_success": "2026-10-15T21:56:39Z",
+    "last_success": "2026-10-16T21:55:00Z",
     "week": {
      "success": 5
     },
@@ -8865,9 +9503,9 @@
     ],
     "dispatch": true,
     "scheduled": true,
-    "last_run": "2026-10-15T21:10:06Z",
+    "last_run": "2026-10-16T21:08:23Z",
     "last_conclusion": "success",
-    "last_success": "2026-10-15T21:10:32Z",
+    "last_success": "2026-10-16T21:08:48Z",
     "week": {
      "success": 10
     },
@@ -8925,9 +9563,9 @@
     ],
     "dispatch": true,
     "scheduled": true,
-    "last_run": "2026-10-15T21:33:39Z",
+    "last_run": "2026-10-16T21:29:24Z",
     "last_conclusion": "success",
-    "last_success": "2026-10-15T21:34:07Z",
+    "last_success": "2026-10-16T21:29:53Z",
     "week": {
      "success": 5
     },
@@ -9039,11 +9677,11 @@
     "crons": [],
     "dispatch": true,
     "scheduled": false,
-    "last_run": "2026-10-13T23:13:34Z",
+    "last_run": "2026-10-16T11:24:52Z",
     "last_conclusion": "success",
-    "last_success": "2026-10-13T23:14:10Z",
+    "last_success": "2026-10-16T11:25:29Z",
     "week": {
-     "success": 1
+     "success": 2
     },
     "failures": [],
     "start_delay_med_min": null,
@@ -9096,72 +9734,84 @@
     "level": "serious",
     "area": "Market data",
     "date": "2026-10-15",
+    "bot": "daytrade",
     "text": "2026-10-15: data stale 12:59-14:11 ET (newest bar stuck at 12:56, 55 polls). New signals were held."
    },
    {
     "level": "warning",
     "area": "Coverage",
     "date": "2026-10-15",
+    "bot": "daytrade",
     "text": "Last 5 sessions: 2 poll gap(s) of 10-29 min (worst 21 min), starting at 10:04 ET. 10:04 is when the opening job hands over to the session job; stops and targets hit in a gap post late."
    },
    {
     "level": "warning",
     "area": "Latency",
     "date": "2026-10-15",
+    "bot": "daytrade",
     "text": "Last 5 sessions: 4 of 7 on-time signals were first detected about 61 s after their bar closed, i.e. one poll late (still inside the 120 s expiry). The others took 1.3 s."
    },
    {
     "level": "info",
     "area": "Delivery",
     "date": null,
+    "bot": "daytrade",
     "text": "Discord delivery per signal was not logged before this dashboard; the live bot now records it. Until then delivery is inferred from saved Discord message ids."
    },
    {
     "level": "info",
     "area": "Records",
     "date": null,
-    "text": "8 of 14 day-trade ledger rows are replays, not posts. Use the 'posted live' filter for what subscribers actually saw."
+    "bot": "daytrade",
+    "text": "8 of 14 day-trade ledger rows are replays, not posts. They are left out of the bot views: the month replay covers the same sessions."
    },
    {
     "level": "info",
     "area": "Records",
     "date": null,
+    "bot": "inplay",
     "text": "The in-play channel writes no latency log, so its signal ages are not tracked."
    },
    {
     "level": "past",
     "area": "Coverage",
     "date": "2026-10-08",
+    "bot": "daytrade",
     "text": "2026-10-08: no live-bot scan logged 09:30-10:06 ET (36 min). A signal in that window could not post on time."
    },
    {
     "level": "past",
     "area": "Coverage",
     "date": "2026-10-07",
+    "bot": "daytrade",
     "text": "2026-10-07: no live-bot scan logged 10:04-15:43 ET (339 min). A signal in that window could not post on time."
    },
    {
     "level": "past",
     "area": "Coverage",
     "date": "2026-10-06",
+    "bot": "daytrade",
     "text": "2026-10-06: no live-bot scan logged 10:04-15:39 ET (335 min). A signal in that window could not post on time."
    },
    {
     "level": "past",
     "area": "Coverage",
     "date": "2026-10-05",
+    "bot": "daytrade",
     "text": "2026-10-05: no live-bot scan logged 09:30-10:06 ET (36 min). A signal in that window could not post on time."
    },
    {
     "level": "past",
     "area": "Coverage",
     "date": "2026-10-05",
+    "bot": "daytrade",
     "text": "2026-10-05: no live-bot scan logged 15:25-15:55 ET (30 min). A signal in that window could not post on time."
    },
    {
     "level": "past",
     "area": "Coverage",
     "date": "2026-10-02",
+    "bot": "daytrade",
     "text": "2026-10-02: no live-bot scan logged 10:26-15:48 ET (322 min). A signal in that window could not post on time."
    }
   ]

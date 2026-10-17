@@ -1,6 +1,6 @@
 # Dashboard summary
 
-Built 2026-10-16 05:00 ET from the repo's own records. Open `reports/dashboard.html` in a browser for the interactive version.
+Built 2026-10-17 00:05 ET from the repo's own records. Open `reports/dashboard.html` in a browser for the interactive version.
 
 Win %, profit % and winners against losers. Each book is in its own unit and never summed with another.
 
@@ -18,7 +18,7 @@ Win %, profit % and winners against losers. Each book is in its own unit and nev
 - **warning** · Coverage: Last 5 sessions: 2 poll gap(s) of 10-29 min (worst 21 min), starting at 10:04 ET. 10:04 is when the opening job hands over to the session job; stops and targets hit in a gap post late.
 - **warning** · Latency: Last 5 sessions: 4 of 7 on-time signals were first detected about 61 s after their bar closed, i.e. one poll late (still inside the 120 s expiry). The others took 1.3 s.
 - **info** · Delivery: Discord delivery per signal was not logged before this dashboard; the live bot now records it. Until then delivery is inferred from saved Discord message ids.
-- **info** · Records: 8 of 14 day-trade ledger rows are replays, not posts. Use the 'posted live' filter for what subscribers actually saw.
+- **info** · Records: 8 of 14 day-trade ledger rows are replays, not posts. They are left out of the bot views: the month replay covers the same sessions.
 - **info** · Records: The in-play channel writes no latency log, so its signal ages are not tracked.
 - **past** · Coverage: 2026-10-08: no live-bot scan logged 09:30-10:06 ET (36 min). A signal in that window could not post on time.
 - **past** · Coverage: 2026-10-07: no live-bot scan logged 10:04-15:43 ET (339 min). A signal in that window could not post on time.

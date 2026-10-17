@@ -298,3 +298,48 @@ def test_a_blocked_pick_with_no_alternative_trade_says_so():
     sa = qa = np.ones(orr.N_MIN, dtype=bool)
     alt = om.alternative(flat, sa, qa, flat, om.CANDIDATE, "range too narrow")
     assert alt == {"rule": "no range filter", "result_pct": None}
+
+
+# --------------------------------------------------------------------------- bots and data types
+def test_each_record_lands_in_one_bot_and_one_data_type():
+    t = lambda book, src=None: {"book": book, "source": src}
+    assert db.bot_mode(t("daytrade", "live")) == ("daytrade", "live")
+    assert db.bot_mode(t("daytrade", "corrected")) == ("daytrade", "live")
+    assert db.bot_mode(t("daytrade", "replay")) == (None, None)        # the month replay covers it
+    assert db.bot_mode(t("month_replay", "backtest")) == ("daytrade", "backtest")
+    assert db.bot_mode(t("inplay", "live")) == ("inplay", "live")
+    assert db.bot_mode(t("inplay", "replay")) == ("inplay", "backtest")
+    assert db.bot_mode(t("swing_paper", "paper")) == ("swing", "paper")
+    assert db.bot_mode(t("orb_paper", "live")) == (None, None)         # research, not a bot
+
+
+def test_no_trade_is_counted_twice_in_a_bot_view():
+    d = db.build(with_actions=False)
+    tagged = [t for t in d["trades"] if t["bot"]]
+    for t in tagged:
+        assert t["mode"] in d["bots"][t["bot"]]["modes"]
+    live = {(t["date"], t["symbol"]) for t in tagged if t["bot"] == "daytrade" and t["mode"] == "live"}
+    replayed = {(t["date"], t["symbol"]) for t in d["trades"] if t["book"] == "daytrade" and t["source"] == "replay"}
+    assert not live & replayed
+
+
+def test_bot_status_is_unknown_without_run_history():
+    d = db.build(with_actions=False)
+    assert {b["state"] for b in d["bots"].values()} == {"unknown"}
+
+
+def test_holding_time_and_today():
+    assert db.hold_minutes({"entry_time": "09:35", "exit_time": "15:55"}) == 380
+    assert db.hold_minutes({"entry_time": "2026-10-01", "exit_time": "2026-10-05"}) is None
+    assert db.hold_minutes({"entry_time": "10:00", "exit_time": "09:00"}) is None
+    from datetime import datetime as dt
+    fri_am = dt(2026, 10, 16, 9, 0, tzinfo=db.ET)
+    assert db.as_of_session(fri_am) == "2026-10-15"                    # Friday's session not closed yet
+    assert db.as_of_session(dt(2026, 10, 16, 16, 5, tzinfo=db.ET)) == "2026-10-16"
+    assert db.as_of_session(dt(2026, 10, 18, 12, 0, tzinfo=db.ET)) == "2026-10-16"   # Sunday -> Friday
+
+
+def test_the_page_has_two_pages_and_no_dark_theme():
+    t = db.TEMPLATE.read_text()
+    assert 'data-tab="overview"' in t and 'data-tab="stocks"' in t
+    assert "prefers-color-scheme: dark" not in t and "color-scheme: light" in t
