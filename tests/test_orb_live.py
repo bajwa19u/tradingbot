@@ -218,3 +218,48 @@ def test_the_desk_month_follows_the_live_switch(monkeypatch):
     assert orb_month.live_rule()[0] == "inplay_orb"
     monkeypatch.delenv("DAYTRADE_STRATEGY")
     assert orb_month.live_rule()[1].universe == "top10"
+
+
+# --- REST trailing the stream ---------------------------------------------------
+class LaggingMarket(FakeMarket):
+    """The first read of today is missing the minute that just closed (REST
+    behind the websocket); later reads have it."""
+
+    def __init__(self, missing: str, reads_missing: int = 1):
+        super().__init__()
+        self.missing, self.left = pd.Timestamp(missing), reads_missing
+
+    def intraday_bars(self, symbols, minutes, start, end=None):
+        out = super().intraday_bars(symbols, minutes, start, end)
+        if end is None and self.left > 0:          # a read of today
+            self.left -= 1
+            out = {s: df[df.index.tz_convert("America/New_York") < self.missing] for s, df in out.items()}
+        return out
+
+
+def _lagging(monkeypatch, tmp_path, reads_missing):
+    monkeypatch.setattr(orr, "POOL", ["AAA", "BBB", "QQQ", "SPY"])
+    monkeypatch.setattr(ol, "PICKS_FILE", tmp_path / "picks.json")
+    monkeypatch.setattr(ol, "_FEED", None)
+    naps = []
+    monkeypatch.setattr(ol, "_sleep", naps.append)
+    fm = LaggingMarket(f"{at('09:42:00')}", reads_missing)
+    return fm, naps
+
+
+def test_a_minute_missing_from_rest_is_re_read_not_left_for_the_next_tick(monkeypatch, tmp_path):
+    fm, naps = _lagging(monkeypatch, tmp_path, reads_missing=2)
+    ol.picks(ol.feed(lambda: fm), at("09:35:05"), dry_run=True)   # picks made earlier in the day
+    fm.left = 2
+    trades, _ = ol.scan(at("09:43:02"), lambda: fm, risk_pct=1.0, dry_run=True)
+    assert [(t["symbol"], t["entry_time"]) for t in trades] == [("AAA", "09:42")]
+    assert 1 <= len(naps) <= 2 and set(naps) == {ol.LAG_WAIT_S}   # (a dry run re-ranks, which takes one read)
+
+
+def test_the_re_read_gives_up_after_a_few_seconds(monkeypatch, tmp_path):
+    fm, naps = _lagging(monkeypatch, tmp_path, reads_missing=99)
+    ol.picks(ol.feed(lambda: fm), at("09:35:05"), dry_run=True)
+    fm.left = 99
+    trades, _ = ol.scan(at("09:43:02"), lambda: fm, risk_pct=1.0, dry_run=True)
+    assert trades == []                            # still missing: caught on the next tick, as before
+    assert len(naps) == ol.LAG_RETRIES and sum(naps) <= 6.0
